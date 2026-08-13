@@ -1,0 +1,55 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block page_title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="admin-toolbar">
+    <form method="get">
+        <input type="text" name="q" class="form-control" placeholder="Search {{ page_title|lower }}..." value="{{ request.GET.q }}">
+        <button type="submit" class="btn btn-secondary">Search</button>
+    </form>
+    <a href="{{ create_url }}" class="btn btn-primary">+ Add {{ model_name }}</a>
+</div>
+
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                {% for header in headers %}
+                <th>{{ header }}</th>
+                {% endfor %}
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                {% for field in fields %}
+                <td>{{ item|getattr:field }}</td>
+                {% endfor %}
+                <td>
+                    <a href="{{ edit_url_prefix }}{{ item.id }}/edit/" class="btn btn-sm btn-secondary">Edit</a>
+                    <a href="{{ delete_url_prefix }}{{ item.id }}/delete/" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="{{ headers|length|add:1 }}" class="text-muted">No {{ model_name|lower }} found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if items.has_other_pages %}
+<div class="admin-pagination">
+    {% if items.has_previous %}
+    <a href="?page={{ items.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">←</a>
+    {% endif %}
+    <span class="current">Page {{ items.number }} of {{ items.paginator.num_pages }}</span>
+    {% if items.has_next %}
+    <a href="?page={{ items.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">→</a>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

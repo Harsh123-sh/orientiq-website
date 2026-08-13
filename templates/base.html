@@ -1,0 +1,53 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Orientiq{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Orientiq — premium technology and digital solutions.{% endblock %}">
+    <link rel="icon" type="image/png" href="{% static 'images/brand/orientiq-icon-on-light.png' %}" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" href="{% static 'images/brand/orientiq-icon-on-dark.png' %}" media="(prefers-color-scheme: dark)">
+    <link rel="apple-touch-icon" href="{% static 'images/brand/orientiq-icon-192.png' %}">
+    <link rel="manifest" href="{% static 'site.webmanifest' %}">
+
+    <!-- Theme init: prevent flash of incorrect theme -->
+    <script src="{% static 'js/theme-init.js' %}"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Design System -->
+    <link rel="stylesheet" href="{% static 'css/variables.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/typography.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pages.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ai-assistant.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% include "components/navbar.html" %}
+
+    <main class="site-main">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include "components/footer.html" %}
+
+    {% include "components/ai-assistant.html" %}
+
+    <script src="{% static 'js/theme.js' %}"></script>
+    <script src="{% static 'js/ai-assistant.js' %}"></script>
+    <script src="{% static 'js/navigation.js' %}"></script>
+    <script src="{% static 'js/components.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

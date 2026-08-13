@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Live Intelligence — Orientiq{% endblock %}
+{% block meta_description %}Orientiq Live Intelligence foundation — location, maps, and weather services demo.{% endblock %}
+
+{% block content %}
+<!-- ==================== HERO ==================== -->
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Live Intelligence Foundation</span>
+        <h1>Location, Maps & Weather</h1>
+        <p>A technical foundation demo for future Orientiq products. This is not a completed product.</p>
+    </div>
+</section>
+
+<!-- ==================== SEARCH ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="card mb-8">
+            <h3 class="mb-4">Search a destination</h3>
+            <form id="li-search-form" class="flex gap-3 flex-wrap">
+                <input type="text" id="li-search-input" class="form-control" placeholder="e.g. Dubai, London, Ahmedabad..." aria-label="Search destination" style="max-width: 320px;">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+            <p class="form-help mt-3">Try: Dubai, London, Paris, Tokyo, Singapore, Mumbai, Delhi, Bengaluru, Ahmedabad, New York</p>
+        </div>
+
+        <div id="li-results" class="grid grid-2" hidden>
+            <!-- Location card -->
+            <div class="card">
+                <h4 class="mb-4">Location</h4>
+                <div id="li-location">
+                    <p class="body-small text-muted">Search for a destination to see location details.</p>
+                </div>
+            </div>
+
+            <!-- Weather card -->
+            <div class="card">
+                <h4 class="mb-4">Weather</h4>
+                <div id="li-weather">
+                    <p class="body-small text-muted">Weather will appear here.</p>
+                </div>
+            </div>
+
+            <!-- Map card -->
+            <div class="card" style="grid-column: 1 / -1;">
+                <h4 class="mb-4">Map</h4>
+                <div id="li-map">
+                    <p class="body-small text-muted">Map will appear here.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="li-error" class="card" hidden>
+            <p class="form-error" id="li-error-text">Something went wrong.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== STATUS ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="card">
+            <h4 class="mb-4">Provider Status</h4>
+            <div class="flex gap-4 flex-wrap">
+                <span class="badge">Maps: Static fallback</span>
+                <span class="badge">Weather: Static fallback</span>
+                <span class="badge">Location: Built-in</span>
+            </div>
+            <p class="caption text-muted mt-4">This page demonstrates the Phase 7 foundation. External providers can be connected later via environment variables.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    "use strict";
+
+    var form = document.getElementById("li-search-form");
+    var input = document.getElementById("li-search-input");
+    var results = document.getElementById("li-results");
+    var errorBox = document.getElementById("li-error");
+    var errorText = document.getElementById("li-error-text");
+    var locationEl = document.getElementById("li-location");
+    var weatherEl = document.getElementById("li-weather");
+    var mapEl = document.getElementById("li-map");
+
+    function showError(msg) {
+        errorText.textContent = msg;
+        errorBox.hidden = false;
+        results.hidden = true;
+    }
+
+    function renderLocation(loc) {
+        locationEl.innerHTML = "";
+        var name = document.createElement("p");
+        name.className = "body-large";
+        name.textContent = loc.name + (loc.country ? ", " + loc.country : "");
+        locationEl.appendChild(name);
+
+        var coords = document.createElement("p");
+        coords.className = "body-small text-muted";
+        coords.textContent = "Latitude: " + loc.latitude + " | Longitude: " + loc.longitude;
+        locationEl.appendChild(coords);
+
+        if (loc.timezone) {
+            var tz = document.createElement("p");
+            tz.className = "caption text-muted";
+            tz.textContent = "Timezone: " + loc.timezone;
+            locationEl.appendChild(tz);
+        }
+    }
+
+    function renderWeather(w) {
+        weatherEl.innerHTML = "";
+        var temp = document.createElement("p");
+        temp.className = "display";
+        temp.textContent = w.temperature + "°C";
+        weatherEl.appendChild(temp);
+
+        var cond = document.createElement("p");
+        cond.className = "body";
+        cond.textContent = w.condition;
+        weatherEl.appendChild(cond);
+
+        var details = document.createElement("p");
+        details.className = "body-small text-muted";
+        details.textContent = "Humidity: " + w.humidity + "% | Wind: " + w.wind_speed + " km/h";
+        weatherEl.appendChild(details);
+    }
+
+    function renderMap(m) {
+        mapEl.innerHTML = "";
+        if (m && m.embed_url) {
+            var iframe = document.createElement("iframe");
+            iframe.src = m.embed_url;
+            iframe.style.width = "100%";
+            iframe.style.height = "320px";
+            iframe.style.border = "0";
+            iframe.style.borderRadius = "var(--radius-md)";
+            iframe.title = "Map of selected location";
+            iframe.loading = "lazy";
+            mapEl.appendChild(iframe);
+        } else {
+            var p = document.createElement("p");
+            p.className = "body-small text-muted";
+            p.textContent = "Map unavailable.";
+            mapEl.appendChild(p);
+        }
+    }
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var q = input.value.trim();
+        if (!q) return;
+
+        errorBox.hidden = true;
+        results.hidden = true;
+
+        fetch("/api/live-intelligence/?q=" + encodeURIComponent(q))
+            .then(function (resp) {
+                return resp.json().then(function (data) {
+                    return { ok: resp.ok, data: data };
+                });
+            })
+            .then(function (result) {
+                if (!result.ok || !result.data.success) {
+                    showError(result.data.error || "Destination not found.");
+                    return;
+                }
+                var d = result.data.data;
+                renderLocation(d.location);
+                if (d.weather) renderWeather(d.weather);
+                if (d.map) renderMap(d.map);
+                results.hidden = false;
+            })
+            .catch(function () {
+                showError("Unable to reach the live intelligence service.");
+            });
+    });
+})();
+</script>
+{% endblock %}

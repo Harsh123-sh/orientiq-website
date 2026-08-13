@@ -1,0 +1,24 @@
+<a href="{% url 'industry_detail' industry.slug %}" class="card card-service card-interactive">
+    <div class="card-icon">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            {% if industry.icon == "building" %}
+            <rect x="4" y="2" width="16" height="20" rx="2"></rect><path d="M9 22v-4h6v4"></path><path d="M8 6h.01"></path><path d="M16 6h.01"></path><path d="M12 6h.01"></path><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path>
+            {% elif industry.icon == "health" %}
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+            {% elif industry.icon == "education" %}
+            <path d="M22 10L12 5 2 10l10 5 10-5z"></path><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"></path>
+            {% elif industry.icon == "travel" %}
+            <circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            {% elif industry.icon == "manufacturing" %}
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+            {% elif industry.icon == "startup" %}
+            <path d="M12 2l2.4 7.2H22l-6 4.9 2.3 7.1-6.3-4.6-6.3 4.6L8 14.1 2 9.2h7.6L12 2z"></path>
+            {% elif industry.icon == "enterprise" %}
+            <rect x="3" y="3" width="18" height="18" rx="2"></rect><rect x="7" y="7" width="10" height="10" rx="1"></rect><line x1="3" y1="7" x2="7" y2="7"></line><line x1="17" y1="7" x2="21" y2="7"></line><line x1="3" y1="12" x2="7" y2="12"></line><line x1="17" y1="12" x2="21" y2="12"></line><line x1="3" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="21" y2="17"></line>
+            {% endif %}
+        </svg>
+    </div>
+    <h3>{{ industry.name }}</h3>
+    <p>{{ industry.short }}</p>
+    <span class="link mt-4">Explore →</span>
+</a>

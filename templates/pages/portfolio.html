@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Portfolio — Orientiq{% endblock %}
+{% block meta_description %}Explore Orientiq's portfolio of digital products, AI platforms, and enterprise software solutions.{% endblock %}
+
+{% block content %}
+<!-- ==================== HERO ==================== -->
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Portfolio</span>
+        <h1>Work that speaks for itself</h1>
+        <p>A selection of platforms and products we've engineered for ambitious businesses.</p>
+    </div>
+</section>
+
+<!-- ==================== PORTFOLIO GRID ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-3">
+            {% for item in portfolio_items %}
+            {% include "components/portfolio-card.html" %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+{% include "components/cta.html" with eyebrow="Your Project" title="Want results like these?" subtitle="Let's build something exceptional together." %}
+{% endblock %}

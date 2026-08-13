@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ item.title }} — Orientiq Portfolio{% endblock %}
+{% block meta_description %}{{ item.summary }}{% endblock %}
+
+{% block content %}
+<!-- ==================== HERO ==================== -->
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">{{ item.industry }}</span>
+        <h1>{{ item.title }}</h1>
+        <p>{{ item.summary }}</p>
+        <div class="flex gap-3 flex-wrap mt-6">
+            {% for tech in item.tech %}
+            <span class="badge">{{ tech }}</span>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CHALLENGE / STRATEGY / SOLUTION ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-3">
+            <div class="card">
+                <h4 class="mb-3">Challenge</h4>
+                <p class="body-small text-muted">{{ item.challenge }}</p>
+            </div>
+            <div class="card">
+                <h4 class="mb-3">Strategy</h4>
+                <p class="body-small text-muted">{{ item.strategy }}</p>
+            </div>
+            <div class="card">
+                <h4 class="mb-3">Solution</h4>
+                <p class="body-small text-muted">{{ item.solution }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== RESULTS ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="Results" title="Outcomes delivered" subtitle="Measurable impact from a focused engagement." align="center" %}
+        <div class="grid grid-3">
+            {% for result in item.results %}
+            <div class="card card-stat">
+                <div class="stat-value">✓</div>
+                <div class="stat-label">{{ result }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% if item.note %}
+        <div class="card mt-8">
+            <p class="caption text-muted">{{ item.note }}</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- ==================== MORE WORK ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="More Work" title="Explore other projects" align="center" %}
+        <div class="grid grid-3">
+            {% for other in portfolio_items %}
+            {% if other.slug != item.slug %}
+            {% include "components/portfolio-card.html" with item=other %}
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+{% include "components/cta.html" with eyebrow="Your Project" title="Let's build something like this" subtitle="Tell us about your project and we'll show you what's possible." %}
+{% endblock %}

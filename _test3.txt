@@ -1,0 +1,298 @@
+Creating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+Found 39 test(s).
+Operations to perform:
+  Synchronize unmigrated apps: messages, staticfiles
+  Apply all migrations: admin, auth, contenttypes, core, sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying core.0001_initial... OK
+  Applying core.0002_contactinquiry_industry_portfolioproject_product_and_more... OK
+  Applying core.0003_booking_bookingitem_traveler... OK
+  Applying core.0004_bookingitem_selection_key... OK
+  Applying sessions.0001_initial... OK
+System check identified no issues (0 silenced).
+test_admin_booking_access (core.tests.BookingTests.test_admin_booking_access)
+ADMIN can view the booking management pages. ... ok
+test_admin_search_by_reference (core.tests.BookingTests.test_admin_search_by_reference)
+Admin can search bookings by reference. ... ok
+test_admin_status_filter (core.tests.BookingTests.test_admin_status_filter)
+Admin can filter bookings by status. ... ok
+test_admin_type_filter (core.tests.BookingTests.test_admin_type_filter)
+Admin can filter bookings by booking type. ... ok
+test_anonymous_redirected_to_login (core.tests.BookingTests.test_anonymous_redirected_to_login)
+Anonymous users are redirected to login where appropriate. ... ok
+test_api_user_cannot_access_another_users_booking (core.tests.BookingTests.test_api_user_cannot_access_another_users_booking)
+API booking detail enforces ownership. ... ok
+test_booking_item_created (core.tests.BookingTests.test_booking_item_created)
+A BookingItem is created for the selected inventory. ... ok
+test_booking_reference_generated (core.tests.BookingTests.test_booking_reference_generated)
+Booking reference is unique and follows ORI-XXXXXXXX. ... ok
+test_booking_review_activity_data (core.tests.BookingTests.test_booking_review_activity_data)
+Correct activity data appears on the review page. ... FAIL
+test_booking_review_flight_data (core.tests.BookingTests.test_booking_review_flight_data)
+Correct flight data appears on the review page. ... FAIL
+test_booking_review_hotel_data (core.tests.BookingTests.test_booking_review_hotel_data)
+Correct hotel data appears on the review page. ... FAIL
+test_booking_review_renders (core.tests.BookingTests.test_booking_review_renders)
+Booking Review page renders for a selected flight. ... FAIL
+test_booking_status_confirmed (core.tests.BookingTests.test_booking_status_confirmed)
+Booking status becomes CONFIRMED after confirmation. ... ok
+test_client_cannot_access_admin_booking_management (core.tests.BookingTests.test_client_cannot_access_admin_booking_management)
+CLIENT users must be denied admin booking management (403). ... ok
+test_client_price_tampering_rejected (core.tests.BookingTests.test_client_price_tampering_rejected)
+Client-submitted price is never trusted. ... ok
+test_client_total_tampering_rejected (core.tests.BookingTests.test_client_total_tampering_rejected)
+Client-submitted total is never trusted even when huge. ... ok
+test_confirmation_page (core.tests.BookingTests.test_confirmation_page)
+Confirmation page renders the booking reference and demo notice. ... FAIL
+test_csrf_protection (core.tests.BookingTests.test_csrf_protection)
+POST to the booking confirm endpoint requires a CSRF token. ... ok
+test_duplicate_confirmation_prevented (core.tests.BookingTests.test_duplicate_confirmation_prevented)
+Confirming the same selection twice creates only one booking. ... ok
+test_email_confirmation (core.tests.BookingTests.test_email_confirmation)
+booking_confirmation_email sends a demo confirmation email. ... ok
+test_email_failure_handling (core.tests.BookingTests.test_email_failure_handling)
+An email failure must not raise or corrupt the booking flow. ... ok
+test_guest_validation_missing_phone (core.tests.BookingTests.test_guest_validation_missing_phone)
+Hotel guests require name, email AND phone. ... ok
+test_hotel_travelers_created (core.tests.BookingTests.test_hotel_travelers_created)
+Hotel booking creates the expected number of guests. ... ok
+test_invalid_email_rejected (core.tests.BookingTests.test_invalid_email_rejected)
+Invalid email is rejected server-side and no booking is created. ... ok
+test_missing_required_fields_rejected (core.tests.BookingTests.test_missing_required_fields_rejected)
+Missing required traveler fields are rejected server-side. ... ok
+test_rate_limiting (core.tests.BookingTests.test_rate_limiting)
+Booking creation is rate limited server-side (HTTP 429). ... ok
+test_search_select_activity (core.tests.BookingTests.test_search_select_activity)
+Search activities and select an activity for booking review. ... FAIL
+test_search_select_flight (core.tests.BookingTests.test_search_select_flight)
+Search flights and select a flight for booking review. ... FAIL
+test_search_select_hotel (core.tests.BookingTests.test_search_select_hotel)
+Search hotels and select a hotel for booking review. ... FAIL
+test_server_side_price_calculation (core.tests.BookingTests.test_server_side_price_calculation)
+Prices are calculated server-side with Decimal. ... ok
+test_server_side_price_hotel (core.tests.BookingTests.test_server_side_price_hotel)
+Hotel price = price_per_night * nights (server-computed). ... ok
+test_successful_demo_booking (core.tests.BookingTests.test_successful_demo_booking)
+Confirm Demo Booking succeeds and redirects to confirmation. ... ok
+test_super_admin_booking_access (core.tests.BookingTests.test_super_admin_booking_access)
+SUPER_ADMIN retains full booking management access. ... ok
+test_transaction_rollback (core.tests.BookingTests.test_transaction_rollback)
+A failure inside the atomic block rolls back the whole booking. ... ok
+test_traveler_created (core.tests.BookingTests.test_traveler_created)
+Traveler records are created for the booking. ... ok
+test_traveler_validation_pass (core.tests.BookingTests.test_traveler_validation_pass)
+Valid traveler data creates a booking. ... ok
+test_user_booking_detail (core.tests.BookingTests.test_user_booking_detail)
+User booking detail shows the booking contents. ... ERROR
+test_user_booking_history (core.tests.BookingTests.test_user_booking_history)
+My Bookings lists only the logged-in user's bookings. ... ok
+test_user_cannot_access_another_users_booking (core.tests.BookingTests.test_user_cannot_access_another_users_booking)
+A user cannot view another user's booking (404). ... ok
+
+======================================================================
+ERROR: test_user_booking_detail (core.tests.BookingTests.test_user_booking_detail)
+User booking detail shows the booking contents.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\base.py", line 502, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'empty'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\harsh\Desktop\APP\wedsite\core\tests.py", line 1269, in test_user_booking_detail
+    resp = self.client.get(f"/accounts/bookings/{booking.booking_reference}/")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\test\client.py", line 1049, in get
+    response = super().get(path, data=data, secure=secure, headers=headers, **extra)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\test\client.py", line 465, in get
+    return self.generic(
+           ^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\test\client.py", line 617, in generic
+    return self.request(**r)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\test\client.py", line 1013, in request
+    self.check_exception(response)
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\test\client.py", line 743, in check_exception
+    raise exc_value
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\Desktop\APP\wedsite\core\views.py", line 734, in user_booking_detail
+    return render(
+           ^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\base.py", line 196, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\base.py", line 510, in parse
+    raise self.error(token, e)
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\base.py", line 508, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\loader_tags.py", line 295, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\base.py", line 510, in parse
+    raise self.error(token, e)
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\base.py", line 508, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\base.py", line 504, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\template\base.py", line 555, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 130: 'empty', expected 'endblock'. Did you forget to register or load this tag?
+
+======================================================================
+FAIL: test_booking_review_activity_data (core.tests.BookingTests.test_booking_review_activity_data)
+Correct activity data appears on the review page.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\harsh\Desktop\APP\wedsite\core\tests.py", line 1082, in test_booking_review_activity_data
+    self.assertContains(resp, "Demo City Tour")
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\test\testcases.py", line 524, in assertContains
+    text_repr, real_count, msg_prefix = self._assert_contains(
+                                        ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\test\testcases.py", line 487, in _assert_contains
+    self.assertEqual(
+AssertionError: 302 != 200 : Couldn't retrieve content: Response code was 302 (expected 200)
+
+======================================================================
+FAIL: test_booking_review_flight_data (core.tests.BookingTests.test_booking_review_flight_data)
+Correct flight data appears on the review page.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\harsh\Desktop\APP\wedsite\core\tests.py", line 1063, in test_booking_review_flight_data
+    self.assertContains(resp, "Demo Air")
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\test\testcases.py", line 524, in assertContains
+    text_repr, real_count, msg_prefix = self._assert_contains(
+                                        ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\test\testcases.py", line 487, in _assert_contains
+    self.assertEqual(
+AssertionError: 302 != 200 : Couldn't retrieve content: Response code was 302 (expected 200)
+
+======================================================================
+FAIL: test_booking_review_hotel_data (core.tests.BookingTests.test_booking_review_hotel_data)
+Correct hotel data appears on the review page.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\harsh\Desktop\APP\wedsite\core\tests.py", line 1074, in test_booking_review_hotel_data
+    self.assertContains(resp, "Demo Grand Hotel")
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\test\testcases.py", line 524, in assertContains
+    text_repr, real_count, msg_prefix = self._assert_contains(
+                                        ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\test\testcases.py", line 487, in _assert_contains
+    self.assertEqual(
+AssertionError: 302 != 200 : Couldn't retrieve content: Response code was 302 (expected 200)
+
+======================================================================
+FAIL: test_booking_review_renders (core.tests.BookingTests.test_booking_review_renders)
+Booking Review page renders for a selected flight.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\harsh\Desktop\APP\wedsite\core\tests.py", line 1055, in test_booking_review_renders
+    self.assertEqual(resp.status_code, 200)
+AssertionError: 302 != 200
+
+======================================================================
+FAIL: test_confirmation_page (core.tests.BookingTests.test_confirmation_page)
+Confirmation page renders the booking reference and demo notice.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\harsh\Desktop\APP\wedsite\core\tests.py", line 1252, in test_confirmation_page
+    self.assertContains(resp, "BOOKING CONFIRMED")
+  File "C:\Users\harsh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\test\testcases.py", line 537, in assertContains
+    self.assertTrue(
+AssertionError: False is not true : Couldn't find 'BOOKING CONFIRMED' in response
+
+======================================================================
+FAIL: test_search_select_activity (core.tests.BookingTests.test_search_select_activity)
+Search activities and select an activity for booking review.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\harsh\Desktop\APP\wedsite\core\tests.py", line 1044, in test_search_select_activity
+    self.assertEqual(review.status_code, 200)
+AssertionError: 302 != 200
+
+======================================================================
+FAIL: test_search_select_flight (core.tests.BookingTests.test_search_select_flight)
+Search flights and select a flight for booking review.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\harsh\Desktop\APP\wedsite\core\tests.py", line 1018, in test_search_select_flight
+    self.assertEqual(review.status_code, 200)
+AssertionError: 302 != 200
+
+======================================================================
+FAIL: test_search_select_hotel (core.tests.BookingTests.test_search_select_hotel)
+Search hotels and select a hotel for booking review.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\harsh\Desktop\APP\wedsite\core\tests.py", line 1031, in test_search_select_hotel
+    self.assertEqual(review.status_code, 200)
+AssertionError: 302 != 200
+
+----------------------------------------------------------------------
+Ran 39 tests in 66.072s
+
+FAILED (failures=8, errors=1)
+Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...

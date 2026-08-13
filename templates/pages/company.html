@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Company — Orientiq{% endblock %}
+{% block meta_description %}Learn about Orientiq — our story, process, careers, and how to get in touch.{% endblock %}
+
+{% block content %}
+<!-- ==================== HERO ==================== -->
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Company</span>
+        <h1>Technology built on partnership</h1>
+        <p>Explore who we are, how we work, and how to join or reach us.</p>
+    </div>
+</section>
+
+<!-- ==================== COMPANY NAV ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-4">
+            <a href="{% url 'company_about' %}" class="card card-service card-interactive">
+                <div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+                <h3>About</h3>
+                <p>Our story, mission, and values.</p>
+                <span class="link mt-4">Learn more →</span>
+            </a>
+            <a href="{% url 'company_process' %}" class="card card-service card-interactive">
+                <div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg></div>
+                <h3>Process</h3>
+                <p>How we deliver exceptional work.</p>
+                <span class="link mt-4">Learn more →</span>
+            </a>
+            <a href="{% url 'company_careers' %}" class="card card-service card-interactive">
+                <div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg></div>
+                <h3>Careers</h3>
+                <p>Join a team building what's next.</p>
+                <span class="link mt-4">Learn more →</span>
+            </a>
+            <a href="{% url 'company_contact' %}" class="card card-service card-interactive">
+                <div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+                <h3>Contact</h3>
+                <p>Reach out and start a conversation.</p>
+                <span class="link mt-4">Learn more →</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+{% include "components/cta.html" with eyebrow="Let's Talk" title="Ready to work together?" subtitle="Tell us about your project and we'll show you how Orientiq can help." %}
+{% endblock %}

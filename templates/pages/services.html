@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Services — Orientiq{% endblock %}
+{% block meta_description %}Explore Orientiq's services — AI & Automation, Web Development, Mobile Development, Software Development, UI/UX Design, and Cloud & DevOps.{% endblock %}
+
+{% block content %}
+<!-- ==================== HERO ==================== -->
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Our Services</span>
+        <h1>End-to-end digital capabilities</h1>
+        <p>From intelligent automation to enterprise platforms, we deliver the technology your business needs to grow.</p>
+    </div>
+</section>
+
+<!-- ==================== SERVICES GRID ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-3">
+            {% for service in services %}
+            {% include "components/service-card.html" %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== PROCESS ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="How We Work" title="A proven process" subtitle="Every engagement follows a transparent, collaborative path to success." align="center" %}
+        <div class="process-grid">
+            {% include "components/process-step.html" with number="01" title="Discovery" description="We understand your goals, users, and constraints." %}
+            {% include "components/process-step.html" with number="02" title="Strategy" description="We define the architecture, roadmap, and success metrics." %}
+            {% include "components/process-step.html" with number="03" title="Design" description="We craft premium, user-centered experiences." %}
+            {% include "components/process-step.html" with number="04" title="Development" description="We build in transparent, testable increments." %}
+            {% include "components/process-step.html" with number="05" title="Launch" description="We deploy with confidence and zero downtime." %}
+            {% include "components/process-step.html" with number="06" title="Growth" description="We iterate, optimize, and scale what works." %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+{% include "components/cta.html" with eyebrow="Let's Talk" title="Need a custom solution?" subtitle="Tell us about your project and we'll recommend the right approach." %}
+{% endblock %}

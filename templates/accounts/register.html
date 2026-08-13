@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Create Account — Orientiq{% endblock %}
+{% block meta_description %}Create your Orientiq account.{% endblock %}
+
+{% block content %}
+<section class="section auth-shell">
+    <div class="container-narrow">
+        <div class="card auth-card">
+            <div class="auth-header">
+                <span class="eyebrow">Join Orientiq</span>
+                <h1>Create your account</h1>
+                <p class="body-small text-muted">Set up your profile to get started.</p>
+            </div>
+
+            {% if form.non_field_errors %}
+            <div class="auth-errors">
+                {% for error in form.non_field_errors %}
+                <div class="form-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'accounts_register' %}" class="auth-form">
+                {% csrf_token %}
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="id_first_name">First Name</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}<div class="form-error">{{ form.first_name.errors.0 }}</div>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="id_last_name">Last Name</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}<div class="form-error">{{ form.last_name.errors.0 }}</div>{% endif %}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="id_email">Email</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}<div class="form-error">{{ form.email.errors.0 }}</div>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="id_username">Username</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}<div class="form-error">{{ form.username.errors.0 }}</div>{% endif %}
+                </div>
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="id_password1">Password</label>
+                        <div class="password-field">
+                            {{ form.password1 }}
+                            <button type="button" class="btn-icon password-toggle" aria-label="Toggle password visibility">
+                                <svg class="icon icon-eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                        {% if form.password1.errors %}<div class="form-error">{{ form.password1.errors.0 }}</div>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="id_password2">Confirm Password</label>
+                        <div class="password-field">
+                            {{ form.password2 }}
+                            <button type="button" class="btn-icon password-toggle" aria-label="Toggle password visibility">
+                                <svg class="icon icon-eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                        {% if form.password2.errors %}<div class="form-error">{{ form.password2.errors.0 }}</div>{% endif %}
+                    </div>
+                </div>
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="id_phone">Phone</label>
+                        {{ form.phone }}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="id_company">Company</label>
+                        {{ form.company }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="id_country">Country</label>
+                    {{ form.country }}
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg w-full">Create Account</button>
+            </form>
+
+            <div class="auth-footer">
+                <p class="body-small text-muted">Already have an account? <a href="{% url 'accounts_login' %}" class="link">Log in</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About Orientiq — Company{% endblock %}
+{% block meta_description %}Learn about Orientiq's story, mission, values, and technology philosophy.{% endblock %}
+
+{% block content %}
+<!-- ==================== HERO ==================== -->
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Company / About</span>
+        <h1>Who we are</h1>
+        <p>Orientiq is a premium technology and digital solutions company building intelligent products for ambitious businesses.</p>
+    </div>
+</section>
+
+<!-- ==================== STORY ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-2">
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Our Story" title="Built on a simple belief" subtitle="Technology should be a strategic advantage — not a cost center." %}
+                <p class="body text-muted mb-4">Orientiq was founded on the belief that ambitious businesses deserve technology partners who think strategically, engineer precisely, and care about outcomes.</p>
+                <p class="body text-muted">We started with a small team of engineers and designers who shared a passion for building premium digital products. Today, we work with clients across the globe, delivering everything from AI-powered platforms to enterprise software.</p>
+            </div>
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Mission & Vision" title="Why we exist" %}
+                <div class="card mb-4">
+                    <h4 class="mb-3">Mission</h4>
+                    <p class="body-small text-muted">To empower ambitious businesses with intelligent technology that delivers measurable results.</p>
+                </div>
+                <div class="card">
+                    <h4 class="mb-3">Vision</h4>
+                    <p class="body-small text-muted">To be the most trusted technology partner for global enterprises and startups alike.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== VALUES ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="Values" title="What we stand for" subtitle="The principles that guide every project we take on." align="center" %}
+        <div class="grid grid-3">
+            <div class="card"><h4 class="mb-3">Excellence</h4><p class="body-small text-muted">We hold ourselves to the highest standard of engineering and design.</p></div>
+            <div class="card"><h4 class="mb-3">Transparency</h4><p class="body-small text-muted">Clear communication, honest timelines, and no surprises.</p></div>
+            <div class="card"><h4 class="mb-3">Innovation</h4><p class="body-small text-muted">We embrace new technology to solve real business problems.</p></div>
+            <div class="card"><h4 class="mb-3">Partnership</h4><p class="body-small text-muted">We invest in long-term relationships, not one-off projects.</p></div>
+            <div class="card"><h4 class="mb-3">Impact</h4><p class="body-small text-muted">We measure success by the results we deliver for our clients.</p></div>
+            <div class="card"><h4 class="mb-3">Craft</h4><p class="body-small text-muted">We care deeply about the details that make products feel premium.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== PHILOSOPHY ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-2">
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Technology Philosophy" title="The right tool for the right problem" %}
+                <p class="body text-muted">We don't chase trends. We choose technologies based on what will best serve your business — now and in the future. Our stack is modern, proven, and built for scale.</p>
+            </div>
+            <div>
+                {% include "components/section-heading.html" with eyebrow="AI Philosophy" title="Intelligence, applied responsibly" %}
+                <p class="body text-muted">AI is a powerful tool, but only when applied thoughtfully. We build AI that is practical, transparent, and designed to augment human work — not replace it.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+{% include "components/cta.html" with eyebrow="Work With Us" title="Let's build something exceptional" subtitle="Partner with a team that treats your success as its own." %}
+{% endblock %}

@@ -1,0 +1,146 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="admin-stats">
+    <div class="admin-stat-card">
+        <div class="admin-stat-value">{{ total_services }}</div>
+        <div class="admin-stat-label">Services</div>
+    </div>
+    <div class="admin-stat-card">
+        <div class="admin-stat-value">{{ total_industries }}</div>
+        <div class="admin-stat-label">Industries</div>
+    </div>
+    <div class="admin-stat-card">
+        <div class="admin-stat-value">{{ total_portfolio }}</div>
+        <div class="admin-stat-label">Portfolio Projects</div>
+    </div>
+    <div class="admin-stat-card">
+        <div class="admin-stat-value">{{ total_products }}</div>
+        <div class="admin-stat-label">Products</div>
+    </div>
+    <div class="admin-stat-card">
+        <div class="admin-stat-value">{{ total_technologies }}</div>
+        <div class="admin-stat-label">Technologies</div>
+    </div>
+    <div class="admin-stat-card">
+        <div class="admin-stat-value">{{ total_testimonials }}</div>
+        <div class="admin-stat-label">Testimonials</div>
+    </div>
+    <div class="admin-stat-card">
+        <div class="admin-stat-value">{{ new_inquiries }}</div>
+        <div class="admin-stat-label">New Inquiries</div>
+    </div>
+    <div class="admin-stat-card">
+        <div class="admin-stat-value">{{ total_users }}</div>
+        <div class="admin-stat-label">Users</div>
+    </div>
+</div>
+
+<div class="grid grid-2">
+    <div>
+        <h3 class="mb-4">Recent Inquiries</h3>
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inquiry in recent_inquiries %}
+                    <tr>
+                        <td><a href="{% url 'admin_inquiry_detail' inquiry.id %}" class="link">{{ inquiry.name }}</a></td>
+                        <td>{{ inquiry.email }}</td>
+                        <td><span class="badge-status {{ inquiry.status }}">{{ inquiry.get_status_display }}</span></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" class="text-muted">No inquiries yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div>
+        <h3 class="mb-4">Recent Activity</h3>
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Description</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in recent_activity %}
+                    <tr>
+                        <td>{{ log.action }}</td>
+                        <td>{{ log.description|truncatechars:40 }}</td>
+                        <td>{{ log.timestamp|date:"M d, H:i" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" class="text-muted">No activity yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-2 mt-8">
+    <div>
+        <h3 class="mb-4">Recently Updated Services</h3>
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for service in recent_services %}
+                    <tr>
+                        <td><a href="{% url 'admin_service_edit' service.id %}" class="link">{{ service.title }}</a></td>
+                        <td><span class="badge-status {{ service.status }}">{{ service.get_status_display }}</span></td>
+                        <td>{{ service.updated_at|date:"M d, H:i" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" class="text-muted">No services yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div>
+        <h3 class="mb-4">Product Status Overview</h3>
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in product_status_counts %}
+                    <tr>
+                        <td><span class="badge-status {{ item.product_status }}">{{ item.product_status|title }}</span></td>
+                        <td>{{ item.count }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="2" class="text-muted">No products yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

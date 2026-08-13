@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Booking Review — Orientiq{% endblock %}
+{% block meta_description %}Review your demo reservation details before confirming.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Booking Review</span>
+        <h1>Review Your Demo Reservation</h1>
+        <p>Confirm your selected flight, hotel, or activity. Prices are calculated server-side from verified inventory.</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="demo-banner" role="alert">
+            <span class="demo-banner-icon" aria-hidden="true">!</span>
+            <div>
+                <h2>DEMO BOOKING</h2>
+                <p>{{ demo_disclaimer }}</p>
+            </div>
+        </div>
+<form method="post" action="{% url 'create_booking' %}" class="booking-grid" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="item_type" value="{{ item_type.value }}">
+            {% for key, value in booking_params.items %}
+            <input type="hidden" name="{{ key }}" value="{{ value }}">
+            {% endfor %}
+
+            <div class="booking-stack">
+                <div class="card">
+                    <div class="flex-between mb-4">
+                        <h2 class="text-h4">Selected {{ item_type.label }}</h2>
+                        <a href="{% url 'travel_search' %}" class="link">Change selection</a>
+                    </div>
+                    <div class="divider"></div>
+
+                    {% if item.kind == "flight" %}
+                    <div class="grid grid-2">
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Airline</p>
+                            <p class="body-small">{{ item.airline }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Flight Number</p>
+                            <p class="body-small">{{ item.flight_number }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Origin</p>
+                            <p class="body-small">{{ item.origin }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Destination</p>
+                            <p class="body-small">{{ item.destination }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Departure</p>
+                            <p class="body-small">{{ item.departure_date }} • {{ item.departure_time }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Arrival</p>
+                            <p class="body-small">{{ item.arrival_time }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Duration</p>
+                            <p class="body-small">{{ item.duration }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Stops</p>
+                            <p class="body-small">{{ item.stops }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Cabin Class</p>
+                            <p class="body-small">{{ item.cabin_class|title }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Price per traveler</p>
+                            <p class="body-small">{{ item.price|floatformat:2 }} {{ currency }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Baggage</p>
+                            <p class="body-small">{{ item.baggage|default:"—" }}</p>
+                        </div>
+                    </div>
+                    {% elif item.kind == "hotel" %}
+                    <div class="grid grid-2">
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Hotel</p>
+                            <p class="body-small">{{ item.hotel_name }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Location</p>
+                            <p class="body-small">{{ item.location }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Check-in</p>
+                            <p class="body-small">{{ item.check_in }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Check-out</p>
+                            <p class="body-small">{{ item.check_out }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Room Type</p>
+                            <p class="body-small">{{ item.room_type }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Guests / Rooms</p>
+                            <p class="body-small">{{ item.guests }} guest(s) • {{ item.rooms }} room(s)</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Amenities</p>
+                            <p class="body-small">{{ item.amenities|join:", " }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Cancellation</p>
+                            <p class="body-small">{{ item.cancellation_policy }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Price per night</p>
+                            <p class="body-small">{{ item.price_per_night|floatformat:2 }} {{ currency }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Number of nights</p>
+                            <p class="body-small">{{ item.nights }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Total hotel price</p>
+                            <p class="body-small">{{ subtotal|floatformat:2 }} {{ currency }}</p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="grid grid-2">
+<div class="mb-4">
+                            <p class="caption text-muted mb-1">Activity</p>
+                            <p class="body-small">{{ item.activity_name }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Destination</p>
+                            <p class="body-small">{{ item.destination }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Date</p>
+                            <p class="body-small">{{ item.date|default:"—" }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Duration</p>
+                            <p class="body-small">{{ item.duration }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Participants</p>
+                            <p class="body-small">{{ item.participants }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Price per participant</p>
+                            <p class="body-small">{{ item.price|floatformat:2 }} {{ currency }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Meeting Point</p>
+                            <p class="body-small">{{ item.meeting_point|default:"—" }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Description</p>
+                            <p class="body-small">{{ item.description }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Person / guest / participant details -->
+                <div>
+                    <h2 class="text-h4 mb-4">
+                        {% if item.kind == "flight" %}Traveler Details{% elif item.kind == "hotel" %}Guest Details{% else %}Participant Details{% endif %}
+                    </h2>
+                    {% for form in person_forms %}
+                    <fieldset class="person-card mb-6">
+                        <legend>
+                            {% if item.kind == "flight" %}Traveler {{ forloop.counter }}{% elif item.kind == "hotel" %}Guest {{ forloop.counter }}{% else %}Participant {{ forloop.counter }}{% endif %}
+                        </legend>
+                        {% for field in form %}
+                        <div class="form-group">
+                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}<span class="required-mark" aria-hidden="true"> *</span>{% endif %}</label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                            <p class="form-error" role="alert">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </fieldset>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <aside class="price-summary" aria-label="Price summary">
+<span class="eyebrow">Price Summary</span>
+                <h2 class="text-h4 mb-4">Your Total</h2>
+                {% if item.kind == "hotel" %}
+                <div class="price-row"><span>Price per night</span><span>{{ item.price_per_night|floatformat:2 }} {{ currency }}</span></div>
+                <div class="price-row"><span>Nights</span><span>{{ item.nights }}</span></div>
+                {% elif item.kind == "activity" %}
+                <div class="price-row"><span>Price per participant</span><span>{{ item.price|floatformat:2 }} {{ currency }}</span></div>
+                <div class="price-row"><span>Participants</span><span>{{ item.participants }}</span></div>
+                {% else %}
+                <div class="price-row"><span>Price per traveler</span><span>{{ item.price|floatformat:2 }} {{ currency }}</span></div>
+                <div class="price-row"><span>Travelers</span><span>{{ item.travelers }}</span></div>
+                {% endif %}
+                <div class="price-row"><span>Subtotal</span><span>{{ subtotal|floatformat:2 }} {{ currency }}</span></div>
+                {% if taxes %}<div class="price-row"><span>Taxes &amp; Fees</span><span>{{ taxes|floatformat:2 }} {{ currency }}</span></div>{% endif %}
+                <div class="price-total-row"><span>Total</span><span class="price-total-value">{{ total|floatformat:2 }} {{ currency }}</span></div>
+                <p class="caption text-muted mt-4">All amounts are demo prices calculated server-side from verified inventory.</p>
+
+                <div class="booking-actions mt-6">
+                    <button type="submit" class="btn btn-primary" data-confirm-demo>Confirm Demo Booking</button>
+                    <a href="{% url 'travel_search' %}" class="btn btn-ghost">Back to Travel</a>
+                </div>
+                <p class="caption text-muted mt-4">No real provider confirmation or payment is processed.</p>
+            </aside>
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    "use strict";
+    // Prevent accidental double submission (server-side protection also exists).
+    var button = document.querySelector("[data-confirm-demo]");
+    if (button) {
+        button.addEventListener("click", function () {
+            button.disabled = true;
+            button.textContent = "Processing...";
+            button.closest("form").submit();
+        });
+    }
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Industries — Orientiq{% endblock %}
+{% block meta_description %}Orientiq serves Real Estate, Healthcare, Education, Travel, Manufacturing, Startups, and Enterprise with tailored digital solutions.{% endblock %}
+
+{% block content %}
+<!-- ==================== HERO ==================== -->
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Industries</span>
+        <h1>Deep expertise, tailored solutions</h1>
+        <p>We understand the unique challenges of each industry and build technology that fits.</p>
+    </div>
+</section>
+
+<!-- ==================== INDUSTRIES GRID ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-3">
+            {% for industry in industries %}
+            {% include "components/industry-card.html" %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+{% include "components/cta.html" with eyebrow="Your Industry" title="Don't see your industry?" subtitle="We work across sectors. Tell us about your business and we'll show you how we can help." %}
+{% endblock %}

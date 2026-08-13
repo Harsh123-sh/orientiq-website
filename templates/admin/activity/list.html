@@ -1,0 +1,44 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Activity Log{% endblock %}
+{% block page_title %}Activity Log{% endblock %}
+
+{% block content %}
+<div class="admin-toolbar">
+    <form method="get">
+        <input type="text" name="q" class="form-control" placeholder="Search activity..." value="{{ request.GET.q }}">
+        <button type="submit" class="btn btn-secondary">Search</button>
+    </form>
+</div>
+
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead>
+            <tr><th>User</th><th>Action</th><th>Object</th><th>Description</th><th>IP</th><th>Time</th></tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.user.username|default:"—" }}</td>
+                <td><span class="badge-status">{{ item.action }}</span></td>
+                <td>{{ item.object_type }}</td>
+                <td>{{ item.description|truncatechars:60 }}</td>
+                <td>{{ item.ip_address|default:"—" }}</td>
+                <td>{{ item.timestamp|date:"M d, H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-muted">No activity found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if items.has_other_pages %}
+<div class="admin-pagination">
+    {% if items.has_previous %}<a href="?page={{ items.previous_page_number }}">←</a>{% endif %}
+    <span class="current">Page {{ items.number }} of {{ items.paginator.num_pages }}</span>
+    {% if items.has_next %}<a href="?page={{ items.next_page_number }}">→</a>{% endif %}
+</div>
+{% endif %}
+{% endblock %}

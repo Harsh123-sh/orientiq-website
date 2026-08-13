@@ -1,0 +1,56 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Products{% endblock %}
+{% block page_title %}Products{% endblock %}
+
+{% block content %}
+<div class="admin-toolbar">
+    <form method="get">
+        <input type="text" name="q" class="form-control" placeholder="Search products..." value="{{ request.GET.q }}">
+        <select name="status" class="form-control">
+            <option value="">All statuses</option>
+            <option value="coming_soon" {% if request.GET.status == "coming_soon" %}selected{% endif %}>Coming Soon</option>
+            <option value="in_development" {% if request.GET.status == "in_development" %}selected{% endif %}>In Development</option>
+            <option value="beta" {% if request.GET.status == "beta" %}selected{% endif %}>Beta</option>
+            <option value="live" {% if request.GET.status == "live" %}selected{% endif %}>Live</option>
+            <option value="archived" {% if request.GET.status == "archived" %}selected{% endif %}>Archived</option>
+        </select>
+        <button type="submit" class="btn btn-secondary">Filter</button>
+    </form>
+    <a href="{% url 'admin_product_create' %}" class="btn btn-primary">+ Add Product</a>
+</div>
+
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead>
+            <tr><th>Name</th><th>Category</th><th>Status</th><th>Featured</th><th>Updated</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td><a href="{% url 'admin_product_edit' item.id %}" class="link">{{ item.name }}</a></td>
+                <td>{{ item.category }}</td>
+                <td><span class="badge-status {{ item.product_status }}">{{ item.product_status|title }}</span></td>
+                <td>{% if item.featured %}✓{% else %}—{% endif %}</td>
+                <td>{{ item.updated_at|date:"M d, H:i" }}</td>
+                <td class="flex gap-2">
+                    <a href="{% url 'admin_product_edit' item.id %}" class="btn btn-sm btn-secondary">Edit</a>
+                    <a href="{% url 'admin_product_delete' item.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Delete this product?')">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-muted">No products found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if items.has_other_pages %}
+<div class="admin-pagination">
+    {% if items.has_previous %}<a href="?page={{ items.previous_page_number }}">←</a>{% endif %}
+    <span class="current">Page {{ items.number }} of {{ items.paginator.num_pages }}</span>
+    {% if items.has_next %}<a href="?page={{ items.next_page_number }}">→</a>{% endif %}
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Page Not Found — Orientiq{% endblock %}
+{% block meta_description %}The page you're looking for could not be found.{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="card auth-card">
+            <div class="auth-header">
+                <span class="eyebrow">404</span>
+                <h1>Page not found</h1>
+                <p class="body-small text-muted">The page you're looking for doesn't exist or has been moved.</p>
+            </div>
+            <div class="flex gap-4 flex-wrap justify-center">
+                <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+                <a href="{% url 'products' %}" class="btn btn-outline">Explore Products</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,90 @@
+/* ============================================================
+   ORIENTIQ — ANIMATION SYSTEM
+   ============================================================ */
+
+/* ---------- Page/Section Reveal Foundation ---------- */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ---------- Fade ---------- */
+.fade-in {
+    animation: fadeIn var(--transition-slow) ease forwards;
+}
+
+/* A short entrance gives page changes continuity without delaying interaction. */
+.site-main {
+    animation: orientiq-page-enter var(--transition-slow) both;
+}
+
+@keyframes orientiq-page-enter {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ---------- Theme Transition ----------
+   Applied only to specific surfaces to avoid overriding
+   component-level transitions (transform, etc.). */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+    transition: background-color var(--transition-fast),
+        border-color var(--transition-fast),
+        color var(--transition-fast),
+        box-shadow var(--transition-fast) !important;
+}
+
+/* ---------- Logo Interaction ---------- */
+.navbar-brand img,
+.footer-brand img {
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.navbar-brand:hover img,
+.footer-brand:hover img {
+    opacity: 0.85;
+    transform: scale(1.02);
+}
+
+/* ---------- Reduced Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .fade-in {
+        animation: none;
+        opacity: 1;
+    }
+
+    .site-main { animation: none; }
+
+    .tech-orbit,
+    .tech-core,
+    .tech-node,
+    .tech-particle {
+        animation: none;
+    }
+
+    html.theme-transitioning,
+    html.theme-transitioning *,
+    html.theme-transitioning *::before,
+    html.theme-transitioning *::after {
+        transition: none !important;
+    }
+}

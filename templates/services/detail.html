@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ service.name }} — Orientiq{% endblock %}
+{% block meta_description %}{{ service.short }}{% endblock %}
+
+{% block content %}
+<!-- ==================== HERO ==================== -->
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">{{ service.tagline }}</span>
+        <h1>{{ service.name }}</h1>
+        <p>{{ service.short }}</p>
+        <div class="flex gap-4 flex-wrap mt-6">
+            <a href="{% url 'start_project' %}" class="btn btn-primary">Start a Project</a>
+            <a href="{% url 'services' %}" class="btn btn-outline">All Services</a>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== OVERVIEW ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-2">
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Overview" title="What we deliver" subtitle="A focused, senior team building exactly what your business needs." %}
+                <ul class="feature-list">
+                    {% for feature in service.features %}
+                    <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Problems We Solve" title="Built for real challenges" %}
+                <ul class="feature-list">
+                    {% for problem in service.problems %}
+                    <li>{{ problem }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== TECHNOLOGY ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="Technology" title="Tools we use" subtitle="A modern, proven technology stack." align="center" %}
+        <div class="flex gap-3 flex-wrap justify-center">
+            {% for tech in service.tech %}
+            <span class="badge">{{ tech }}</span>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== PROCESS ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="Process" title="How we deliver" subtitle="A transparent, proven path to launch." align="center" %}
+        <div class="process-grid">
+            {% include "components/process-step.html" with number="01" title="Discovery" description="We understand your goals, users, and constraints." %}
+            {% include "components/process-step.html" with number="02" title="Strategy" description="We define the architecture, roadmap, and success metrics." %}
+            {% include "components/process-step.html" with number="03" title="Design" description="We craft premium, user-centered experiences." %}
+            {% include "components/process-step.html" with number="04" title="Development" description="We build in transparent, testable increments." %}
+            {% include "components/process-step.html" with number="05" title="Launch" description="We deploy with confidence and zero downtime." %}
+            {% include "components/process-step.html" with number="06" title="Growth" description="We iterate, optimize, and scale what works." %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== BENEFITS & USE CASES ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-2">
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Benefits" title="Why it matters" %}
+                <ul class="feature-list">
+                    {% for benefit in service.benefits %}
+                    <li>{{ benefit }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Use Cases" title="Where it applies" %}
+                <div class="flex gap-3 flex-wrap">
+                    {% for use_case in service.use_cases %}
+                    <span class="badge badge-info">{{ use_case }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== FAQ ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="FAQ" title="Common questions" subtitle="Answers to questions we hear most often." align="center" %}
+        <div class="container-narrow">
+            {% for faq in service.faqs %}
+            <div class="faq-item">
+                <h4>{{ faq.q }}</h4>
+                <p>{{ faq.a }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== OTHER SERVICES ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="More Services" title="Explore other capabilities" align="center" %}
+        <div class="grid grid-3">
+            {% for other in services %}
+            {% if other.slug != service.slug %}
+            {% include "components/service-card.html" with service=other %}
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+{% include "components/cta.html" with eyebrow="Let's Talk" title="Interested in {{ service.name }}?" subtitle="Tell us about your project and we'll show you how we can help." %}
+{% endblock %}

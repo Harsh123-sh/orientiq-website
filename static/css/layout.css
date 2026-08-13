@@ -1,0 +1,232 @@
+/* ============================================================
+   ORIENTIQ — LAYOUT & CONTAINER SYSTEM
+   ============================================================ */
+
+/* ---------- Containers ---------- */
+.container {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter-desktop);
+}
+
+.container-narrow {
+    width: 100%;
+    max-width: var(--container-narrow);
+    margin-inline: auto;
+    padding-inline: var(--gutter-desktop);
+}
+
+.container-wide {
+    width: 100%;
+    max-width: var(--container-wide);
+    margin-inline: auto;
+    padding-inline: var(--gutter-desktop);
+}
+
+.container-fluid {
+    width: 100%;
+    padding-inline: var(--gutter-desktop);
+}
+
+/* ---------- Sections ---------- */
+.section {
+    padding-block: var(--space-16);
+}
+
+.section-sm {
+    padding-block: var(--space-8);
+}
+
+.section-lg {
+    padding-block: var(--space-24);
+}
+
+.section-heading {
+    max-width: var(--container-narrow);
+    margin-bottom: var(--space-12);
+}
+
+.section-heading .eyebrow {
+    display: block;
+    margin-bottom: var(--space-3);
+}
+
+.section-heading h2 {
+    margin-bottom: var(--space-4);
+}
+
+.section-heading p {
+    color: var(--color-text-muted);
+}
+
+/* ---------- Grid Utilities ---------- */
+.grid {
+    display: grid;
+    gap: var(--space-6);
+}
+
+.grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* ---------- Flex Utilities ---------- */
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-6 { gap: var(--space-6); }
+.gap-8 { gap: var(--space-8); }
+
+/* ---------- Spacing Utilities ---------- */
+.mt-1 { margin-top: var(--space-1); }
+.mt-2 { margin-top: var(--space-2); }
+.mt-3 { margin-top: var(--space-3); }
+.mt-4 { margin-top: var(--space-4); }
+.mt-6 { margin-top: var(--space-6); }
+.mt-8 { margin-top: var(--space-8); }
+.mt-12 { margin-top: var(--space-12); }
+.mt-16 { margin-top: var(--space-16); }
+
+.mb-1 { margin-bottom: var(--space-1); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-3 { margin-bottom: var(--space-3); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-6 { margin-bottom: var(--space-6); }
+.mb-8 { margin-bottom: var(--space-8); }
+.mb-12 { margin-bottom: var(--space-12); }
+.mb-16 { margin-bottom: var(--space-16); }
+
+.p-4 { padding: var(--space-4); }
+.p-6 { padding: var(--space-6); }
+.p-8 { padding: var(--space-8); }
+
+/* ---------- Site Main ---------- */
+.site-main {
+    min-height: calc(100vh - 72px);
+}
+
+/* ---------- Divider ---------- */
+.divider {
+    height: 1px;
+    background-color: var(--color-border);
+    border: none;
+    margin-block: var(--space-8);
+}
+
+/* ---------- Badge ---------- */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-caption);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    background-color: var(--color-hover);
+    color: var(--color-accent);
+    border: 1px solid var(--color-border);
+}
+
+.badge-success {
+    background-color: rgba(46, 125, 50, 0.12);
+    color: var(--color-success);
+    border-color: rgba(46, 125, 50, 0.3);
+}
+
+.badge-warning {
+    background-color: rgba(178, 106, 0, 0.12);
+    color: var(--color-warning);
+    border-color: rgba(178, 106, 0, 0.3);
+}
+
+.badge-error {
+    background-color: rgba(198, 40, 40, 0.12);
+    color: var(--color-error);
+    border-color: rgba(198, 40, 40, 0.3);
+}
+
+.badge-info {
+    background-color: rgba(21, 101, 192, 0.12);
+    color: var(--color-info);
+    border-color: rgba(21, 101, 192, 0.3);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .container,
+    .container-narrow,
+    .container-wide,
+    .container-fluid {
+        padding-inline: var(--gutter-tablet);
+    }
+
+    .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .section {
+        padding-block: var(--space-12);
+    }
+
+    .section-lg {
+        padding-block: var(--space-16);
+    }
+}
+
+@media (max-width: 480px) {
+    .container,
+    .container-narrow,
+    .container-wide,
+    .container-fluid {
+        padding-inline: var(--gutter-mobile);
+    }
+
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+        grid-template-columns: 1fr;
+    }
+}

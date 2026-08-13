@@ -1,0 +1,630 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Orientiq — Design System{% endblock %}
+
+{% block content %}
+<!-- ==================== 1. INTRODUCTION ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Design System</span>
+            <h1>Orientiq UI Foundation</h1>
+            <p>A premium, enterprise-grade design system built on copper and rose-gold. This is the reusable foundation for all Orientiq digital products.</p>
+        </div>
+        <div class="grid grid-3">
+            <div class="card card-stat">
+                <div class="stat-value">17</div>
+                <div class="stat-label">Design Tokens</div>
+            </div>
+            <div class="card card-stat">
+                <div class="stat-value">2</div>
+                <div class="stat-label">Themes</div>
+            </div>
+            <div class="card card-stat">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Responsive</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 2. BRAND IDENTITY ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Brand</span>
+            <h2>Brand Identity</h2>
+            <p>Premium technology, AI, enterprise, and luxury — expressed through a restrained copper and rose-gold palette.</p>
+        </div>
+        <div class="grid grid-3">
+            <div class="card">
+                <span class="badge mb-4">Primary</span>
+                <div style="height:64px;border-radius:var(--radius-md);background-color:var(--color-primary);border:1px solid var(--color-border);"></div>
+                <p class="caption mt-3">#0b0b0f — Deep near-black</p>
+            </div>
+            <div class="card">
+                <span class="badge mb-4">Accent — Copper</span>
+                <div style="height:64px;border-radius:var(--radius-md);background-color:var(--color-accent);"></div>
+                <p class="caption mt-3">#b87333 — Metallic copper</p>
+            </div>
+            <div class="card">
+                <span class="badge mb-4">Accent — Rose-gold</span>
+                <div style="height:64px;border-radius:var(--radius-md);background-color:var(--color-accent-light);"></div>
+                <p class="caption mt-3">#d4a373 — Warm highlight</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 3. LOGO USAGE ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Brand</span>
+            <h2>Logo Usage</h2>
+            <p>The official Orientiq logo is used as supplied. Theme-aware switching selects the correct asset automatically.</p>
+        </div>
+        <div class="grid grid-2">
+            <div class="card" style="background-color:#0b0b0f;">
+                <p class="caption mb-4" style="color:#a0a0ab;">Dark Theme — Light Logo</p>
+                <img src="{% static 'images/brand/orientiq-logo-on-dark.png' %}" alt="Orientiq logo on dark background" style="height:48px;width:auto;object-fit:contain;">
+            </div>
+            <div class="card" style="background-color:#faf9f7;">
+                <p class="caption mb-4" style="color:#6f6a63;">Light Theme — Dark Logo</p>
+                <img src="{% static 'images/brand/orientiq-logo-on-light.png' %}" alt="Orientiq logo on light background" style="height:48px;width:auto;object-fit:contain;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 4. COLORS ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Foundation</span>
+            <h2>Colors</h2>
+            <p>Semantic status colors and surface tokens for both themes.</p>
+        </div>
+        <div class="grid grid-4 mb-8">
+            <div class="card">
+                <span class="badge mb-4">Surface</span>
+                <div style="height:48px;border-radius:var(--radius-md);background-color:var(--color-surface);border:1px solid var(--color-border);"></div>
+            </div>
+            <div class="card">
+                <span class="badge mb-4">Surface Elevated</span>
+                <div style="height:48px;border-radius:var(--radius-md);background-color:var(--color-surface-elevated);border:1px solid var(--color-border);"></div>
+            </div>
+            <div class="card">
+                <span class="badge mb-4">Text</span>
+                <div style="height:48px;border-radius:var(--radius-md);background-color:var(--color-text);"></div>
+            </div>
+            <div class="card">
+                <span class="badge mb-4">Text Muted</span>
+                <div style="height:48px;border-radius:var(--radius-md);background-color:var(--color-text-muted);"></div>
+            </div>
+        </div>
+        <div class="flex gap-4 flex-wrap">
+            <span class="badge">Default</span>
+            <span class="badge badge-success">Success</span>
+            <span class="badge badge-warning">Warning</span>
+            <span class="badge badge-error">Error</span>
+            <span class="badge badge-info">Info</span>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 5. TYPOGRAPHY ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Foundation</span>
+            <h2>Typography</h2>
+            <p>Inter — a professional, modern sans-serif with a clear hierarchy.</p>
+        </div>
+        <div class="card">
+            <div class="mb-6">
+                <p class="caption mb-2">Display / 3.5rem</p>
+                <p class="display">Built for the modern enterprise</p>
+            </div>
+            <div class="mb-6">
+                <p class="caption mb-2">H1 / 2.75rem</p>
+                <h1>Technology & Digital Solutions</h1>
+            </div>
+            <div class="mb-6">
+                <p class="caption mb-2">H2 / 2.25rem</p>
+                <h2>Crafted with precision</h2>
+            </div>
+            <div class="mb-6">
+                <p class="caption mb-2">H3 / 1.75rem</p>
+                <h3>Premium engineering</h3>
+            </div>
+            <div class="mb-6">
+                <p class="caption mb-2">H4 / 1.375rem</p>
+                <h4>Scalable platforms</h4>
+            </div>
+            <div class="mb-6">
+                <p class="caption mb-2">H5 / 1.125rem</p>
+                <h5>Global delivery</h5>
+            </div>
+            <div class="mb-4">
+                <p class="caption mb-2">Body Large / 1.125rem</p>
+                <p class="body-large">Orientiq builds premium digital products for ambitious companies worldwide.</p>
+            </div>
+            <div class="mb-4">
+                <p class="caption mb-2">Body / 1rem</p>
+                <p class="body">Orientiq builds premium digital products for ambitious companies worldwide.</p>
+            </div>
+            <div class="mb-4">
+                <p class="caption mb-2">Body Small / 0.875rem</p>
+                <p class="body-small">Orientiq builds premium digital products for ambitious companies worldwide.</p>
+            </div>
+            <div class="mb-4">
+                <p class="caption mb-2">Caption / 0.75rem</p>
+                <p class="caption">Orientiq builds premium digital products for ambitious companies worldwide.</p>
+            </div>
+            <div class="mb-4">
+                <p class="caption mb-2">Label / 0.8125rem</p>
+                <p class="label">Label Text</p>
+            </div>
+            <div>
+                <p class="caption mb-2">Eyebrow / 0.8125rem</p>
+                <p class="eyebrow">Eyebrow Text</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 6. SPACING ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Foundation</span>
+            <h2>Spacing</h2>
+            <p>A consistent 4px-based scale for all margins and padding.</p>
+        </div>
+        <div class="card">
+            <div class="flex gap-4 flex-wrap">
+                <div class="flex-col gap-2">
+                    <span class="caption">--space-1 (4px)</span>
+                    <div style="width:4px;height:24px;background-color:var(--color-accent);border-radius:2px;"></div>
+                </div>
+                <div class="flex-col gap-2">
+                    <span class="caption">--space-2 (8px)</span>
+                    <div style="width:8px;height:24px;background-color:var(--color-accent);border-radius:2px;"></div>
+                </div>
+                <div class="flex-col gap-2">
+                    <span class="caption">--space-4 (16px)</span>
+                    <div style="width:16px;height:24px;background-color:var(--color-accent);border-radius:2px;"></div>
+                </div>
+                <div class="flex-col gap-2">
+                    <span class="caption">--space-6 (24px)</span>
+                    <div style="width:24px;height:24px;background-color:var(--color-accent);border-radius:2px;"></div>
+                </div>
+                <div class="flex-col gap-2">
+                    <span class="caption">--space-8 (32px)</span>
+                    <div style="width:32px;height:24px;background-color:var(--color-accent);border-radius:2px;"></div>
+                </div>
+                <div class="flex-col gap-2">
+                    <span class="caption">--space-12 (48px)</span>
+                    <div style="width:48px;height:24px;background-color:var(--color-accent);border-radius:2px;"></div>
+                </div>
+                <div class="flex-col gap-2">
+                    <span class="caption">--space-16 (64px)</span>
+                    <div style="width:64px;height:24px;background-color:var(--color-accent);border-radius:2px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 7. CONTAINERS ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Foundation</span>
+            <h2>Containers</h2>
+            <p>Responsive content widths with consistent gutters.</p>
+        </div>
+        <div class="card mb-4">
+            <p class="caption mb-2">.container-narrow — 720px</p>
+            <div style="height:24px;background-color:var(--color-hover);border-radius:var(--radius-sm);"></div>
+        </div>
+        <div class="card mb-4">
+            <p class="caption mb-2">.container — 1200px</p>
+            <div style="height:24px;background-color:var(--color-hover);border-radius:var(--radius-sm);"></div>
+        </div>
+        <div class="card">
+            <p class="caption mb-2">.container-wide — 1440px</p>
+            <div style="height:24px;background-color:var(--color-hover);border-radius:var(--radius-sm);"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 8. BUTTONS ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Components</span>
+            <h2>Buttons</h2>
+            <p>Eight variants with full state support.</p>
+        </div>
+        <div class="card mb-4">
+            <h4 class="mb-4">Variants</h4>
+            <div class="flex gap-4 flex-wrap">
+                <button type="button" class="btn btn-primary">Primary</button>
+                <button type="button" class="btn btn-secondary">Secondary</button>
+                <button type="button" class="btn btn-outline">Outline</button>
+                <button type="button" class="btn btn-ghost">Ghost</button>
+                <button type="button" class="btn btn-text">Text</button>
+                <button type="button" class="btn btn-danger">Danger</button>
+                <button type="button" class="btn btn-success">Success</button>
+                <button type="button" class="btn btn-icon" aria-label="Settings">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </button>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <h4 class="mb-4">Sizes</h4>
+            <div class="flex gap-4 flex-wrap">
+                <button type="button" class="btn btn-primary btn-sm">Small</button>
+                <button type="button" class="btn btn-primary">Medium</button>
+                <button type="button" class="btn btn-primary btn-lg">Large</button>
+            </div>
+        </div>
+        <div class="card">
+            <h4 class="mb-4">States</h4>
+            <div class="flex gap-4 flex-wrap">
+                <button type="button" class="btn btn-primary is-loading">Loading</button>
+                <button type="button" class="btn btn-primary" disabled>Disabled</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 9. CARDS ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Components</span>
+            <h2>Cards</h2>
+            <p>Nine card types for content, services, and data.</p>
+        </div>
+        <div class="grid grid-3 mb-8">
+            <div class="card">
+                <h4 class="mb-3">Standard</h4>
+                <p class="body-small text-muted">A standard surface for content and actions.</p>
+            </div>
+            <div class="card card-elevated">
+                <h4 class="mb-3">Elevated</h4>
+                <p class="body-small text-muted">Raised surface with depth and shadow.</p>
+            </div>
+            <div class="card card-outline">
+                <h4 class="mb-3">Bordered</h4>
+                <p class="body-small text-muted">Bordered surface with transparent background.</p>
+            </div>
+            <div class="card card-glass">
+                <h4 class="mb-3">Glass</h4>
+                <p class="body-small text-muted">Subtle glassmorphism surface.</p>
+            </div>
+            <div class="card card-service">
+                <div class="card-icon">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                </div>
+                <h3>Service</h3>
+                <p>Web Development, Mobile Apps, AI Solutions and more.</p>
+            </div>
+            <div class="card card-technology">
+                <div class="card-icon">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                </div>
+                <h3>Technology</h3>
+                <p class="body-small text-muted">Python, Django, PostgreSQL</p>
+            </div>
+        </div>
+        <div class="grid grid-2 mb-8">
+            <div class="card card-testimonial">
+                <div class="quote-mark">"</div>
+                <blockquote>Orientiq delivered a world-class platform that transformed our operations.</blockquote>
+                <div class="attribution">
+                    <div class="avatar">RS</div>
+                    <div>
+                        <strong class="body-small">Rajesh Sharma</strong>
+                        <p class="caption">CTO, Meridian Group</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-portfolio">
+                <div class="portfolio-media">Project Preview</div>
+                <div class="portfolio-body">
+                    <h3>Enterprise Dashboard</h3>
+                    <p>Real-time analytics platform for global logistics.</p>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-3">
+            <div class="card card-stat">
+                <div class="stat-value">120+</div>
+                <div class="stat-label">Projects Delivered</div>
+            </div>
+            <div class="card card-stat">
+                <div class="stat-value">98%</div>
+                <div class="stat-label">Client Retention</div>
+            </div>
+            <div class="card card-interactive">
+                <h4 class="mb-3">Interactive</h4>
+                <p class="body-small text-muted">Hover to see the elevation effect.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 10. FORMS ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Components</span>
+            <h2>Forms</h2>
+            <p>Accessible inputs with full state support.</p>
+        </div>
+        <div class="card">
+            <div class="grid grid-2">
+                <div class="form-group">
+                    <label class="form-label" for="ds-name">Full Name <span class="required">*</span></label>
+                    <input type="text" id="ds-name" class="form-control" placeholder="Enter your full name">
+                    <p class="form-help">We'll never share your personal data.</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="ds-email">Email Address <span class="required">*</span></label>
+                    <input type="email" id="ds-email" class="form-control" placeholder="you@company.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="ds-service">Service</label>
+                    <select id="ds-service" class="form-control">
+                        <option>Web Development</option>
+                        <option>AI Solutions</option>
+                        <option>Software Development</option>
+                        <option>UI/UX Design</option>
+                        <option>Cloud & DevOps</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="ds-message">Message</label>
+                    <textarea id="ds-message" class="form-control" placeholder="Tell us about your project"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-group">
+                        <input type="checkbox" name="ds-consent">
+                        <span>I agree to the privacy policy</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="radio-group">
+                        <input type="radio" name="ds-budget" checked>
+                        <span>Under $10k</span>
+                    </label>
+                    <label class="radio-group mt-2">
+                        <input type="radio" name="ds-budget">
+                        <span>$10k – $50k</span>
+                    </label>
+                    <label class="radio-group mt-2">
+                        <input type="radio" name="ds-budget">
+                        <span>$50k+</span>
+                    </label>
+                </div>
+            </div>
+            <div class="flex gap-4 flex-wrap">
+                <input type="text" class="form-control is-error" style="max-width:260px" placeholder="Error state" aria-label="Error state example">
+                <input type="text" class="form-control" style="max-width:260px" placeholder="Disabled state" disabled aria-label="Disabled state example">
+            </div>
+            <div class="mt-6">
+                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 11. BADGES ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Components</span>
+            <h2>Badges</h2>
+            <p>Status and label indicators.</p>
+        </div>
+        <div class="card flex gap-4 flex-wrap">
+            <span class="badge">Default</span>
+            <span class="badge badge-success">Success</span>
+            <span class="badge badge-warning">Warning</span>
+            <span class="badge badge-error">Error</span>
+            <span class="badge badge-info">Info</span>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 12. ICONS ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Components</span>
+            <h2>Icons</h2>
+            <p>Consistent stroke-based icons with accessible labels.</p>
+        </div>
+        <div class="card flex gap-6 flex-wrap">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 13. NAVIGATION ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Components</span>
+            <h2>Navigation</h2>
+            <p>The global navbar is sticky, theme-aware, and fully responsive. Dropdowns open on click and close on Escape or outside click.</p>
+        </div>
+        <div class="card">
+            <p class="body-small text-muted mb-4">The global navbar is visible at the top of this page. Use the Services, Industries, and Company menus to test dropdowns. Resize the window below 1024px to test the mobile menu.</p>
+            <div class="flex gap-4 flex-wrap">
+                <a href="#" class="btn btn-secondary">Test Dropdowns</a>
+                <button type="button" class="btn btn-secondary" data-modal-open="#ds-modal">Open Modal</button>
+                <button type="button" class="btn btn-secondary tooltip" data-tooltip="This is a tooltip">Hover for Tooltip</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 14. THEME SYSTEM ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Foundation</span>
+            <h2>Theme System</h2>
+            <p>Dark and light themes with persistence and system-preference detection.</p>
+        </div>
+        <div class="grid grid-2">
+            <div class="card">
+                <h4 class="mb-3">Dark Theme</h4>
+                <p class="body-small text-muted mb-4">Deep near-black surfaces with copper accents and warm highlights.</p>
+                <div class="flex gap-3">
+                    <span class="badge">Surface</span>
+                    <span class="badge">Accent</span>
+                </div>
+            </div>
+            <div class="card">
+                <h4 class="mb-3">Light Theme</h4>
+                <p class="body-small text-muted mb-4">Warm-neutral surfaces with high contrast and soft shadows.</p>
+                <div class="flex gap-3">
+                    <span class="badge">Surface</span>
+                    <span class="badge">Accent</span>
+                </div>
+            </div>
+        </div>
+        <div class="card mt-6">
+            <p class="body-small text-muted">Use the theme toggle in the navbar to switch. Your preference is saved to localStorage and respected on your next visit.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 15. MOTION ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Foundation</span>
+            <h2>Motion</h2>
+            <p>Subtle, professional transitions that respect reduced-motion preferences.</p>
+        </div>
+        <div class="grid grid-3">
+            <div class="card">
+                <h4 class="mb-3">Hover</h4>
+                <p class="body-small text-muted">Buttons lift 1px, cards lift 4px, links fade.</p>
+            </div>
+            <div class="card">
+                <h4 class="mb-3">Dropdown</h4>
+                <p class="body-small text-muted">Fade + 8px slide, 150ms.</p>
+            </div>
+            <div class="card">
+                <h4 class="mb-3">Reveal</h4>
+                <p class="body-small text-muted">Sections fade in on scroll via IntersectionObserver.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 16. RESPONSIVE ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Foundation</span>
+            <h2>Responsive Behavior</h2>
+            <p>Tested from 320px to 1920px with no horizontal overflow.</p>
+        </div>
+        <div class="card">
+            <div class="flex gap-4 flex-wrap">
+                <span class="badge">320px</span>
+                <span class="badge">375px</span>
+                <span class="badge">480px</span>
+                <span class="badge">768px</span>
+                <span class="badge">1024px</span>
+                <span class="badge">1280px</span>
+                <span class="badge">1440px</span>
+                <span class="badge">1920px</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 17. ACCESSIBILITY ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Foundation</span>
+            <h2>Accessibility</h2>
+            <p>Semantic HTML, keyboard navigation, visible focus, and reduced-motion support.</p>
+        </div>
+        <div class="grid grid-3">
+            <div class="card">
+                <h4 class="mb-3">Keyboard</h4>
+                <p class="body-small text-muted">Tab through all controls, Escape closes dropdowns and menus.</p>
+            </div>
+            <div class="card">
+                <h4 class="mb-3">Focus</h4>
+                <p class="body-small text-muted">Visible focus rings on all interactive elements.</p>
+            </div>
+            <div class="card">
+                <h4 class="mb-3">Reduced Motion</h4>
+                <p class="body-small text-muted">All non-essential animation is disabled.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== STATE COMPONENTS ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">Components</span>
+            <h2>State Components</h2>
+            <p>Loading, empty, and error states.</p>
+        </div>
+        <div class="grid grid-3">
+            <div class="card">
+                <div class="loading-state">
+                    <div class="spinner" aria-hidden="true"></div>
+                    <span>Loading…</span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="empty-state">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M3 9h18"></path><path d="M9 21V9"></path></svg>
+                    <p class="body-small">No items found.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="error-state">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    <p class="body-small">Something went wrong.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="ds-modal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ds-modal-title">
+        <h3 id="ds-modal-title" class="mb-4">Modal Foundation</h3>
+        <p class="body-small text-muted mb-6">A reusable modal foundation ready for Phase 2 components.</p>
+        <div class="flex gap-3">
+            <button type="button" class="btn btn-primary" data-modal-close>Confirm</button>
+            <button type="button" class="btn btn-ghost" data-modal-close>Cancel</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+Creating test database for alias 'default'...
+Found 130 test(s).
+System check identified no issues (0 silenced).
+...................F..............................................................................................................
+======================================================================
+FAIL: test_duplicate_registration (core.tests.AuthenticationTests.test_duplicate_registration)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\harsh\Desktop\APP\wedsite\core\tests.py", line 165, in test_duplicate_registration
+    self.assertEqual(resp.status_code, 200)  # form error shown
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 302 != 200
+
+----------------------------------------------------------------------
+Ran 130 tests in 208.405s
+
+FAILED (failures=1)
+Destroying test database for alias 'default'...

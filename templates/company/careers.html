@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Careers — Orientiq{% endblock %}
+{% block meta_description %}Join the Orientiq team — a premium technology and digital solutions company building what's next.{% endblock %}
+
+{% block content %}
+<!-- ==================== HERO ==================== -->
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Company / Careers</span>
+        <h1>Build what's next with us</h1>
+        <p>We're always looking for exceptional engineers, designers, and strategists who care about craft.</p>
+    </div>
+</section>
+
+<!-- ==================== WHY JOIN ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="Why Join" title="A place to do your best work" subtitle="We invest in our people and the craft." align="center" %}
+        <div class="grid grid-3">
+            <div class="card"><h4 class="mb-3">Senior Team</h4><p class="body-small text-muted">Work alongside experienced engineers and designers.</p></div>
+            <div class="card"><h4 class="mb-3">Meaningful Work</h4><p class="body-small text-muted">Build products that solve real business problems.</p></div>
+            <div class="card"><h4 class="mb-3">Growth</h4><p class="body-small text-muted">Continuous learning and career development.</p></div>
+            <div class="card"><h4 class="mb-3">Flexibility</h4><p class="body-small text-muted">Remote-friendly, results-driven culture.</p></div>
+            <div class="card"><h4 class="mb-3">Craft</h4><p class="body-small text-muted">We care deeply about quality and detail.</p></div>
+            <div class="card"><h4 class="mb-3">Impact</h4><p class="body-small text-muted">Your work directly shapes client success.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== OPEN ROLES ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="Open Roles" title="Current opportunities" subtitle="We're always open to great people. If you don't see a fit, reach out anyway." align="center" %}
+        <div class="grid grid-2">
+            <div class="card">
+                <h4 class="mb-3">Senior Django Developer</h4>
+                <p class="body-small text-muted mb-4">Build scalable web platforms with Python and Django.</p>
+                <span class="badge">Remote</span>
+                <span class="badge">Full-time</span>
+            </div>
+            <div class="card">
+                <h4 class="mb-3">AI / ML Engineer</h4>
+                <p class="body-small text-muted mb-4">Design and deploy intelligent systems for clients.</p>
+                <span class="badge">Remote</span>
+                <span class="badge">Full-time</span>
+            </div>
+            <div class="card">
+                <h4 class="mb-3">Product Designer</h4>
+                <p class="body-small text-muted mb-4">Craft premium, user-centered digital experiences.</p>
+                <span class="badge">Remote</span>
+                <span class="badge">Full-time</span>
+            </div>
+            <div class="card">
+                <h4 class="mb-3">DevOps Engineer</h4>
+                <p class="body-small text-muted mb-4">Build resilient cloud infrastructure and CI/CD.</p>
+                <span class="badge">Remote</span>
+                <span class="badge">Full-time</span>
+            </div>
+        </div>
+        <div class="flex-center mt-8">
+            <a href="{% url 'company_contact' %}" class="btn btn-primary">Apply Now</a>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+{% include "components/cta.html" with eyebrow="Join Us" title="Don't see your role?" subtitle="We're always open to exceptional people. Reach out and tell us how you can contribute." %}
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Account Settings — Orientiq{% endblock %}
+{% block meta_description %}Manage your Orientiq account settings.{% endblock %}
+
+{% block content %}
+<section class="section client-portal">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">My Account</span>
+            <h1>Account Settings</h1>
+            <p>Manage your profile, preferences, and account details.</p>
+        </div>
+
+        {% if messages %}
+        <div class="auth-messages mb-6">
+            {% for message in messages %}
+            <div class="form-success">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="grid grid-2">
+            <div class="card">
+                <h3 class="mb-6">Profile Settings</h3>
+                <form method="post" enctype="multipart/form-data" class="auth-form">
+                    {% csrf_token %}
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="id_first_name">First Name</label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}<div class="form-error">{{ form.first_name.errors.0 }}</div>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="id_last_name">Last Name</label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}<div class="form-error">{{ form.last_name.errors.0 }}</div>{% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="id_email">Email</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}<div class="form-error">{{ form.email.errors.0 }}</div>{% endif %}
+                    </div>
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="id_phone">Phone</label>
+                            {{ form.phone }}
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="id_company">Company</label>
+                            {{ form.company }}
+                        </div>
+                    </div>
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="id_country">Country</label>
+                            {{ form.country }}
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="id_timezone">Timezone</label>
+                            {{ form.timezone }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="id_profile_image">Profile Image</label>
+                        {{ form.profile_image }}
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+                </form>
+            </div>
+
+            <div class="flex flex-col gap-6">
+                <div class="card">
+                    <h3 class="mb-4">Password</h3>
+                    <p class="body-small text-muted mb-4">Keep your account secure by updating your password regularly.</p>
+                    <a href="{% url 'accounts_change_password' %}" class="btn btn-outline">Change Password</a>
+                </div>
+                <div class="card">
+                    <h3 class="mb-4">Preferences</h3>
+                    <label class="checkbox-group mb-4">
+                        <input type="checkbox" name="email_notifications" {% if profile.email_notifications %}checked{% endif %} disabled>
+                        <span>Email notifications</span>
+                    </label>
+                    <p class="caption text-muted">Notification preferences will be fully configurable in a future phase.</p>
+                </div>
+                <div class="card">
+                    <h3 class="mb-4">Account</h3>
+                    <div class="flex flex-col gap-3">
+                        <a href="{% url 'accounts_profile' %}" class="btn btn-secondary">View Profile</a>
+                        <a href="{% url 'accounts_logout' %}" class="btn btn-danger">Log Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

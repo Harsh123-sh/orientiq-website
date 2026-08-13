@@ -1,0 +1,19 @@
+{
+  "name": "Orientiq",
+  "short_name": "Orientiq",
+  "icons": [
+    {
+      "src": "/static/images/brand/orientiq-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/images/brand/orientiq-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#C47A32",
+  "background_color": "#F8F7F4",
+  "display": "standalone"
+}

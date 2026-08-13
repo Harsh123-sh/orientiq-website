@@ -1,0 +1,43 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+{% block page_title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="grid grid-2">
+    <div class="admin-form-card">
+        <div class="flex gap-4 mb-6">
+            <span class="avatar avatar-lg">{{ user.first_name|first|default:"A" }}{{ user.last_name|first|default:"" }}</span>
+            <div>
+                <h3>{{ user.get_full_name|default:user.username }}</h3>
+                <p class="body-small text-muted">{{ user.email }}</p>
+                <span class="badge mt-2">{{ user.profile.get_role_display }}</span>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="grid grid-2">
+            <div class="mb-4">
+                <p class="caption text-muted mb-1">Username</p>
+                <p class="body-small">{{ user.username }}</p>
+            </div>
+            <div class="mb-4">
+                <p class="caption text-muted mb-1">Joined</p>
+                <p class="body-small">{{ user.date_joined|date:"M d, Y" }}</p>
+            </div>
+            <div class="mb-4">
+                <p class="caption text-muted mb-1">Last Login</p>
+                <p class="body-small">{{ user.last_login|date:"M d, Y H:i" }}</p>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h3 class="mb-4">Account Actions</h3>
+        <div class="flex flex-col gap-3">
+            <a href="{% url 'admin_change_password' %}" class="btn btn-secondary">Change Password</a>
+            <a href="{% url 'admin_logout' %}" class="btn btn-danger">Log Out</a>
+            <a href="{% url 'home' %}" class="btn btn-ghost">View Website</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Testimonials{% endblock %}
+{% block page_title %}Testimonials{% endblock %}
+
+{% block content %}
+<div class="admin-toolbar">
+    <form method="get">
+        <input type="text" name="q" class="form-control" placeholder="Search testimonials..." value="{{ request.GET.q }}">
+        <button type="submit" class="btn btn-secondary">Search</button>
+    </form>
+    <a href="{% url 'admin_testimonial_create' %}" class="btn btn-primary">+ Add Testimonial</a>
+</div>
+
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead>
+            <tr><th>Client</th><th>Company</th><th>Rating</th><th>Status</th><th>Featured</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td><a href="{% url 'admin_testimonial_edit' item.id %}" class="link">{{ item.client_name }}</a></td>
+                <td>{{ item.company }}</td>
+                <td>{{ item.rating }}★</td>
+                <td><span class="badge-status {{ item.status }}">{{ item.get_status_display }}</span></td>
+                <td>{% if item.featured %}✓{% else %}—{% endif %}</td>
+                <td class="flex gap-2">
+                    <a href="{% url 'admin_testimonial_edit' item.id %}" class="btn btn-sm btn-secondary">Edit</a>
+                    <a href="{% url 'admin_testimonial_delete' item.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Delete this testimonial?')">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-muted">No testimonials found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if items.has_other_pages %}
+<div class="admin-pagination">
+    {% if items.has_previous %}<a href="?page={{ items.previous_page_number }}">←</a>{% endif %}
+    <span class="current">Page {{ items.number }} of {{ items.paginator.num_pages }}</span>
+    {% if items.has_next %}<a href="?page={{ items.next_page_number }}">→</a>{% endif %}
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Profile — Orientiq{% endblock %}
+{% block meta_description %}View your Orientiq account profile.{% endblock %}
+
+{% block content %}
+<section class="section client-portal">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">My Account</span>
+            <h1>Profile</h1>
+            <p>Your Orientiq account information.</p>
+        </div>
+
+        {% if messages %}
+        <div class="auth-messages mb-6">
+            {% for message in messages %}
+            <div class="form-success">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="grid grid-2">
+            <div class="card">
+                <div class="flex gap-4 mb-6">
+                    <div class="avatar avatar-lg">{{ user.first_name|first|default:"O" }}{{ user.last_name|first|default:"" }}</div>
+                    <div>
+                        <h3>{{ user.get_full_name|default:user.username }}</h3>
+                        <p class="body-small text-muted">{{ user.email }}</p>
+                        <span class="badge mt-2">{{ profile.get_role_display }}</span>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="grid grid-2">
+                    <div>
+                        <p class="caption text-muted mb-1">Phone</p>
+                        <p class="body-small">{{ profile.phone|default:"—" }}</p>
+                    </div>
+                    <div>
+                        <p class="caption text-muted mb-1">Company</p>
+                        <p class="body-small">{{ profile.company|default:"—" }}</p>
+                    </div>
+                    <div>
+                        <p class="caption text-muted mb-1">Country</p>
+                        <p class="body-small">{{ profile.country|default:"—" }}</p>
+                    </div>
+                    <div>
+                        <p class="caption text-muted mb-1">Timezone</p>
+                        <p class="body-small">{{ profile.timezone|default:"UTC" }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="mb-4">Account Actions</h3>
+                <div class="flex flex-col gap-3">
+                    <a href="{% url 'user_booking_list' %}" class="btn btn-secondary">My Bookings</a>
+                    <a href="{% url 'accounts_settings' %}" class="btn btn-secondary">Edit Profile</a>
+                    <a href="{% url 'accounts_change_password' %}" class="btn btn-outline">Change Password</a>
+                    <a href="{% url 'accounts_settings' %}" class="btn btn-ghost">Account Settings</a>
+                    <a href="{% url 'accounts_logout' %}" class="btn btn-danger">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

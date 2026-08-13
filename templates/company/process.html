@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Our Process — Orientiq{% endblock %}
+{% block meta_description %}Learn about Orientiq's proven process — Discovery, Strategy, Design, Development, Launch, and Growth.{% endblock %}
+
+{% block content %}
+<!-- ==================== HERO ==================== -->
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Company / Process</span>
+        <h1>How we deliver</h1>
+        <p>A transparent, collaborative process from first conversation to long-term growth.</p>
+    </div>
+</section>
+
+<!-- ==================== PROCESS ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="process-grid">
+            {% include "components/process-step.html" with number="01" title="Discovery" description="We understand your goals, users, and constraints through deep collaboration." %}
+            {% include "components/process-step.html" with number="02" title="Strategy" description="We define the architecture, roadmap, and success metrics for your project." %}
+            {% include "components/process-step.html" with number="03" title="Design" description="We craft premium, user-centered experiences that align with your brand." %}
+            {% include "components/process-step.html" with number="04" title="Development" description="We build in transparent, testable increments with regular demos." %}
+            {% include "components/process-step.html" with number="05" title="Launch" description="We deploy with confidence, zero downtime, and full documentation." %}
+            {% include "components/process-step.html" with number="06" title="Growth" description="We iterate, optimize, and scale what works based on real data." %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== WHY IT WORKS ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-2">
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Why It Works" title="A process built for results" %}
+                <ul class="feature-list">
+                    <li>Transparent, weekly progress updates</li>
+                    <li>Senior team on every engagement</li>
+                    <li>Regular demos and feedback loops</li>
+                    <li>Clear milestones and deliverables</li>
+                    <li>Post-launch support and optimization</li>
+                </ul>
+            </div>
+            <div class="grid grid-2">
+                {% include "components/stat-card.html" with value="6" label="Phases" %}
+                {% include "components/stat-card.html" with value="100%" label="Transparent" %}
+                {% include "components/stat-card.html" with value="0" label="Downtime" %}
+                {% include "components/stat-card.html" with value="∞" label="Support" %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+{% include "components/cta.html" with eyebrow="Let's Begin" title="Start your project today" subtitle="Tell us about your project and we'll show you the path forward." %}
+{% endblock %}

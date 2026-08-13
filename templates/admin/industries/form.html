@@ -1,0 +1,53 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{% if item %}Edit Industry{% else %}Add Industry{% endif %}{% endblock %}
+{% block page_title %}{% if item %}Edit Industry{% else %}Add Industry{% endif %}{% endblock %}
+
+{% block content %}
+<div class="admin-form-card">
+    <form method="post">
+        {% csrf_token %}
+        <div class="admin-form-grid">
+            <div class="form-group">
+                <label class="form-label" for="name">Name</label>
+                <input type="text" id="name" name="name" class="form-control" value="{{ item.name|default:"" }}" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="slug">Slug</label>
+                <input type="text" id="slug" name="slug" class="form-control" value="{{ item.slug|default:"" }}" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="icon">Icon</label>
+                <input type="text" id="icon" name="icon" class="form-control" value="{{ item.icon|default:"" }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="status">Status</label>
+                <select id="status" name="status" class="form-control">
+                    <option value="draft" {% if item.status == "draft" %}selected{% endif %}>Draft</option>
+                    <option value="published" {% if item.status == "published" %}selected{% endif %}>Published</option>
+                    <option value="archived" {% if item.status == "archived" %}selected{% endif %}>Archived</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="display_order">Display Order</label>
+                <input type="number" id="display_order" name="display_order" class="form-control" value="{{ item.display_order|default:0 }}">
+            </div>
+            <div class="form-group">
+                <label class="checkbox-group">
+                    <input type="checkbox" name="featured" {% if item.featured %}checked{% endif %}>
+                    <span>Featured</span>
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="description">Description</label>
+            <textarea id="description" name="description" class="form-control" rows="6">{{ item.description|default:"" }}</textarea>
+        </div>
+        <div class="admin-form-actions">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{% url 'admin_industry_list' %}" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

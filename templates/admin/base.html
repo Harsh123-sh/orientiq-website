@@ -1,0 +1,133 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin{% endblock %} — Orientiq</title>
+    <script src="{% static 'js/theme-init.js' %}"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/variables.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/typography.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <a href="{% url 'admin_dashboard' %}" class="admin-brand">
+                    <img src="{% static 'images/brand/orientiq-logo-on-light.png' %}" alt="Orientiq Admin" class="brand-logo brand-logo-on-light">
+                    <img src="{% static 'images/brand/orientiq-logo-on-dark.png' %}" alt="" class="brand-logo brand-logo-on-dark" aria-hidden="true">
+                </a>
+                <button type="button" class="admin-sidebar-close" aria-label="Close sidebar">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <nav class="admin-nav" aria-label="Admin navigation">
+                <p class="admin-nav-label">Overview</p>
+                <a href="{% url 'admin_dashboard' %}" class="admin-nav-link{% if request.resolver_match.url_name == 'admin_dashboard' %} is-active{% endif %}">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                    Dashboard
+                </a>
+                <p class="admin-nav-label">Content</p>
+                <a href="{% url 'admin_service_list' %}" class="admin-nav-link{% if 'admin_service' in request.resolver_match.url_name %} is-active{% endif %}">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                    Services
+                </a>
+                <a href="{% url 'admin_industry_list' %}" class="admin-nav-link{% if 'admin_industry' in request.resolver_match.url_name %} is-active{% endif %}">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"></rect><path d="M9 22v-4h6v4"></path></svg>
+                    Industries
+                </a>
+                <a href="{% url 'admin_product_list' %}" class="admin-nav-link{% if 'admin_product' in request.resolver_match.url_name %} is-active{% endif %}">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                    Products
+                </a>
+                <a href="{% url 'admin_portfolio_list' %}" class="admin-nav-link{% if 'admin_portfolio' in request.resolver_match.url_name %} is-active{% endif %}">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    Portfolio
+                </a>
+                <a href="{% url 'admin_technology_list' %}" class="admin-nav-link{% if 'admin_technology' in request.resolver_match.url_name %} is-active{% endif %}">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    Technologies
+                </a>
+                <a href="{% url 'admin_testimonial_list' %}" class="admin-nav-link{% if 'admin_testimonial' in request.resolver_match.url_name %} is-active{% endif %}">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    Testimonials
+                </a>
+                <p class="admin-nav-label">Business</p>
+                <a href="{% url 'admin_inquiry_list' %}" class="admin-nav-link{% if 'admin_inquiry' in request.resolver_match.url_name %} is-active{% endif %}">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    Inquiries
+                </a>
+                <a href="{% url 'admin_booking_list' %}" class="admin-nav-link{% if 'admin_booking' in request.resolver_match.url_name %} is-active{% endif %}">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    Bookings
+                </a>
+                <p class="admin-nav-label">Media</p>
+                <a href="{% url 'admin_media_list' %}" class="admin-nav-link{% if 'admin_media' in request.resolver_match.url_name %} is-active{% endif %}">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    Media
+                </a>
+                <p class="admin-nav-label">Users</p>
+                <a href="{% url 'admin_user_list' %}" class="admin-nav-link{% if 'admin_user' in request.resolver_match.url_name %} is-active{% endif %}">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    Users
+                </a>
+                {% if user.profile.is_super_admin %}
+                <a href="{% url 'admin_activity' %}" class="admin-nav-link{% if request.resolver_match.url_name == 'admin_activity' %} is-active{% endif %}">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                    Activity
+                </a>
+                <p class="admin-nav-label">System</p>
+                <a href="{% url 'admin_settings' %}" class="admin-nav-link{% if request.resolver_match.url_name == 'admin_settings' %} is-active{% endif %}">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    Settings
+                </a>
+                {% endif %}
+            </nav>
+        </aside>
+
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <button type="button" class="admin-sidebar-toggle" aria-label="Open sidebar">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+                <div class="admin-topbar-title">{% block page_title %}Admin{% endblock %}</div>
+                <div class="admin-topbar-actions">
+                    <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+                        <svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                        <svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    </button>
+                    <a href="{% url 'admin_profile' %}" class="admin-user-chip">
+                        <span class="avatar">{{ user.first_name|first|default:"A" }}{{ user.last_name|first|default:"" }}</span>
+                        <span class="admin-user-name">{{ user.get_full_name|default:user.username }}</span>
+                    </a>
+                    <a href="{% url 'admin_logout' %}" class="btn btn-ghost btn-sm">Logout</a>
+                </div>
+            </header>
+
+            <main class="admin-content">
+                {% if messages %}
+                <div class="admin-messages">
+                    {% for message in messages %}
+                    <div class="form-success">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <script src="{% static 'js/theme.js' %}"></script>
+    <script src="{% static 'js/admin.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

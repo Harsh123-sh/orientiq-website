@@ -1,0 +1,43 @@
+ORIENTIQ — DEMO BOOKING CONFIRMATION
+====================================
+
+Hello {{ booking.user.get_full_name|default:booking.user.username }},
+
+Your demo reservation has been confirmed.
+
+Booking Reference: {{ booking.booking_reference }}
+Booking Type:      {{ booking.get_booking_type_display }}
+Status:            {{ booking.get_status_display }}
+
+------------------------------------------------------------
+SELECTED INVENTORY
+------------------------------------------------------------
+{% for item in items %}- {{ item.get_item_type_display }}: {{ item.title }} ({{ item.route_or_destination }})
+  Date: {% if item.start_date %}{{ item.start_date|date:"D, d M Y" }}{% if item.end_date %} → {{ item.end_date|date:"D, d M Y" }}{% endif %}{% else %}—{% endif %}
+  Price: {{ item.price }} {{ item.currency }}
+{% empty %}- No items recorded.
+{% endfor %}
+
+------------------------------------------------------------
+TRAVELER / GUEST
+------------------------------------------------------------
+{% for traveler in travelers %}- {{ traveler.first_name }}{% if traveler.last_name %} {{ traveler.last_name }}{% endif %}
+  Email: {{ traveler.email|default:"—" }}
+{% empty %}- No traveler information recorded.
+{% endfor %}
+
+------------------------------------------------------------
+PRICE SUMMARY
+------------------------------------------------------------
+Subtotal:    {{ booking.subtotal|floatformat:2 }} {{ booking.currency }}
+{% if booking.taxes %}Taxes/Fees:  {{ booking.taxes|floatformat:2 }} {{ booking.currency }}
+{% endif %}Total:       {{ booking.total|floatformat:2 }} {{ booking.currency }}
+
+Created:     {{ booking.created_at|date:"D, d M Y H:i" }}
+
+IMPORTANT — {{ demo_disclaimer }}
+
+This booking is a technical demo only.
+
+Warm regards,
+The Orientiq Team

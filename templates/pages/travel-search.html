@@ -1,0 +1,370 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Travel Search — Orientiq{% endblock %}
+{% block meta_description %}Orientiq travel inventory foundation — flights, hotels, and activities demo search.{% endblock %}
+
+{% block content %}
+<!-- ==================== HERO ==================== -->
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Travel Inventory Foundation</span>
+        <h1>Search Flights, Hotels & Activities</h1>
+        <p>A technical foundation demo for future Orientiq travel products. All results are demo/mock data — not real availability.</p>
+    </div>
+</section>
+
+<!-- ==================== TABS ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="tabs mb-8" role="tablist" aria-label="Travel search category">
+            <button type="button" class="btn btn-primary tab-btn is-active" data-tab="flights" role="tab" aria-selected="true">Flights</button>
+            <button type="button" class="btn btn-ghost tab-btn" data-tab="hotels" role="tab" aria-selected="false">Hotels</button>
+            <button type="button" class="btn btn-ghost tab-btn" data-tab="activities" role="tab" aria-selected="false">Activities</button>
+        </div>
+
+        <!-- FLIGHTS -->
+        <div id="tab-flights" class="tab-panel" role="tabpanel">
+            <form class="card mb-6" id="flights-form">
+                <div class="grid grid-3">
+                    <div class="form-group">
+                        <label class="form-label" for="f-origin">Origin</label>
+                        <input type="text" id="f-origin" class="form-control" placeholder="e.g. Ahmedabad" value="Ahmedabad">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="f-destination">Destination</label>
+                        <input type="text" id="f-destination" class="form-control" placeholder="e.g. Dubai" value="Dubai">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="f-departure">Departure</label>
+                        <input type="date" id="f-departure" class="form-control" value="2026-09-10">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="f-trip-type">Trip Type</label>
+                        <select id="f-trip-type" class="form-control">
+                            <option value="one-way">One-Way</option>
+                            <option value="round-trip">Round-Trip</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="f-return-group">
+                        <label class="form-label" for="f-return">Return</label>
+                        <input type="date" id="f-return" class="form-control" value="2026-09-15">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="f-adults">Adults</label>
+                        <input type="number" id="f-adults" class="form-control" min="1" max="9" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="f-cabin">Cabin Class</label>
+                        <select id="f-cabin" class="form-control">
+                            <option value="economy">Economy</option>
+                            <option value="premium_economy">Premium Economy</option>
+                            <option value="business">Business</option>
+                            <option value="first">First</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="f-sort">Sort</label>
+                        <select id="f-sort" class="form-control">
+                            <option value="recommended">Recommended</option>
+                            <option value="cheapest">Cheapest</option>
+                            <option value="fastest">Fastest</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Search Flights</button>
+            </form>
+            <div id="flights-results" class="grid grid-2" aria-live="polite" aria-busy="false"><p class="body-small text-muted">Search flights to see demo results.</p></div>
+        </div>
+
+        <!-- HOTELS -->
+        <div id="tab-hotels" class="tab-panel" role="tabpanel" hidden>
+            <form class="card mb-6" id="hotels-form">
+                <div class="grid grid-3">
+                    <div class="form-group">
+                        <label class="form-label" for="h-destination">Destination</label>
+                        <input type="text" id="h-destination" class="form-control" placeholder="e.g. Dubai" value="Dubai">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="h-checkin">Check-in</label>
+                        <input type="date" id="h-checkin" class="form-control" value="2026-09-10">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="h-checkout">Check-out</label>
+                        <input type="date" id="h-checkout" class="form-control" value="2026-09-15">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="h-guests">Guests</label>
+                        <input type="number" id="h-guests" class="form-control" min="1" max="20" value="2">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="h-rooms">Rooms</label>
+                        <input type="number" id="h-rooms" class="form-control" min="1" max="5" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="h-sort">Sort</label>
+                        <select id="h-sort" class="form-control">
+                            <option value="recommended">Recommended</option>
+                            <option value="price">Price</option>
+                            <option value="rating">Rating</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Search Hotels</button>
+            </form>
+            <div id="hotels-results" class="grid grid-2" aria-live="polite" aria-busy="false"><p class="body-small text-muted">Search hotels to see demo results.</p></div>
+        </div>
+
+        <!-- ACTIVITIES -->
+        <div id="tab-activities" class="tab-panel" role="tabpanel" hidden>
+            <form class="card mb-6" id="activities-form">
+                <div class="grid grid-3">
+                    <div class="form-group">
+                        <label class="form-label" for="a-destination">Destination</label>
+                        <input type="text" id="a-destination" class="form-control" placeholder="e.g. Dubai" value="Dubai">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="a-date">Date</label>
+                        <input type="date" id="a-date" class="form-control" value="2026-09-11">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="a-guests">Guests</label>
+                        <input type="number" id="a-guests" class="form-control" min="1" max="20" value="2">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="a-sort">Sort</label>
+                        <select id="a-sort" class="form-control">
+                            <option value="recommended">Recommended</option>
+                            <option value="price">Price</option>
+                            <option value="rating">Rating</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Search Activities</button>
+            </form>
+            <div id="activities-results" class="grid grid-2" aria-live="polite" aria-busy="false"><p class="body-small text-muted">Search activities to see demo results.</p></div>
+        </div>
+
+        <div class="card mt-8">
+            <h4 class="mb-4">Provider Status</h4>
+            <div class="flex gap-4 flex-wrap">
+                <span class="badge">Flights: Demo provider</span>
+                <span class="badge">Hotels: Demo provider</span>
+                <span class="badge">Activities: Demo provider</span>
+            </div>
+            <p class="caption text-muted mt-4">All results are clearly labeled demo/mock data. Real provider integrations will be connected in later phases.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    "use strict";
+
+    var tabs = document.querySelectorAll(".tab-btn");
+    var panels = {
+        flights: document.getElementById("tab-flights"),
+        hotels: document.getElementById("tab-hotels"),
+        activities: document.getElementById("tab-activities")
+    };
+
+    // Flights form logic
+    var fTripType = document.getElementById("f-trip-type");
+    var fReturnGroup = document.getElementById("f-return-group");
+
+    function toggleReturnDate() {
+        if (fTripType.value === "one-way") {
+            fReturnGroup.hidden = true;
+        } else {
+            fReturnGroup.hidden = false;
+        }
+    }
+
+    fTripType.addEventListener("change", toggleReturnDate);
+    toggleReturnDate(); // Set initial state
+
+    function activateTab(name) {
+        tabs.forEach(function (btn) {
+            var isActive = btn.getAttribute("data-tab") === name;
+            btn.classList.toggle("btn-primary", isActive);
+            btn.classList.toggle("btn-ghost", !isActive);
+            btn.setAttribute("aria-selected", isActive ? "true" : "false");
+        });
+        Object.keys(panels).forEach(function (key) {
+            panels[key].hidden = key !== name;
+        });
+    }
+
+    tabs.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            activateTab(btn.getAttribute("data-tab"));
+        });
+        btn.addEventListener("keydown", function (event) {
+            if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+            event.preventDefault();
+            var index = tabs.indexOf(btn);
+            var next = (index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+            tabs[next].focus();
+            activateTab(tabs[next].getAttribute("data-tab"));
+        });
+    });
+
+    function fetchResults(url, container, renderFn) {
+        container.setAttribute("aria-busy", "true");
+        container.innerHTML = '<div class="loading-state"><span class="spinner" aria-hidden="true"></span><span>Searching demo inventory…</span></div>';
+        fetch(url)
+            .then(function (resp) { return resp.json().then(function (d) { return { ok: resp.ok, data: d }; }); })
+            .then(function (res) {
+                container.setAttribute("aria-busy", "false");
+                if (!res.ok) {
+                    container.innerHTML = '<div class="card"><p class="form-error">' + (res.data.error || "Search failed.") + "</p></div>";
+                    return;
+                }
+                if (!res.data.results || res.data.results.length === 0) {
+                    container.innerHTML = '<div class="card"><p class="body-small text-muted">No results found.</p></div>';
+                    return;
+                }
+                container.innerHTML = "";
+                res.data.results.forEach(function (r) {
+                    container.appendChild(renderFn(r));
+                });
+                var note = document.createElement("p");
+                note.className = "caption text-muted";
+                note.textContent = "(Demo data — not real availability)";
+                container.appendChild(note);
+            })
+            .catch(function () {
+                container.setAttribute("aria-busy", "false");
+                container.innerHTML = '<div class="card"><p class="form-error">Network error. Please try again.</p></div>';
+            });
+    }
+
+    function selectUrl(params) {
+        var parts = [];
+        Object.keys(params).forEach(function (k) {
+            if (params[k] !== null && params[k] !== undefined && params[k] !== "") {
+                parts.push(encodeURIComponent(k) + "=" + encodeURIComponent(params[k]));
+            }
+        });
+        return "/booking-review/?" + parts.join("&");
+    }
+
+    function renderFlight(f, baseParams) {
+        var card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = "<h4>" + f.airline + " " + f.flight_number + "</h4>" +
+            "<p class='body-small text-muted'>" + f.origin + " → " + f.destination + "</p>" +
+            "<p>" + f.departure_time + " – " + f.arrival_time + " (" + f.duration + ")</p>" +
+            "<p class='body-small'>Stops: " + f.stops + " | Cabin: " + f.cabin_class + "</p>" +
+            "<p class='body-small'>Baggage: " + f.baggage + "</p>" +
+            "<p class='body-large'><strong>$" + f.price + "</strong> " + f.currency + "</p>";
+        var link = document.createElement("a");
+        link.className = "btn btn-secondary btn-sm mt-3";
+        link.textContent = "Select / Book Demo Flight";
+        baseParams.flight_number = f.flight_number;
+        link.href = selectUrl(baseParams);
+        card.appendChild(link);
+        return card;
+    }
+
+    function renderHotel(h, baseParams) {
+        var card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = "<h4>" + h.hotel_name + "</h4>" +
+            "<p class='body-small text-muted'>" + h.location + " | ⭐ " + h.rating + " (" + h.review_count + " reviews)</p>" +
+            "<p><strong>" + h.room_type + "</strong></p>" +
+            "<p class='body-small'>Amenities: " + h.amenities.join(", ") + "</p>" +
+            "<p class='body-small'>Cancellation: " + h.cancellation_policy + "</p>" +
+            "<p class='body-large'><strong>$" + h.price_per_night + "</strong>/night · $" + h.total_price + " total</p>";
+        var link = document.createElement("a");
+        link.className = "btn btn-secondary btn-sm mt-3";
+        link.textContent = "Select / Book Demo Hotel";
+        baseParams.hotel_name = h.hotel_name;
+        link.href = selectUrl(baseParams);
+        card.appendChild(link);
+        return card;
+    }
+
+    function renderActivity(a, baseParams) {
+        var card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = "<h4>" + a.activity_name + "</h4>" +
+            "<p class='body-small text-muted'>" + a.category + " | ⭐ " + a.rating + " (" + a.review_count + " reviews)</p>" +
+            "<p class='body-small'>" + a.description + "</p>" +
+            "<p class='body-small'>Duration: " + a.duration + " | Meeting: " + a.meeting_point + "</p>" +
+            "<p class='body-large'><strong>$" + a.price + "</strong> " + a.currency + "</p>";
+        var link = document.createElement("a");
+        link.className = "btn btn-secondary btn-sm mt-3";
+        link.textContent = "Select / Book Demo Activity";
+        baseParams.activity_name = a.activity_name;
+        link.href = selectUrl(baseParams);
+        card.appendChild(link);
+        return card;
+    }
+
+    document.getElementById("flights-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var baseParams = {
+            item_type: "flight",
+            origin: document.getElementById("f-origin").value,
+            destination: document.getElementById("f-destination").value,
+            departure: document.getElementById("f-departure").value,
+            trip_type: fTripType.value,
+            adults: document.getElementById("f-adults").value,
+            cabin_class: document.getElementById("f-cabin").value,
+            sort: document.getElementById("f-sort").value
+        };
+        if (fTripType.value === "round-trip") {
+            baseParams.return = document.getElementById("f-return").value;
+        }
+        var qs = Object.keys(baseParams).map(function (k) {
+            return encodeURIComponent(k) + "=" + encodeURIComponent(baseParams[k]);
+        }).join("&");
+        var url = "/api/flights/search/?" + qs;
+        fetchResults(url, document.getElementById("flights-results"), function (r) {
+            return renderFlight(r, baseParams);
+        });
+    });
+
+    document.getElementById("hotels-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var baseParams = {
+            item_type: "hotel",
+            destination: document.getElementById("h-destination").value,
+            check_in: document.getElementById("h-checkin").value,
+            check_out: document.getElementById("h-checkout").value,
+            guests: document.getElementById("h-guests").value,
+            rooms: document.getElementById("h-rooms").value,
+            sort: document.getElementById("h-sort").value
+        };
+        var qs = Object.keys(baseParams).map(function (k) {
+            return encodeURIComponent(k) + "=" + encodeURIComponent(baseParams[k]);
+        }).join("&");
+        var url = "/api/hotels/search/?" + qs;
+        fetchResults(url, document.getElementById("hotels-results"), function (r) {
+            return renderHotel(r, baseParams);
+        });
+    });
+
+    document.getElementById("activities-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var baseParams = {
+            item_type: "activity",
+            destination: document.getElementById("a-destination").value,
+            date: document.getElementById("a-date").value,
+            guests: document.getElementById("a-guests").value,
+            sort: document.getElementById("a-sort").value
+        };
+        var qs = Object.keys(baseParams).map(function (k) {
+            return encodeURIComponent(k) + "=" + encodeURIComponent(baseParams[k]);
+        }).join("&");
+        var url = "/api/activities/search/?" + qs;
+        fetchResults(url, document.getElementById("activities-results"), function (r) {
+            return renderActivity(r, baseParams);
+        });
+    });
+})();
+</script>
+{% endblock %}

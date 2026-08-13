@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About Orientiq — AI, Technology & Digital Solutions{% endblock %}
+{% block meta_description %}Learn about Orientiq — a premium AI, technology, and digital solutions company building intelligent products for ambitious businesses worldwide.{% endblock %}
+
+{% block content %}
+<!-- ==================== HERO ==================== -->
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">About Orientiq</span>
+        <h1>We build what's next.</h1>
+        <p>Orientiq is a premium technology and digital solutions company. We partner with ambitious businesses to design, build, and scale intelligent products that deliver real results.</p>
+    </div>
+</section>
+
+<!-- ==================== INTRODUCTION ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-2">
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Who We Are" title="A modern technology partner" subtitle="We combine strategic thinking, premium engineering, and an AI-first approach to help businesses thrive in a digital world." %}
+                <p class="body-large text-muted mb-6">From intelligent automation to enterprise platforms, we build technology that is fast, scalable, and built to last. Our team works as an extension of yours — transparent, collaborative, and invested in your success.</p>
+                <a href="{% url 'start_project' %}" class="btn btn-primary">Start a Project</a>
+            </div>
+            <div class="grid grid-2">
+                <div class="card card-service">
+                    <div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 7.2H22l-6 4.9 2.3 7.1-6.3-4.6-6.3 4.6L8 14.1 2 9.2h7.6L12 2z"></path></svg></div>
+                    <h3>Mission</h3>
+                    <p>To empower ambitious businesses with intelligent technology.</p>
+                </div>
+                <div class="card card-service">
+                    <div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
+                    <h3>Vision</h3>
+                    <p>To be the most trusted technology partner for global enterprises.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CORE VALUES ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="Values" title="What we stand for" subtitle="The principles that guide every project we take on." align="center" %}
+        <div class="grid grid-3">
+            <div class="card">
+                <h4 class="mb-3">Excellence</h4>
+                <p class="body-small text-muted">We hold ourselves to the highest standard of engineering and design.</p>
+            </div>
+            <div class="card">
+                <h4 class="mb-3">Transparency</h4>
+                <p class="body-small text-muted">Clear communication, honest timelines, and no surprises.</p>
+            </div>
+            <div class="card">
+                <h4 class="mb-3">Innovation</h4>
+                <p class="body-small text-muted">We embrace new technology to solve real business problems.</p>
+            </div>
+            <div class="card">
+                <h4 class="mb-3">Partnership</h4>
+                <p class="body-small text-muted">We invest in long-term relationships, not one-off projects.</p>
+            </div>
+            <div class="card">
+                <h4 class="mb-3">Impact</h4>
+                <p class="body-small text-muted">We measure success by the results we deliver for our clients.</p>
+            </div>
+            <div class="card">
+                <h4 class="mb-3">Craft</h4>
+                <p class="body-small text-muted">We care deeply about the details that make products feel premium.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== WHY CLIENTS TRUST ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-2">
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Why Clients Trust Us" title="A partner invested in your success" %}
+                <ul class="feature-list">
+                    <li>Senior, experienced team on every project</li>
+                    <li>Proven delivery across 10+ industries</li>
+                    <li>AI-first approach to modern problems</li>
+                    <li>Transparent, collaborative process</li>
+                    <li>Long-term support and partnership</li>
+                </ul>
+            </div>
+            <div class="grid grid-2">
+                {% include "components/stat-card.html" with value="50+" label="Digital Solutions" %}
+                {% include "components/stat-card.html" with value="25+" label="Technologies" %}
+                {% include "components/stat-card.html" with value="10+" label="Industries" %}
+                {% include "components/stat-card.html" with value="Global" label="Delivery" %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== STORY ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-2">
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Our Story" title="Built on a simple belief" subtitle="Technology should be a strategic advantage — not a cost center." %}
+                <p class="body text-muted mb-4">Orientiq was founded on the belief that ambitious businesses deserve technology partners who think strategically, engineer precisely, and care about outcomes. We started with a small team of engineers and designers who shared a passion for building premium digital products.</p>
+                <p class="body text-muted">Today, we work with clients across the globe, delivering everything from AI-powered platforms to enterprise software — always with the same commitment to quality, transparency, and long-term partnership.</p>
+            </div>
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Technology Philosophy" title="The right tool for the right problem" %}
+                <p class="body text-muted mb-4">We don't chase trends. We choose technologies based on what will best serve your business — now and in the future. Our stack is modern, proven, and built for scale.</p>
+                {% include "components/section-heading.html" with eyebrow="AI Philosophy" title="Intelligence, applied responsibly" %}
+                <p class="body text-muted">AI is a powerful tool, but only when applied thoughtfully. We build AI that is practical, transparent, and designed to augment human work — not replace it.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== GLOBAL DELIVERY ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="Global Delivery" title="One team, worldwide" subtitle="We deliver across time zones with a distributed, senior team." align="center" %}
+        <div class="grid grid-3">
+            <div class="card card-stat"><div class="stat-value">24/7</div><div class="stat-label">Coverage</div></div>
+            <div class="card card-stat"><div class="stat-value">100%</div><div class="stat-label">Senior Team</div></div>
+            <div class="card card-stat"><div class="stat-value">Global</div><div class="stat-label">Delivery</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+{% include "components/cta.html" with eyebrow="Work With Us" title="Let's build something exceptional" subtitle="Partner with a team that treats your success as its own." %}
+{% endblock %}

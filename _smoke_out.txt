@@ -1,0 +1,51 @@
+PASS: anonymous travel-search renders 
+FAIL: anonymous redirected from my-bookings 
+LOGIN STATUS 200 BODY SNIPPET: <!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile — Orientiq</title>
+    <meta name="description" content="View your Orientiq account profile.">
+    <link rel="icon" type="image/png" href="/static/images/brand/Icon%20Luxry%20Light..png">
+
+    <!-- Theme init: prevent 
+FAIL: client logs in 
+PASS: booking review renders (200) 
+PASS: review shows flight 
+PASS: review shows demo disclaimer 
+PASS: review shows server price 
+PASS: review form has csrf 
+FAIL: confirm returns redirect 
+FAIL: redirect to confirmation page 
+FAIL: booking reference generated 
+FAIL: confirmation page renders 
+FAIL: confirmation shows reference 
+FAIL: confirmation shows server total (not tampered) 
+FAIL: my bookings lists booking 
+Traceback (most recent call last):
+  File "C:\Users\harsh\Desktop\APP\wedsite\_smoke.py", line 171, in <module>
+    main()
+  File "C:\Users\harsh\Desktop\APP\wedsite\_smoke.py", line 67, in main
+    _run_flow()
+  File "C:\Users\harsh\Desktop\APP\wedsite\_smoke.py", line 154, in _run_flow
+    r = get("/accounts/bookings/" + ref + "/", client)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\harsh\Desktop\APP\wedsite\_smoke.py", line 21, in get
+    return opener.open(req, timeout=30)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\urllib\request.py", line 525, in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\urllib\request.py", line 634, in http_response
+    response = self.parent.error(
+               ^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\urllib\request.py", line 563, in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\urllib\request.py", line 496, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\urllib\request.py", line 643, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 404: Not Found

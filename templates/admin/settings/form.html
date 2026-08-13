@@ -1,0 +1,69 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Website Settings{% endblock %}
+{% block page_title %}Website Settings{% endblock %}
+
+{% block content %}
+<div class="admin-form-card">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h3 class="mb-4">General</h3>
+        <div class="admin-form-grid">
+            <div class="form-group">
+                <label class="form-label" for="company_name">Company Name</label>
+                <input type="text" id="company_name" name="company_name" class="form-control" value="{{ settings.company_name|default:"" }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="tagline">Tagline</label>
+                <input type="text" id="tagline" name="tagline" class="form-control" value="{{ settings.tagline|default:"" }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" value="{{ settings.email|default:"" }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="phone">Phone</label>
+                <input type="text" id="phone" name="phone" class="form-control" value="{{ settings.phone|default:"" }}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="address">Address</label>
+            <textarea id="address" name="address" class="form-control" rows="3">{{ settings.address|default:"" }}</textarea>
+        </div>
+        <div class="divider"></div>
+        <h3 class="mb-4">Social</h3>
+        <div class="admin-form-grid">
+            <div class="form-group">
+                <label class="form-label" for="linkedin">LinkedIn</label>
+                <input type="url" id="linkedin" name="linkedin" class="form-control" value="{{ settings.linkedin|default:"" }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="instagram">Instagram</label>
+                <input type="url" id="instagram" name="instagram" class="form-control" value="{{ settings.instagram|default:"" }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="youtube">YouTube</label>
+                <input type="url" id="youtube" name="youtube" class="form-control" value="{{ settings.youtube|default:"" }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="x">X (Twitter)</label>
+                <input type="url" id="x" name="x" class="form-control" value="{{ settings.x|default:"" }}">
+            </div>
+        </div>
+        <div class="divider"></div>
+        <h3 class="mb-4">SEO</h3>
+        <div class="form-group">
+            <label class="form-label" for="site_title">Site Title</label>
+            <input type="text" id="site_title" name="site_title" class="form-control" value="{{ settings.site_title|default:"" }}">
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="meta_description">Meta Description</label>
+            <textarea id="meta_description" name="meta_description" class="form-control" rows="3">{{ settings.meta_description|default:"" }}</textarea>
+        </div>
+        <div class="admin-form-actions">
+            <button type="submit" class="btn btn-primary">Save Settings</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

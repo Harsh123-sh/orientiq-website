@@ -1,0 +1,89 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Booking — {{ booking.booking_reference }}{% endblock %}
+{% block page_title %}Booking {{ booking.booking_reference }}{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{% url 'admin_booking_list' %}" class="btn btn-ghost btn-sm">← Back to Bookings</a>
+</div>
+
+<div class="grid grid-2">
+    <div>
+        <h3 class="mb-4">Booking Details</h3>
+        <div class="admin-form-card">
+            <div class="flex-between mb-4">
+                <div>
+                    <h4>{{ booking.booking_reference }}</h4>
+                    <p class="body-small text-muted">{{ booking.user.username|default:"—" }} ({{ booking.user.email|default:"—" }})</p>
+                </div>
+                <div class="flex gap-2">
+                    {% if booking.is_demo %}<span class="badge-demo">Demo</span>{% endif %}
+                    <span class="badge-status {{ booking.status }}">{{ booking.get_status_display }}</span>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <div class="grid grid-2">
+                <div class="mb-4">
+                    <p class="caption text-muted mb-1">Booking Type</p>
+                    <p class="body-small">{{ booking.get_booking_type_display }}</p>
+                </div>
+                <div class="mb-4">
+                    <p class="caption text-muted mb-1">Created</p>
+                    <p class="body-small">{{ booking.created_at|date:"M d, Y H:i" }}</p>
+                </div>
+                <div class="mb-4">
+                    <p class="caption text-muted mb-1">Subtotal</p>
+                    <p class="body-small">{{ booking.subtotal|floatformat:2 }} {{ booking.currency }}</p>
+                </div>
+                <div class="mb-4">
+                    <p class="caption text-muted mb-1">Taxes / Fees</p>
+                    <p class="body-small">{{ booking.taxes|floatformat:2 }} {{ booking.currency }}</p>
+                </div>
+                <div class="mb-4">
+                    <p class="caption text-muted mb-1">Total</p>
+                    <p class="body-small"><strong>{{ booking.total|floatformat:2 }} {{ booking.currency }}</strong></p>
+                </div>
+                <div class="mb-4">
+                    <p class="caption text-muted mb-1">Demo</p>
+                    <p class="body-small">{% if booking.is_demo %}Yes{% else %}No{% endif %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h3 class="mb-4">Booking Items</h3>
+        <div class="admin-form-card">
+            {% for item in items %}
+            <div class="mb-4">
+                <p class="body-small"><strong>{{ item.get_item_type_display }}:</strong> {{ item.title }}</p>
+                <p class="caption text-muted">{{ item.route_or_destination|default:"—" }}{% if item.start_date %} • {{ item.start_date|date:"d M Y" }}{% if item.end_date %} → {{ item.end_date|date:"d M Y" }}{% endif %}{% endif %}</p>
+                <p class="caption text-muted">Price: {{ item.price|floatformat:2 }} {{ item.currency }}</p>
+            </div>
+            <div class="divider mb-4"></div>
+            {% empty %}
+            <p class="body-small text-muted">No items recorded.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-2 mt-4">
+    <div>
+        <h3 class="mb-4">Travelers / Guests</h3>
+        <div class="admin-form-card">
+            {% for traveler in travelers %}
+            <div class="mb-4">
+                <p class="body-small">{{ traveler.first_name }}{% if traveler.last_name %} {{ traveler.last_name }}{% endif %}
+                    <span class="caption text-muted">({{ traveler.get_traveler_type_display }})</span>
+                </p>
+                <p class="caption text-muted">{{ traveler.email|default:"—" }}{% if traveler.phone %} • {{ traveler.phone }}{% endif %}</p>
+            </div>
+            {% empty %}
+            <p class="body-small text-muted">No traveler information recorded.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

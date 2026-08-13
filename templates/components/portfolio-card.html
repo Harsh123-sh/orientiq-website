@@ -1,0 +1,14 @@
+<a href="{% url 'portfolio_detail' item.slug %}" class="card card-portfolio card-interactive">
+    <div class="portfolio-media">
+        <span class="caption">{{ item.industry }}</span>
+    </div>
+    <div class="portfolio-body">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.summary }}</p>
+        <div class="flex gap-2 flex-wrap mt-4">
+            {% for tech in item.tech %}
+            <span class="badge">{{ tech }}</span>
+            {% endfor %}
+        </div>
+    </div>
+</a>

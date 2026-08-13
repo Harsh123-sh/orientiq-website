@@ -1,0 +1,19 @@
+/* ============================================================
+   ORIENTIQ — THEME SYSTEM & LOGO SWITCHING
+   ============================================================ */
+
+/* Theme-aware transparent logo switching. */
+
+[data-theme] .brand-logo {
+    display: none;
+}
+
+/* Dark shell uses the copper mark extracted from the dark-background source. */
+[data-theme="dark"] .brand-logo-on-dark {
+    display: inline-block;
+}
+
+/* Light shell uses the rose-gold mark extracted from the light-background source. */
+[data-theme="light"] .brand-logo-on-light {
+    display: inline-block;
+}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Technologies — Orientiq{% endblock %}
+{% block meta_description %}Explore the modern technology ecosystem Orientiq uses — Frontend, Backend, Mobile, AI, Database, Cloud, DevOps, Security, Payments, and Analytics.{% endblock %}
+
+{% block content %}
+<!-- ==================== HERO ==================== -->
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Technology</span>
+        <h1>A modern technology ecosystem</h1>
+        <p>We choose the right tools for each challenge — no dogma, just results.</p>
+    </div>
+</section>
+
+<!-- ==================== TECHNOLOGY CATEGORIES ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-3">
+            {% for tech in technologies %}
+            {% include "components/technology-card.html" with category=tech.category items=tech.items %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+{% include "components/cta.html" with eyebrow="Your Stack" title="Need a specific technology?" subtitle="Tell us about your requirements and we'll recommend the right approach." %}
+{% endblock %}

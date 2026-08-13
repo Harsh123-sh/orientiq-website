@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ industry.name }} — Orientiq{% endblock %}
+{% block meta_description %}{{ industry.short }}{% endblock %}
+
+{% block content %}
+<!-- ==================== HERO ==================== -->
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">{{ industry.tagline }}</span>
+        <h1>{{ industry.name }} Solutions</h1>
+        <p>{{ industry.short }}</p>
+        <div class="flex gap-4 flex-wrap mt-6">
+            <a href="{% url 'start_project' %}" class="btn btn-primary">Start a Project</a>
+            <a href="{% url 'industries' %}" class="btn btn-outline">All Industries</a>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CHALLENGES ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-2">
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Industry Challenges" title="The problems we solve" subtitle="Every industry has unique pain points. We build technology around them." %}
+                <ul class="feature-list">
+                    {% for challenge in industry.challenges %}
+                    <li>{{ challenge }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Our Solutions" title="How we help" %}
+                <ul class="feature-list">
+                    {% for solution in industry.solutions %}
+                    <li>{{ solution }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== USE CASES ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="Use Cases" title="Where it applies" subtitle="Real-world applications of technology in {{ industry.name }}." align="center" %}
+        <div class="grid grid-2">
+            {% for use_case in industry.use_cases %}
+            <div class="card">
+                <h4 class="mb-3">{{ use_case }}</h4>
+                <p class="body-small text-muted">Tailored technology solutions designed for the {{ industry.name }} sector.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== AI OPPORTUNITIES ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="card cta-card">
+            <div class="cta-content">
+                <span class="eyebrow">AI Opportunities</span>
+                <h2>Intelligence for {{ industry.name }}</h2>
+                <p class="body-large text-muted">AI can transform how {{ industry.name|lower }} businesses operate — from automation to predictive insight.</p>
+                <div class="flex gap-4 flex-wrap mt-6 justify-center">
+                    <a href="{% url 'start_project' %}" class="btn btn-primary">Explore AI for {{ industry.name }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== OTHER INDUSTRIES ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="More Industries" title="Explore other sectors" align="center" %}
+        <div class="grid grid-3">
+            {% for other in industries %}
+            {% if other.slug != industry.slug %}
+            {% include "components/industry-card.html" with industry=other %}
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+{% include "components/cta.html" with eyebrow="Let's Talk" title="Ready to transform {{ industry.name }}?" subtitle="Tell us about your business and we'll design the right solution." %}
+{% endblock %}

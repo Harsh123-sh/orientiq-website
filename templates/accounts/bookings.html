@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Bookings — Orientiq{% endblock %}
+{% block meta_description %}View your Orientiq demo reservations.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">My Account</span>
+        <h1>My Bookings</h1>
+        <p>All your demo reservations, in one place.</p>
+    </div>
+</section>
+
+<section class="section client-portal">
+    <div class="container">
+        {% if messages %}
+        <div class="auth-messages mb-6">
+            {% for message in messages %}
+            <div class="form-success">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="flex-between mb-6">
+            <p class="body-small text-muted">{{ count }} booking{{ count|pluralize }}</p>
+            <a href="{% url 'travel_search' %}" class="btn btn-primary btn-sm">+ New Booking</a>
+        </div>
+
+        {% for booking in bookings %}
+        <article class="card client-booking-card mb-6">
+            <div class="flex-between mb-4">
+                <div>
+                    <h3 class="text-h4">{{ booking.booking_reference }}</h3>
+                    <p class="body-small text-muted">{{ booking.get_booking_type_display }} • {{ booking.created_at|date:"D, d M Y H:i" }}</p>
+                </div>
+                <div class="flex gap-2">
+                    {% if booking.is_demo %}<span class="badge-demo">Demo</span>{% endif %}
+                    <span class="badge-status {{ booking.status }}">{{ booking.get_status_display }}</span>
+                </div>
+            </div>
+            <div class="divider"></div>
+            {% for item in booking.items.all %}
+            <div class="flex-between mt-4">
+                <div>
+                    <p class="body-small">{{ item.title }}</p>
+                    <p class="caption text-muted">{{ item.route_or_destination|default:"—" }}{% if item.start_date %} • {{ item.start_date|date:"d M Y" }}{% endif %}</p>
+                </div>
+                <p class="body-large"><strong>{{ item.price|floatformat:2 }} {{ item.currency }}</strong></p>
+            </div>
+            {% empty %}
+            <p class="body-small text-muted mt-4">No inventory recorded.</p>
+            {% endfor %}
+            <div class="divider mt-4"></div>
+            <div class="flex-between mt-4">
+                <p class="body-small text-muted">Total</p>
+                <p class="body-large"><strong>{{ booking.total|floatformat:2 }} {{ booking.currency }}</strong></p>
+            </div>
+            <div class="booking-actions mt-4">
+                <a href="{% url 'user_booking_detail' booking.booking_reference %}" class="btn btn-secondary btn-sm">View Details</a>
+            </div>
+        </article>
+        {% empty %}
+        <div class="card empty-state">
+            <div class="section-heading">
+                <span class="eyebrow">No bookings yet</span>
+                <h2>You have no demo reservations</h2>
+                <p>Search flights, hotels, or activities to create your first demo booking.</p>
+            </div>
+            <div class="booking-actions mt-4">
+                <a href="{% url 'travel_search' %}" class="btn btn-primary">Start Travel Search</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

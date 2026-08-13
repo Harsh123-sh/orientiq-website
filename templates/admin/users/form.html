@@ -1,0 +1,51 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Edit User — {{ item.username }}{% endblock %}
+{% block page_title %}Edit User{% endblock %}
+
+{% block content %}
+<div class="admin-form-card">
+    <form method="post">
+        {% csrf_token %}
+        <div class="admin-form-grid">
+            <div class="form-group">
+                <label class="form-label" for="first_name">First Name</label>
+                <input type="text" id="first_name" name="first_name" class="form-control" value="{{ item.first_name|default:"" }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="last_name">Last Name</label>
+                <input type="text" id="last_name" name="last_name" class="form-control" value="{{ item.last_name|default:"" }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" value="{{ item.email|default:"" }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="username">Username</label>
+                <input type="text" id="username" class="form-control" value="{{ item.username }}" disabled>
+            </div>
+            {% if user.profile.is_super_admin %}
+            <div class="form-group">
+                <label class="form-label" for="role">Role</label>
+                <select id="role" name="role" class="form-control">
+                    <option value="super_admin" {% if profile.role == "super_admin" %}selected{% endif %}>Super Admin</option>
+                    <option value="admin" {% if profile.role == "admin" %}selected{% endif %}>Admin</option>
+                    <option value="client" {% if profile.role == "client" %}selected{% endif %}>Client</option>
+                </select>
+            </div>
+            {% endif %}
+            <div class="form-group">
+                <label class="checkbox-group">
+                    <input type="checkbox" name="is_active" {% if item.is_active %}checked{% endif %}>
+                    <span>Active</span>
+                </label>
+            </div>
+        </div>
+        <div class="admin-form-actions">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{% url 'admin_user_list' %}" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

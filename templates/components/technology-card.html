@@ -1,0 +1,11 @@
+    <div class="card card-technology">
+    <div class="card-icon">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+    </div>
+    <h3>{{ category }}</h3>
+    <div class="flex gap-2 flex-wrap justify-center mt-4">
+        {% for item in items %}
+        <span class="badge">{{ item }}</span>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Booking {{ booking.booking_reference }} — Orientiq{% endblock %}
+{% block meta_description %}Booking detail for your Orientiq demo reservation.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">My Account</span>
+        <h1>Booking Detail</h1>
+        <p>{{ booking.booking_reference }} • {{ booking.get_booking_type_display }}</p>
+    </div>
+</section>
+
+<section class="section client-portal">
+    <div class="container">
+        <div class="demo-banner" role="alert">
+            <span class="demo-banner-icon" aria-hidden="true">!</span>
+            <div>
+                <h2>DEMO RESERVATION</h2>
+                <p>{{ demo_disclaimer }}</p>
+            </div>
+        </div>
+
+        <div class="booking-grid">
+            <div class="booking-stack">
+                <div class="card">
+                    <div class="flex-between mb-4">
+                        <div>
+                            {% if booking.is_demo %}<span class="badge-demo">Demo</span>{% endif %}
+                            <h2 class="text-h4 mt-2">{{ booking.booking_reference }}</h2>
+                        </div>
+                        <span class="badge-status {{ booking.status }}">{{ booking.get_status_display }}</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="grid grid-2">
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Booking Type</p>
+                            <p class="body-small">{{ booking.get_booking_type_display }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Status</p>
+                            <p class="body-small">{{ booking.get_status_display }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Created</p>
+                            <p class="body-small">{{ booking.created_at|date:"D, d M Y H:i" }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Currency</p>
+                            <p class="body-small">{{ booking.currency }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2 class="text-h4 mb-4">Inventory Details</h2>
+                    <div class="divider"></div>
+                    {% for item in items %}
+                    <div class="grid grid-2">
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Item</p>
+                            <p class="body-small">{{ item.get_item_type_display }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Title</p>
+                            <p class="body-small">{{ item.title }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Route / Destination</p>
+                            <p class="body-small">{{ item.route_or_destination|default:"—" }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Dates</p>
+                            <p class="body-small">
+                                {% if item.start_date %}{{ item.start_date|date:"d M Y" }}{% if item.end_date %} → {{ item.end_date|date:"d M Y" }}{% endif %}{% else %}—{% endif %}
+                            </p>
+                        </div>
+                        {% if item.departure_time %}
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Departure</p>
+                            <p class="body-small">{{ item.departure_time }}</p>
+                        </div>
+                        {% endif %}
+                        {% if item.arrival_time %}
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Arrival</p>
+                            <p class="body-small">{{ item.arrival_time }}</p>
+                        </div>
+                        {% endif %}
+                        {% if item.duration %}
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Duration</p>
+                            <p class="body-small">{{ item.duration }}</p>
+                        </div>
+                        {% endif %}
+                        {% if item.cabin_class %}
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Cabin Class</p>
+                            <p class="body-small">{{ item.cabin_class|title }}</p>
+                        </div>
+                        {% endif %}
+                        {% if item.stops is not None %}
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Stops</p>
+                            <p class="body-small">{{ item.stops }}</p>
+                        </div>
+                        {% endif %}
+                        {% if item.room_type %}
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Room Type</p>
+                            <p class="body-small">{{ item.room_type }}</p>
+                        </div>
+                        {% endif %}
+                        {% if item.amenities %}
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Amenities</p>
+                            <p class="body-small">{{ item.amenities|join:", " }}</p>
+                        </div>
+                        {% endif %}
+                        {% if item.cancellation_policy %}
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Cancellation Policy</p>
+                            <p class="body-small">{{ item.cancellation_policy }}</p>
+                        </div>
+                        {% endif %}
+                        {% if item.category %}
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Category</p>
+                            <p class="body-small">{{ item.category }}</p>
+                        </div>
+                        {% endif %}
+                        {% if item.meeting_point %}
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Meeting Point</p>
+                            <p class="body-small">{{ item.meeting_point }}</p>
+                        </div>
+                        {% endif %}
+                        {% if item.description %}
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Description</p>
+                            <p class="body-small">{{ item.description }}</p>
+                        </div>
+                        {% endif %}
+                        <div class="mb-4">
+                            <p class="caption text-muted mb-1">Price</p>
+                            <p class="body-small">{{ item.price|floatformat:2 }} {{ item.currency }}</p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="body-small text-muted">No inventory recorded.</p>
+                    {% endfor %}
+                </div>
+
+                <div class="card">
+                    <h2 class="text-h4 mb-4">Traveler / Guest Details</h2>
+                    <div class="divider"></div>
+                    {% for traveler in travelers %}
+                    <div class="grid grid-2 mb-4">
+                        <div class="mb-2">
+                            <p class="caption text-muted mb-1">Name</p>
+                            <p class="body-small">{{ traveler.first_name }}{% if traveler.last_name %} {{ traveler.last_name }}{% endif %}</p>
+                        </div>
+                        <div class="mb-2">
+                            <p class="caption text-muted mb-1">Email</p>
+                            <p class="body-small">{{ traveler.email|default:"—" }}</p>
+                        </div>
+                        <div class="mb-2">
+                            <p class="caption text-muted mb-1">Phone</p>
+                            <p class="body-small">{{ traveler.phone|default:"—" }}</p>
+                        </div>
+                        <div class="mb-2">
+                            <p class="caption text-muted mb-1">Type</p>
+                            <p class="body-small">{{ traveler.get_traveler_type_display }}</p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="body-small text-muted">No traveler information recorded.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <aside class="price-summary" aria-label="Price summary">
+                <span class="eyebrow">Amount</span>
+                <h2 class="text-h4 mb-4">Summary</h2>
+                <div class="price-row"><span>Subtotal</span><span>{{ booking.subtotal|floatformat:2 }} {{ booking.currency }}</span></div>
+                {% if booking.taxes %}<div class="price-row"><span>Taxes &amp; Fees</span><span>{{ booking.taxes|floatformat:2 }} {{ booking.currency }}</span></div>{% endif %}
+                <div class="price-total-row"><span>Total</span><span class="price-total-value">{{ booking.total|floatformat:2 }} {{ booking.currency }}</span></div>
+                <p class="caption text-muted mt-4">{{ demo_disclaimer }}</p>
+                <div class="booking-actions mt-6">
+                    <a href="{% url 'user_booking_list' %}" class="btn btn-secondary">Back to My Bookings</a>
+                    <a href="{% url 'travel_search' %}" class="btn btn-ghost">Back to Travel</a>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}

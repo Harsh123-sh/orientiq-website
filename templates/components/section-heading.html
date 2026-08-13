@@ -1,0 +1,12 @@
+{% load static %}
+<div class="section-heading{% if align == 'center' %} section-heading-center{% endif %}">
+    {% if eyebrow %}
+    <span class="eyebrow">{{ eyebrow }}</span>
+    {% endif %}
+    {% if title %}
+    <h2>{{ title }}</h2>
+    {% endif %}
+    {% if subtitle %}
+    <p>{{ subtitle }}</p>
+    {% endif %}
+</div>

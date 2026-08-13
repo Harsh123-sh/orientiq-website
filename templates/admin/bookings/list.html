@@ -1,0 +1,67 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Bookings{% endblock %}
+{% block page_title %}Bookings{% endblock %}
+
+{% block content %}
+<div class="admin-toolbar">
+    <form method="get" class="flex gap-2" aria-label="Filter bookings">
+        <label class="sr-only" for="booking-search">Search booking reference</label>
+        <input type="text" id="booking-search" name="q" class="form-control" placeholder="Search booking reference..." value="{{ request.GET.q }}">
+        <label class="sr-only" for="booking-status">Booking status</label>
+        <select id="booking-status" name="status" class="form-control">
+            <option value="">All statuses</option>
+            {% for value, label in status_choices %}
+            <option value="{{ value }}" {% if request.GET.status == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <label class="sr-only" for="booking-type">Booking type</label>
+        <select id="booking-type" name="booking_type" class="form-control">
+            <option value="">All types</option>
+            {% for value, label in booking_type_choices %}
+            <option value="{{ value }}" {% if request.GET.booking_type == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-secondary">Search</button>
+        <a href="{% url 'admin_booking_list' %}" class="btn btn-ghost">Clear</a>
+    </form>
+</div>
+
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <caption class="sr-only">Orientiq bookings</caption>
+        <thead>
+            <tr><th>Reference</th><th>User</th><th>Type</th><th>Status</th><th>Total</th><th>Demo</th><th>Created</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td><a href="{% url 'admin_booking_detail' item.booking_reference %}" class="link">{{ item.booking_reference }}</a></td>
+                <td>{{ item.user.username|default:"—" }}</td>
+                <td><span class="badge-status {{ item.booking_type }}">{{ item.get_booking_type_display }}</span></td>
+                <td><span class="badge-status {{ item.status }}">{{ item.get_status_display }}</span></td>
+                <td>{{ item.total|floatformat:2 }} {{ item.currency }}</td>
+                <td>{% if item.is_demo %}✓{% else %}—{% endif %}</td>
+                <td>{{ item.created_at|date:"M d, Y H:i" }}</td>
+                <td><a href="{% url 'admin_booking_detail' item.booking_reference %}" class="btn btn-sm btn-secondary">View</a></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="8" class="text-muted">No bookings found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if items.has_other_pages %}
+<div class="admin-pagination">
+    {% if items.has_previous %}
+    <a href="?page={{ items.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.booking_type %}&booking_type={{ request.GET.booking_type }}{% endif %}">←</a>
+    {% endif %}
+    <span class="current">Page {{ items.number }} of {{ items.paginator.num_pages }}</span>
+    {% if items.has_next %}
+    <a href="?page={{ items.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.booking_type %}&booking_type={{ request.GET.booking_type }}{% endif %}">→</a>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

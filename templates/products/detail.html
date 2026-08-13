@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }} — Orientiq Products{% endblock %}
+{% block meta_description %}{{ product.description }}{% endblock %}
+
+{% block content %}
+<!-- ==================== HERO ==================== -->
+<section class="page-hero">
+    <div class="container">
+        <div class="flex gap-3 flex-wrap mb-4">
+            <span class="badge">{{ product.category }}</span>
+            <span class="badge badge-info">{{ product.status_label }}</span>
+        </div>
+        <h1>{{ product.name }}</h1>
+        <p>{{ product.description }}</p>
+    </div>
+</section>
+
+<!-- ==================== OVERVIEW ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-2">
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Overview" title="Product vision" %}
+                <p class="body-large text-muted mb-4">{{ product.long_description }}</p>
+                <div class="card">
+                    <h4 class="mb-3">What it will solve</h4>
+                    <p class="body-small text-muted">{{ product.solves }}</p>
+                </div>
+            </div>
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Vision" title="Why it matters" %}
+                <p class="body text-muted mb-6">{{ product.vision }}</p>
+                <h3 class="mb-4">Key planned capabilities</h3>
+                <ul class="feature-list">
+                    {% for feature in product.key_features %}
+                    <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== TECHNOLOGY ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="Technology Direction" title="Planned technology stack" subtitle="A modern, proven technology foundation." align="center" %}
+        <div class="flex gap-3 flex-wrap justify-center">
+            {% for tech in product.technologies %}
+            <span class="badge">{{ tech }}</span>
+            {% endfor %}
+        </div>
+        <div class="card mt-8">
+            <p class="caption text-muted">{{ product.status_note }}</p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== STATUS CTA ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="card cta-card">
+            <div class="cta-content">
+                <span class="eyebrow">{{ product.status_label }}</span>
+                <h2>Stay informed about {{ product.short_name }}</h2>
+                <p class="body-large text-muted">This product is in early planning. We'll share updates as it develops.</p>
+                <div class="flex gap-4 flex-wrap mt-6 justify-center">
+                    <a href="{% url 'start_project' %}" class="btn btn-primary btn-lg">Notify Me</a>
+                    <a href="{% url 'company_contact' %}" class="btn btn-outline btn-lg">Contact Orientiq</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== OTHER PRODUCTS ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="More Products" title="Explore other products" align="center" %}
+        <div class="grid grid-3">
+            {% for other in products %}
+            {% if other.slug != product.slug %}
+            {% include "components/product-card.html" with product=other %}
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+{% include "components/cta.html" with eyebrow="Build With Us" title="Build the Next Product With Orientiq" subtitle="Have an idea for a digital product? Orientiq can help transform the idea into a scalable technology solution." %}
+{% endblock %}
