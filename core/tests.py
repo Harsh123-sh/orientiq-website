@@ -296,14 +296,41 @@ class PublicRouteTests(OrientiqTestCase):
     def test_all_public_routes(self):
         routes = [
             "/", "/about/", "/services/", "/services/ai-automation/",
-            "/industries/", "/industries/real-estate/", "/portfolio/",
-            "/products/", "/products/ai-travel/", "/technologies/",
+            "/industries/", "/industries/real-estate/", "/products/",
+            "/products/ai-travel/", "/technologies/",
             "/company/", "/company/about/", "/start-project/",
             "/design-system/", "/accounts/login/", "/accounts/register/",
         ]
         for route in routes:
             resp = self.client.get(route)
             self.assertEqual(resp.status_code, 200, f"Failed on {route}")
+
+    def test_portfolio_route_is_unavailable(self):
+        resp = self.client.get("/portfolio/")
+        self.assertEqual(resp.status_code, 404)
+
+    def test_product_pages_feature_updated_content(self):
+        products_index = self.client.get("/products/")
+        self.assertContains(products_index, "Product ideas built for real-world problems")
+
+        ai_travel = self.client.get("/products/ai-travel/")
+        self.assertContains(ai_travel, "Travelers often move between booking platforms")
+
+        society = self.client.get("/products/society-management/")
+        self.assertContains(society, "resident communication, maintenance requests, and security processes")
+
+        business = self.client.get("/products/business-ai/")
+        self.assertContains(business, "governed and easy to trust")
+
+    def test_technologies_page_has_premium_content(self):
+        resp = self.client.get("/technologies/")
+        self.assertContains(resp, "Technology that powers better products")
+        self.assertContains(resp, "Our Technology Approach")
+        self.assertContains(resp, "Core Technology Stack")
+        self.assertContains(resp, "Engineering Practices")
+        self.assertContains(resp, "Web & Application Development", html=True)
+        self.assertContains(resp, "AI & Machine Learning", html=True)
+        self.assertContains(resp, "Product & Design", html=True)
 
     def test_404_for_invalid_product(self):
         resp = self.client.get("/products/invalid-slug/")

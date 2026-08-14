@@ -46,7 +46,7 @@
 <!-- ==================== TECHNOLOGY ==================== -->
 <section class="section">
     <div class="container">
-        {% include "components/section-heading.html" with eyebrow="Technology Direction" title="Planned technology stack" subtitle="A modern, proven technology foundation." align="center" %}
+        {% include "components/section-heading.html" with eyebrow="Technology Direction" title="Planned technology stack" subtitle="A modern, proven technology foundation designed for scale and maintainability." align="center" %}
         <div class="flex gap-3 flex-wrap justify-center">
             {% for tech in product.technologies %}
             <span class="badge">{{ tech }}</span>
@@ -65,9 +65,9 @@
             <div class="cta-content">
                 <span class="eyebrow">{{ product.status_label }}</span>
                 <h2>Stay informed about {{ product.short_name }}</h2>
-                <p class="body-large text-muted">This product is in early planning. We'll share updates as it develops.</p>
+                <p class="body-large text-muted">This product is in planning and early development, and we’ll share updates as it takes shape.</p>
                 <div class="flex gap-4 flex-wrap mt-6 justify-center">
-                    <a href="{% url 'start_project' %}" class="btn btn-primary btn-lg">Notify Me</a>
+                    <a href="{% url 'start_project' %}" class="btn btn-primary btn-lg">Discuss Your Project →</a>
                     <a href="{% url 'company_contact' %}" class="btn btn-outline btn-lg">Contact Orientiq</a>
                 </div>
             </div>
@@ -90,5 +90,5 @@
 </section>
 
 <!-- ==================== CTA ==================== -->
-{% include "components/cta.html" with eyebrow="Build With Us" title="Build the Next Product With Orientiq" subtitle="Have an idea for a digital product? Orientiq can help transform the idea into a scalable technology solution." %}
+{% include "components/cta.html" with eyebrow="Discuss Your Project" title="Ready to build something better?" subtitle="Tell us about your project, business needs, or technical challenge. We'll help you find the right solution." primary_label="Discuss Your Project →" %}
 {% endblock %}

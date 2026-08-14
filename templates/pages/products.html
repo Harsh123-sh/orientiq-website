@@ -9,8 +9,8 @@
 <section class="page-hero">
     <div class="container">
         <span class="eyebrow">Orientiq Products</span>
-        <h1>Technology Products Built for the Future</h1>
-        <p>Explore intelligent digital products designed and developed by Orientiq to solve real-world business and consumer challenges.</p>
+        <h1>Product ideas built for real-world problems</h1>
+        <p>We are building focused digital products for travel, communities, and business operations — each designed to solve a practical challenge with clarity and long-term value.</p>
         <div class="flex gap-4 flex-wrap mt-6">
             <a href="#featured" class="btn btn-primary btn-lg">Explore Products</a>
         </div>
@@ -20,7 +20,7 @@
 <!-- ==================== FEATURED PRODUCTS ==================== -->
 <section class="section" id="featured">
     <div class="container">
-        {% include "components/section-heading.html" with eyebrow="Featured Products" title="What we're building" subtitle="A growing ecosystem of intelligent digital products." align="center" %}
+        {% include "components/section-heading.html" with eyebrow="Featured Products" title="What we're building" subtitle="A focused portfolio of products designed to improve everyday operations, planning, and decision-making." align="center" %}
         <div class="grid grid-3">
             {% for product in products %}
             {% if product.featured %}
@@ -34,7 +34,7 @@
 <!-- ==================== UPCOMING PRODUCTS ==================== -->
 <section class="section">
     <div class="container">
-        {% include "components/section-heading.html" with eyebrow="Upcoming Products" title="Coming soon from Orientiq" subtitle="Products in planning and early development — designed to solve real problems." align="center" %}
+        {% include "components/section-heading.html" with eyebrow="Roadmap" title="Planned and early-stage products" subtitle="Each product is still in planning or development, with the goal of solving a real operational problem." align="center" %}
         <div class="grid grid-3">
             {% for product in products %}
             {% if not product.featured %}
@@ -48,7 +48,7 @@
 <!-- ==================== PRODUCT ECOSYSTEM ==================== -->
 <section class="section">
     <div class="container">
-        {% include "components/section-heading.html" with eyebrow="Product Ecosystem" title="One company, a growing family of products" subtitle="How Orientiq's product lines fit together." align="center" %}
+        {% include "components/section-heading.html" with eyebrow="Product Ecosystem" title="One company, a growing set of product directions" subtitle="How Orientiq's product lines fit together across different industries and use cases." align="center" %}
         <div class="card ecosystem-card">
             <div class="ecosystem-root">
                 <span class="eyebrow">Orientiq</span>
@@ -72,5 +72,5 @@
 </section>
 
 <!-- ==================== CTA ==================== -->
-{% include "components/cta.html" with eyebrow="Build With Us" title="Build the Next Product With Orientiq" subtitle="Have an idea for a digital product? Orientiq can help transform the idea into a scalable technology solution." %}
+{% include "components/cta.html" with eyebrow="Discuss Your Project" title="Ready to build something better?" subtitle="Tell us about your project, business needs, or technical challenge. We’ll help you find the right solution." primary_label="Discuss Your Project →" %}
 {% endblock %}

@@ -26,7 +26,7 @@
                 {% include "components/section-heading.html" with eyebrow="Industry Challenges" title="The problems we solve" subtitle="Every industry has unique pain points. We build technology around them." %}
                 <ul class="feature-list">
                     {% for challenge in industry.challenges %}
-                    <li>{{ challenge }}</li>
+                    <li style="margin-bottom:0.5rem;">{{ challenge }}</li>
                     {% endfor %}
                 </ul>
             </div>
@@ -34,13 +34,29 @@
                 {% include "components/section-heading.html" with eyebrow="Our Solutions" title="How we help" %}
                 <ul class="feature-list">
                     {% for solution in industry.solutions %}
-                    <li>{{ solution }}</li>
+                    <li style="margin-bottom:0.5rem;">{{ solution }}</li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
 </section>
+
+<!-- ==================== BENEFITS ==================== -->
+{% if industry.benefits %}
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="Benefits" title="Why it matters" subtitle="How our solutions create value for your business." align="center" %}
+        <div class="container-narrow">
+            <ul class="feature-list">
+                {% for benefit in industry.benefits %}
+                <li style="margin-bottom:0.75rem;">{{ benefit }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>
+{% endif %}
 
 <!-- ==================== USE CASES ==================== -->
 <section class="section">
@@ -57,21 +73,22 @@
     </div>
 </section>
 
-<!-- ==================== AI OPPORTUNITIES ==================== -->
+<!-- ==================== FAQ ==================== -->
+{% if industry.faqs %}
 <section class="section">
     <div class="container">
-        <div class="card cta-card">
-            <div class="cta-content">
-                <span class="eyebrow">AI Opportunities</span>
-                <h2>Intelligence for {{ industry.name }}</h2>
-                <p class="body-large text-muted">AI can transform how {{ industry.name|lower }} businesses operate — from automation to predictive insight.</p>
-                <div class="flex gap-4 flex-wrap mt-6 justify-center">
-                    <a href="{% url 'start_project' %}" class="btn btn-primary">Explore AI for {{ industry.name }}</a>
-                </div>
+        {% include "components/section-heading.html" with eyebrow="FAQ" title="Common questions" subtitle="Answers to questions we hear most often." align="center" %}
+        <div class="container-narrow">
+            {% for faq in industry.faqs %}
+            <div class="faq-item">
+                <h4>{{ faq.q }}</h4>
+                <p>{{ faq.a }}</p>
             </div>
+            {% endfor %}
         </div>
     </div>
 </section>
+{% endif %}
 
 <!-- ==================== OTHER INDUSTRIES ==================== -->
 <section class="section">
@@ -88,5 +105,5 @@
 </section>
 
 <!-- ==================== CTA ==================== -->
-{% include "components/cta.html" with eyebrow="Let's Talk" title="Ready to transform {{ industry.name }}?" subtitle="Tell us about your business and we'll design the right solution." %}
+{% include "components/cta.html" with eyebrow="Discuss Your Project" title="Ready to build something better?" subtitle="Tell us about your project, business needs, or technical challenge. We'll help you identify the right approach and next steps." primary_label="Discuss Your Project →" %}
 {% endblock %}

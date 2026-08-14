@@ -53,7 +53,6 @@ class KnowledgeFallbackProvider(BaseProvider):
         industries = context["industries"]
         products = context["products"]
         technologies = context["technologies"]
-        portfolio = context["portfolio"]
 
         # Services
         if any(k in msg for k in ["service", "offer", "provide", "do you do", "what do you"]):
@@ -87,14 +86,6 @@ class KnowledgeFallbackProvider(BaseProvider):
             return (
                 f"Orientiq is building a family of products including {names}. "
                 f"These are showcased at /products/ and are currently in planning or early development."
-            )
-
-        # Portfolio
-        if any(k in msg for k in ["portfolio", "work", "case stud", "project"]):
-            titles = ", ".join(p["title"] for p in portfolio[:3])
-            return (
-                f"Orientiq has delivered a range of projects including {titles}. "
-                f"Explore the full portfolio at /portfolio/."
             )
 
         # Start a project
@@ -139,7 +130,7 @@ class KnowledgeFallbackProvider(BaseProvider):
         # Default
         return (
             "I'm Orientiq AI, designed to help you understand Orientiq — our services, "
-            "industries, technologies, products, portfolio, and project process. "
+            "industries, technologies, products, and project process. "
             "If you have a question about those, I'd be happy to help. "
             "For project inquiries, you can also visit /start-project/."
         )
@@ -237,8 +228,6 @@ def _suggestions_for(message, context):
         suggestions.append({"label": "View Industries", "url": "/industries/"})
     if any(k in msg for k in ["product", "platform"]):
         suggestions.append({"label": "View Products", "url": "/products/"})
-    if any(k in msg for k in ["portfolio", "work", "case stud"]):
-        suggestions.append({"label": "View Portfolio", "url": "/portfolio/"})
     if any(k in msg for k in ["technolog", "stack", "tools"]):
         suggestions.append({"label": "View Technologies", "url": "/technologies/"})
     if any(k in msg for k in ["about", "who", "company"]):

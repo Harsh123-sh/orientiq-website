@@ -8,16 +8,20 @@
 <!-- ==================== HERO ==================== -->
 <section class="page-hero">
     <div class="container">
-        <span class="eyebrow">Our Services</span>
-        <h1>End-to-end digital capabilities</h1>
-        <p>From intelligent automation to enterprise platforms, we deliver the technology your business needs to grow.</p>
+        <span class="eyebrow">OUR SERVICES</span>
+        <h1>Digital Solutions Built for Your Business</h1>
+        <p>We design and develop modern websites, applications, software, SaaS platforms, AI solutions, and digital systems tailored to your business needs.</p>
+        <div class="mt-6">
+            <a href="{% url 'start_project' %}" class="btn btn-primary btn-lg">Start a Project</a>
+        </div>
     </div>
 </section>
 
 <!-- ==================== SERVICES GRID ==================== -->
 <section class="section">
     <div class="container">
-        <div class="grid grid-3">
+        {% include "components/section-heading.html" with eyebrow="What We Build" title="What We Build" subtitle="From websites and applications to AI-powered systems and cloud solutions, we build technology that helps businesses operate, grow, and scale." align="center" %}
+        <div class="grid grid-3 mt-6">
             {% for service in services %}
             {% include "components/service-card.html" %}
             {% endfor %}
@@ -25,17 +29,40 @@
     </div>
 </section>
 
-<!-- ==================== PROCESS ==================== -->
+<!-- ==================== AI DIFFERENTIATOR ==================== -->
 <section class="section">
     <div class="container">
-        {% include "components/section-heading.html" with eyebrow="How We Work" title="A proven process" subtitle="Every engagement follows a transparent, collaborative path to success." align="center" %}
+        {% include "components/section-heading.html" with eyebrow="AI-POWERED" title="AI That Works With Your Business" subtitle="We build practical AI capabilities that help businesses understand information, automate workflows, assist customers, and make better decisions." align="center" %}
+        <div class="grid grid-4 mt-6">
+            {% for feature in ai_features %}
+            <div class="card card-technology"><h3>{{ feature }}</h3></div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== HOW WE WORK ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="How We Work" title="From Idea to Digital Solution" subtitle="" align="center" %}
         <div class="process-grid">
-            {% include "components/process-step.html" with number="01" title="Discovery" description="We understand your goals, users, and constraints." %}
-            {% include "components/process-step.html" with number="02" title="Strategy" description="We define the architecture, roadmap, and success metrics." %}
-            {% include "components/process-step.html" with number="03" title="Design" description="We craft premium, user-centered experiences." %}
-            {% include "components/process-step.html" with number="04" title="Development" description="We build in transparent, testable increments." %}
-            {% include "components/process-step.html" with number="05" title="Launch" description="We deploy with confidence and zero downtime." %}
-            {% include "components/process-step.html" with number="06" title="Growth" description="We iterate, optimize, and scale what works." %}
+            {% include "components/process-step.html" with number="01" title="Understand" description="We understand your business, goals, users, and requirements." %}
+            {% include "components/process-step.html" with number="02" title="Design" description="We plan the experience, architecture, and solution." %}
+            {% include "components/process-step.html" with number="03" title="Develop" description="We build, integrate, test, and refine the product." %}
+            {% include "components/process-step.html" with number="04" title="Launch & Support" description="We help deploy the solution and provide ongoing support." %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== WHY ORIENTIQ ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="Why Orientiq" title="Technology Designed Around Your Business" subtitle="" align="center" %}
+        <div class="grid grid-4 mt-6">
+            <div class="card card-service"><h3>Business-Focused</h3><p>Solutions built around real business requirements.</p></div>
+            <div class="card card-service"><h3>Modern Technology</h3><p>Current technologies and scalable architectures.</p></div>
+            <div class="card card-service"><h3>AI-Ready</h3><p>Practical AI integrated where it creates real value.</p></div>
+            <div class="card card-service"><h3>Built to Scale</h3><p>Systems designed for future growth and expansion.</p></div>
         </div>
     </div>
 </section>

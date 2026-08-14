@@ -15,7 +15,7 @@
                 <p class="lead">AI-powered digital products, intelligent platforms, and scalable technology solutions for ambitious businesses.</p>
                 <div class="hero-actions">
                     <a href="{% url 'start_project' %}" class="btn btn-primary btn-lg">Start a Project</a>
-                    <a href="{% url 'portfolio' %}" class="btn btn-outline btn-lg">Explore Our Work</a>
+                    <a href="{% url 'services' %}" class="btn btn-outline btn-lg">View Services</a>
                 </div>
             </div>
             <div class="hero-visual" aria-hidden="true">
@@ -23,11 +23,11 @@
                     <span class="tech-orbit tech-orbit-one"></span><span class="tech-orbit tech-orbit-two"></span><span class="tech-orbit tech-orbit-three"></span><span class="tech-orbit tech-orbit-four"></span><span class="tech-orbit tech-orbit-five"></span>
                     <span class="tech-particle particle-one"></span><span class="tech-particle particle-two"></span><span class="tech-particle particle-three"></span><span class="tech-particle particle-four"></span><span class="tech-particle particle-five"></span><span class="tech-particle particle-six"></span>
                     <div class="tech-core" role="presentation"></div>
-                    <div class="tech-node node-ai"><div class="node-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3a3 3 0 0 1 3 3 3 3 0 0 1 3 3 3 3 0 0 1 3 3"></path><path d="M12 3a3 3 0 0 0-3 3 3 3 0 0 0-3 3 3 3 0 0 0-3 3"></path><rect x="3" y="12" width="6" height="6" rx="1"></rect><rect x="15" y="12" width="6" height="6" rx="1"></rect></svg></div><div><h4>AI & Automation</h4><p>Intelligent systems in production</p></div></div>
-                    <div class="tech-node node-products"><div class="node-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div><div><h4>Digital Products</h4><p>Platforms engineered for scale</p></div></div>
-                    <div class="tech-node node-data"><div class="node-icon"><svg class="icon" viewBox="0 0 24 24"><line x1="4" y1="20" x2="4" y2="10"></line><line x1="10" y1="20" x2="10" y2="4"></line><line x1="16" y1="20" x2="16" y2="13"></line><line x1="22" y1="20" x2="22" y2="7"></line></svg></div><div><h4>Data & Analytics</h4><p>Insights that drive decisions</p></div></div>
-                    <div class="tech-node node-cloud"><div class="node-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div><div><h4>Cloud & DevOps</h4><p>Resilient, automated infrastructure</p></div></div>
-                    <div class="tech-node node-enterprise"><div class="node-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div><div><h4>Enterprise Solutions</h4><p>Custom software that empowers</p></div></div>
+                    <div class="tech-node node-ai"><div class="node-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3a3 3 0 0 1 3 3 3 3 0 0 1 3 3 3 3 0 0 1 3 3"></path><path d="M12 3a3 3 0 0 0-3 3 3 3 0 0 0-3 3 3 3 0 0 0-3 3"></path><rect x="3" y="12" width="6" height="6" rx="1"></rect><rect x="15" y="12" width="6" height="6" rx="1"></rect></svg></div><div><h4>AI Solutions</h4><p>Practical AI for operations and growth</p></div></div>
+                    <div class="tech-node node-products"><div class="node-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div><div><h4>Web Development</h4><p>Modern experiences built for performance</p></div></div>
+                    <div class="tech-node node-data"><div class="node-icon"><svg class="icon" viewBox="0 0 24 24"><line x1="4" y1="20" x2="4" y2="10"></line><line x1="10" y1="20" x2="10" y2="4"></line><line x1="16" y1="20" x2="16" y2="13"></line><line x1="22" y1="20" x2="22" y2="7"></line></svg></div><div><h4>Custom Software</h4><p>Built around your unique workflows</p></div></div>
+                    <div class="tech-node node-cloud"><div class="node-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div><div><h4>SaaS Platforms</h4><p>Scalable products that grow with you</p></div></div>
+                    <div class="tech-node node-enterprise"><div class="node-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div><div><h4>Business Dashboards</h4><p>Clear visibility into what matters most</p></div></div>
                 </div>
             </div>
         </div>
@@ -91,10 +91,10 @@
 <section class="section">
     <div class="container">
         <div class="grid grid-4">
-            {% include "components/stat-card.html" with value="50+" label="Digital Solutions" %}
-            {% include "components/stat-card.html" with value="25+" label="Technologies" %}
-            {% include "components/stat-card.html" with value="10+" label="Industries" %}
-            {% include "components/stat-card.html" with value="Global" label="Delivery" %}
+            {% include "components/stat-card.html" with value="" label="Digital Solutions" %}
+            {% include "components/stat-card.html" with value="" label="Modern Technology" %}
+            {% include "components/stat-card.html" with value="" label="Multiple Industries" %}
+            {% include "components/stat-card.html" with value="" label="Future Ready" %}
         </div>
     </div>
 </section>
@@ -102,7 +102,7 @@
 <!-- ==================== WHAT WE BUILD ==================== -->
 <section class="section">
     <div class="container">
-        {% include "components/section-heading.html" with eyebrow="What We Build" title="Products that move businesses forward" subtitle="From intelligent automation to enterprise platforms, we engineer technology that delivers measurable results." align="center" %}
+        {% include "components/section-heading.html" with eyebrow="What We Build" title="Technology built to solve real business problems" subtitle="From intelligent automation and custom platforms to scalable digital products, we design solutions that help teams move faster and operate smarter." align="center" %}
         <div class="grid grid-4">
             {% for service in services %}
             {% include "components/service-card.html" %}
@@ -116,35 +116,36 @@
     <div class="container">
         <div class="grid grid-2">
             <div>
-                {% include "components/section-heading.html" with eyebrow="Why Orientiq" title="A partner, not just a vendor" subtitle="We combine strategic thinking with premium engineering to build technology that lasts." %}
+                {% include "components/section-heading.html" with eyebrow="Why Orientiq" title="A strategic technology partner for modern growth" subtitle="We combine business thinking, product clarity, and engineering execution to build solutions that perform for the long term." %}
                 <ul class="feature-list">
-                    <li>Strategic thinking — we align technology with your business goals</li>
-                    <li>Premium engineering — clean, scalable, maintainable code</li>
-                    <li>AI-first approach — intelligence built into every product</li>
-                    <li>Scalable architecture — designed to grow with you</li>
-                    <li>Long-term partnership — we stay invested in your success</li>
+                    <li>Business-Focused Thinking — strategy shaped around real operational goals</li>
+                    <li>Custom Solutions — systems designed around your process, not templates</li>
+                    <li>AI-Ready Approach — practical intelligence built into the right workflow</li>
+                    <li>Security &amp; Reliability — dependable foundations for critical operations</li>
+                    <li>Scalable Foundations — technology designed to evolve with your business</li>
+                    <li>Long-Term Partnership — we stay invested in your growth</li>
                 </ul>
             </div>
             <div class="grid grid-2">
                 <div class="card card-service">
                     <div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 7.2H22l-6 4.9 2.3 7.1-6.3-4.6-6.3 4.6L8 14.1 2 9.2h7.6L12 2z"></path></svg></div>
-                    <h3>Strategic</h3>
-                    <p>Technology aligned to outcomes.</p>
+                    <h3>Business-Focused Thinking</h3>
+                    <p>Strategy shaped around real goals.</p>
                 </div>
                 <div class="card card-service">
                     <div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></div>
-                    <h3>Premium</h3>
-                    <p>Engineering excellence, always.</p>
+                    <h3>Custom Solutions</h3>
+                    <p>Built around your workflow.</p>
                 </div>
                 <div class="card card-service">
                     <div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a3 3 0 0 1 3 3 3 3 0 0 1 3 3 3 3 0 0 1 3 3"></path><path d="M12 3a3 3 0 0 0-3 3 3 3 0 0 0-3 3 3 3 0 0 0-3 3"></path><rect x="3" y="12" width="6" height="6" rx="1"></rect><rect x="15" y="12" width="6" height="6" rx="1"></rect></svg></div>
-                    <h3>AI-First</h3>
-                    <p>Intelligence in every layer.</p>
+                    <h3>AI-Ready Approach</h3>
+                    <p>Practical intelligence in the right places.</p>
                 </div>
                 <div class="card card-service">
                     <div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div>
-                    <h3>Scalable</h3>
-                    <p>Built to grow without limits.</p>
+                    <h3>Scalable Foundations</h3>
+                    <p>Technology designed to evolve with you.</p>
                 </div>
             </div>
         </div>
@@ -184,19 +185,17 @@
 <!-- ==================== TECHNOLOGY ECOSYSTEM ==================== -->
 <section class="section">
     <div class="container">
-        {% include "components/section-heading.html" with eyebrow="Technology" title="A modern technology ecosystem" subtitle="We choose the right tools for each challenge — no dogma, just results." align="center" %}
+        {% include "components/section-heading.html" with eyebrow="Technology" title="A modern technology ecosystem" subtitle="We build with the tools that fit the problem — combining strong foundations, connected systems, and scalable product thinking." align="center" %}
         <div class="grid grid-4">
-            <div class="card card-technology"><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></div><h3>Frontend</h3><p class="body-small text-muted">HTML5 · CSS3 · JavaScript</p></div>
-            <div class="card card-technology"><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></div><h3>Backend</h3><p class="body-small text-muted">Python · Django · APIs</p></div>
-            <div class="card card-technology"><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg></div><h3>Mobile</h3><p class="body-small text-muted">Flutter · React Native</p></div>
-            <div class="card card-technology"><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a3 3 0 0 1 3 3 3 3 0 0 1 3 3 3 3 0 0 1 3 3"></path><path d="M12 3a3 3 0 0 0-3 3 3 3 0 0 0-3 3 3 3 0 0 0-3 3"></path><rect x="3" y="12" width="6" height="6" rx="1"></rect><rect x="15" y="12" width="6" height="6" rx="1"></rect></svg></div><h3>AI</h3><p class="body-small text-muted">TensorFlow · OpenAI</p></div>
-            <div class="card card-technology"><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg></div><h3>Database</h3><p class="body-small text-muted">PostgreSQL · Redis</p></div>
-            <div class="card card-technology"><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div><h3>Cloud</h3><p class="body-small text-muted">AWS · GCP · Azure</p></div>
-            <div class="card card-technology"><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg></div><h3>DevOps</h3><p class="body-small text-muted">Docker · Kubernetes</p></div>
-            <div class="card card-technology"><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div><h3>Security</h3><p class="body-small text-muted">OAuth · SSO · TLS</p></div>
+            <div class="card card-technology"><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></div><h3>Frontend</h3><p class="body-small text-muted">Responsive interfaces and polished user experiences</p></div>
+            <div class="card card-technology"><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></div><h3>Backend</h3><p class="body-small text-muted">Reliable systems, APIs, and business logic</p></div>
+            <div class="card card-technology"><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg></div><h3>Database</h3><p class="body-small text-muted">Structured data that supports scale and insight</p></div>
+            <div class="card card-technology"><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a3 3 0 0 1 3 3 3 3 0 0 1 3 3 3 3 0 0 1 3 3"></path><path d="M12 3a3 3 0 0 0-3 3 3 3 0 0 0-3 3 3 3 0 0 0-3 3"></path><rect x="3" y="12" width="6" height="6" rx="1"></rect><rect x="15" y="12" width="6" height="6" rx="1"></rect></svg></div><h3>AI</h3><p class="body-small text-muted">Automation, recommendations, and decision support</p></div>
+            <div class="card card-technology"><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg></div><h3>APIs &amp; Integrations</h3><p class="body-small text-muted">Connected systems that simplify operations</p></div>
+            <div class="card card-technology"><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div><h3>Development</h3><p class="body-small text-muted">Delivery, iteration, and long-term support</p></div>
         </div>
         <div class="flex-center mt-8">
-            <a href="{% url 'technologies' %}" class="btn btn-outline">View Technology Stack</a>
+            <a href="{% url 'technologies' %}" class="btn btn-outline">Explore the Stack</a>
         </div>
     </div>
 </section>
@@ -212,33 +211,6 @@
             {% include "components/process-step.html" with number="04" title="Development" description="We build in transparent, testable increments." %}
             {% include "components/process-step.html" with number="05" title="Launch" description="We deploy with confidence and zero downtime." %}
             {% include "components/process-step.html" with number="06" title="Growth" description="We iterate, optimize, and scale what works." %}
-        </div>
-    </div>
-</section>
-
-<!-- ==================== FEATURED PORTFOLIO ==================== -->
-<section class="section">
-    <div class="container">
-        {% include "components/section-heading.html" with eyebrow="Portfolio" title="Featured work" subtitle="A selection of platforms and products we've engineered." align="center" %}
-        <div class="grid grid-3">
-            {% for item in portfolio_items %}
-            {% include "components/portfolio-card.html" %}
-            {% endfor %}
-        </div>
-        <div class="flex-center mt-8">
-            <a href="{% url 'portfolio' %}" class="btn btn-outline">View All Work</a>
-        </div>
-    </div>
-</section>
-
-<!-- ==================== TESTIMONIALS ==================== -->
-<section class="section">
-    <div class="container">
-        {% include "components/section-heading.html" with eyebrow="Testimonials" title="Trusted by forward-thinking teams" subtitle="What our partners say about working with Orientiq." align="center" %}
-        <div class="grid grid-3">
-            {% include "components/testimonial-card.html" with quote="Orientiq delivered a platform that transformed how we operate. The team is strategic, responsive, and truly world-class." name="Aarav Mehta" role="COO, Meridian Group" initials="AM" %}
-            {% include "components/testimonial-card.html" with quote="Their AI solution cut our manual work dramatically. They understood our business and built exactly what we needed." name="Priya Nair" role="VP Operations, Nova Health" initials="PN" %}
-            {% include "components/testimonial-card.html" with quote="From design to launch, the process was seamless. The final product feels premium and our users love it." name="Rohan Kapoor" role="Founder, Brightpath" initials="RK" %}
         </div>
     </div>
 </section>

@@ -175,26 +175,14 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-# Email configuration
-# If EMAIL_HOST is set (e.g. smtp.gmail.com), use real SMTP delivery.
-# Otherwise fall back to the console backend for local development
-# (prints emails to the terminal instead of sending them).
-EMAIL_HOST = os.getenv("EMAIL_HOST", "")
-
-if EMAIL_HOST:
-    EMAIL_BACKEND = os.getenv(
-        "EMAIL_BACKEND",
-        "django.core.mail.backends.smtp.EmailBackend",
-    )
-    EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
-    EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True").lower() in ("1", "true", "yes")
-    EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
-    EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
-    DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
-else:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-    EMAIL_PORT = 587
-    EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = ""
-    EMAIL_HOST_PASSWORD = ""
-    DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "Orientiq <no-reply@orientiq.com>")
+# Email configuration (Gmail SMTP).
+# EMAIL_HOST_USER and EMAIL_HOST_PASSWORD must be supplied by the local .env
+# file. For Gmail, EMAIL_HOST_PASSWORD is a Google App Password, not the
+# account's normal sign-in password.
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)

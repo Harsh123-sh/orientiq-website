@@ -46,10 +46,12 @@
 <section class="section">
     <div class="container">
         {% include "components/section-heading.html" with eyebrow="Technology" title="Tools we use" subtitle="A modern, proven technology stack." align="center" %}
-        <div class="flex gap-3 flex-wrap justify-center">
-            {% for tech in service.tech %}
-            <span class="badge">{{ tech }}</span>
-            {% endfor %}
+        <div class="container-narrow">
+            <ul class="feature-list tech-list" style="margin:0 auto; max-width:40rem;">
+                {% for tech in service.tech %}
+                <li style="margin-bottom:0.5rem;">{{ tech }}</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </section>
@@ -59,12 +61,9 @@
     <div class="container">
         {% include "components/section-heading.html" with eyebrow="Process" title="How we deliver" subtitle="A transparent, proven path to launch." align="center" %}
         <div class="process-grid">
-            {% include "components/process-step.html" with number="01" title="Discovery" description="We understand your goals, users, and constraints." %}
-            {% include "components/process-step.html" with number="02" title="Strategy" description="We define the architecture, roadmap, and success metrics." %}
-            {% include "components/process-step.html" with number="03" title="Design" description="We craft premium, user-centered experiences." %}
-            {% include "components/process-step.html" with number="04" title="Development" description="We build in transparent, testable increments." %}
-            {% include "components/process-step.html" with number="05" title="Launch" description="We deploy with confidence and zero downtime." %}
-            {% include "components/process-step.html" with number="06" title="Growth" description="We iterate, optimize, and scale what works." %}
+            {% for step in service.process %}
+            {% include "components/process-step.html" with number=step.number title=step.title description=step.description %}
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -77,17 +76,17 @@
                 {% include "components/section-heading.html" with eyebrow="Benefits" title="Why it matters" %}
                 <ul class="feature-list">
                     {% for benefit in service.benefits %}
-                    <li>{{ benefit }}</li>
+                    <li style="margin-bottom:0.5rem;">{{ benefit }}</li>
                     {% endfor %}
                 </ul>
             </div>
             <div>
                 {% include "components/section-heading.html" with eyebrow="Use Cases" title="Where it applies" %}
-                <div class="flex gap-3 flex-wrap">
+                <ul class="feature-list">
                     {% for use_case in service.use_cases %}
-                    <span class="badge badge-info">{{ use_case }}</span>
+                    <li style="margin-bottom:0.5rem;">{{ use_case }}</li>
                     {% endfor %}
-                </div>
+                </ul>
             </div>
         </div>
     </div>
@@ -123,5 +122,5 @@
 </section>
 
 <!-- ==================== CTA ==================== -->
-{% include "components/cta.html" with eyebrow="Let's Talk" title="Interested in {{ service.name }}?" subtitle="Tell us about your project and we'll show you how we can help." %}
+{% include "components/cta.html" with eyebrow="Discuss Your Project" title="Ready to build something better?" subtitle="Tell us about your project, business needs, or technical challenge. We'll help you find the right solution." primary_label="Discuss Your Project →" %}
 {% endblock %}

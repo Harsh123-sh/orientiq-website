@@ -1,16 +1,32 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Technologies — Orientiq{% endblock %}
-{% block meta_description %}Explore the modern technology ecosystem Orientiq uses — Frontend, Backend, Mobile, AI, Database, Cloud, DevOps, Security, Payments, and Analytics.{% endblock %}
+{% block title %}Technology — Orientiq{% endblock %}
+{% block meta_description %}Orientiq selects practical, proven technologies based on product requirements, scalability, security, performance, and long-term maintainability.{% endblock %}
 
 {% block content %}
 <!-- ==================== HERO ==================== -->
 <section class="page-hero">
     <div class="container">
         <span class="eyebrow">Technology</span>
-        <h1>A modern technology ecosystem</h1>
-        <p>We choose the right tools for each challenge — no dogma, just results.</p>
+        <h1>Technology that powers better products</h1>
+        <p>We choose practical, proven technologies based on product requirements, scalability, security, performance, and long-term maintainability.</p>
+    </div>
+</section>
+
+<!-- ==================== TECHNOLOGY APPROACH ==================== -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-2">
+            <div>
+                {% include "components/section-heading.html" with eyebrow="Our Technology Approach" title="Intentionally chosen for the problem" %}
+                <p class="body text-muted">We don't believe in one technology stack for every problem. We select technologies based on the product, business requirements, scalability, security, performance, team needs, and long-term maintainability.</p>
+            </div>
+            <div class="card">
+                <h3 class="mb-3">The principle</h3>
+                <p class="body-small text-muted">Orientiq chooses technologies deliberately — balancing product fit, operational needs, and sustainable delivery rather than defaulting to a universal stack.</p>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -25,6 +41,46 @@
     </div>
 </section>
 
+<!-- ==================== ENGINEERING PRACTICES ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="Engineering Practices" title="How we build reliably" subtitle="The operational practices that support healthy product delivery and long-term maintainability." align="center" %}
+        <div class="grid grid-3">
+            <div class="card card-service"><h3>Secure authentication</h3></div>
+            <div class="card card-service"><h3>API integration</h3></div>
+            <div class="card card-service"><h3>Data protection</h3></div>
+            <div class="card card-service"><h3>Cloud infrastructure</h3></div>
+            <div class="card card-service"><h3>CI/CD</h3></div>
+            <div class="card card-service"><h3>Monitoring & observability</h3></div>
+            <div class="card card-service"><h3>Scalable architecture</h3></div>
+            <div class="card card-service"><h3>Maintainable code</h3></div>
+            <div class="card card-service"><h3>Operational reliability</h3></div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CORE STACK ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="Core Technology Stack" title="The foundation behind many Orientiq solutions" subtitle="These technologies form the base of many web and software solutions, while additional technologies are selected according to project requirements." align="center" %}
+        <div class="flex gap-3 flex-wrap justify-center">
+            <span class="badge">Python</span>
+            <span class="badge">Django</span>
+            <span class="badge">PostgreSQL</span>
+            <span class="badge">JavaScript</span>
+            <span class="badge">HTML5</span>
+            <span class="badge">CSS3</span>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== PROJECT-DEPENDENT TECHNOLOGIES ==================== -->
+<section class="section">
+    <div class="container">
+        {% include "components/section-heading.html" with eyebrow="Technology for Your Project" title="Every project is different" subtitle="Every project has different requirements. Depending on the product, platform, users, infrastructure, and business goals, we may introduce additional technologies where they provide a clear technical advantage." align="center" %}
+    </div>
+</section>
+
 <!-- ==================== CTA ==================== -->
-{% include "components/cta.html" with eyebrow="Your Stack" title="Need a specific technology?" subtitle="Tell us about your requirements and we'll recommend the right approach." %}
+{% include "components/cta.html" with eyebrow="Your Stack" title="Need a specific technology?" subtitle="Tell us about your requirements and we'll recommend the right technical approach." primary_label="Start a Project →" %}
 {% endblock %}

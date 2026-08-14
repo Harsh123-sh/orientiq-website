@@ -24,10 +24,6 @@ urlpatterns = [
     path('industries/', views.industries, name='industries'),
     path('industries/<slug:slug>/', views.industry_detail, name='industry_detail'),
 
-    # Portfolio
-    path('portfolio/', views.portfolio, name='portfolio'),
-    path('portfolio/<slug:slug>/', views.portfolio_detail, name='portfolio_detail'),
-
     # Technologies
     path('technologies/', views.technologies, name='technologies'),
 

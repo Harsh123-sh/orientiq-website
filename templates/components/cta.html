@@ -2,13 +2,13 @@
     <div class="container">
         <div class="card cta-card">
             <div class="cta-content">
-                <span class="eyebrow">{{ eyebrow|default:"Start Today" }}</span>
-                <h2>{{ title }}</h2>
-                <p class="body-large text-muted">{{ subtitle }}</p>
-                <div class="flex gap-4 flex-wrap mt-6">
-                    <a href="{% url 'start_project' %}" class="btn btn-primary btn-lg">Start a Project</a>
-                    <a href="{% url 'company_contact' %}" class="btn btn-outline btn-lg">Contact Us</a>
-                </div>
+                        <span class="eyebrow">{{ eyebrow|default:"Start Today" }}</span>
+                        <h2>{{ title }}</h2>
+                        <p class="body-large text-muted">{{ subtitle }}</p>
+                        <div class="flex gap-4 flex-wrap mt-6">
+                            <a href="{% url 'start_project' %}" class="btn btn-primary btn-lg">{{ primary_label|default:"Start a Project" }}</a>
+                            <a href="{% url 'company_contact' %}" class="btn btn-outline btn-lg">{{ secondary_label|default:"Contact Us" }}</a>
+                        </div>
             </div>
         </div>
     </div>

@@ -10,7 +10,6 @@ from core.data import (
     PRODUCTS,
     SERVICES,
     INDUSTRIES,
-    PORTFOLIO_ITEMS,
     TECHNOLOGIES,
 )
 from core.models import (
@@ -112,15 +111,6 @@ def build_company_context():
 
     testimonials = _published_cms_testimonials()
 
-    portfolio = [
-        {
-            "title": p["title"],
-            "industry": p["industry"],
-            "summary": p["summary"],
-        }
-        for p in PORTFOLIO_ITEMS[:5]
-    ]
-
     return {
         "company": {
             "name": "Orientiq",
@@ -147,7 +137,6 @@ def build_company_context():
                 "start_project": "/start-project/",
                 "services": "/services/",
                 "industries": "/industries/",
-                "portfolio": "/portfolio/",
                 "products": "/products/",
                 "technologies": "/technologies/",
             },
@@ -157,7 +146,6 @@ def build_company_context():
         "products": products,
         "technologies": technologies,
         "testimonials": testimonials,
-        "portfolio": portfolio,
         "start_project": {
             "description": (
                 "Visitors can submit a project inquiry through the Start a Project "

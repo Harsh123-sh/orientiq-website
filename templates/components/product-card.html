@@ -16,7 +16,7 @@
     </div>
     <p class="caption text-muted mb-3">{{ product.category }}</p>
     <p>{{ product.description }}</p>
-    <div class="flex gap-2 flex-wrap mt-4">
+    <div class="flex gap-2 flex-wrap mt-4" aria-label="Product technologies">
         {% for tech in product.technologies %}
         <span class="badge">{{ tech }}</span>
         {% endfor %}

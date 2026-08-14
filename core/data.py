@@ -5,27 +5,28 @@ SERVICES = [
         "slug": "ai-automation",
         "name": "AI & Automation",
         "tagline": "Intelligent systems that work for you",
-        "short": "Custom AI solutions and intelligent automation that transform business operations.",
+        "short": "Intelligent AI systems and automation designed around your business workflows.",
         "icon": "ai",
         "features": [
-            "Custom AI / ML models",
-            "Intelligent document processing",
-            "Workflow automation",
+            "Custom AI solutions",
+            "Intelligent workflow automation",
+            "AI-powered document processing",
             "Predictive analytics",
-            "Natural language processing",
+            "Natural language solutions",
+            "AI assistants and knowledge systems",
         ],
         "problems": [
-            "Manual processes limiting scale",
-            "Data trapped in silos and documents",
-            "Slow, error-prone decision making",
-            "Customer service bottlenecks",
+            "Manual workflows consuming valuable time",
+            "Data trapped across documents and systems",
+            "Slow or inconsistent decision-making",
+            "Customer support bottlenecks",
         ],
-        "tech": ["Python", "TensorFlow", "PyTorch", "OpenAI", "LangChain", "PostgreSQL"],
+        "tech": ["Python", "OpenAI", "PyTorch", "TensorFlow", "LangChain", "PostgreSQL"],
         "benefits": [
-            "Reduce operational costs by up to 40%",
-            "Accelerate decision-making with real-time insights",
-            "Scale operations without scaling headcount",
-            "Improve accuracy and consistency",
+            "Reduce repetitive operational work",
+            "Accelerate decision-making with useful insights",
+            "Improve consistency across workflows",
+            "Scale processes more efficiently",
         ],
         "use_cases": [
             "Automated document processing & extraction",
@@ -33,14 +34,22 @@ SERVICES = [
             "Predictive maintenance for equipment",
             "Intelligent sales & demand forecasting",
         ],
+        "process": [
+            {"number": "01", "title": "Discovery", "description": "Understand your workflows, data, goals, and opportunities for AI and automation."},
+            {"number": "02", "title": "Strategy", "description": "Define the AI approach, architecture, integrations, and implementation roadmap."},
+            {"number": "03", "title": "Design", "description": "Design the user experience, automation flows, and system interactions."},
+            {"number": "04", "title": "Development", "description": "Build, integrate, test, and refine the solution in measurable increments."},
+            {"number": "05", "title": "Launch", "description": "Deploy the solution and validate it in the real operating environment."},
+            {"number": "06", "title": "Growth", "description": "Monitor performance, improve workflows, and expand capabilities over time."},
+        ],
         "faqs": [
             {
                 "q": "How long does an AI project take?",
-                "a": "Typical AI engagements range from 4–12 weeks for a focused solution to several months for enterprise-scale platforms.",
+                "a": "Timelines depend on the solution scope, data availability, and integration complexity. A focused proof-of-concept can typically move in 4–8 weeks, while production platforms often span 3–6 months.",
             },
             {
                 "q": "Do we need existing data for AI?",
-                "a": "We work with whatever data you have. Our team helps structure, clean, and prepare data as part of the process.",
+                "a": "We can work with whatever data you have available. Our team helps structure, clean, and prepare data as part of the discovery and strategy phases.",
             },
         ],
     },
@@ -48,27 +57,28 @@ SERVICES = [
         "slug": "web-development",
         "name": "Web Development",
         "tagline": "Premium web platforms built to scale",
-        "short": "High-performance web applications and platforms engineered for growth.",
+        "short": "High-performance web platforms built for usability, scalability, and long-term growth.",
         "icon": "web",
         "features": [
             "Custom web applications",
-            "E-commerce platforms",
+            "Business and enterprise platforms",
             "SaaS products",
-            "Progressive web apps",
-            "Headless CMS solutions",
+            "E-commerce platforms",
+            "Progressive web experiences",
+            "API-driven web systems",
         ],
         "problems": [
-            "Outdated websites hurting conversions",
-            "Slow page loads driving users away",
-            "Systems that cannot scale with growth",
-            "Poor mobile experience",
+            "Outdated websites limiting growth",
+            "Slow experiences affecting engagement",
+            "Platforms that cannot scale with demand",
+            "Poor mobile usability",
         ],
         "tech": ["Django", "Python", "PostgreSQL", "HTML5", "CSS3", "JavaScript"],
         "benefits": [
-            "Lightning-fast page loads (< 2s)",
-            "SEO-optimized, semantic architecture",
-            "Mobile-first responsive experience",
-            "Future-proof scalable codebase",
+            "Fast, responsive user experiences",
+            "Search-friendly and accessible architecture",
+            "Mobile-first experience",
+            "Maintainable and scalable codebase",
         ],
         "use_cases": [
             "Enterprise web platforms & portals",
@@ -76,14 +86,22 @@ SERVICES = [
             "SaaS dashboards & admin panels",
             "Marketing sites & brand experiences",
         ],
+        "process": [
+            {"number": "01", "title": "Discovery", "description": "Understand your audience, business goals, competitive landscape, and technical requirements."},
+            {"number": "02", "title": "Strategy", "description": "Define the platform architecture, roadmap, integrations, and measurable success criteria."},
+            {"number": "03", "title": "Design", "description": "Create premium, user-centered interfaces and interactions optimized for your audience."},
+            {"number": "04", "title": "Development", "description": "Build clean, performant code with responsive design and thorough testing."},
+            {"number": "05", "title": "Launch", "description": "Deploy with SEO setup, analytics, and monitoring for ongoing visibility."},
+            {"number": "06", "title": "Growth", "description": "Optimize performance, iterate based on user data, and scale as demand grows."},
+        ],
         "faqs": [
             {
                 "q": "What technologies do you use?",
-                "a": "We primarily build with Django and Python on the backend with clean HTML5, CSS3, and vanilla JavaScript on the frontend — keeping things fast and maintainable.",
+                "a": "We build primarily with Django and Python on the backend, paired with clean HTML5, CSS3, and vanilla JavaScript on the frontend. This approach keeps applications fast, maintainable, and focused on user experience.",
             },
             {
                 "q": "Can you redesign an existing site?",
-                "a": "Yes. We regularly modernize legacy websites into fast, accessible, premium experiences without losing SEO equity.",
+                "a": "Yes. We regularly modernize legacy websites into fast, accessible, premium experiences while preserving SEO value and maintaining existing content.",
             },
         ],
     },
@@ -91,27 +109,28 @@ SERVICES = [
         "slug": "mobile-development",
         "name": "Mobile Development",
         "tagline": "Native-quality mobile experiences",
-        "short": "iOS and Android applications that feel effortless and perform beautifully.",
+        "short": "Mobile experiences designed for performance, usability, and seamless everyday use.",
         "icon": "mobile",
         "features": [
             "iOS applications",
             "Android applications",
-            "Cross-platform development",
-            "Mobile UI/UX design",
-            "App store submission",
+            "Cross-platform applications",
+            "Mobile UI/UX",
+            "API and backend integration",
+            "App deployment and maintenance",
         ],
         "problems": [
-            "No mobile presence in a mobile-first world",
-            "Clunky apps hurting brand perception",
-            "Maintenance burden of separate codebases",
-            "Poor app store discoverability",
+            "No effective mobile experience",
+            "Poor app usability and performance",
+            "Separate codebases increasing maintenance effort",
+            "Difficulty turning mobile users into customers",
         ],
         "tech": ["Flutter", "React Native", "Swift", "Kotlin", "Firebase", "REST APIs"],
         "benefits": [
-            "Delightful, intuitive user experience",
-            "Fast performance on all devices",
-            "Single codebase for iOS & Android when appropriate",
-            "Ongoing support & maintenance",
+            "Intuitive mobile experiences",
+            "Strong performance across supported devices",
+            "Efficient cross-platform development when appropriate",
+            "Maintainable applications with ongoing support",
         ],
         "use_cases": [
             "Customer-facing mobile apps",
@@ -119,14 +138,22 @@ SERVICES = [
             "Mobile-first e-commerce",
             "IoT companion apps",
         ],
+        "process": [
+            {"number": "01", "title": "Discovery", "description": "Understand your mobile strategy, target audience, platform priorities, and core functionality."},
+            {"number": "02", "title": "Strategy", "description": "Define technical approach, native vs. cross-platform decision, integrations, and roadmap."},
+            {"number": "03", "title": "Design", "description": "Design mobile-first interfaces optimized for touch, screens, and offline scenarios."},
+            {"number": "04", "title": "Development", "description": "Build, test across devices, and implement backend integrations with performance focus."},
+            {"number": "05", "title": "Launch", "description": "Deploy to app stores, configure analytics, and establish distribution and feedback channels."},
+            {"number": "06", "title": "Growth", "description": "Monitor user feedback, optimize performance, add features, and maintain platform compatibility."},
+        ],
         "faqs": [
             {
                 "q": "Do you build for both iOS and Android?",
-                "a": "Yes. We normally recommend cross-platform for cost efficiency or native when performance demands it — based on your product needs.",
+                "a": "Yes. We typically recommend cross-platform frameworks like Flutter for cost efficiency when appropriate, or native development when specific platform performance is critical. The choice depends on your product requirements.",
             },
             {
                 "q": "How long does an app take?",
-                "a": "A focused MVP typically ships in 8–16 weeks. Complex platforms can span 4–8 months depending on scope.",
+                "a": "Timelines depend on app complexity, feature scope, and testing requirements. An MVP can typically move faster, while full-featured production apps require more time for quality assurance and platform-specific optimization.",
             },
         ],
     },
@@ -134,27 +161,28 @@ SERVICES = [
         "slug": "software-development",
         "name": "Software Development",
         "tagline": "Custom software for complex problems",
-        "short": "Bespoke enterprise software engineered around your exact business needs.",
+        "short": "Custom software engineered around your workflows, integrations, and operational needs.",
         "icon": "software",
         "features": [
             "Enterprise software",
-            "Custom CRMs & ERPs",
-            "Internal tools & dashboards",
-            "API development & integration",
+            "Custom CRM and ERP systems",
+            "Internal business tools",
+            "Dashboards and operational systems",
+            "API development and integrations",
             "Legacy system modernization",
         ],
         "problems": [
-            "Off-the-shelf tools not fitting your workflow",
-            "Fragmented systems and manual data entry",
-            "Scaling operational complexity",
-            "Technical debt slowing innovation",
+            "Off-the-shelf software not fitting the workflow",
+            "Fragmented business systems",
+            "Manual data entry and operational processes",
+            "Legacy technology slowing growth",
         ],
-        "tech": ["Python", "Django", "PostgreSQL", "Docker", "Redis", "REST / GraphQL"],
+        "tech": ["Python", "Django", "PostgreSQL", "Redis", "Docker", "REST / GraphQL"],
         "benefits": [
-            "Software built around your exact process",
-            "Single source of truth for your data",
-            "Seamless integration with existing tools",
-            "Clean, documented, maintainable code",
+            "Software aligned with business processes",
+            "Centralized and reliable business data",
+            "Integration with existing systems",
+            "Maintainable and documented architecture",
         ],
         "use_cases": [
             "Custom ERP / CRM platforms",
@@ -162,14 +190,22 @@ SERVICES = [
             "Data management & reporting tools",
             "API & microservice backbones",
         ],
+        "process": [
+            {"number": "01", "title": "Discovery", "description": "Understand your business processes, existing systems, pain points, and operational requirements."},
+            {"number": "02", "title": "Strategy", "description": "Define the software architecture, integrations, data model, and implementation approach."},
+            {"number": "03", "title": "Design", "description": "Design user workflows, dashboards, and system interfaces for your operational team."},
+            {"number": "04", "title": "Development", "description": "Build, integrate with existing systems, and test across your operational workflows."},
+            {"number": "05", "title": "Launch", "description": "Deploy with team training, data migration, and ongoing operational support."},
+            {"number": "06", "title": "Growth", "description": "Monitor usage, optimize workflows, add requested capabilities, and scale as needed."},
+        ],
         "faqs": [
             {
                 "q": "How do you scope custom software?",
-                "a": "We run a collaborative discovery phase to map your process, identify priorities, and define a precise delivery plan before any code is written.",
+                "a": "We run a collaborative discovery phase to map your processes, identify priorities, and define a precise delivery plan before development begins. This ensures alignment on scope and realistic expectations.",
             },
             {
                 "q": "Can you work with our existing systems?",
-                "a": "Absolutely. We regularly integrate with existing ERPs, CRMs, and internal tools via APIs and data pipelines.",
+                "a": "Yes. We regularly integrate with existing ERPs, CRMs, and internal tools via APIs and data pipelines. Legacy system integration is a standard part of our approach.",
             },
         ],
     },
@@ -177,27 +213,28 @@ SERVICES = [
         "slug": "ui-ux-design",
         "name": "UI/UX Design",
         "tagline": "Interfaces people love to use",
-        "short": "Premium product design driven by research, clarity, and brand identity.",
+        "short": "Research-driven product experiences designed for clarity, usability, and conversion.",
         "icon": "design",
         "features": [
-            "Product strategy & research",
-            "UX architecture & wireframes",
-            "High-fidelity UI design",
-            "Design systems & tokens",
+            "Product strategy and research",
+            "UX architecture and wireframes",
+            "High-fidelity interface design",
+            "Design systems",
+            "Interactive prototypes",
             "Usability testing",
         ],
         "problems": [
-            "High drop-off in signup or checkout",
-            "Users struggling to find features",
-            "Inconsistent brand across touchpoints",
-            "Design debt slowing product velocity",
+            "Users struggling to complete key tasks",
+            "High drop-off during important journeys",
+            "Inconsistent product experiences",
+            "Design decisions made without user insight",
         ],
-        "tech": ["Figma", "Design Tokens", "Prototyping", "User Testing", "WCAG", "Atomic Design"],
+        "tech": ["Figma", "Design Systems", "Prototyping", "User Research", "Usability Testing", "WCAG"],
         "benefits": [
-            "Higher conversion and retention",
-            "Consistent, premium brand experience",
-            "Faster design-to-development handoff",
-            "Accessible to the widest possible audience",
+            "Clearer user journeys",
+            "Stronger product usability",
+            "Consistent visual language",
+            "Better collaboration between design and development",
         ],
         "use_cases": [
             "SaaS & web app UX redesigns",
@@ -205,14 +242,22 @@ SERVICES = [
             "Landing page & funnel design",
             "Enterprise internal tool interfaces",
         ],
+        "process": [
+            {"number": "01", "title": "Discovery", "description": "Understand your users, business objectives, competitive landscape, and current pain points."},
+            {"number": "02", "title": "Strategy", "description": "Define the design approach, user flows, information architecture, and success metrics."},
+            {"number": "03", "title": "Design", "description": "Create wireframes, prototypes, and high-fidelity designs based on user research insights."},
+            {"number": "04", "title": "Development", "description": "Collaborate with engineering to translate designs into coded, interactive experiences."},
+            {"number": "05", "title": "Launch", "description": "Deploy the redesigned product with monitoring for user engagement and feedback."},
+            {"number": "06", "title": "Growth", "description": "Gather user feedback, iterate on design, optimize conversions, and expand capabilities."},
+        ],
         "faqs": [
             {
                 "q": "Do you design or build too?",
-                "a": "Both. We are a full-studio — design and development work together so the final product matches the vision exactly.",
+                "a": "We are a full-service studio — design and development teams work together throughout the project. This ensures the final product precisely matches the design vision and performs seamlessly.",
             },
             {
                 "q": "How fast is a typical design engagement?",
-                "a": "A design sprint can deliver clickable prototypes in 2–4 weeks. Full design systems typically complete in 6–10 weeks.",
+                "a": "A focused design sprint can deliver prototypes in 2–4 weeks. Comprehensive design systems and full redesigns typically span 6–12 weeks depending on scope and discovery depth.",
             },
         ],
     },
@@ -220,27 +265,28 @@ SERVICES = [
         "slug": "cloud-devops",
         "name": "Cloud & DevOps",
         "tagline": "Reliable infrastructure, delivered",
-        "short": "Cloud architecture, CI/CD, and DevOps practices for resilient systems.",
+        "short": "Reliable cloud infrastructure and deployment systems built for performance, visibility, and scale.",
         "icon": "cloud",
         "features": [
-            "Cloud architecture (AWS / GCP / Azure)",
+            "Cloud architecture",
             "CI/CD pipelines",
             "Infrastructure as code",
-            "Monitoring & observability",
-            "Containerization & orchestration",
+            "Monitoring and observability",
+            "Containerization",
+            "Deployment automation",
         ],
         "problems": [
-            "Fragile infrastructure and downtime",
-            "Manual deployment processes",
-            "Rising cloud costs",
-            "No visibility into system health",
+            "Fragile infrastructure",
+            "Manual deployments",
+            "Poor system visibility",
+            "Uncontrolled infrastructure complexity and cost",
         ],
-        "tech": ["AWS", "GCP", "Docker", "Kubernetes", "Terraform", "GitHub Actions"],
+        "tech": ["AWS", "GCP", "Azure", "Docker", "Kubernetes", "Terraform", "GitHub Actions"],
         "benefits": [
-            "99.9%+ uptime with automated recovery",
-            "Push-button, zero-downtime deploys",
-            "30–40% cloud cost reduction",
-            "Full visibility with monitoring & alerts",
+            "Reliable infrastructure practices",
+            "More efficient deployment workflows",
+            "Better monitoring and system visibility",
+            "Improved infrastructure management",
         ],
         "use_cases": [
             "Cloud migration & modernization",
@@ -248,10 +294,18 @@ SERVICES = [
             "CI/CD automation for development teams",
             "Cost optimization & security hardening",
         ],
+        "process": [
+            {"number": "01", "title": "Discovery", "description": "Assess your current infrastructure, workloads, compliance requirements, and scaling goals."},
+            {"number": "02", "title": "Strategy", "description": "Design cloud architecture, DevOps approach, cost model, and migration/implementation roadmap."},
+            {"number": "03", "title": "Design", "description": "Create infrastructure blueprints, deployment pipelines, monitoring, and disaster recovery plans."},
+            {"number": "04", "title": "Development", "description": "Build infrastructure as code, CI/CD pipelines, containerization, and automated testing."},
+            {"number": "05", "title": "Launch", "description": "Deploy infrastructure, establish monitoring, run validation tests, and activate alerts."},
+            {"number": "06", "title": "Growth", "description": "Monitor performance, optimize costs, scale infrastructure, and enhance security and resilience."},
+        ],
         "faqs": [
             {
                 "q": "Which cloud provider do you use?",
-                "a": "We are cloud-agnostic and typically recommend AWS, GCP, or Azure based on your workload, team, and budget.",
+                "a": "We are cloud-agnostic and work with AWS, GCP, and Azure. We typically recommend based on your workload characteristics, team expertise, existing commitments, and budget requirements.",
             },
         ],
     },
@@ -262,219 +316,284 @@ INDUSTRIES = [
         "slug": "real-estate",
         "name": "Real Estate",
         "tagline": "Digital platforms for property and growth",
-        "short": "PropTech platforms, CRM systems, and digital experiences for the modern real estate business.",
+        "short": "Custom technology platforms that centralize listings, streamline operations, and create seamless buyer and agent experiences.",
         "icon": "building",
         "challenges": [
-            "Fragmented listing data across channels",
-            "Manual lead follow-up slowing sales",
-            "Outdated websites with poor mobile experience",
-            "No visibility into pipeline performance",
+            "Listing data fragmented across multiple channels and formats",
+            "Manual lead follow-up and pipeline tracking",
+            "Slow, outdated websites that lose buyers before inquiry",
+            "Limited visibility into transaction pipeline and performance",
         ],
         "solutions": [
-            "Custom real estate portals & listing platforms",
-            "Agent CRM and lead management systems",
-            "Smart property search with filters & maps",
-            "Marketing sites with virtual tour integration",
+            "Unified property portals with smart search and filtering",
+            "CRM and lead management systems built for real estate workflows",
+            "High-performance websites optimized for buyer engagement",
+            "Operational dashboards for agents, teams, and brokerages",
         ],
+        "benefits": [
+            "Centralized listing data across all channels",
+            "Faster inquiry response and lead qualification",
+            "Improved buyer experience and conversion rates",
+            "Better transparency into pipeline and performance metrics",
+        ],
+        "relevant_services": ["Web Development", "Software Development", "UI/UX Design", "Cloud & DevOps"],
         "use_cases": [
             "Property listing & discovery platforms",
-            "Brokerage CRM & pipeline tools",
-            "Rental management systems",
-            "Smart building & resident portals",
+            "Brokerage CRM & pipeline management",
+            "Rental management and tenant portals",
+            "Smart building & resident communication systems",
+        ],
+        "faqs": [
+            {
+                "q": "How do you handle real estate data integration?",
+                "a": "We build systems that pull listing data from multiple sources (MLS, internal databases, APIs) and consolidate into a unified database. This ensures accurate, current information across all buyer-facing and internal channels.",
+            },
+            {
+                "q": "Can you integrate with existing real estate tools?",
+                "a": "Yes. We regularly integrate with CRMs, accounting systems, document management, and third-party services via APIs and data pipelines.",
+            },
         ],
     },
     {
         "slug": "healthcare",
         "name": "Healthcare",
         "tagline": "Technology that cares",
-        "short": "Secure, compliant digital health solutions for providers, clinics, and patients.",
+        "short": "Secure, HIPAA-compliant digital health platforms that improve patient engagement, streamline clinical workflows, and enable better care coordination.",
         "icon": "health",
         "challenges": [
-            "Strict compliance & data privacy requirements",
-            "Outdated patient management workflows",
-            "Limited patient engagement tools",
-            "Fragmented clinical and admin data",
+            "Strict compliance requirements (HIPAA, regulations) slowing innovation",
+            "Outdated, fragmented patient management systems",
+            "Limited tools for patient engagement and communication",
+            "Clinical and administrative data trapped in separate systems",
         ],
         "solutions": [
-            "HIPAA-aware patient platforms",
-            "Telehealth & appointment systems",
-            "Clinical workflow automation",
-            "Secure patient portals & communication",
+            "HIPAA-compliant patient portals and engagement platforms",
+            "Clinical workflow automation and task management",
+            "Telehealth and secure appointment systems",
+            "Secure data integration between clinical and administrative systems",
         ],
+        "benefits": [
+            "Regulatory compliance built into the platform foundation",
+            "Reduced administrative burden on clinical staff",
+            "Improved patient engagement and satisfaction",
+            "Better care coordination through unified data",
+        ],
+        "relevant_services": ["Software Development", "AI & Automation", "Cloud & DevOps", "UI/UX Design"],
         "use_cases": [
             "Patient scheduling & engagement portals",
-            "Telemedicine platforms",
-            "Electronic health record integrations",
-            "Lab & clinic operations dashboards",
+            "Telemedicine platforms for remote consultations",
+            "Electronic health record integrations and data sharing",
+            "Clinical operations dashboards and reporting",
+        ],
+        "faqs": [
+            {
+                "q": "How do you ensure HIPAA compliance?",
+                "a": "HIPAA compliance is built into our architecture from the start — encryption at rest and in transit, access controls, audit logs, and data retention policies. We work with your compliance team to ensure all requirements are met.",
+            },
+            {
+                "q": "Can you integrate with existing EHR systems?",
+                "a": "Yes. We build integrations with major EHR platforms (Epic, Cerner, athenahealth, etc.) via their APIs and HL7 standards for seamless data flow.",
+            },
         ],
     },
     {
         "slug": "education",
         "name": "Education",
         "tagline": "Learning without limits",
-        "short": "Digital learning platforms and student experiences for institutions and edtech.",
+        "short": "Comprehensive educational platforms that unify admissions, course delivery, assessments, and student communication in one experience.",
         "icon": "education",
         "challenges": [
-            "Engaging remote & hybrid learners",
-            "Managing admissions and enrollment manually",
-            "Scaling course delivery across locations",
-            "Student data scattered across systems",
+            "Manual enrollment and admissions processes creating bottlenecks",
+            "Difficulty engaging remote and hybrid learners",
+            "Course delivery, scheduling, and coordination across multiple locations",
+            "Student data scattered across spreadsheets and disconnected systems",
         ],
         "solutions": [
-            "Learning management platforms",
-            "Student enrollment & admissions systems",
-            "Virtual classroom experiences",
-            "Institutional analytics dashboards",
+            "Unified learning management and student information systems",
+            "Enrollment and admissions automation with workflow tools",
+            "Interactive course delivery with assessments and progress tracking",
+            "Student and faculty communication and collaboration platforms",
         ],
+        "benefits": [
+            "Streamlined enrollment without manual data entry",
+            "Consistent, engaging learning experiences for all students",
+            "Real-time visibility into student progress and outcomes",
+            "Improved coordination between academic and administrative teams",
+        ],
+        "relevant_services": ["Web Development", "Software Development", "Mobile Development", "AI & Automation"],
         "use_cases": [
-            "LMS & course platforms",
-            "Student admission portals",
-            "Assessment & certification tools",
-            "Institutional data dashboards",
+            "Learning management platforms (LMS) for institutions",
+            "Student admission and enrollment systems",
+            "Assessment, certification, and grade management tools",
+            "Institutional dashboards for enrollment and outcomes analytics",
+        ],
+        "faqs": [
+            {
+                "q": "Do you support blended and remote learning?",
+                "a": "Yes. Our platforms support traditional, blended, and fully remote learning with video integration, discussion forums, assignment submission, and progress tracking.",
+            },
+            {
+                "q": "Can you integrate with student information systems?",
+                "a": "Absolutely. We build integrations with existing SIS platforms and can migrate legacy data while maintaining historical records.",
+            },
         ],
     },
     {
         "slug": "travel",
         "name": "Travel",
         "tagline": "Journeys deserve better technology",
-        "short": "Travel booking platforms, experiences, and operations tools for modern travel brands.",
+        "short": "Booking platforms, operations tools, and customer experience systems built for travel companies, agencies, and tour operators.",
         "icon": "travel",
         "challenges": [
-            "Complex booking & inventory management",
-            "Fragmented distribution channels",
-            "Delivering personalized experiences",
-            "Operational cost pressure",
+            "Complex inventory management across flights, hotels, activities, and packages",
+            "Fragmented booking channels leading to double-bookings and errors",
+            "Difficulty delivering personalized experiences at scale",
+            "Thin margins demanding operational efficiency and cost control",
         ],
         "solutions": [
-            "Custom booking & reservation platforms",
-            "Travel agency management systems",
-            "Dynamic packages & pricing engines",
-            "Customer journey & loyalty tools",
+            "Custom booking and reservation platforms with real-time inventory",
+            "Travel operations management systems for itinerary planning and fulfillment",
+            "Dynamic pricing engines responsive to demand and market conditions",
+            "Customer loyalty and engagement platforms with personalization",
         ],
+        "benefits": [
+            "Centralized inventory reduces double-bookings and errors",
+            "Personalized recommendations increase conversion and customer lifetime value",
+            "Operational automation reduces manual work and costs",
+            "Real-time insights enable better pricing and promotions",
+        ],
+        "relevant_services": ["Web Development", "Software Development", "AI & Automation", "Mobile Development"],
         "use_cases": [
-            "Hotel & resort booking platforms",
-            "Tour operator management systems",
-            "Travel marketplace development",
-            "Loyalty & customer experience portals",
+            "Hotel and resort booking platforms",
+            "Tour operator management and itinerary systems",
+            "Travel marketplace platforms connecting buyers and suppliers",
+            "Customer loyalty and experience portals",
+        ],
+        "faqs": [
+            {
+                "q": "How do you handle real-time booking and inventory?",
+                "a": "Our systems use real-time databases and caching to ensure inventory accuracy across channels. We integrate with supplier systems via APIs to keep data current.",
+            },
+            {
+                "q": "Can you support multi-currency and multi-language booking?",
+                "a": "Yes. Our platforms support global operations with multi-currency pricing, localized content, and payment methods appropriate to each market.",
+            },
         ],
     },
     {
         "slug": "manufacturing",
         "name": "Manufacturing",
         "tagline": "Industry 4.0, operationalized",
-        "short": "Smart manufacturing technology, IoT dashboards, and operational systems.",
+        "short": "Smart manufacturing platforms combining IoT monitoring, predictive analytics, and operational dashboards for modern factories.",
         "icon": "manufacturing",
         "challenges": [
-            "Limited visibility into production lines",
-            "Manual quality control and reporting",
-            "Predictive maintenance gaps",
-            "Supply chain coordination complexity",
+            "Limited real-time visibility into production line performance and quality",
+            "Manual quality control and reporting creating delays and errors",
+            "Reactive maintenance causing unplanned downtime and production losses",
+            "Complex supply chain coordination across multiple suppliers and locations",
         ],
         "solutions": [
-            "Production monitoring dashboards",
-            "IoT & sensor data platforms",
-            "Predictive maintenance systems",
-            "Supply chain management tools",
+            "Production monitoring dashboards with real-time KPI tracking",
+            "IoT sensor integration for equipment health and performance monitoring",
+            "AI-powered predictive maintenance systems that forecast failures",
+            "Supply chain management and vendor coordination systems",
         ],
+        "benefits": [
+            "Increased production uptime and reduced unplanned downtime",
+            "Better quality control with real-time issue detection",
+            "Improved supply chain efficiency and cost management",
+            "Data-driven decision-making with production analytics",
+        ],
+        "relevant_services": ["Software Development", "AI & Automation", "Cloud & DevOps", "Web Development"],
         "use_cases": [
-            "Factory floor analytics",
-            "Equipment monitoring & alerts",
-            "Quality management systems",
-            "Inventory & supply chain platforms",
+            "Factory floor real-time analytics and KPI dashboards",
+            "Equipment monitoring and predictive maintenance systems",
+            "Quality management and inspection workflow automation",
+            "Supply chain visibility and vendor management platforms",
+        ],
+        "faqs": [
+            {
+                "q": "What IoT sensors and devices do you support?",
+                "a": "We integrate with industrial IoT platforms and can support sensors from major manufacturers. Our systems are sensor-agnostic and flexible for your existing hardware.",
+            },
+            {
+                "q": "How does predictive maintenance work?",
+                "a": "We analyze historical sensor data and equipment logs to identify failure patterns, then build models that predict failures with enough lead time for planned maintenance.",
+            },
         ],
     },
     {
         "slug": "startups",
         "name": "Startups",
         "tagline": "From idea to launch, fast",
-        "short": "End-to-end product development partners for ambitious startups.",
+        "short": "End-to-end product development partners that help startups move from concept to market quickly and efficiently.",
         "icon": "startup",
         "challenges": [
-            "Moving from idea to MVP quickly",
+            "Time pressure to build and launch MVP faster than competitors",
             "Limited budgets and engineering resources",
-            "Building product-market fit",
-            "Scaling beyond the first launch",
+            "Uncertainty about product-market fit requiring rapid iteration",
+            "Technical debt and scaling challenges after initial launch",
         ],
         "solutions": [
-            "MVP & prototype development",
-            "Product strategy & technical architecture",
-            "Full-stack product teams",
-            "Post-launch scaling & optimization",
+            "Rapid MVP development with focused scope and fast iteration cycles",
+            "Product strategy and technical architecture guidance",
+            "Full-stack development teams handling frontend, backend, and infrastructure",
+            "Scalable architecture that grows with demand without major rewrites",
         ],
+        "benefits": [
+            "Faster time-to-market for MVP and subsequent releases",
+            "Clear technical foundation that scales as the business grows",
+            "Product strategy informed by market and user feedback",
+            "Reduced technical debt and maintenance burden",
+        ],
+        "relevant_services": ["Web Development", "Mobile Development", "Software Development", "Cloud & DevOps"],
         "use_cases": [
-            "SaaS product MVPs",
-            "Marketplace platforms",
-            "Consumer apps",
-            "Founder & investor dashboards",
+            "SaaS product MVPs and founder-validated concepts",
+            "Marketplace platforms connecting buyers and sellers",
+            "Mobile-first consumer apps",
+            "Founder dashboards and investor reporting tools",
         ],
-    },
-    {
-        "slug": "enterprise",
-        "name": "Enterprise",
-        "tagline": "Technology that transforms organizations",
-        "short": "Large-scale digital transformation for established organizations.",
-        "icon": "enterprise",
-        "challenges": [
-            "Complex legacy systems & data silos",
-            "Security and governance requirements",
-            "Cross-department process alignment",
-            "Change management across teams",
-        ],
-        "solutions": [
-            "Digital transformation roadmaps",
-            "Custom enterprise platforms",
-            "System integration & data unification",
-            "Secure, governed architecture",
-        ],
-        "use_cases": [
-            "Enterprise portals & intranets",
-            "Unified data platforms",
-            "Legacy modernization programs",
-            "Cross-functional operations tools",
+        "faqs": [
+            {
+                "q": "How fast can you build an MVP?",
+                "a": "Timelines depend on scope and complexity. A focused, well-defined MVP can typically launch in 8–12 weeks. More complex platforms may require longer timelines.",
+            },
+            {
+                "q": "How do you handle scaling after launch?",
+                "a": "We build with scalability in mind from the start — cloud infrastructure, database design, and code architecture all account for growth. As demand increases, the system can scale without major rewrites.",
+            },
         ],
     },
 ]
 
 TECHNOLOGIES = [
     {
-        "category": "Frontend",
-        "items": ["HTML5", "CSS3", "JavaScript", "Django Templates"],
-    },
-    {
-        "category": "Backend",
-        "items": ["Python", "Django", "REST APIs", "GraphQL"],
-    },
-    {
-        "category": "Mobile",
-        "items": ["Flutter", "React Native", "Swift", "Kotlin"],
+        "category": "Web & Application Development",
+        "items": ["Python", "Django", "JavaScript", "HTML5", "CSS3", "REST APIs", "GraphQL"],
     },
     {
         "category": "AI & Machine Learning",
-        "items": ["TensorFlow", "PyTorch", "OpenAI", "LangChain", "Pandas"],
+        "items": ["Python", "OpenAI", "PyTorch", "TensorFlow", "LangChain", "Pandas"],
     },
     {
-        "category": "Database",
+        "category": "Mobile Development",
+        "items": ["Flutter", "React Native", "Swift", "Kotlin", "Firebase"],
+    },
+    {
+        "category": "Data & Databases",
         "items": ["PostgreSQL", "MySQL", "MongoDB", "Redis"],
     },
     {
-        "category": "Cloud",
-        "items": ["AWS", "Google Cloud", "Azure", "Cloudflare"],
+        "category": "Cloud & Infrastructure",
+        "items": ["AWS", "Google Cloud", "Microsoft Azure", "Cloudflare"],
     },
     {
         "category": "DevOps",
         "items": ["Docker", "Kubernetes", "Terraform", "GitHub Actions"],
     },
     {
-        "category": "Security",
-        "items": ["OAuth 2.0", "HTTPS / TLS", "SSO / SAML", "AWS IAM"],
-    },
-    {
-        "category": "Payments",
-        "items": ["Stripe", "Razorpay", "PayPal", "Square"],
-    },
-    {
-        "category": "Analytics",
-        "items": ["Google Analytics", "Mixpanel", "Metabase", "Grafana"],
+        "category": "Product & Design",
+        "items": ["Figma", "Design Systems", "Prototyping", "User Research", "Usability Testing", "WCAG"],
     },
 ]
 
@@ -510,14 +629,13 @@ PRODUCTS = [
         "slug": "ai-travel",
         "name": "AI Travel Platform",
         "short_name": "AI Travel",
-        "tagline": "Intelligent technology for smarter travel",
-        "description": "An intelligent travel platform designed to simplify trip discovery, planning, personalization, and travel management.",
+        "tagline": "Smarter planning for modern travel",
+        "description": "A travel planning experience designed to reduce decision fatigue and keep every trip more organised.",
         "long_description": (
-            "AI Travel Platform is an upcoming intelligent travel product. "
-            "It will help travelers discover destinations, plan personalised trips, "
-            "and manage every stage of their journey — all in one place. "
-            "The platform is being designed with AI at its core to make travel "
-            "planning faster, smarter, and more enjoyable."
+            "AI Travel Platform is a planned product for travelers who move between "
+            "inspiration sources, booking tools, and trip logistics. It brings "
+            "discovery, planning, and day-of-travel support into one experience, "
+            "with AI helping surface better decisions at the right moment."
         ),
         "category": "Travel Technology",
         "icon": "travel",
@@ -531,36 +649,34 @@ PRODUCTS = [
         "cta_label": ProductStatus.CTA_LABELS[ProductStatus.COMING_SOON],
         "technologies": ["Python", "Django", "AI/ML", "Cloud"],
         "key_features": [
-            "Smart trip discovery",
-            "Personalised planning",
-            "Travel management",
-            "AI-powered recommendations",
+            "Trip discovery and inspiration",
+            "Personalised itinerary planning",
+            "Budget and travel coordination",
+            "Smart recommendations and support",
         ],
         "vision": (
-            "To make travel planning effortless by using AI to understand "
-            "preferences, suggest experiences, and handle the complexity of planning."
+            "To help travelers move from inspiration to execution without losing the "
+            "joy of discovery or the confidence of careful planning."
         ),
         "solves": (
-            "Travelers currently juggle multiple apps, guides, and spreadsheets "
-            "to plan a trip. AI Travel Platform will bring discovery, planning, "
-            "and management into one intelligent experience."
+            "Travelers often move between booking platforms, spreadsheets, and destination guides to plan a single trip. "
+            "AI Travel Platform brings discovery, itinerary planning, and trip management into one more coherent experience."
         ),
         "status_note": (
-            "This product is in early planning. All capabilities shown are "
-            "planned or future capabilities — nothing is available yet."
+            "This product is in planning and early development. Features shown are conceptual and may evolve as product requirements are refined."
         ),
     },
     {
         "slug": "society-management",
         "name": "Society Management Platform",
         "short_name": "Society Management",
-        "tagline": "Simpler operations for residential communities",
-        "description": "A future digital platform designed to simplify residential society operations, communication, security, and management.",
+        "tagline": "Clearer operations for residential communities",
+        "description": "A resident-first operations platform for communities that need clearer communication and safer day-to-day processes.",
         "long_description": (
-            "Society Management Platform is a planned product for residential "
-            "communities. It will simplify daily operations — from security and "
-            "visitor management to maintenance and resident communication — "
-            "in one secure, well-designed platform."
+            "Society Management Platform is a planned system for residential communities "
+            "that need smoother operations, stronger resident communication, and better "
+            "visibility into day-to-day activity. It is designed to centralise resident "
+            "requests, maintenance coordination, and security workflows in one place."
         ),
         "category": "Property Technology",
         "icon": "building",
@@ -574,36 +690,31 @@ PRODUCTS = [
         "cta_label": ProductStatus.CTA_LABELS[ProductStatus.COMING_SOON],
         "technologies": ["Python", "Django", "PostgreSQL", "Mobile"],
         "key_features": [
-            "Resident communication",
-            "Security & visitor management",
-            "Maintenance management",
-            "Society operations tools",
+            "Resident communication and updates",
+            "Visitor and security tracking",
+            "Maintenance and service requests",
+            "Community operations dashboards",
         ],
         "vision": (
-            "To give residential societies a modern, unified platform that "
-            "makes management transparent, secure, and effortless."
+            "To help communities operate more transparently, efficiently, and confidently with digital workflows built around residents and staff."
         ),
         "solves": (
-            "Societies rely on scattered tools, paper records, and informal "
-            "communication. This platform will centralise operations for "
-            "residents, guards, and management committees."
+            "Housing societies often rely on fragmented communication and manual follow-ups across resident communication, maintenance requests, and security processes. "
+            "This platform consolidates those workflows into a single system."
         ),
         "status_note": (
-            "This product is in early planning. All capabilities shown are "
-            "planned or future capabilities — nothing is available yet."
+            "This product is in planning and early development. Functional scope and rollout priorities will be shaped by real community needs."
         ),
     },
     {
         "slug": "business-ai",
         "name": "Business AI Platform",
         "short_name": "Business AI",
-        "tagline": "Intelligence for better business decisions",
-        "description": "An upcoming AI-powered business platform designed to help organizations automate workflows, understand information, and make better decisions.",
+        "tagline": "Practical AI for smarter business operations",
+        "description": "A business intelligence platform that helps teams turn information into action with safer, more practical AI workflows.",
         "long_description": (
-            "Business AI Platform is an upcoming product that will help "
-            "organizations put AI to work. It will automate workflows, "
-            "surface insights from business information, and support "
-            "better, faster decisions — with enterprise-grade safety."
+            "Business AI Platform is a planned product for organizations that need AI to be useful, governed and easy to trust. "
+            "It is designed to connect knowledge, workflows, and decisions in a more structured way, helping teams work faster without sacrificing clarity or control."
         ),
         "category": "Artificial Intelligence",
         "icon": "ai",
@@ -617,23 +728,20 @@ PRODUCTS = [
         "cta_label": ProductStatus.CTA_LABELS[ProductStatus.COMING_SOON],
         "technologies": ["Python", "AI/ML", "LLM", "Cloud"],
         "key_features": [
-            "Workflow automation",
-            "Information understanding",
-            "Decision support",
-            "Enterprise-grade safety",
+            "Workflow automation and task support",
+            "Knowledge retrieval and insight generation",
+            "Decision support and reporting",
+            "Governance and operational controls",
         ],
         "vision": (
-            "To make advanced AI practical and safe for everyday business use — "
-            "helping teams focus on high-impact work."
+            "To give organizations a safer foundation for operational AI — one that supports better decisions, faster execution, and clearer accountability."
         ),
         "solves": (
-            "Businesses struggle to apply AI in a safe, practical way. "
-            "This platform aims to make AI accessible, controllable, and useful "
-            "for real organizational workflows."
+            "Many teams want to use AI but struggle with fragmented tools, unclear governance, and inconsistent results. "
+            "Business AI Platform aims to make AI more practical and easier to govern and easy to trust across everyday business workflows."
         ),
         "status_note": (
-            "This product is in early planning. All capabilities shown are "
-            "planned or future capabilities — nothing is available yet."
+            "This product is in planning and early development. Final capabilities will depend on workflow needs, governance requirements, and deployment scope."
         ),
     },
 ]
