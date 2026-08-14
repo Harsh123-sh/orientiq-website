@@ -74,25 +74,6 @@ def about(request):
 
 def services(request):
     """Render the Services overview page."""
-    # Build the approved services list (content-only, presentation layer)
-    services_list = [
-        {"slug": "website-development", "name": "Website Development", "short": "Modern, responsive websites built around your brand and goals.", "icon": "web"},
-        {"slug": "web-applications", "name": "Web Applications", "short": "Scalable web applications designed for real business workflows.", "icon": "web"},
-        {"slug": "custom-software", "name": "Custom Software", "short": "Tailored software solutions built around your unique requirements.", "icon": "software"},
-        {"slug": "dashboard-development", "name": "Dashboard Development", "short": "Clear, powerful dashboards for business data and operations.", "icon": "software"},
-        {"slug": "saas-development", "name": "SaaS Development", "short": "Scalable SaaS products designed for users, teams, and businesses.", "icon": "software"},
-        {"slug": "mobile-app-development", "name": "Mobile App Development", "short": "User-focused mobile applications for modern platforms.", "icon": "mobile"},
-        {"slug": "ai-development", "name": "AI Development", "short": "AI-powered solutions designed around practical business needs.", "icon": "ai"},
-        {"slug": "ai-automation", "name": "AI Automation", "short": "Automate repetitive processes and improve operational efficiency.", "icon": "ai"},
-        {"slug": "ai-assistants", "name": "AI Assistants", "short": "Intelligent assistants that help users access and work with information.", "icon": "ai"},
-        {"slug": "rag-solutions", "name": "RAG Solutions", "short": "Knowledge-grounded AI systems connected to your business data.", "icon": "ai"},
-        {"slug": "ui-ux-design", "name": "UI/UX Design", "short": "Clear, intuitive interfaces designed for better user experiences.", "icon": "design"},
-        {"slug": "api-development", "name": "API Development", "short": "Secure and scalable APIs that connect applications and services.", "icon": "software"},
-        {"slug": "cloud-solutions", "name": "Cloud Solutions", "short": "Cloud-ready systems designed for scalability and reliability.", "icon": "cloud"},
-        {"slug": "maintenance-support", "name": "Maintenance & Support", "short": "Ongoing improvements, maintenance, monitoring, and technical support.", "icon": "cloud"},
-    ]
-
-    # AI features list for the AI differentiator section
     ai_features = [
         "AI Business Consultant",
         "AI Chatbot",
@@ -106,7 +87,7 @@ def services(request):
         "Smart Contact Assistant",
     ]
 
-    return render(request, "pages/services.html", {"services": services_list, "ai_features": ai_features})
+    return render(request, "pages/services.html", {"services": SERVICES, "ai_features": ai_features})
 
 
 def service_detail(request, slug):

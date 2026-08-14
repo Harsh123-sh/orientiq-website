@@ -332,6 +332,25 @@ class PublicRouteTests(OrientiqTestCase):
         self.assertContains(resp, "AI & Machine Learning", html=True)
         self.assertContains(resp, "Product & Design", html=True)
 
+    def test_service_specialization_pages_exist(self):
+        routes = [
+            "/services/website-development/",
+            "/services/web-applications/",
+            "/services/custom-software/",
+            "/services/dashboard-development/",
+            "/services/saas-development/",
+            "/services/mobile-app-development/",
+            "/services/ai-development/",
+            "/services/ai-assistants/",
+            "/services/rag-solutions/",
+            "/services/api-development/",
+            "/services/cloud-solutions/",
+            "/services/maintenance-support/",
+        ]
+        for route in routes:
+            resp = self.client.get(route)
+            self.assertEqual(resp.status_code, 200, f"Failed on {route}")
+
     def test_404_for_invalid_product(self):
         resp = self.client.get("/products/invalid-slug/")
         self.assertEqual(resp.status_code, 404)
