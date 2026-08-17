@@ -159,7 +159,31 @@ def company_careers(request):
 
 
 def company_contact(request):
-    """Render the Company Contact page."""
+    """Handle contact submissions and display the confirmation message."""
+    if request.method == "POST":
+        name = request.POST.get("name", "").strip()
+        email = request.POST.get("email", "").strip()
+        message = request.POST.get("message", "").strip()
+
+        if not name or not email or not message:
+            messages.error(request, "Please complete your name, email, and message.")
+            return render(request, "company/contact.html")
+
+        record, created = ContactInquiry.objects.get_or_create(
+            name=name,
+            email=email,
+            message=message,
+        )
+
+        if not created:
+            record.name = name
+            record.email = email
+            record.message = message
+            record.save(update_fields=["name", "email", "message", "updated_at"])
+
+        messages.success(request, "Thank you for contacting us.\n\nWe'll get back to you soon.")
+        return redirect("company_contact")
+
     return render(request, "company/contact.html")
 
 

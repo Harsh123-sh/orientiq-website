@@ -1,12 +1,13 @@
 /* ============================================================
-   ORIENTIQ — THEME SYSTEM
+   ORIENTIQ — ADMIN THEME SYSTEM
    ============================================================ */
 
 (function () {
     "use strict";
 
-    var STORAGE_KEY = "orientiq-theme";
+    var STORAGE_KEY = "orientiq-admin-theme";
     var root = document.documentElement;
+    var toggleButtons = document.querySelectorAll("[data-theme-toggle]");
 
     function getStoredTheme() {
         try {
@@ -16,19 +17,12 @@
         }
     }
 
-    function getSystemTheme() {
-        return window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: light)").matches
-            ? "light"
-            : "dark";
-    }
-
     function getInitialTheme() {
         var stored = getStoredTheme();
         if (stored === "dark" || stored === "light") {
             return stored;
         }
-        return getSystemTheme();
+        return "light";
     }
 
     function applyTheme(theme) {
@@ -36,20 +30,22 @@
     }
 
     function setTheme(theme) {
-        // Add a short transition only when the user actively changes theme.
-        // Apply the class first, then change the attribute on the next frame
-        // so the transition is visible. Remove it shortly after.
+        if (theme !== "dark" && theme !== "light") {
+            theme = "light";
+        }
+
         root.classList.add("theme-transitioning");
         requestAnimationFrame(function () {
             applyTheme(theme);
             setTimeout(function () {
                 root.classList.remove("theme-transitioning");
-            }, 300);
+            }, 250);
         });
+
         try {
             localStorage.setItem(STORAGE_KEY, theme);
         } catch (e) {
-            /* storage unavailable — theme still applies for this session */
+            // storage unavailable; theme still applies in-session.
         }
     }
 
@@ -58,11 +54,13 @@
         setTheme(current === "light" ? "dark" : "light");
     }
 
-    // Apply the initial theme as early as possible (no flash).
     applyTheme(getInitialTheme());
 
-    // Expose for the toggle button and other components.
-    window.OrientiqTheme = {
+    toggleButtons.forEach(function (button) {
+        button.addEventListener("click", toggleTheme);
+    });
+
+    window.OrientiqAdminTheme = {
         get current() {
             return root.getAttribute("data-theme");
         },

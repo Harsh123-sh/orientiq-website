@@ -1,0 +1,399 @@
+{% load static %}
+{% if messages %}
+    {% for message in messages %}
+        {% if message.level_tag == 'success' %}
+            <div class="orientiq-success-root" id="{{ modal_id }}-root" aria-live="polite">
+                <div class="orientiq-success-overlay" aria-hidden="true"></div>
+                <div class="orientiq-success-modal" id="{{ modal_id }}" role="dialog" aria-modal="true" aria-labelledby="{{ title_id }}" aria-describedby="{{ description_id }}" tabindex="-1">
+                    <div class="visually-hidden" aria-live="polite">{{ message }}</div>
+                    <div class="orientiq-success-card">
+                        <div class="orientiq-success-brand" aria-label="Orientiq logo">
+                            <img src="{% static 'images/brand/orientiq-logo-on-light.png' %}" alt="Orientiq" class="orientiq-success-logo">
+                        </div>
+
+                        <p class="orientiq-success-kicker">Message received</p>
+                        <h2 id="{{ title_id }}">{{ heading }}</h2>
+                        <p class="orientiq-success-copy" id="{{ description_id }}">{{ description }}</p>
+
+                        <div class="orientiq-success-visual" aria-hidden="true">
+                            <div class="orientiq-confirmation-ring ring-outer"></div>
+                            <div class="orientiq-confirmation-ring ring-inner"></div>
+                            <div class="orientiq-confirmation-mark">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                    <path d="M5 12.5L9.2 16.7L19 6.9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="orientiq-success-meta">
+                            <span class="orientiq-success-label">Returning to home</span>
+                            <span class="orientiq-success-countdown">in 5s</span>
+                        </div>
+
+                        <div class="orientiq-success-progress" aria-hidden="true">
+                            <span class="orientiq-success-progress-bar"></span>
+                        </div>
+
+                        <button type="button" class="orientiq-success-button" id="{{ button_id }}">Continue to Home →</button>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .visually-hidden {
+                    position: absolute;
+                    width: 1px;
+                    height: 1px;
+                    padding: 0;
+                    margin: -1px;
+                    overflow: hidden;
+                    clip: rect(0, 0, 0, 0);
+                    white-space: nowrap;
+                    border: 0;
+                }
+
+                .orientiq-success-root {
+                    position: fixed;
+                    inset: 0;
+                    z-index: 1000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+                }
+
+                .orientiq-success-overlay {
+                    position: absolute;
+                    inset: 0;
+                    background: rgba(20, 20, 20, 0.52);
+                    backdrop-filter: blur(5px);
+                    -webkit-backdrop-filter: blur(5px);
+                }
+
+                .orientiq-success-modal {
+                    position: relative;
+                    z-index: 1;
+                    width: min(520px, calc(100vw - 32px));
+                    max-width: 520px;
+                }
+
+                .orientiq-success-card {
+                    position: relative;
+                    background: #f8f4f0;
+                    border: 1px solid rgba(196, 122, 50, 0.35);
+                    border-radius: 24px;
+                    box-shadow: 0 20px 56px rgba(30, 20, 10, 0.12), 0 2px 12px rgba(124, 86, 44, 0.08);
+                    padding: 1.4rem 1.4rem 1.2rem;
+                    text-align: center;
+                    overflow: hidden;
+                }
+
+                .orientiq-success-card::before {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    background: radial-gradient(circle at 50% 12%, rgba(196, 122, 50, 0.08), transparent 36%);
+                    pointer-events: none;
+                }
+
+                .orientiq-success-brand,
+                .orientiq-success-kicker,
+                .orientiq-success-card h2,
+                .orientiq-success-copy,
+                .orientiq-success-visual,
+                .orientiq-success-meta,
+                .orientiq-success-progress,
+                .orientiq-success-button {
+                    position: relative;
+                    z-index: 1;
+                }
+
+                .orientiq-success-brand {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-bottom: 0.9rem;
+                }
+
+                .orientiq-success-logo {
+                    display: block;
+                    width: auto;
+                    height: 28px;
+                    object-fit: contain;
+                }
+
+                .orientiq-success-kicker {
+                    margin: 0 0 0.7rem;
+                    font-size: 0.72rem;
+                    color: var(--color-accent);
+                    letter-spacing: 0.16em;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                }
+
+                .orientiq-success-card h2 {
+                    margin: 0;
+                    color: #171513;
+                    font-size: clamp(1.9rem, 3vw, 2.3rem);
+                    line-height: 1.1;
+                    letter-spacing: -0.04em;
+                    font-weight: 700;
+                }
+
+                .orientiq-success-copy {
+                    margin: 0.75rem auto 0;
+                    max-width: 30ch;
+                    color: #5f5a55;
+                    font-size: 1rem;
+                    line-height: 1.55;
+                }
+
+                .orientiq-success-visual {
+                    position: relative;
+                    display: grid;
+                    place-items: center;
+                    width: 110px;
+                    height: 110px;
+                    margin: 1.5rem auto 1rem;
+                }
+
+                .orientiq-confirmation-ring {
+                    position: absolute;
+                    border-radius: 50%;
+                    border: 1px solid rgba(196, 122, 50, 0.42);
+                    animation: confirmRing 1s ease-out both;
+                }
+
+                .ring-outer {
+                    width: 110px;
+                    height: 110px;
+                    opacity: 0;
+                    transform: scale(0.9);
+                }
+
+                .ring-inner {
+                    width: 78px;
+                    height: 78px;
+                    border-color: rgba(196, 122, 50, 0.24);
+                    opacity: 0;
+                    transform: scale(0.85);
+                    animation-delay: 130ms;
+                }
+
+                .orientiq-confirmation-mark {
+                    width: 52px;
+                    height: 52px;
+                    display: grid;
+                    place-items: center;
+                    border-radius: 50%;
+                    background: rgba(196, 122, 50, 0.08);
+                    border: 1px solid rgba(196, 122, 50, 0.42);
+                    color: var(--color-accent);
+                    box-shadow: 0 0 0 8px rgba(196, 122, 50, 0.06);
+                    opacity: 0;
+                    transform: scale(0.74);
+                    animation: confirmMark 0.7s ease-out 0.2s forwards;
+                }
+
+                .orientiq-confirmation-mark svg {
+                    width: 22px;
+                    height: 22px;
+                }
+
+                .orientiq-success-meta {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 0.75rem;
+                    margin-top: 0.2rem;
+                    color: #5d5650;
+                    font-size: 0.7rem;
+                    letter-spacing: 0.08em;
+                    text-transform: uppercase;
+                    font-weight: 600;
+                }
+
+                .orientiq-success-label {
+                    opacity: 0.85;
+                }
+
+                .orientiq-success-countdown {
+                    color: #201d1a;
+                    min-width: 52px;
+                    text-align: right;
+                }
+
+                .orientiq-success-progress {
+                    width: 100%;
+                    height: 4px;
+                    margin-top: 0.8rem;
+                    border-radius: 999px;
+                    background: rgba(35, 28, 23, 0.08);
+                    overflow: hidden;
+                }
+
+                .orientiq-success-progress-bar {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(90deg, rgba(196, 122, 50, 0.95), rgba(196, 122, 50, 0.5));
+                    transform-origin: left center;
+                    animation: progressDecay 5s linear forwards;
+                }
+
+                .orientiq-success-button {
+                    display: block;
+                    width: 100%;
+                    margin-top: 1rem;
+                    border: 0;
+                    border-radius: 12px;
+                    background: #c47a32;
+                    color: #fff;
+                    padding: 0.9rem 1rem;
+                    font: inherit;
+                    font-size: 0.96rem;
+                    font-weight: 700;
+                    letter-spacing: 0.01em;
+                    cursor: pointer;
+                    transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+                    box-shadow: 0 10px 20px rgba(196, 122, 50, 0.18);
+                }
+
+                .orientiq-success-button:hover,
+                .orientiq-success-button:focus-visible {
+                    background: #b86d2d;
+                    transform: translateY(-1px);
+                    outline: none;
+                }
+
+                .orientiq-success-button:focus-visible,
+                .orientiq-success-modal:focus-visible {
+                    box-shadow: 0 0 0 3px rgba(196, 122, 50, 0.22);
+                }
+
+                @keyframes confirmRing {
+                    0% {
+                        opacity: 0;
+                        transform: scale(0.7);
+                    }
+                    55% {
+                        opacity: 1;
+                        transform: scale(1.04);
+                    }
+                    100% {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+                }
+
+                @keyframes confirmMark {
+                    0% {
+                        opacity: 0;
+                        transform: scale(0.72);
+                    }
+                    60% {
+                        opacity: 1;
+                        transform: scale(1.08);
+                    }
+                    100% {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+                }
+
+                @keyframes progressDecay {
+                    0% { transform: scaleX(1); }
+                    100% { transform: scaleX(0); }
+                }
+
+                @media (max-width: 480px) {
+                    .orientiq-success-card {
+                        border-radius: 20px;
+                        padding: 1.15rem 1rem 1rem;
+                    }
+
+                    .orientiq-success-logo {
+                        height: 24px;
+                    }
+
+                    .orientiq-success-kicker {
+                        letter-spacing: 0.12em;
+                    }
+
+                    .orientiq-success-card h2 {
+                        font-size: clamp(1.7rem, 7vw, 2rem);
+                    }
+
+                    .orientiq-success-meta {
+                        font-size: 0.64rem;
+                        letter-spacing: 0.06em;
+                    }
+                }
+
+                @media (prefers-reduced-motion: reduce) {
+                    .orientiq-confirmation-ring,
+                    .orientiq-confirmation-mark,
+                    .orientiq-success-progress-bar {
+                        animation: none !important;
+                    }
+                }
+            </style>
+
+            <script>
+                (function () {
+                    var root = document.getElementById('{{ modal_id }}-root');
+                    if (!root) return;
+
+                    if (document.body && root.parentElement !== document.body) {
+                        document.body.appendChild(root);
+                    }
+
+                    var modal = document.getElementById('{{ modal_id }}');
+                    var button = document.getElementById('{{ button_id }}');
+                    var countdown = root.querySelector('.orientiq-success-countdown');
+                    var remaining = 5;
+                    var timer = null;
+
+                    function goHome() {
+                        if (timer) clearInterval(timer);
+                        window.location.href = '/';
+                    }
+
+                    function updateCountdown() {
+                        if (countdown) {
+                            countdown.textContent = 'in ' + remaining + 's';
+                        }
+                    }
+
+                    updateCountdown();
+                    timer = setInterval(function () {
+                        remaining -= 1;
+                        if (remaining <= 0) {
+                            clearInterval(timer);
+                            goHome();
+                            return;
+                        }
+                        updateCountdown();
+                    }, 1000);
+
+                    if (button) {
+                        button.addEventListener('click', function () {
+                            goHome();
+                        });
+                    }
+
+                    if (modal) {
+                        modal.focus();
+                    }
+
+                    document.addEventListener('keydown', function (event) {
+                        if (event.key === 'Escape') {
+                            if (timer) clearInterval(timer);
+                            root.remove();
+                        }
+                    });
+                })();
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}

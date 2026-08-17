@@ -273,6 +273,33 @@ class AdminCRUDTests(OrientiqTestCase):
         self.assertTrue(Testimonial.objects.filter(client_name="ACME").exists())
 
 
+class ContactFormTests(OrientiqTestCase):
+    def test_contact_form_submits_and_saves_record(self):
+        resp = self.client.post(
+            "/company/contact/",
+            {
+                "name": "Jane Smith",
+                "email": "jane@example.com",
+                "message": "We need a new website.",
+            },
+            follow=True,
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(ContactInquiry.objects.filter(email="jane@example.com").exists())
+        self.assertContains(resp, "Thank you for contacting us.")
+        self.assertContains(resp, "We&#x27;ll get back to you soon.")
+        self.assertEqual(ContactInquiry.objects.filter(email="jane@example.com").count(), 1)
+
+    def test_contact_form_invalid_data_is_not_saved(self):
+        resp = self.client.post(
+            "/company/contact/",
+            {"name": "", "email": "not-an-email", "message": ""},
+            follow=True,
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(ContactInquiry.objects.filter(email="not-an-email").count(), 0)
+
+
 class InquiryTests(OrientiqTestCase):
     def test_inquiry_creation_from_public_form(self):
         resp = self.client.post(
@@ -282,9 +309,11 @@ class InquiryTests(OrientiqTestCase):
                 "company": "ACME", "project_type": "Web Development",
                 "budget": "$10k-$25k", "message": "Hello",
             },
+            follow=True,
         )
-        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(resp.status_code, 200)
         self.assertTrue(ContactInquiry.objects.filter(email="john@test.com").exists())
+        self.assertContains(resp, "Thank you! Your project inquiry has been received.")
 
     def test_inquiry_requires_name_and_email(self):
         resp = self.client.post("/start-project/", {"name": "", "email": ""})

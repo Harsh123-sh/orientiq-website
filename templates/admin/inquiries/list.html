@@ -5,46 +5,96 @@
 {% block page_title %}Inquiries{% endblock %}
 
 {% block content %}
-<div class="admin-toolbar">
-    <form method="get">
-        <input type="text" name="q" class="form-control" placeholder="Search inquiries..." value="{{ request.GET.q }}">
-        <select name="status" class="form-control">
-            <option value="">All statuses</option>
-            {% for value, label in status_choices %}
-            <option value="{{ value }}" {% if request.GET.status == value %}selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit" class="btn btn-secondary">Filter</button>
-    </form>
-</div>
+<div class="inquiry-dashboard">
+    <div class="inquiry-header">
+        <div>
+            <p class="inquiry-eyebrow">Lead pipeline</p>
+            <h2 class="inquiry-title">Active inquiries</h2>
+        </div>
+        <div class="inquiry-total-chip">
+            <span class="inquiry-total-label">Total</span>
+            <strong>{{ status_total }}</strong>
+        </div>
+    </div>
 
-<div class="admin-table-wrap">
-    <table class="admin-table">
-        <thead>
-            <tr><th>Name</th><th>Email</th><th>Service</th><th>Status</th><th>Created</th><th>Actions</th></tr>
-        </thead>
-        <tbody>
-            {% for item in items %}
-            <tr>
-                <td>{{ item.name }}</td>
-                <td>{{ item.email }}</td>
-                <td>{{ item.service }}</td>
-                <td><span class="badge-status {{ item.status }}">{{ item.get_status_display }}</span></td>
-                <td>{{ item.created_at|date:"M d, H:i" }}</td>
-                <td><a href="{% url 'admin_inquiry_detail' item.id %}" class="btn btn-sm btn-secondary">View</a></td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="6" class="text-muted">No inquiries found.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+    <div class="inquiry-summary-grid">
+        <a href="{% url 'admin_inquiry_list' %}" class="inquiry-summary-card {% if active_status == 'all' %}is-active{% endif %}">
+            <span class="inquiry-summary-label">All</span>
+            <strong>{{ status_total }}</strong>
+        </a>
+        {% for status_item in status_summary %}
+        <a href="{% url 'admin_inquiry_list' %}?status={{ status_item.value }}" class="inquiry-summary-card {% if active_status == status_item.value %}is-active{% endif %}">
+            <span class="inquiry-summary-label">{{ status_item.label }}</span>
+            <strong>{{ status_item.count }}</strong>
+        </a>
+        {% endfor %}
+    </div>
 
-{% if items.has_other_pages %}
-<div class="admin-pagination">
-    {% if items.has_previous %}<a href="?page={{ items.previous_page_number }}">←</a>{% endif %}
-    <span class="current">Page {{ items.number }} of {{ items.paginator.num_pages }}</span>
-    {% if items.has_next %}<a href="?page={{ items.next_page_number }}">→</a>{% endif %}
+    <div class="admin-toolbar inquiry-toolbar">
+        <form method="get" class="inquiry-filter-form">
+            <div class="search-field">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" name="q" class="form-control" placeholder="Search names, emails, companies..." value="{{ search_query }}">
+            </div>
+            <select name="status" class="form-control">
+                <option value="">All statuses</option>
+                {% for value, label in status_choices %}
+                <option value="{{ value }}" {% if request.GET.status == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-secondary">Apply</button>
+            <a href="{% url 'admin_inquiry_list' %}" class="btn btn-ghost">Clear</a>
+        </form>
+    </div>
+
+    <div class="admin-table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Contact</th>
+                    <th>Email</th>
+                    <th>Service</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>
+                        <div class="contact-cell">
+                            <span class="contact-avatar">{{ item.name|first|upper }}</span>
+                            <div>
+                                <strong>{{ item.name }}</strong>
+                                {% if item.company %}<small>{{ item.company }}</small>{% endif %}
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.service|default:"General inquiry" }}</td>
+                    <td><span class="badge-status {{ item.status }}">{{ item.get_status_display }}</span></td>
+                    <td>
+                        <div class="date-cell">
+                            <strong>{{ item.created_at|date:"M d, Y" }}</strong>
+                            <small>{{ item.created_at|time:"H:i" }}</small>
+                        </div>
+                    </td>
+                    <td><a href="{% url 'admin_inquiry_detail' item.id %}" class="btn btn-sm btn-secondary">View</a></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-muted">No inquiries found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if items.has_other_pages %}
+    <div class="admin-pagination">
+        {% if items.has_previous %}<a href="?page={{ items.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">←</a>{% endif %}
+        <span class="current">Page {{ items.number }} of {{ items.paginator.num_pages }}</span>
+        {% if items.has_next %}<a href="?page={{ items.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">→</a>{% endif %}
+    </div>
+    {% endif %}
 </div>
-{% endif %}
 {% endblock %}

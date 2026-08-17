@@ -530,19 +530,34 @@ def testimonial_delete(request, pk):
 @login_required
 def inquiry_list(request):
     require_admin(request.user)
-    qs = ContactInquiry.objects.all()
+    all_qs = ContactInquiry.objects.all()
+    qs = all_qs
     q = request.GET.get("q")
     if q:
         qs = qs.filter(Q(name__icontains=q) | Q(email__icontains=q) | Q(company__icontains=q))
     status = request.GET.get("status")
     if status:
         qs = qs.filter(status=status)
+
+    status_summary = [
+        {
+            "value": value,
+            "label": label,
+            "count": all_qs.filter(status=value).count(),
+        }
+        for value, label in ContactInquiry.STATUS_CHOICES
+    ]
+
     return render(
         request,
         "admin/inquiries/list.html",
         {
             "items": _paginate(request, qs),
             "status_choices": ContactInquiry.STATUS_CHOICES,
+            "status_summary": status_summary,
+            "status_total": all_qs.count(),
+            "active_status": status or "all",
+            "search_query": q or "",
         },
     )
 
