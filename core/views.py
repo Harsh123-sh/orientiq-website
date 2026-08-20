@@ -56,7 +56,7 @@ from .services.booking import (
 
 
 def home(request):
-    """Render the Orientiq homepage."""
+    """Render the ORENTIQ homepage."""
     return render(
         request,
         "pages/home.html",
@@ -261,7 +261,7 @@ def register(request):
             # With multiple auth backends, Django requires the backend attribute.
             user.backend = "core.backends.EmailOrUsernameModelBackend"
             login(request, user)
-            messages.success(request, "Welcome to Orientiq! Your account has been created.")
+            messages.success(request, "Welcome to ORENTIQ! Your account has been created.")
             return redirect("accounts_profile")
     else:
         form = RegisterForm()

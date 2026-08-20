@@ -1,7 +1,7 @@
 {% load static %}
 <div class="ai-assistant" id="ai-assistant" data-endpoint="{% url 'ai_chat' %}">
     <!-- Floating trigger button -->
-    <button type="button" class="ai-assistant-trigger" id="ai-assistant-trigger" aria-label="Open Orientiq AI assistant" aria-expanded="false" aria-controls="ai-assistant-panel">
+    <button type="button" class="ai-assistant-trigger" id="ai-assistant-trigger" aria-label="Open ORENTIQ AI assistant" aria-expanded="false" aria-controls="ai-assistant-panel">
         <svg class="icon icon-sparkle" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8L12 2z"></path>
             <path d="M19 15l.9 2.6L22.5 18.5l-2.6.9L19 22l-.9-2.6-2.6-.9 2.6-.9L19 15z"></path>
@@ -9,7 +9,7 @@
     </button>
 
     <!-- Chat panel -->
-    <div class="ai-assistant-panel" id="ai-assistant-panel" role="dialog" aria-modal="false" aria-label="Orientiq AI assistant" aria-hidden="true">
+    <div class="ai-assistant-panel" id="ai-assistant-panel" role="dialog" aria-modal="false" aria-label="ORENTIQ AI assistant" aria-hidden="true">
         <div class="ai-assistant-header">
             <div class="ai-assistant-brand">
                 <svg class="icon icon-sparkle" viewBox="0 0 24 24" aria-hidden="true">
@@ -17,8 +17,8 @@
                     <path d="M19 15l.9 2.6L22.5 18.5l-2.6.9L19 22l-.9-2.6-2.6-.9 2.6-.9L19 15z"></path>
                 </svg>
                 <div>
-                    <strong>Orientiq AI</strong>
-                    <span class="ai-assistant-subtitle">Your intelligent guide to Orientiq</span>
+                    <strong>ORENTIQ AI</strong>
+                    <span class="ai-assistant-subtitle">Your intelligent guide to ORENTIQ</span>
                 </div>
             </div>
             <div class="ai-assistant-actions">
@@ -34,12 +34,12 @@
         <div class="ai-assistant-messages" id="ai-assistant-messages" role="log" aria-live="polite" aria-relevant="additions">
             <div class="ai-message ai-message-assistant" data-role="assistant">
                 <div class="ai-message-bubble">
-                    Hello! I'm Orientiq AI. How can I help you today?
+                    Hello! I'm ORENTIQ AI. How can I help you today?
                 </div>
             </div>
             <p class="ai-suggestion-label">Try asking:</p>
             <div class="ai-suggestions" id="ai-suggestions">
-                <button type="button" class="ai-suggestion-chip" data-question="What does Orientiq do?">What does Orientiq do?</button>
+                <button type="button" class="ai-suggestion-chip" data-question="What does ORENTIQ do?">What does ORENTIQ do?</button>
                 <button type="button" class="ai-suggestion-chip" data-question="What services do you provide?">What services do you provide?</button>
                 <button type="button" class="ai-suggestion-chip" data-question="Which industries do you serve?">Which industries do you serve?</button>
                 <button type="button" class="ai-suggestion-chip" data-question="What technologies do you use?">What technologies do you use?</button>
@@ -53,9 +53,9 @@
         </div>
 
         <form class="ai-assistant-form" id="ai-assistant-form">
-            <label class="ai-assistant-label" for="ai-assistant-input">Ask about Orientiq</label>
+            <label class="ai-assistant-label" for="ai-assistant-input">Ask about ORENTIQ</label>
             <div class="ai-assistant-input-row">
-                <textarea id="ai-assistant-input" class="ai-assistant-input" rows="1" placeholder="Ask about Orientiq..." maxlength="2000" aria-label="Ask about Orientiq"></textarea>
+                <textarea id="ai-assistant-input" class="ai-assistant-input" rows="1" placeholder="Ask about ORENTIQ..." maxlength="2000" aria-label="Ask about ORENTIQ"></textarea>
                 <button type="submit" class="ai-assistant-send" id="ai-assistant-send" aria-label="Send message">
                     <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                 </button>

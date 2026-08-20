@@ -40,4 +40,4 @@ IMPORTANT — {{ demo_disclaimer }}
 This booking is a technical demo only.
 
 Warm regards,
-The Orientiq Team
+The ORENTIQ Team

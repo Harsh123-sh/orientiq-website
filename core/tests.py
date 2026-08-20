@@ -373,12 +373,16 @@ class PublicRouteTests(OrientiqTestCase):
             "/services/ai-assistants/",
             "/services/rag-solutions/",
             "/services/api-development/",
-            "/services/cloud-solutions/",
             "/services/maintenance-support/",
+            "/services/erp/",
+            "/services/crm/",
         ]
         for route in routes:
             resp = self.client.get(route)
             self.assertEqual(resp.status_code, 200, f"Failed on {route}")
+
+        self.assertEqual(self.client.get("/services/cloud-devops/").status_code, 404)
+        self.assertEqual(self.client.get("/services/cloud-solutions/").status_code, 404)
 
     def test_404_for_invalid_product(self):
         resp = self.client.get("/products/invalid-slug/")
@@ -498,7 +502,7 @@ class AIAssistantTests(OrientiqTestCase):
         data = resp.json()
         self.assertTrue(data["success"])
         self.assertTrue(data["message"])
-        self.assertIn("Orientiq", data["message"])
+        self.assertIn("ORENTIQ", data["message"])
 
     def test_ai_endpoint_start_project_suggestion(self):
         """Project-related questions should include Start a Project suggestion."""
@@ -528,7 +532,7 @@ class AIAssistantTests(OrientiqTestCase):
         from .ai.knowledge import build_company_context
         context = build_company_context()
         self.assertTrue(context["services"])
-        self.assertTrue(context["company"]["name"] == "Orientiq")
+        self.assertTrue(context["company"]["name"] == "ORENTIQ")
 
     def test_knowledge_does_not_include_private_data(self):
         """Knowledge context must not include admin notes, passwords, or inquiries."""
@@ -1653,7 +1657,7 @@ class BookingTests(OrientiqTestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(len(callbacks), 1)
         self.assertEqual(len(mail.outbox), 1)
-        self.assertIn("Orientiq Booking Confirmed", mail.outbox[0].subject)
+        self.assertIn("ORENTIQ Booking Confirmed", mail.outbox[0].subject)
 
     def test_email_failure_handling(self):
         """An email failure must not raise or corrupt the booking flow."""

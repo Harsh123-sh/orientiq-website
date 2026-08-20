@@ -1,5 +1,5 @@
 """
-Email services for Orientiq.
+Email services for ORENTIQ.
 
 Phase 9 booking confirmation email. Uses booking.user.email — never an
 undefined `request` object. send_mail runs with fail_silently=True so an
@@ -34,10 +34,10 @@ def booking_confirmation_email(booking):
         "items": booking.items.select_related("booking").all(),
         "travelers": booking.travelers.all(),
         "demo_disclaimer": EMAIL_DEMO_DISCLAIMER,
-        "site_name": "Orientiq",
+        "site_name": "ORENTIQ",
     }
 
-    subject = f"Orientiq Booking Confirmed — {booking.booking_reference}"
+    subject = f"ORENTIQ Booking Confirmed — {booking.booking_reference}"
     body = render_to_string("emails/booking_confirmation_email.txt", context)
 
     try:

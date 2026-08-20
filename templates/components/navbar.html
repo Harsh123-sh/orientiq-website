@@ -1,8 +1,8 @@
 {% load static %}
 <header class="navbar" role="banner">
     <div class="container navbar-inner">
-        <a href="{% url 'home' %}" class="navbar-brand" aria-label="Orientiq home">
-            <img src="{% static 'images/brand/orientiq-logo-on-light.png' %}" alt="Orientiq" class="brand-logo brand-logo-on-light">
+        <a href="{% url 'home' %}" class="navbar-brand" aria-label="ORENTIQ home">
+            <img src="{% static 'images/brand/orientiq-logo-on-light.png' %}" alt="ORENTIQ" class="brand-logo brand-logo-on-light">
             <img src="{% static 'images/brand/orientiq-logo-on-dark.png' %}" alt="" class="brand-logo brand-logo-on-dark" aria-hidden="true">
         </a>
 
@@ -22,7 +22,8 @@
                         <a href="{% url 'service_detail' 'mobile-development' %}" role="menuitem">Mobile Development</a>
                         <a href="{% url 'service_detail' 'software-development' %}" role="menuitem">Software Development</a>
                         <a href="{% url 'service_detail' 'ui-ux-design' %}" role="menuitem">UI/UX Design</a>
-                        <a href="{% url 'service_detail' 'cloud-devops' %}" role="menuitem">Cloud & DevOps</a>
+                        <a href="{% url 'service_detail' 'erp' %}" role="menuitem">ERP — Enterprise Resource Planning</a>
+                        <a href="{% url 'service_detail' 'crm' %}" role="menuitem">CRM — Customer Relationship Management</a>
                     </div>
                 </li>
                 <li class="nav-item has-dropdown">
@@ -92,8 +93,8 @@
 <!-- Mobile Menu -->
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Mobile navigation">
     <div class="mobile-menu-header">
-        <a href="{% url 'home' %}" class="navbar-brand" aria-label="Orientiq home">
-            <img src="{% static 'images/brand/orientiq-logo-on-light.png' %}" alt="Orientiq" class="brand-logo brand-logo-on-light">
+        <a href="{% url 'home' %}" class="navbar-brand" aria-label="ORENTIQ home">
+            <img src="{% static 'images/brand/orientiq-logo-on-light.png' %}" alt="ORENTIQ" class="brand-logo brand-logo-on-light">
             <img src="{% static 'images/brand/orientiq-logo-on-dark.png' %}" alt="" class="brand-logo brand-logo-on-dark" aria-hidden="true">
         </a>
         <button type="button" class="mobile-menu-close" aria-label="Close menu">
@@ -115,7 +116,8 @@
                     <a href="{% url 'service_detail' 'mobile-development' %}">Mobile Development</a>
                     <a href="{% url 'service_detail' 'software-development' %}">Software Development</a>
                     <a href="{% url 'service_detail' 'ui-ux-design' %}">UI/UX Design</a>
-                    <a href="{% url 'service_detail' 'cloud-devops' %}">Cloud & DevOps</a>
+                    <a href="{% url 'service_detail' 'erp' %}">ERP — Enterprise Resource Planning</a>
+                    <a href="{% url 'service_detail' 'crm' %}">CRM — Customer Relationship Management</a>
                 </div>
             </li>
             <li class="mobile-nav-item">

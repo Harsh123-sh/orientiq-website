@@ -77,7 +77,7 @@
     function addTypingIndicator() {
         var wrapper = document.createElement("div");
         wrapper.className = "ai-message ai-message-assistant ai-typing";
-        wrapper.setAttribute("aria-label", "Orientiq AI is typing");
+            wrapper.setAttribute("aria-label", "ORENTIQ AI is typing");
 
         var bubble = document.createElement("div");
         bubble.className = "ai-message-bubble";
@@ -131,7 +131,7 @@
             greeting.setAttribute("data-role", "assistant");
             var bubble = document.createElement("div");
             bubble.className = "ai-message-bubble";
-            bubble.textContent = "Hello! I'm Orientiq AI. How can I help you today?";
+            bubble.textContent = "Hello! I'm ORENTIQ AI. How can I help you today?";
             greeting.appendChild(bubble);
             messagesEl.appendChild(greeting);
         }
@@ -145,7 +145,7 @@
         var sugWrap = document.createElement("div");
         sugWrap.className = "ai-suggestions";
         var questions = [
-            "What does Orientiq do?",
+            "What does ORENTIQ do?",
             "What services do you provide?",
             "Which industries do you serve?",
             "What technologies do you use?",

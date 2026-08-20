@@ -1,4 +1,4 @@
-"""Company knowledge layer for the Orientiq AI assistant.
+"""Company knowledge layer for the ORENTIQ AI assistant.
 
 Sources (in priority order):
 1. Published CMS/database content (Service, Industry, Product, Technology, Testimonial)
@@ -113,9 +113,9 @@ def build_company_context():
 
     return {
         "company": {
-            "name": "Orientiq",
+            "name": "ORENTIQ",
             "description": (
-                "Orientiq is a premium technology and digital solutions company. "
+                "ORENTIQ is a premium technology and digital solutions company. "
                 "We build AI-powered digital products, intelligent platforms, and "
                 "scalable technology solutions for ambitious businesses worldwide."
             ),

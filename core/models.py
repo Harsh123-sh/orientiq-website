@@ -506,7 +506,7 @@ class Traveler(models.Model):
 class SiteSetting(models.Model):
     """Singleton website settings."""
 
-    company_name = models.CharField(max_length=120, default="Orientiq")
+    company_name = models.CharField(max_length=120, default="ORENTIQ")
     tagline = models.CharField(max_length=200, blank=True)
     email = models.EmailField(blank=True)
     phone = models.CharField(max_length=30, blank=True)

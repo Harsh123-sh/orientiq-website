@@ -61,7 +61,7 @@ good_phrases = [
     "Future Opportunities",
     "Areas we may hire for as we grow",
     "Growing with us",
-    "Build what's next with Orientiq",
+    "Build what's next with ORENTIQ",
 ]
 
 found_good_phrases = []

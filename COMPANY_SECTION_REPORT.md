@@ -115,7 +115,8 @@
   - Software Engineering
   - AI & Machine Learning
   - Product & UI/UX Design
-  - Cloud & DevOps
+  - ERP — Enterprise Resource Planning
+  - CRM — Customer Relationship Management
 - **Key messaging:** "Areas we may hire for as we grow" / "These represent potential roles as Orientiq expands. New opportunities will be announced as they develop."
 
 ### Added "Stay Connected" Section

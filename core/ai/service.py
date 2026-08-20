@@ -1,4 +1,4 @@
-"""AI service layer for the Orientiq AI assistant.
+"""AI service layer for the ORENTIQ AI assistant.
 
 Architecture:
     Website → Django API → AI Service → Provider Adapter → LLM Provider
@@ -58,7 +58,7 @@ class KnowledgeFallbackProvider(BaseProvider):
         if any(k in msg for k in ["service", "offer", "provide", "do you do", "what do you"]):
             names = ", ".join(s["title"] for s in services[:6])
             return (
-                f"Orientiq provides a range of services including {names}. "
+                f"ORENTIQ provides a range of services including {names}. "
                 f"Each service is designed to help businesses build, scale, and transform "
                 f"with technology. You can explore them at /services/."
             )
@@ -67,7 +67,7 @@ class KnowledgeFallbackProvider(BaseProvider):
         if any(k in msg for k in ["industr", "sector", "field", "market"]):
             names = ", ".join(i["name"] for i in industries[:6])
             return (
-                f"Orientiq serves a range of industries including {names}. "
+                f"ORENTIQ serves a range of industries including {names}. "
                 f"Each engagement is tailored to the specific challenges of the sector. "
                 f"Learn more at /industries/."
             )
@@ -76,7 +76,7 @@ class KnowledgeFallbackProvider(BaseProvider):
         if any(k in msg for k in ["technolog", "stack", "tools", "tech"]):
             names = ", ".join(t["name"] for t in technologies[:8])
             return (
-                f"Orientiq works with a modern technology ecosystem including {names}. "
+                f"ORENTIQ works with a modern technology ecosystem including {names}. "
                 f"We choose the right tools for each challenge. See /technologies/ for details."
             )
 
@@ -84,14 +84,14 @@ class KnowledgeFallbackProvider(BaseProvider):
         if any(k in msg for k in ["product", "platform", "ai travel", "society", "business ai"]):
             names = ", ".join(p["name"] for p in products[:3])
             return (
-                f"Orientiq is building a family of products including {names}. "
+                f"ORENTIQ is building a family of products including {names}. "
                 f"These are showcased at /products/ and are currently in planning or early development."
             )
 
         # Start a project
         if any(k in msg for k in ["start", "project", "hire", "build", "quote", "estimate"]):
             return (
-                "That sounds like a project Orientiq can help with. "
+                "That sounds like a project ORENTIQ can help with. "
                 "You can share your requirements through the Start a Project form at /start-project/. "
                 "We typically respond within one business day."
             )
@@ -108,28 +108,28 @@ class KnowledgeFallbackProvider(BaseProvider):
         # Contact
         if any(k in msg for k in ["contact", "email", "reach", "phone"]):
             return (
-                "You can reach Orientiq through the Contact page at /company/contact/ "
+                "You can reach ORENTIQ through the Contact page at /company/contact/ "
                 "or submit a project inquiry at /start-project/."
             )
 
         # Careers
         if any(k in msg for k in ["career", "job", "join", "hiring"]):
             return (
-                "Orientiq is always looking for exceptional engineers, designers, and strategists. "
+                "ORENTIQ is always looking for exceptional engineers, designers, and strategists. "
                 "See current opportunities at /company/careers/."
             )
 
         # Greeting
         if any(k in msg for k in ["hello", "hi ", "hey", "greetings"]):
             return (
-                "Hello! I'm Orientiq AI, your guide to Orientiq. "
+                "Hello! I'm ORENTIQ AI, your guide to ORENTIQ. "
                 "I can help you learn about our services, industries, technologies, products, "
                 "and how to start a project. What would you like to know?"
             )
 
         # Default
         return (
-            "I'm Orientiq AI, designed to help you understand Orientiq — our services, "
+            "I'm ORENTIQ AI, designed to help you understand ORENTIQ — our services, "
             "industries, technologies, products, and project process. "
             "If you have a question about those, I'd be happy to help. "
             "For project inquiries, you can also visit /start-project/."
@@ -231,7 +231,7 @@ def _suggestions_for(message, context):
     if any(k in msg for k in ["technolog", "stack", "tools"]):
         suggestions.append({"label": "View Technologies", "url": "/technologies/"})
     if any(k in msg for k in ["about", "who", "company"]):
-        suggestions.append({"label": "About Orientiq", "url": "/about/"})
+        suggestions.append({"label": "About ORENTIQ", "url": "/about/"})
     if any(k in msg for k in ["start", "project", "hire", "build", "quote", "estimate"]):
         suggestions.append({"label": "Start a Project", "url": "/start-project/"})
 
