@@ -1,0 +1,44 @@
+<div class="service-glass-core service-glass-cube-hero cube" aria-hidden="true">
+    <div class="service-glass-shell">
+
+        <!-- Service identifier: centered inside the 3D cube -->
+        <div class="service-glass-identifier floating-letter">
+            {% if service.slug == "ai-automation" or service.slug == "automation" or service.slug == "automation-services" or service.slug == "ai-assistants" or service.slug == "ai-development" or service.slug == "ai-agents" %}
+                A
+            {% elif service.slug == "software-development" or service.slug == "software" %}
+                S
+            {% elif service.slug == "data-analytics" or service.slug == "dashboard-development" %}
+                D
+            {% elif service.slug == "business-intelligence" or service.slug == "consulting" %}
+                C
+            {% elif service.slug == "integration-services" or service.slug == "api-development" %}
+                I
+            {% elif service.slug == "cloud-services" %}
+                C
+            {% elif service.slug == "digital-transformation" %}
+                D
+            {% elif service.slug == "web-development" %}
+                W
+            {% elif service.slug == "mobile-development" %}
+                M
+            {% elif service.slug == "ui-ux-design" %}
+                U
+            {% elif service.slug == "erp" %}
+                E
+            {% elif service.slug == "crm" %}
+                C
+            {% else %}
+                {{ service.name|slice:":1"|upper }}
+            {% endif %}
+        </div>
+
+        <!-- 3D glass cube faces -->
+        <div class="service-glass-plane service-glass-plane--front front"></div>
+        <div class="service-glass-plane service-glass-plane--back back"></div>
+        <div class="service-glass-plane service-glass-plane--left left"></div>
+        <div class="service-glass-plane service-glass-plane--right right"></div>
+        <div class="service-glass-plane service-glass-plane--top top"></div>
+        <div class="service-glass-plane service-glass-plane--bottom bottom"></div>
+
+    </div>
+</div>

@@ -12,6 +12,7 @@
 
     <!-- Theme init: prevent flash of incorrect theme -->
     <script src="{% static 'js/theme-init.js' %}"></script>
+    <script>document.documentElement.classList.add('motion-ready');</script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,13 +24,13 @@
     <link rel="stylesheet" href="{% static 'css/reset.css' %}">
     <link rel="stylesheet" href="{% static 'css/typography.css' %}">
     <link rel="stylesheet" href="{% static 'css/layout.css' %}">
-    <link rel="stylesheet" href="{% static 'css/components.css' %}">
-    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
-    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
-    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}?v=motion-final">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}?v=motion-final">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}?v=motion-final">
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}?v=motion-final">
     <link rel="stylesheet" href="{% static 'css/themes.css' %}">
     <link rel="stylesheet" href="{% static 'css/pages.css' %}">
-    <link rel="stylesheet" href="{% static 'css/ai-assistant.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ai-assistant.css' %}?v=motion-final">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -46,7 +47,7 @@
     <script src="{% static 'js/theme.js' %}"></script>
     <script src="{% static 'js/ai-assistant.js' %}"></script>
     <script src="{% static 'js/navigation.js' %}"></script>
-    <script src="{% static 'js/components.js' %}"></script>
+    <script src="{% static 'js/components.js' %}?v=motion-final"></script>
     <script src="{% static 'js/main.js' %}"></script>
     {% block extra_js %}{% endblock %}
 </body>

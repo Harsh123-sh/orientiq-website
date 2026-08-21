@@ -5,8 +5,40 @@
 (function () {
     "use strict";
 
+    /* ---------- Public motion enrollment ---------- */
+    var motionGroups = [
+        ".section-heading",
+        ".card-service",
+        ".card-technology",
+        ".card-industry",
+        ".card-product",
+        ".card-portfolio",
+        ".process-step",
+        ".card-stat",
+        ".cta-card",
+        ".trust-item"
+    ];
+
+    motionGroups.forEach(function (selector) {
+        document.querySelectorAll(selector).forEach(function (element, index) {
+            if (!element.classList.contains("reveal") && !element.classList.contains("reveal-up") && !element.classList.contains("reveal-scale")) {
+                element.classList.add("reveal-up");
+            }
+            var siblingIndex = Array.prototype.indexOf.call(element.parentElement ? element.parentElement.children : [], element);
+            element.style.setProperty("--reveal-delay", Math.min(Math.max(siblingIndex, index) * 100, 300) + "ms");
+        });
+    });
+
+    document.querySelectorAll(".hero-eyebrow, .hero h1, .hero p.lead, .hero-actions, .hero-visual, .page-hero .eyebrow, .page-hero h1, .page-hero p").forEach(function (element, index) {
+        if (!element.classList.contains("reveal") && !element.classList.contains("reveal-up") && !element.classList.contains("reveal-scale")) {
+            element.classList.add(element.classList.contains("hero-visual") ? "reveal-scale" : "reveal-up");
+        }
+        var heroDelays = [150, 250, 400, 550, 300];
+        element.style.setProperty("--reveal-delay", (element.closest(".hero") ? heroDelays[index] || 300 : Math.min(index * 80, 320)) + "ms");
+    });
+
     /* ---------- Reveal on scroll ---------- */
-    var revealElements = document.querySelectorAll(".reveal");
+    var revealElements = document.querySelectorAll(".reveal, .reveal-up, .reveal-left, .reveal-right, .reveal-image, .reveal-scale");
 
     if ("IntersectionObserver" in window) {
         var observer = new IntersectionObserver(

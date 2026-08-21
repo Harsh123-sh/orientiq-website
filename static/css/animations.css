@@ -3,15 +3,55 @@
    ============================================================ */
 
 /* ---------- Page/Section Reveal Foundation ---------- */
-.reveal {
+html.motion-ready .reveal,
+html.motion-ready .reveal-up,
+html.motion-ready .reveal-left,
+html.motion-ready .reveal-right {
     opacity: 0;
-    transform: translateY(24px);
-    transition: opacity var(--transition-slow), transform var(--transition-slow);
+    transform: translateY(20px);
+    transition: opacity 520ms cubic-bezier(.22, 1, .36, 1), transform 520ms cubic-bezier(.22, 1, .36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
 }
 
-.reveal.is-visible {
+.reveal-left { transform: translateX(-20px); }
+.reveal-right { transform: translateX(20px); }
+
+html.motion-ready .reveal.is-visible,
+html.motion-ready .reveal-up.is-visible,
+html.motion-ready .reveal-left.is-visible,
+html.motion-ready .reveal-right.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(0);
+}
+
+html.motion-ready .reveal-image {
+    opacity: 0;
+    transform: scale(.98);
+    transition: opacity 620ms cubic-bezier(.22, 1, .36, 1), transform 620ms cubic-bezier(.22, 1, .36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+}
+
+html.motion-ready .reveal-image.is-visible,
+html.motion-ready .reveal-scale.is-visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+html.motion-ready .reveal-scale {
+    opacity: 0;
+    transform: scale(.96);
+    transition: opacity 620ms cubic-bezier(.22, 1, .36, 1), transform 620ms cubic-bezier(.22, 1, .36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+}
+
+.motion-float { animation: gentleFloat 8s ease-in-out infinite; }
+
+@keyframes gentleFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
 }
 
 /* ---------- Fade ---------- */
@@ -61,7 +101,11 @@ html.theme-transitioning *::after {
 
 /* ---------- Reduced Motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-    .reveal {
+    html.motion-ready .reveal,
+    html.motion-ready .reveal-up,
+    html.motion-ready .reveal-left,
+    html.motion-ready .reveal-right,
+    html.motion-ready .reveal-scale {
         opacity: 1;
         transform: none;
         transition: none;
@@ -71,6 +115,14 @@ html.theme-transitioning *::after {
         animation: none;
         opacity: 1;
     }
+
+    .reveal-image {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .motion-float { animation: none; }
 
     .site-main { animation: none; }
 

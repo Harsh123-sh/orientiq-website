@@ -4,123 +4,173 @@
 {% block title %}{{ service.name }} — ORENTIQ{% endblock %}
 {% block meta_description %}{{ service.short }}{% endblock %}
 
-{% block content %}
-<!-- ==================== HERO ==================== -->
-<section class="page-hero">
-    <div class="container">
-        <span class="eyebrow">{{ service.tagline }}</span>
-        <h1>{{ service.name }}</h1>
-        <p>{{ service.short }}</p>
-        <div class="flex gap-4 flex-wrap mt-6">
-            <a href="{% url 'start_project' %}" class="btn btn-primary">Start a Project</a>
-            <a href="{% url 'services' %}" class="btn btn-outline">All Services</a>
-        </div>
-    </div>
-</section>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/services-page.css' %}?v=services-final">
+<link rel="stylesheet" href="{% static 'css/service-detail.css' %}?v=detail-data-flow-2026">
+{% if service.slug == "ai-automation" %}<link rel="stylesheet" href="{% static 'css/ai-automation-page.css' %}?v=ai-final-3">{% endif %}
+{% endblock %}
 
-<!-- ==================== OVERVIEW ==================== -->
-<section class="section">
-    <div class="container">
-        <div class="grid grid-2">
-            <div>
+{% block content %}
+<div class="service-detail-page service-{{ service.icon }}{% if service.slug == "ai-automation" %} service-ai-page{% endif %}">
+    <section class="service-detail-hero reveal-up">
+        <div class="container service-detail-hero-grid">
+            <div class="service-detail-hero-copy">
+                <span class="eyebrow">{{ service.tagline }}</span>
+                <h1>{{ service.name }}</h1>
+                <p>{{ service.short }}</p>
+                <div class="service-detail-hero-actions">
+                    <a href="{% url 'start_project' %}" class="btn btn-primary">Start a Project</a>
+                    <a href="{% url 'services' %}" class="btn btn-outline">All Services</a>
+                </div>
+            </div>
+            <div class="service-detail-visual service-detail-visual--data-flow service-visual-{{ service.icon }} reveal-scale" aria-hidden="true">
+                <svg class="service-data-paths" viewBox="0 0 600 460" preserveAspectRatio="none">
+                    <path d="M86 92 C170 108 205 170 267 207"></path>
+                    <path d="M514 92 C430 108 395 170 333 207"></path>
+                    <path d="M86 368 C170 352 205 290 267 253"></path>
+                    <path d="M332 253 C394 291 430 352 514 368"></path>
+                    <circle class="service-flow-particle" r="4"><animateMotion dur="4.8s" repeatCount="indefinite" path="M86 92 C170 108 205 170 267 207" /></circle>
+                    <circle class="service-flow-particle" r="3.5"><animateMotion dur="5.9s" begin="-2.2s" repeatCount="indefinite" path="M514 92 C430 108 395 170 333 207" /></circle>
+                    <circle class="service-flow-particle" r="3.5"><animateMotion dur="5.2s" begin="-3.5s" repeatCount="indefinite" path="M86 368 C170 352 205 290 267 253" /></circle>
+                    <circle class="service-flow-particle service-flow-particle--output" r="4"><animateMotion dur="4.5s" begin="-1.4s" repeatCount="indefinite" path="M332 253 C394 291 430 352 514 368" /></circle>
+                </svg>
+                <span class="service-detail-gridline"></span>
+                <span class="service-detail-node service-detail-node-a"><strong>Capability</strong><span>active layer</span></span>
+                <span class="service-detail-node service-detail-node-b"><strong>System</strong><span>connected flow</span></span>
+                <span class="service-detail-node service-detail-node-c"><strong>Scale</strong><span>ready foundation</span></span>
+                <span class="service-detail-node service-detail-node-d"><strong>Delivery</strong><span>measurable output</span></span>
+                {% include "components/service-glass-cube-hero.html" with service=service %}
+            </div>
+        </div>
+    </section>
+
+    <section class="service-detail-section">
+        <div class="container service-detail-split">
+            <div class="service-detail-panel reveal-left">
                 {% include "components/section-heading.html" with eyebrow="Overview" title="What we deliver" subtitle="A focused, senior team building exactly what your business needs." %}
                 <ul class="feature-list">
-                    {% for feature in service.features %}
-                    <li>{{ feature }}</li>
-                    {% endfor %}
+                    {% for feature in service.features %}<li>{{ feature }}</li>{% endfor %}
                 </ul>
             </div>
-            <div>
+            <div class="service-detail-panel reveal-right">
                 {% include "components/section-heading.html" with eyebrow="Problems We Solve" title="Built for real challenges" %}
                 <ul class="feature-list">
-                    {% for problem in service.problems %}
-                    <li>{{ problem }}</li>
-                    {% endfor %}
+                    {% for problem in service.problems %}<li>{{ problem }}</li>{% endfor %}
                 </ul>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- ==================== TECHNOLOGY ==================== -->
-<section class="section">
-    <div class="container">
-        {% include "components/section-heading.html" with eyebrow="Technology" title="Tools we use" subtitle="A modern, proven technology stack." align="center" %}
-        <div class="container-narrow">
-            <ul class="feature-list tech-list" style="margin:0 auto; max-width:40rem;">
+    <section class="service-detail-section">
+        <div class="container">
+            <div class="service-detail-tech-heading section-heading section-heading-center reveal-up">
+                <span class="eyebrow">Technology</span>
+                <h2>Tools we use</h2>
+                <p>A modern, proven technology stack.</p>
+            </div>
+            <div class="service-detail-tech-grid">
                 {% for tech in service.tech %}
-                <li style="margin-bottom:0.5rem;">{{ tech }}</li>
+                <div class="service-detail-tech-card reveal-up">
+                    <span class="service-detail-tech-icon" aria-hidden="true">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        {% if tech == "Python" %}<path d="M12 3c-3.3 0-5 1.2-5 3.5V9h5v2H6.5C4.6 11 3 12.7 3 15s1.6 4 3.5 4H9v-3H6.5a1 1 0 0 1 0-2H12c3.3 0 5-1.2 5-3.5V6.5C17 4.2 15.3 3 12 3z"></path><circle cx="10" cy="6.5" r=".8" fill="currentColor" stroke="none"></circle><path d="M12 21c3.3 0 5-1.2 5-3.5V15h-5v-2h5.5c1.9 0 3.5-1.7 3.5-4s-1.6-4-3.5-4H15v3h2.5a1 1 0 0 1 0 2H12c-3.3 0-5 1.2-5 3.5v4.5c0 2.3 1.7 3.5 5 3.5z"></path>
+                        {% elif tech == "OpenAI" %}<path d="M12 4.5a3.5 3.5 0 0 1 6.5 1.8 3.5 3.5 0 0 1 1.2 6.7 3.5 3.5 0 0 1-3.8 5.7 3.5 3.5 0 0 1-6.4.8 3.5 3.5 0 0 1-3.7-5.7A3.5 3.5 0 0 1 7 6.3 3.5 3.5 0 0 1 12 4.5z"></path><path d="M12 4.5v5M19.7 13l-4.3-2.5M15.9 18.7l-3.9-3.2M8.1 18.7l3.9-3.2M4.3 13l4.3-2.5"></path>
+                        {% elif tech == "PyTorch" %}<path d="M12 3v6.5M12 14.5V21M3.5 12H9M15 12h5.5"></path><circle cx="12" cy="12" r="3"></circle><path d="M6.3 6.3l3.1 3.1M14.6 14.6l3.1 3.1M17.7 6.3l-3.1 3.1M9.4 14.6l-3.1 3.1"></path>
+                        {% elif tech == "TensorFlow" %}<path d="M4 7l8-4 8 4v10l-8 4-8-4V7z"></path><path d="M8 9l4 2 4-2M12 11v7M8 14l4 2 4-2"></path>
+                        {% elif tech == "LangChain" %}<path d="M6 5h5a3 3 0 0 1 3 3v2H9a3 3 0 0 1-3-3V5zM18 19h-5a3 3 0 0 1-3-3v-2h5a3 3 0 0 1 3 3v2z"></path><path d="M14 10h2a3 3 0 0 1 3 3M10 14H8a3 3 0 0 1-3-3"></path>
+                        {% elif tech == "PostgreSQL" %}<path d="M7 8c0-3 2.2-5 5-5s5 2 5 5v7c0 2.8-2.2 5-5 5s-5-2.2-5-5V8z"></path><path d="M7 9c1.7 1.3 3.3 1.8 5 1.8S15.3 10.3 17 9M9 17c1.6.8 3.4.8 5 0M17 8l3-2"></path>
+                        {% elif tech == "Django" %}<path d="M7 4v13c0 2 1.5 3 3.5 3H17"></path><path d="M12 4v12M12 8h5"></path><circle cx="17" cy="8" r="2"></circle>
+                        {% elif tech == "JavaScript" %}<rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M9 13v3c0 1.3 2 1.3 2 0v-3M15 13h-2v2h2v1h-2"></path>
+                        {% elif tech == "HTML5" %}<path d="M5 4l1.5 16L12 22l5.5-2.2L19 4H5z"></path><path d="M8 8h8M8.5 12h7M9 16l3 1 3-1"></path>
+                        {% elif tech == "CSS3" %}<path d="M5 4l1.5 16L12 22l5.5-2.2L19 4H5z"></path><path d="M8 8h8M8 12h6M9 16h4"></path>
+                        {% elif tech == "React" or tech == "React Native" %}<ellipse cx="12" cy="12" rx="9" ry="3"></ellipse><ellipse cx="12" cy="12" rx="9" ry="3" transform="rotate(60 12 12)"></ellipse><ellipse cx="12" cy="12" rx="9" ry="3" transform="rotate(120 12 12)"></ellipse><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"></circle>
+                        {% elif tech == "Flutter" %}<path d="M5 15l7-7h6l-7 7h6l-5 5-7-7z"></path>
+                        {% elif tech == "Swift" or tech == "Kotlin" %}<path d="M5 18c3-5 7-8 14-12-3 4-3 8 0 11-5 3-10 3-14 1z"></path><path d="M7 18c3-1 6-1 10 1"></path>
+                        {% elif tech == "Firebase" %}<path d="M5 19l2-14 4 6 3-5 5 13H5z"></path><path d="M7 19l7-13 5 13"></path>
+                        {% elif tech == "Docker" %}<path d="M4 15h16M6 11h3v3H6zM10 11h3v3h-3zM14 11h3v3h-3zM10 7h3v3h-3z"></path><path d="M18 13c2 0 3 1 3 2-1 3-5 4-9 4H7"></path>
+                        {% elif tech == "Redis" %}<path d="M4 9l8-4 8 4-8 4-8-4zM4 13l8 4 8-4M4 17l8 4 8-4"></path>
+                        {% elif tech == "REST APIs" or tech == "REST / GraphQL" or tech == "OpenAPI" %}<circle cx="6" cy="12" r="2"></circle><circle cx="18" cy="6" r="2"></circle><circle cx="18" cy="18" r="2"></circle><path d="M8 11l8-4M8 13l8 4"></path>
+                        {% elif tech == "TensorFlow" %}<path d="M4 7l8-4 8 4v10l-8 4-8-4V7z"></path><path d="M8 9l4 2 4-2M12 11v7M8 14l4 2 4-2"></path>
+                        {% elif tech == "AWS" or tech == "Cloudflare" %}<path d="M4 16c4 3 10 3 16 0M7 12c2-4 8-4 10 0M12 4v8M9 7l3-3 3 3"></path>
+                        {% else %}<path d="M5 5h14v14H5z"></path><path d="M8 9h8M8 12h5M8 15h7"></path>
+                        {% endif %}
+                    </svg>
+                    </span>
+                    <strong>{{ tech }}</strong>
+                    <span>Technology layer</span>
+                </div>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- ==================== PROCESS ==================== -->
-<section class="section">
-    <div class="container">
-        {% include "components/section-heading.html" with eyebrow="Process" title="How we deliver" subtitle="A transparent, proven path to launch." align="center" %}
-        <div class="process-grid">
-            {% for step in service.process %}
-            {% include "components/process-step.html" with number=step.number title=step.title description=step.description %}
-            {% endfor %}
+    <section class="service-detail-section">
+        <div class="container">
+            {% include "components/section-heading.html" with eyebrow="Process" title="How we deliver" subtitle="A transparent, proven path to launch." align="center" %}
+            <div class="process-grid">
+                {% for step in service.process %}
+                {% include "components/process-step.html" with number=step.number title=step.title description=step.description %}
+                {% endfor %}
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- ==================== BENEFITS & USE CASES ==================== -->
-<section class="section">
-    <div class="container">
-        <div class="grid grid-2">
-            <div>
+    <section class="service-detail-section">
+        <div class="container service-detail-list-grid">
+            <div class="reveal-left">
                 {% include "components/section-heading.html" with eyebrow="Benefits" title="Why it matters" %}
-                <ul class="feature-list">
-                    {% for benefit in service.benefits %}
-                    <li style="margin-bottom:0.5rem;">{{ benefit }}</li>
-                    {% endfor %}
-                </ul>
+                <ul class="feature-list">{% for benefit in service.benefits %}<li>{{ benefit }}</li>{% endfor %}</ul>
             </div>
-            <div>
+            <div class="reveal-right">
                 {% include "components/section-heading.html" with eyebrow="Use Cases" title="Where it applies" %}
-                <ul class="feature-list">
-                    {% for use_case in service.use_cases %}
-                    <li style="margin-bottom:0.5rem;">{{ use_case }}</li>
-                    {% endfor %}
-                </ul>
+                <ul class="feature-list">{% for use_case in service.use_cases %}<li>{{ use_case }}</li>{% endfor %}</ul>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- ==================== FAQ ==================== -->
-<section class="section">
-    <div class="container">
-        {% include "components/section-heading.html" with eyebrow="FAQ" title="Common questions" subtitle="Answers to questions we hear most often." align="center" %}
-        <div class="container-narrow">
+    <section class="service-detail-section">
+        <div class="container service-detail-faqs">
+            {% include "components/section-heading.html" with eyebrow="FAQ" title="Common questions" subtitle="Answers to questions we hear most often." align="center" %}
             {% for faq in service.faqs %}
-            <div class="faq-item">
-                <h4>{{ faq.q }}</h4>
-                <p>{{ faq.a }}</p>
+            <div class="faq-item ai-faq-item reveal-up"><button type="button" class="ai-faq-toggle" aria-expanded="false"><span>{{ faq.q }}</span><span class="ai-faq-mark" aria-hidden="true">?</span></button><div class="ai-faq-answer"><p>{{ faq.a }}</p></div></div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="service-detail-section">
+        <div class="container">
+            <div class="service-detail-navigator reveal-up">
+                <div><span class="eyebrow">MORE SERVICES</span><h2>Explore other capabilities</h2><p>Discover the other services we build.</p></div>
+                <button type="button" class="btn btn-primary" data-service-explorer-open>Explore Services <span aria-hidden="true">→</span></button>
             </div>
-            {% endfor %}
+        </div>
+    </section>
+
+    {% include "components/cta.html" with eyebrow="Discuss Your Project" title="Ready to build something better?" subtitle="Tell us about your project, business needs, or technical challenge. We'll help you find the right solution." primary_label="Discuss Your Project →" %}
+</div>
+
+<div class="service-explorer-backdrop service-detail-backdrop" data-service-explorer aria-hidden="true">
+    <div class="service-explorer" role="dialog" aria-modal="true" aria-labelledby="service-explorer-title" aria-describedby="service-explorer-description">
+        <header class="service-explorer-header">
+            <div><span class="eyebrow">SERVICES</span><h2 id="service-explorer-title">Explore our capabilities</h2><p id="service-explorer-description">Move between the systems ORENTIQ builds.</p></div>
+            <button type="button" class="service-explorer-close" data-service-explorer-close aria-label="Close service navigator">×</button>
+        </header>
+        <div class="service-explorer-body">
+            <div class="service-explorer-grid">
+                {% for other in services %}
+                {% if other.slug == service.slug %}
+                <div class="service-explorer-card is-current" aria-current="page"><span class="card-icon" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span><span><strong>{{ other.name }}</strong><span>{{ other.tagline }}</span><small class="service-detail-current">Current service</small></span></div>
+                {% else %}
+                <a class="service-explorer-card" href="{% url 'service_detail' other.slug %}"><span class="card-icon" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span><span><strong>{{ other.name }}</strong><span>{{ other.tagline }}</span><small aria-hidden="true">→</small></span></a>
+                {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </div>
-</section>
+</div>
+{% endblock %}
 
-<!-- ==================== OTHER SERVICES ==================== -->
-<section class="section">
-    <div class="container">
-        {% include "components/section-heading.html" with eyebrow="More Services" title="Explore other capabilities" align="center" %}
-        <div class="grid grid-3">
-            {% for other in services %}
-            {% if other.slug != service.slug %}
-            {% include "components/service-card.html" with service=other %}
-            {% endif %}
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!-- ==================== CTA ==================== -->
-{% include "components/cta.html" with eyebrow="Discuss Your Project" title="Ready to build something better?" subtitle="Tell us about your project, business needs, or technical challenge. We'll help you find the right solution." primary_label="Discuss Your Project →" %}
+{% block extra_js %}
+<script src="{% static 'js/services-page.js' %}?v=detail-final"></script>
+<script src="{% static 'js/ai-automation-page.js' %}?v=all-services-final"></script>
 {% endblock %}

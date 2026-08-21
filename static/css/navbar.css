@@ -24,7 +24,9 @@
 .nav-link { position: relative; display: inline-flex; align-items: center; gap: 3px; padding: 10px var(--space-2); border-radius: var(--radius-sm); color: var(--color-text-muted); font-size: var(--text-nav); font-weight: 500; letter-spacing: var(--tracking-normal); transition: color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast); }
 .nav-link:hover { color: var(--color-text); background: var(--color-hover); transform: translateY(-1px); }
 .nav-link.is-active { color: var(--color-text); font-weight: 600; }
-.nav-link.is-active::after { content: ""; position: absolute; right: var(--space-2); bottom: 4px; left: var(--space-2); height: 2px; border-radius: 2px; background: var(--color-accent); }
+.nav-link.is-active::after { content: ""; position: absolute; right: var(--space-2); bottom: 4px; left: var(--space-2); height: 2px; border-radius: 2px; background: var(--color-accent); transform: scaleX(1); transform-origin: left; transition: transform var(--transition-base); }
+.nav-link:not(.is-active)::after { content: ""; position: absolute; right: var(--space-2); bottom: 4px; left: var(--space-2); height: 2px; border-radius: 2px; background: var(--color-accent); transform: scaleX(0); transform-origin: left; transition: transform var(--transition-base); }
+.nav-link:not(.is-active):hover::after { transform: scaleX(.55); }
 .nav-link .chevron { width: 13px; height: 13px; color: var(--color-accent); stroke-width: 2.25; transition: transform var(--transition-fast); }
 .nav-item.has-dropdown:hover .nav-link .chevron, .nav-item.has-dropdown.is-open .nav-link .chevron { transform: rotate(180deg); }
 

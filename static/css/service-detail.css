@@ -1,0 +1,533 @@
+/* ORENTIQ shared service-detail visual system. */
+.service-detail-page { overflow: hidden; }
+html:has(.service-detail-page), body:has(.service-detail-page) { overflow-x: hidden; }
+.service-detail-page:not(.service-ai-page) .service-detail-hero { min-height: 590px; display: grid; align-items: center; }
+.service-detail-page:not(.service-ai-page) .service-detail-hero-copy h1 { max-width: 650px; font-size: clamp(3rem, 5.5vw, 5.5rem); line-height: .95; }
+.service-detail-page:not(.service-ai-page) .service-detail-visual { min-height: 430px; box-shadow: var(--shadow-lg); }
+.service-detail-page:not(.service-ai-page) .service-detail-core-icon { display: grid; place-items: center; border: 1px solid var(--color-accent); border-radius: var(--radius-md); font-size: var(--text-h4); font-weight: 700; text-transform: uppercase; }
+.service-detail-page:not(.service-ai-page) .service-detail-visual::before { transition: transform 700ms ease; }
+.service-detail-page:not(.service-ai-page) .service-detail-visual:hover::before { transform: rotate(32deg) scale(1.04); }
+.service-detail-page.service-web .service-detail-visual::before { inset: 16% 12%; border-radius: var(--radius-md); transform: rotate(-7deg); }
+.service-detail-page.service-web .service-detail-visual::after { inset: 24% 18%; border-radius: var(--radius-md); transform: rotate(7deg); }
+.service-detail-page.service-mobile .service-detail-visual::before { inset: 10% 30%; border-radius: 22px; transform: rotate(-8deg); }
+.service-detail-page.service-mobile .service-detail-visual::after { inset: 16% 35%; border-radius: 18px; transform: rotate(8deg); }
+.service-detail-page.service-software .service-detail-visual::before { inset: 16%; border-radius: var(--radius-md); transform: rotate(0); }
+.service-detail-page.service-software .service-detail-visual::after { inset: 27% 9%; border-radius: var(--radius-md); transform: rotate(0); }
+.service-detail-page.service-design .service-detail-visual::before { inset: 13% 20%; border-radius: 3px; transform: rotate(-12deg); }
+.service-detail-page.service-design .service-detail-visual::after { inset: 20% 13%; border-radius: 3px; transform: rotate(12deg); }
+.service-detail-page.service-erp .service-detail-visual::before { inset: 20% 10%; border-radius: var(--radius-md); transform: rotate(0); }
+.service-detail-page.service-erp .service-detail-visual::after { inset: 10% 24%; border-radius: var(--radius-md); transform: rotate(90deg); }
+.service-detail-page.service-crm .service-detail-visual::before { inset: 16%; border-radius: 50%; transform: rotate(0); }
+.service-detail-page.service-crm .service-detail-visual::after { inset: 26% 8%; border-radius: 50%; transform: rotate(0); }
+.service-detail-hero { position: relative; padding: clamp(2.75rem, 6vw, 5.5rem) 0 clamp(2.5rem, 5vw, 4rem); background: radial-gradient(circle at 82% 35%, var(--color-hero-glow), transparent 30%); }
+.service-detail-hero-grid { display: grid; grid-template-columns: minmax(0, .92fr) minmax(360px, 1.08fr); gap: clamp(var(--space-8), 7vw, var(--space-16)); align-items: center; }
+.service-detail-hero-copy { max-width: 660px; }
+.service-detail-hero-copy .eyebrow { margin-bottom: var(--space-4); }
+.service-detail-hero-copy h1 { margin-bottom: var(--space-4); }
+.service-detail-hero-copy > p { max-width: 620px; color: var(--color-text-muted); }
+.service-detail-hero-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-6); }
+.service-detail-visual { position: relative; min-height: 360px; display: grid; place-items: center; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: radial-gradient(circle at center, var(--color-hero-glow), transparent 48%), var(--color-surface-elevated); overflow: hidden; }
+.service-detail-visual::before { content: ""; position: absolute; inset: 12%; border: 1px solid var(--color-border-strong); border-radius: 50%; transform: rotate(24deg); opacity: .6; }
+.service-detail-visual::after { content: ""; position: absolute; inset: 20% 8%; border: 1px dashed var(--color-hover); border-radius: 50%; transform: rotate(-28deg); opacity: .8; }
+.service-detail-gridline { position: absolute; inset: 0; background: linear-gradient(90deg, transparent 49.7%, var(--color-border) 50%, transparent 50.3%), linear-gradient(var(--color-border) 1px, transparent 1px); background-size: 100% 100%, 100% 36px; opacity: .35; }
+.service-detail-core { position: relative; z-index: 2; width: 132px; height: 132px; display: grid; place-items: center; border: 1px solid var(--color-accent); border-radius: 50%; background: var(--color-surface); box-shadow: 0 0 0 12px var(--color-hover), var(--shadow-accent); color: var(--color-accent); animation: serviceCoreFloat 6s ease-in-out infinite; }
+.service-detail-core::before { content: ""; position: absolute; inset: 14px; border: 1px dashed var(--color-accent); border-radius: 50%; animation: serviceCoreOrbit 14s linear infinite; opacity: .7; }
+.service-detail-core::after { content: ""; position: absolute; width: 8px; height: 8px; top: 5px; left: 50%; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 0 5px var(--color-hover); }
+.service-detail-core-icon { width: 38px; height: 38px; }
+.service-detail-node { position: absolute; z-index: 3; min-width: 138px; padding: var(--space-3); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface-glass); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px); text-align: center; animation: serviceNodeFloat 7s ease-in-out infinite; }
+.service-detail-node strong { display: block; color: var(--color-text); font-size: var(--text-body-small); }
+.service-detail-node span { display: block; margin-top: 3px; color: var(--color-text-muted); font-size: var(--text-caption); }
+.service-detail-node::before { content: ""; display: block; width: 7px; height: 7px; margin: 0 auto var(--space-2); border: 1px solid var(--color-accent); border-radius: 50%; background: var(--color-hover); }
+.service-detail-node-a { top: 12%; left: 8%; }.service-detail-node-b { top: 14%; right: 8%; animation-delay: -2s; }.service-detail-node-c { bottom: 13%; left: 10%; animation-delay: -4s; }.service-detail-node-d { bottom: 12%; right: 10%; animation-delay: -5.5s; }
+.service-detail-section { padding-block: clamp(2.5rem, 4vw, 4rem); }
+.service-detail-section + .service-detail-section { padding-top: clamp(1rem, 2vw, 2rem); }
+.service-detail-split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(var(--space-8), 7vw, var(--space-16)); }
+.service-detail-panel { padding: clamp(1.5rem, 3vw, 2.5rem); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface-elevated); }
+.service-detail-panel .section-heading { margin-bottom: var(--space-5); }
+.service-detail-tech-heading { max-width: 720px; margin-bottom: var(--space-8); }
+.service-detail-tech-heading.section-heading-center { margin-inline: auto; }
+.service-detail-tech-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+.service-detail-tech-card { position: relative; min-height: 120px; padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface-elevated); transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base); overflow: hidden; }
+.service-detail-tech-card::before { content: ""; position: absolute; top: 0; left: var(--space-5); width: 28px; height: 2px; background: var(--color-accent); transition: transform var(--transition-base); transform: scaleX(.5); transform-origin: left; }
+.service-detail-tech-card:hover { transform: translateY(-4px); border-color: var(--color-accent); box-shadow: var(--shadow-md); }
+.service-detail-tech-card:hover::before { transform: scaleX(1); }
+.service-detail-tech-icon { width: 34px; height: 34px; display: grid; place-items: center; margin-bottom: var(--space-3); border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: var(--color-accent); background: var(--color-hover); }
+.service-detail-tech-icon svg { width: 18px; height: 18px; transition: transform var(--transition-base); }
+.service-detail-tech-card:hover .service-detail-tech-icon svg { transform: translateY(-2px) scale(1.04); }
+.service-detail-tech-card strong { display: block; font-size: var(--text-body-small); }
+.service-detail-tech-card span { display: block; margin-top: 4px; color: var(--color-text-muted); font-size: var(--text-caption); }
+.service-detail-list-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8) clamp(var(--space-8), 7vw, var(--space-16)); }
+.service-detail-faqs { max-width: 900px; margin-inline: auto; }
+.service-detail-navigator { display: flex; align-items: center; justify-content: space-between; gap: var(--space-6); padding: clamp(1.5rem, 3vw, 2rem); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface-elevated); }
+.service-detail-navigator h2 { margin-bottom: var(--space-2); }.service-detail-navigator p { margin: 0; color: var(--color-text-muted); }
+.service-detail-backdrop { justify-content: flex-end; padding: 0; background: var(--color-overlay); }
+.service-detail-backdrop .service-explorer { width: min(620px, 60vw); height: 100vh; max-height: none; border-radius: var(--radius-lg) 0 0 var(--radius-lg); transform: translateX(100%) scale(1); }
+.service-detail-backdrop.is-open .service-explorer { transform: translateX(0) scale(1); }
+.service-detail-backdrop .service-explorer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.service-detail-backdrop .service-explorer-card.is-current { border-color: var(--color-accent); background: var(--color-hover); box-shadow: var(--shadow-sm); cursor: default; }
+.service-detail-backdrop .service-explorer-card.is-current:hover { transform: none; }
+.service-detail-current { display: inline-block; margin-top: 4px; color: var(--color-accent); font-size: 10px; font-weight: 700; letter-spacing: var(--tracking-caps); text-transform: uppercase; }
+.service-detail-page:not(.service-ai-page) .service-detail-tech-grid { position: relative; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; padding: 1px; background: var(--color-border); }
+.service-detail-page:not(.service-ai-page) .service-detail-tech-card { min-height: 155px; border: 0; border-radius: 0; background: var(--color-surface-elevated); }
+.service-detail-page:not(.service-ai-page) .service-detail-tech-card::after { content: ""; position: absolute; right: var(--space-5); bottom: var(--space-5); width: 38px; height: 16px; border-top: 1px solid var(--color-border-strong); border-right: 1px solid var(--color-border-strong); opacity: .6; transition: width var(--transition-base), height var(--transition-base), border-color var(--transition-base); }
+.service-detail-page:not(.service-ai-page) .service-detail-tech-card:hover::after { width: 50px; height: 24px; border-color: var(--color-accent); }
+.service-detail-page:not(.service-ai-page) .service-detail-tech-icon { width: 42px; height: 42px; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--color-hover), var(--shadow-sm); }
+.service-detail-page:not(.service-ai-page) .service-detail-tech-icon svg { width: 22px; height: 22px; stroke-width: 1.5; }
+.service-detail-page:not(.service-ai-page) .process-grid { position: relative; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--space-3); }
+.service-detail-page:not(.service-ai-page) .process-grid::before { content: ""; position: absolute; top: 29px; right: 7%; left: 7%; height: 1px; background: var(--color-accent); opacity: .42; }
+.service-detail-page:not(.service-ai-page) .process-step { z-index: 1; min-height: 240px; transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base); }
+.service-detail-page:not(.service-ai-page) .process-step:hover { transform: translateY(-5px); border-color: var(--color-accent); box-shadow: var(--shadow-md); }
+.service-detail-page:not(.service-ai-page) .process-number { position: relative; z-index: 2; width: 56px; height: 56px; border: 1px solid var(--color-accent); border-radius: 50%; background: var(--color-surface); }
+.service-detail-page:not(.service-ai-page) .service-detail-faqs { position: relative; max-width: 1000px; }
+.service-detail-page:not(.service-ai-page) .service-detail-faqs::before { content: "?"; position: absolute; top: 4.5rem; right: 8%; color: var(--color-accent); font-family: Georgia, "Times New Roman", serif; font-size: clamp(8rem, 15vw, 12rem); font-weight: 700; line-height: 1; opacity: .1; pointer-events: none; }
+.service-detail-page:not(.service-ai-page) .service-detail-faqs > .section-heading, .service-detail-page:not(.service-ai-page) .service-detail-faqs > .ai-faq-item { position: relative; z-index: 1; max-width: 72%; margin-right: auto; }
+.service-detail-page:not(.service-ai-page) .ai-faq-item { margin: 0; padding: 0; border: 0; border-bottom: 1px solid var(--color-border); border-radius: 0; background: transparent; }
+.service-detail-page:not(.service-ai-page) .ai-faq-toggle { display: flex; align-items: center; justify-content: space-between; gap: var(--space-6); width: 100%; padding: var(--space-5) 0; border: 0; background: transparent; color: var(--color-text); text-align: left; cursor: pointer; }
+.service-detail-page:not(.service-ai-page) .ai-faq-toggle span:first-child { font-size: var(--text-h5); font-weight: 600; }
+.service-detail-page:not(.service-ai-page) .ai-faq-mark { width: 30px; height: 30px; display: grid; place-items: center; flex: 0 0 auto; border: 1px solid var(--color-accent); border-radius: 50%; color: var(--color-accent); font-size: 1rem; transition: transform var(--transition-fast), background-color var(--transition-fast); }
+.service-detail-page:not(.service-ai-page) .ai-faq-item.is-open .ai-faq-mark { background: var(--color-hover); transform: rotate(45deg); }
+.service-detail-page:not(.service-ai-page) .ai-faq-answer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 320ms ease; }
+.service-detail-page:not(.service-ai-page) .ai-faq-answer p { min-height: 0; margin: 0; overflow: hidden; color: var(--color-text-muted); }
+.service-detail-page:not(.service-ai-page) .ai-faq-item.is-open .ai-faq-answer { grid-template-rows: 1fr; }
+@keyframes serviceCoreFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes serviceCoreOrbit { to { transform: rotate(360deg); } }
+@keyframes serviceNodeFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@media (max-width: 1000px) { .service-detail-hero-grid { grid-template-columns: 1fr; }.service-detail-visual { min-height: 310px; }.service-detail-tech-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }.service-detail-backdrop .service-explorer { width: min(720px, 80vw); } }
+@media (max-width: 720px) { .service-detail-section { padding-block: 2.5rem; }.service-detail-split, .service-detail-list-grid { grid-template-columns: 1fr; gap: var(--space-6); }.service-detail-tech-grid, .service-detail-page:not(.service-ai-page) .service-detail-tech-grid { grid-template-columns: 1fr; }.service-detail-visual { min-height: 330px; }.service-detail-node { min-width: 120px; }.service-detail-node-a { left: 3%; }.service-detail-node-b { right: 3%; }.service-detail-node-c { left: 3%; }.service-detail-node-d { right: 3%; }.service-detail-navigator { align-items: flex-start; flex-direction: column; }.service-detail-backdrop { padding: 0; }.service-detail-backdrop .service-explorer { width: 100vw; border-radius: 0; }.service-detail-backdrop .service-explorer-grid { grid-template-columns: 1fr; }.service-detail-page:not(.service-ai-page) .service-detail-hero { min-height: auto; }.service-detail-page:not(.service-ai-page) .service-detail-hero-copy h1 { font-size: clamp(2.8rem, 13vw, 4.5rem); }.service-detail-page:not(.service-ai-page) .service-detail-hero-grid { grid-template-columns: 1fr; }.service-detail-page:not(.service-ai-page) .service-detail-visual { min-height: 350px; }.service-detail-page:not(.service-ai-page) .process-grid { grid-template-columns: 1fr; }.service-detail-page:not(.service-ai-page) .process-grid::before { display: none; }.service-detail-page:not(.service-ai-page) .service-detail-faqs > .section-heading, .service-detail-page:not(.service-ai-page) .service-detail-faqs > .ai-faq-item { max-width: none; }.service-detail-page:not(.service-ai-page) .service-detail-faqs::before { top: 5rem; right: 4%; font-size: 6rem; opacity: .08; } }
+@media (prefers-reduced-motion: reduce) { .service-detail-core, .service-detail-core::before, .service-detail-node { animation: none; }.service-detail-tech-card, .service-detail-tech-icon svg { transition: none; }.service-detail-backdrop .service-explorer { transition: none; } }
+
+/* 2026 intelligent data-flow hero visual — limited to the seven named services. */
+.service-detail-visual--data-flow { isolation: isolate; background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--color-accent) 14%, transparent), transparent 34%), var(--color-surface-elevated); box-shadow: var(--shadow-lg); }
+.service-detail-visual--data-flow::before, .service-detail-visual--data-flow::after, .service-detail-visual--data-flow .service-detail-gridline { display: none; }
+.service-data-paths { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.service-data-paths path { fill: none; stroke: var(--color-accent); stroke-width: 1.15; stroke-linecap: round; opacity: .38; stroke-dasharray: 3 8; animation: servicePathActivate 7s linear infinite; }
+.service-data-paths path:nth-child(2) { animation-delay: -1.7s; }.service-data-paths path:nth-child(3) { animation-delay: -3.4s; }.service-data-paths path:nth-child(4) { animation-delay: -5.1s; }
+.service-detail-visual--data-flow .service-detail-node { z-index: 4; min-width: 144px; background: color-mix(in srgb, var(--color-surface) 92%, transparent); box-shadow: 0 14px 28px color-mix(in srgb, var(--color-text) 8%, transparent); transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base); }
+.service-detail-visual--data-flow .service-detail-node:hover { transform: translateY(-6px); border-color: var(--color-accent); box-shadow: 0 18px 32px color-mix(in srgb, var(--color-text) 12%, transparent); }
+.service-detail-visual--data-flow .service-detail-node::before { box-shadow: 0 0 0 3px var(--color-hover); }
+.service-cube-core { z-index: 3; width: 120px; height: 120px; display: block; border: 0; border-radius: 16px; background: transparent; box-shadow: 0 18px 30px color-mix(in srgb, var(--color-text) 18%, transparent), 0 0 28px color-mix(in srgb, var(--color-accent) 22%, transparent); color: var(--color-accent); transform: rotateX(-10deg) rotateY(26deg); transform-style: preserve-3d; animation: serviceCubeDepth 8s ease-in-out infinite; }
+.service-cube-core::before, .service-cube-core::after { display: none; }
+.service-cube-face { position: absolute; display: block; border: 1px solid var(--color-accent); background: var(--color-surface); }
+.service-cube-face--front { inset: 0; display: grid; place-items: center; border-radius: 15px; box-shadow: inset -10px -12px 20px color-mix(in srgb, var(--color-accent) 8%, transparent), inset 8px 8px 16px color-mix(in srgb, white 70%, transparent); transform: translateZ(16px); }
+.service-cube-face--top { top: -15px; left: 10px; width: 100px; height: 30px; border-radius: 10px 10px 3px 3px; transform: rotateX(62deg) translateZ(42px); transform-origin: bottom; opacity: .95; }
+.service-cube-face--side { top: 10px; right: -15px; width: 30px; height: 100px; border-radius: 3px 10px 10px 3px; transform: rotateY(62deg) translateZ(42px); transform-origin: left; opacity: .9; }
+.service-detail-visual--data-flow .service-detail-core-icon { width: auto; height: auto; padding: 0; border: 0; border-radius: 0; color: var(--color-accent); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 750; letter-spacing: -.08em; line-height: 1; text-shadow: 0 1px 0 var(--color-surface); }
+.service-data-particle { position: absolute; z-index: 2; width: 7px; height: 7px; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 0 4px var(--color-hover); opacity: 0; animation: serviceDataFlow 5.5s ease-in-out infinite; }
+.service-data-particle-a { top: 24%; left: 21%; --flow-x: 122px; --flow-y: 78px; }.service-data-particle-b { top: 25%; right: 21%; --flow-x: -122px; --flow-y: 78px; animation-delay: -1.4s; }.service-data-particle-c { bottom: 24%; left: 22%; --flow-x: 116px; --flow-y: -76px; animation-delay: -2.8s; }.service-data-particle-d { right: 22%; bottom: 23%; --flow-x: -116px; --flow-y: -76px; animation-delay: -4.2s; }
+@keyframes servicePathActivate { to { stroke-dashoffset: -44; } }
+@keyframes serviceCubeDepth { 0%, 100% { transform: translateY(0) rotateX(-10deg) rotateY(26deg); } 50% { transform: translateY(-7px) rotateX(-7deg) rotateY(20deg); } }
+@keyframes serviceDataFlow { 0% { opacity: 0; transform: translate(0, 0) scale(.7); } 18% { opacity: .9; } 75% { opacity: .82; transform: translate(var(--flow-x), var(--flow-y)) scale(1); } 100% { opacity: 0; transform: translate(var(--flow-x), var(--flow-y)) scale(.7); } }
+@media (max-width: 1000px) { .service-detail-visual--data-flow .service-detail-node { min-width: 126px; }.service-data-particle-a { --flow-x: 92px; --flow-y: 62px; }.service-data-particle-b { --flow-x: -92px; --flow-y: 62px; }.service-data-particle-c { --flow-x: 88px; --flow-y: -60px; }.service-data-particle-d { --flow-x: -88px; --flow-y: -60px; } }
+@media (max-width: 720px) { .service-detail-visual--data-flow .service-detail-node { min-width: 112px; padding: var(--space-2); }.service-detail-visual--data-flow .service-detail-node strong { font-size: 11px; }.service-detail-visual--data-flow .service-detail-node span { font-size: 9px; }.service-cube-core { width: 96px; height: 96px; }.service-cube-face--top { width: 78px; }.service-cube-face--side { height: 78px; }.service-data-particle { width: 5px; height: 5px; }.service-data-particle-a { --flow-x: 68px; --flow-y: 50px; }.service-data-particle-b { --flow-x: -68px; --flow-y: 50px; }.service-data-particle-c { --flow-x: 64px; --flow-y: -48px; }.service-data-particle-d { --flow-x: -64px; --flow-y: -48px; } }
+@media (prefers-reduced-motion: reduce) { .service-data-paths path, .service-cube-core, .service-data-particle { animation: none; }.service-data-particle { opacity: .55; } }
+
+/* Cube and data path refinement: a connected three-face processing core. */
+.service-detail-visual--data-flow { background: radial-gradient(circle at 50% 51%, color-mix(in srgb, var(--color-accent) 10%, transparent), transparent 31%), var(--color-surface-elevated); }
+.service-data-paths path { stroke-dasharray: none; opacity: .27; animation: none; }
+.service-flow-particle { fill: var(--color-accent); opacity: .85; filter: drop-shadow(0 0 3px color-mix(in srgb, var(--color-accent) 50%, transparent)); }
+.service-flow-particle--output { opacity: .95; }
+.service-cube-core { width: 150px; height: 134px; border-radius: 0; box-shadow: 0 20px 30px color-mix(in srgb, var(--color-text) 18%, transparent), 0 0 24px color-mix(in srgb, var(--color-accent) 18%, transparent); transform: none; transform-style: flat; animation: serviceCubeProcess 5.4s ease-in-out infinite; }
+.service-cube-face { box-sizing: border-box; background: var(--color-surface); }
+.service-cube-face--front { top: 26px; left: 12px; width: 108px; height: 108px; inset: auto; border-radius: 10px 3px 10px 10px; box-shadow: inset -10px -10px 18px color-mix(in srgb, var(--color-accent) 7%, transparent), inset 8px 8px 15px color-mix(in srgb, white 66%, transparent); transform: none; }
+.service-cube-face--top { top: 0; left: 12px; width: 138px; height: 27px; border-radius: 8px 8px 2px 2px; clip-path: polygon(0 100%, 22% 0, 100% 0, 78% 100%); transform: none; transform-origin: initial; background: color-mix(in srgb, var(--color-surface) 88%, var(--color-hover)); opacity: 1; }
+.service-cube-face--side { top: 0; right: 0; width: 30px; height: 134px; border-radius: 2px 8px 8px 2px; clip-path: polygon(0 19%, 100% 0, 100% 81%, 0 100%); transform: none; transform-origin: initial; background: color-mix(in srgb, var(--color-surface) 82%, var(--color-hover)); opacity: 1; }
+.service-detail-visual--data-flow .service-detail-core-icon { font-size: clamp(2.2rem, 4.8vw, 3rem); font-weight: 700; letter-spacing: -.06em; text-shadow: none; }
+@keyframes serviceCubeProcess { 0%, 100% { transform: translateY(0) scale(1); box-shadow: 0 20px 30px color-mix(in srgb, var(--color-text) 18%, transparent), 0 0 24px color-mix(in srgb, var(--color-accent) 18%, transparent); } 48% { transform: translateY(-3px) scale(1); } 58% { transform: translateY(-4px) scale(1.025); box-shadow: 0 22px 34px color-mix(in srgb, var(--color-text) 18%, transparent), 0 0 32px color-mix(in srgb, var(--color-accent) 32%, transparent); } 70% { transform: translateY(-2px) scale(1); } }
+@media (max-width: 720px) { .service-cube-core { width: 122px; height: 110px; }.service-cube-face--front { top: 21px; left: 10px; width: 88px; height: 89px; }.service-cube-face--top { left: 10px; width: 112px; height: 22px; }.service-cube-face--side { width: 24px; height: 110px; }.service-detail-visual--data-flow .service-detail-core-icon { font-size: 2.1rem; } }
+
+/* Background-only treatment for every requested service hero visual. */
+.service-detail-visual--data-flow { background-color: var(--color-surface-elevated); background-image: none; }
+
+/* Let the system visual float directly on the hero background. */
+.service-detail-visual--data-flow { background: transparent; border: none; border-radius: 0; box-shadow: none; }
+
+/* Override the non-AI service wrapper's more-specific panel shadow/background. */
+.service-detail-page:not(.service-ai-page) .service-detail-visual.service-detail-visual--data-flow { background-color: transparent; background-image: none; border: 0; border-radius: 0; box-shadow: none; }
+@media (prefers-reduced-motion: reduce) { .service-flow-particle { display: none; }.service-cube-core { animation: none; } }
+
+/* Final visual calibration: solid field, restrained paths, and one joined cube. */
+.service-detail-visual--data-flow { background: var(--color-surface-elevated); }
+.service-data-paths path { stroke-width: .8; opacity: .16; }
+.service-flow-particle { opacity: .72; filter: none; }
+.service-flow-particle--output { opacity: .78; }
+.service-cube-core { width: 150px; height: 134px; box-shadow: 0 16px 24px color-mix(in srgb, var(--color-text) 14%, transparent), 0 0 12px color-mix(in srgb, var(--color-accent) 12%, transparent); }
+.service-cube-face { border-color: color-mix(in srgb, var(--color-accent) 78%, var(--color-border)); }
+.service-cube-face--front { top: 26px; left: 12px; width: 108px; height: 108px; border-radius: 8px 2px 8px 8px; }
+.service-cube-face--top { top: 0; left: 12px; width: 138px; height: 27px; border-radius: 7px 7px 1px 1px; }
+.service-cube-face--side { top: 0; right: 0; width: 30px; height: 134px; border-radius: 1px 7px 7px 1px; }
+.service-detail-visual--data-flow .service-detail-core-icon { display: grid; place-items: center; width: 100%; height: 100%; font-size: clamp(2.2rem, 4.8vw, 3rem); }
+@keyframes serviceCubeProcess { 0%, 100% { transform: translateY(0) scale(1); box-shadow: 0 16px 24px color-mix(in srgb, var(--color-text) 14%, transparent), 0 0 12px color-mix(in srgb, var(--color-accent) 12%, transparent); } 48% { transform: translateY(-3px) scale(1); } 58% { transform: translateY(-4px) scale(1.018); box-shadow: 0 18px 27px color-mix(in srgb, var(--color-text) 14%, transparent), 0 0 17px color-mix(in srgb, var(--color-accent) 20%, transparent); } 70% { transform: translateY(-2px) scale(1); } }
+@media (max-width: 720px) { .service-cube-core { width: 122px; height: 110px; }.service-cube-face--front { top: 21px; left: 10px; width: 88px; height: 89px; }.service-cube-face--top { left: 10px; width: 112px; height: 22px; }.service-cube-face--side { width: 24px; height: 110px; }.service-detail-visual--data-flow .service-detail-core-icon { font-size: 2.1rem; } }
+
+/* Outer wrapper only; child modules and the core retain their own styling. */
+.service-detail-visual--data-flow { background: transparent; border: none; border-radius: 0; box-shadow: none; }
+
+/* Shared premium glass core for every non-AI service page. */
+.service-detail-page:not(.service-ai-page) .service-glass-core {
+	position: relative;
+	z-index: 3;
+	display: block;
+	width: 178px;
+	height: 178px;
+	perspective: 900px;
+	filter: drop-shadow(0 22px 24px color-mix(in srgb, var(--color-text) 14%, transparent));
+}
+.service-detail-page:not(.service-ai-page) .service-glass-shell {
+	position: absolute;
+	inset: 0;
+	display: block;
+	transform-style: preserve-3d;
+	transform: rotateX(-14deg) rotateY(28deg);
+	animation: serviceGlassRevolution 11s linear infinite;
+}
+.service-detail-page:not(.service-ai-page) .service-glass-shell::after {
+	content: "";
+	position: absolute;
+	inset: 13px 18px 18px 13px;
+	border: 1px solid rgba(255, 231, 202, .5);
+	border-radius: 28px;
+	background: radial-gradient(circle at 32% 23%, rgba(255,255,255,.26), transparent 28%), linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.03) 58%, rgba(216,126,48,.12));
+	box-shadow: inset 10px 8px 18px rgba(255,255,255,.12), inset -16px -16px 24px rgba(180,91,28,.1), 0 0 24px rgba(216,126,48,.12);
+	transform: translateZ(-20px) translate(9px, 7px);
+	opacity: .52;
+}
+.service-detail-page:not(.service-ai-page) .service-glass-plane {
+	position: absolute;
+	box-sizing: border-box;
+	display: block;
+	border: 1px solid rgba(255, 226, 190, .7);
+	background: linear-gradient(135deg, rgba(255,255,255,.34), rgba(255,255,255,.06) 42%, rgba(216,126,48,.14));
+	box-shadow: inset 1px 1px 0 rgba(255,255,255,.54), inset -11px -13px 22px rgba(177,88,27,.1), 0 7px 18px rgba(39,24,13,.1);
+	backdrop-filter: blur(7px) saturate(120%);
+	-webkit-backdrop-filter: blur(7px) saturate(120%);
+}
+.service-detail-page:not(.service-ai-page) .service-glass-plane--back {
+	inset: 16px 22px 22px 16px;
+	z-index: 0;
+	border-radius: 28px;
+	opacity: .42;
+	transform: translateZ(-24px) translate(10px, 8px);
+}
+.service-detail-page:not(.service-ai-page) .service-glass-plane--front {
+	inset: 24px 36px 36px 24px;
+	z-index: 4;
+	border-radius: 26px;
+	background: linear-gradient(135deg, rgba(255,255,255,.24), rgba(255,255,255,.05) 45%, rgba(216,126,48,.1));
+	transform: translateZ(22px);
+}
+.service-detail-page:not(.service-ai-page) .service-glass-plane--front::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: linear-gradient(112deg, rgba(255,255,255,.34), transparent 25%, transparent 64%, rgba(234,151,74,.1));
+	box-shadow: inset 0 0 0 1px rgba(255,255,255,.16);
+}
+.service-detail-page:not(.service-ai-page) .service-glass-plane--left {
+	top: 25px;
+	left: 5px;
+	z-index: 1;
+	width: 38px;
+	height: 123px;
+	border-radius: 20px 5px 5px 20px;
+	background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(216,126,48,.12), rgba(255,255,255,.06));
+	transform: skewY(38deg) translateZ(3px);
+	clip-path: polygon(0 0, 100% 17%, 100% 83%, 0 100%);
+}
+.service-detail-page:not(.service-ai-page) .service-glass-plane--right {
+	top: 25px;
+	right: 12px;
+	z-index: 2;
+	width: 38px;
+	height: 123px;
+	border-radius: 5px 20px 20px 5px;
+	background: linear-gradient(180deg, rgba(255,255,255,.2), rgba(216,126,48,.17), rgba(255,255,255,.06));
+	transform: skewY(-38deg) translateZ(5px);
+	clip-path: polygon(0 17%, 100% 0, 100% 83%, 0 100%);
+}
+.service-detail-page:not(.service-ai-page) .service-glass-plane--top {
+	top: 0;
+	left: 27px;
+	z-index: 5;
+	width: 126px;
+	height: 48px;
+	border-radius: 22px 22px 5px 5px;
+	background: linear-gradient(145deg, rgba(255,255,255,.4), rgba(255,255,255,.09) 54%, rgba(216,126,48,.16));
+	transform: skewX(-38deg) translateZ(7px);
+	clip-path: polygon(0 100%, 17% 0, 100% 0, 83% 100%);
+}
+.service-detail-page:not(.service-ai-page) .service-glass-identifier {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 6;
+	display: block;
+	max-width: 128px;
+	color: var(--color-accent);
+	font-family: var(--font-mono);
+	font-size: clamp(.72rem, 1.5vw, 1rem);
+	font-weight: 700;
+	letter-spacing: .12em;
+	line-height: 1;
+	text-align: center;
+	text-shadow: 0 1px 0 rgba(255,255,255,.55), 0 0 12px color-mix(in srgb, var(--color-accent) 24%, transparent);
+	transform: translate(-50%, -50%);
+}
+@keyframes serviceGlassRevolution {
+	0% { transform: rotateX(-14deg) rotateY(28deg); }
+	100% { transform: rotateX(-14deg) rotateY(388deg); }
+}
+@media (max-width: 720px) {
+	.service-detail-page:not(.service-ai-page) .service-glass-core { width: 148px; height: 148px; }
+	.service-detail-page:not(.service-ai-page) .service-glass-plane--back { inset: 13px 18px 18px 13px; }
+	.service-detail-page:not(.service-ai-page) .service-glass-plane--front { inset: 20px 29px 29px 20px; border-radius: 22px; }
+	.service-detail-page:not(.service-ai-page) .service-glass-plane--left { top: 20px; left: 4px; width: 31px; height: 99px; }
+	.service-detail-page:not(.service-ai-page) .service-glass-plane--right { top: 20px; right: 10px; width: 31px; height: 99px; }
+	.service-detail-page:not(.service-ai-page) .service-glass-plane--top { left: 22px; width: 101px; height: 39px; }
+	.service-detail-page:not(.service-ai-page) .service-glass-identifier { max-width: 108px; font-size: .65rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.service-detail-page:not(.service-ai-page) .service-glass-shell { animation: none; }
+}
+
+/* Real six-plane cube: the identifier is fixed to its true front face. */
+.service-detail-page:not(.service-ai-page) .service-glass-shell { animation: serviceGlassCubeRotate 10s linear infinite; }
+.service-detail-page:not(.service-ai-page) .service-glass-shell::after { display: none; }
+.service-detail-page:not(.service-ai-page) .service-glass-plane { top: 33px; left: 33px; width: 112px; height: 112px; inset: auto; z-index: auto; border-radius: 9px; clip-path: none; opacity: 1; background: linear-gradient(135deg, rgba(255,255,255,.26), rgba(255,255,255,.05) 48%, rgba(216,126,48,.12)); box-shadow: inset 1px 1px 0 rgba(255,255,255,.56), inset -10px -12px 20px rgba(177,88,27,.09); transform-origin: center; }
+.service-detail-page:not(.service-ai-page) .service-glass-plane--front { transform: translateZ(56px); }
+.service-detail-page:not(.service-ai-page) .service-glass-plane--back { transform: rotateY(180deg) translateZ(56px); }
+.service-detail-page:not(.service-ai-page) .service-glass-plane--right { transform: rotateY(90deg) translateZ(56px); }
+.service-detail-page:not(.service-ai-page) .service-glass-plane--left { transform: rotateY(-90deg) translateZ(56px); }
+.service-detail-page:not(.service-ai-page) .service-glass-plane--top { transform: rotateX(90deg) translateZ(56px); }
+.service-detail-page:not(.service-ai-page) .service-glass-plane--bottom { transform: rotateX(-90deg) translateZ(56px); }
+.service-detail-page:not(.service-ai-page) .service-glass-plane--front::before { display: none; }
+.service-detail-page:not(.service-ai-page) .service-glass-identifier { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; max-width: none; font-size: clamp(.64rem, 1.25vw, .88rem); transform: none; }
+@keyframes serviceGlassCubeRotate { from { transform: rotateX(-20deg) rotateY(25deg); } to { transform: rotateX(-20deg) rotateY(385deg); } }
+@media (max-width: 720px) { .service-detail-page:not(.service-ai-page) .service-glass-plane { top: 26px; left: 26px; width: 96px; height: 96px; }.service-detail-page:not(.service-ai-page) .service-glass-plane--front { transform: translateZ(48px); }.service-detail-page:not(.service-ai-page) .service-glass-plane--back { transform: rotateY(180deg) translateZ(48px); }.service-detail-page:not(.service-ai-page) .service-glass-plane--right { transform: rotateY(90deg) translateZ(48px); }.service-detail-page:not(.service-ai-page) .service-glass-plane--left { transform: rotateY(-90deg) translateZ(48px); }.service-detail-page:not(.service-ai-page) .service-glass-plane--top { transform: rotateX(90deg) translateZ(48px); }.service-detail-page:not(.service-ai-page) .service-glass-plane--bottom { transform: rotateX(-90deg) translateZ(48px); } }
+@media (prefers-reduced-motion: reduce) { .service-detail-page:not(.service-ai-page) .service-glass-shell { animation: none; } }
+
+/* ServiceGlassCubeHero is shared by AI and every other service detail page. */
+.service-detail-page .service-glass-core { display: block; z-index: 3; width: 178px; height: 178px; perspective: 1200px; transform-style: preserve-3d; filter: drop-shadow(0 22px 24px color-mix(in srgb, var(--color-text) 14%, transparent)); }
+.service-detail-page .service-glass-shell { position: absolute; inset: 0; display: block; transform-style: preserve-3d; animation: serviceGlassCubeRotate 10s linear infinite; }
+.service-detail-page .service-glass-shell::after { display: none; }
+.service-detail-page .service-glass-plane { top: 33px; left: 33px; width: 112px; height: 112px; inset: auto; z-index: auto; box-sizing: border-box; display: block; position: absolute; border: 1px solid rgba(255, 226, 190, .7); border-radius: 9px; background: linear-gradient(135deg, rgba(255,255,255,.26), rgba(255,255,255,.05) 48%, rgba(216,126,48,.12)); box-shadow: inset 1px 1px 0 rgba(255,255,255,.56), inset -10px -12px 20px rgba(177,88,27,.09); backdrop-filter: blur(7px) saturate(120%); -webkit-backdrop-filter: blur(7px) saturate(120%); }
+.service-detail-page .service-glass-plane--front { transform: translateZ(56px); }
+.service-detail-page .service-glass-plane--back { transform: rotateY(180deg) translateZ(56px); opacity: .46; }
+.service-detail-page .service-glass-plane--right { transform: rotateY(90deg) translateZ(56px); background: linear-gradient(180deg, rgba(255,255,255,.2), rgba(216,126,48,.17), rgba(255,255,255,.06)); }
+.service-detail-page .service-glass-plane--left { transform: rotateY(-90deg) translateZ(56px); background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(216,126,48,.12), rgba(255,255,255,.06)); }
+.service-detail-page .service-glass-plane--top { transform: rotateX(90deg) translateZ(56px); background: linear-gradient(145deg, rgba(255,255,255,.4), rgba(255,255,255,.09) 54%, rgba(216,126,48,.16)); }
+.service-detail-page .service-glass-plane--bottom { transform: rotateX(-90deg) translateZ(56px); opacity: .32; }
+.service-detail-page .service-glass-identifier { position: absolute; inset: 0; z-index: 4; display: grid; place-items: center; max-width: none; color: var(--color-accent); font-family: var(--font-mono); font-size: clamp(2.2rem, 4.8vw, 3rem); font-weight: 700; letter-spacing: 0; line-height: 1; text-align: center; text-shadow: 1px 0 #a94d12, 2px 1px #8e3d0b, 0 0 16px color-mix(in srgb, var(--color-accent) 28%, transparent); transform: translateZ(20px); }
+@media (max-width: 720px) { .service-detail-page .service-glass-core { width: 148px; height: 148px; }.service-detail-page .service-glass-plane { top: 26px; left: 26px; width: 96px; height: 96px; }.service-detail-page .service-glass-plane--front { transform: translateZ(48px); }.service-detail-page .service-glass-plane--back { transform: rotateY(180deg) translateZ(48px); }.service-detail-page .service-glass-plane--right { transform: rotateY(90deg) translateZ(48px); }.service-detail-page .service-glass-plane--left { transform: rotateY(-90deg) translateZ(48px); }.service-detail-page .service-glass-plane--top { transform: rotateX(90deg) translateZ(48px); }.service-detail-page .service-glass-plane--bottom { transform: rotateX(-90deg) translateZ(48px); }.service-detail-page .service-glass-identifier { font-size: 2.1rem; } }
+@media (prefers-reduced-motion: reduce) { .service-detail-page .service-glass-shell { animation: none; } }
+
+/* Reference-matched optical finish for the shared center cube only. */
+.service-detail-page .service-glass-core { position: relative; }
+.service-detail-page .service-glass-core::before {
+	content: "";
+	position: absolute;
+	left: 50%;
+	bottom: 5px;
+	width: 132px;
+	height: 28px;
+	border-radius: 50%;
+	background: rgba(224, 132, 42, .22);
+	filter: blur(15px);
+	transform: translateX(-50%);
+}
+.service-detail-page .service-glass-core::after {
+	content: "";
+	position: absolute;
+	inset: 20px;
+	z-index: 0;
+	border-radius: 30px;
+	background: radial-gradient(circle at 50% 50%, rgba(255, 186, 92, .2), transparent 62%);
+	filter: blur(12px);
+}
+.service-detail-page .service-glass-shell { z-index: 1; }
+.service-detail-page .service-glass-plane {
+	border-width: 2px;
+	border-color: rgba(255, 224, 190, .82);
+	border-radius: 18px;
+	background: linear-gradient(135deg, rgba(255,255,255,.34), rgba(255,255,255,.08) 44%, rgba(230,145,65,.14));
+	box-shadow: inset 2px 2px 0 rgba(255,255,255,.7), inset -13px -15px 24px rgba(178,87,24,.12), 0 0 10px rgba(255,223,187,.35);
+	backdrop-filter: blur(5px) saturate(135%);
+	-webkit-backdrop-filter: blur(5px) saturate(135%);
+}
+.service-detail-page .service-glass-plane--front {
+	overflow: visible;
+	background: linear-gradient(125deg, rgba(255,255,255,.28), rgba(255,255,255,.06) 48%, rgba(234,151,76,.12));
+}
+.service-detail-page .service-glass-plane--front::before {
+	content: "";
+	position: absolute;
+	inset: 5px;
+	border: 1px solid rgba(255,255,255,.38);
+	border-radius: 13px;
+	box-shadow: inset 0 0 12px rgba(255,255,255,.16);
+	pointer-events: none;
+}
+.service-detail-page .service-glass-plane--front::after {
+	content: "";
+	position: absolute;
+	top: 8%;
+	left: 9%;
+	width: 45%;
+	height: 22%;
+	border-radius: 50%;
+	background: rgba(255,255,255,.3);
+	filter: blur(8px);
+	transform: rotate(-28deg);
+	opacity: .8;
+	animation: serviceGlassSheen 7s ease-in-out infinite;
+}
+.service-detail-page .service-glass-plane--top { border-radius: 18px; }
+.service-detail-page .service-glass-plane--left,
+.service-detail-page .service-glass-plane--right { border-radius: 18px; }
+.service-detail-page .service-glass-identifier {
+	z-index: 5;
+	color: #f08a1f;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: clamp(4rem, 7vw, 5.6rem);
+	font-weight: 800;
+	letter-spacing: -.06em;
+	text-shadow: 1px 0 #d46710, 2px 1px #ba5208, 3px 2px #933d05, 4px 3px #733005, 0 0 20px rgba(237,127,24,.32), 0 12px 14px rgba(72,34,8,.24);
+	transform: translateZ(25px) rotateY(-2deg);
+	filter: drop-shadow(0 4px 4px rgba(72,34,8,.2));
+}
+@keyframes serviceGlassSheen {
+	0%, 100% { opacity: .35; transform: translate(0, 0) rotate(-28deg); }
+	50% { opacity: .8; transform: translate(18px, 9px) rotate(-28deg); }
+}
+@media (max-width: 720px) {
+	.service-detail-page .service-glass-identifier { font-size: 4.2rem; }
+	.service-detail-page .service-glass-core::after { inset: 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.service-detail-page .service-glass-plane--front::after { animation: none; }
+}
+
+/* Final focal-scale calibration: the center object remains the only enlarged hero element. */
+.service-detail-page .service-glass-core { width: 214px; height: 214px; filter: drop-shadow(0 26px 28px rgba(119, 61, 15, .2)); }
+.service-detail-page .service-glass-plane { top: 39px; left: 39px; width: 136px; height: 136px; border-width: 2px; }
+.service-detail-page .service-glass-plane--front { transform: translateZ(68px); }
+.service-detail-page .service-glass-plane--back { transform: rotateY(180deg) translateZ(68px); }
+.service-detail-page .service-glass-plane--right { transform: rotateY(90deg) translateZ(68px); }
+.service-detail-page .service-glass-plane--left { transform: rotateY(-90deg) translateZ(68px); }
+.service-detail-page .service-glass-plane--top { transform: rotateX(90deg) translateZ(68px); }
+.service-detail-page .service-glass-plane--bottom { transform: rotateX(-90deg) translateZ(68px); }
+.service-detail-page .service-glass-identifier { font-size: clamp(5rem, 8vw, 6.7rem); font-weight: 800; transform: translateZ(30px) rotateY(-2deg); -webkit-text-stroke: 1px rgba(255, 185, 91, .36); }
+.service-detail-page .service-glass-core::before { width: 162px; height: 34px; bottom: 2px; background: rgba(224, 132, 42, .28); filter: blur(18px); }
+@media (max-width: 720px) {
+	.service-detail-page .service-glass-core { width: 174px; height: 174px; }
+	.service-detail-page .service-glass-plane { top: 32px; left: 32px; width: 110px; height: 110px; }
+	.service-detail-page .service-glass-plane--front { transform: translateZ(55px); }
+	.service-detail-page .service-glass-plane--back { transform: rotateY(180deg) translateZ(55px); }
+	.service-detail-page .service-glass-plane--right { transform: rotateY(90deg) translateZ(55px); }
+	.service-detail-page .service-glass-plane--left { transform: rotateY(-90deg) translateZ(55px); }
+	.service-detail-page .service-glass-plane--top { transform: rotateX(90deg) translateZ(55px); }
+	.service-detail-page .service-glass-plane--bottom { transform: rotateX(-90deg) translateZ(55px); }
+	.service-detail-page .service-glass-identifier { font-size: 4.8rem; }
+}
+
+/* Identifier-only calibration: keep short labels readable inside the existing cube. */
+.service-detail-page .service-glass-identifier {
+	font-size: clamp(7rem, 11vw, 9rem);
+	line-height: .82;
+	transform: translateZ(30px) translateY(-2%) scale(1.08);
+}
+.service-detail-page:has(.service-glass-identifier) .service-glass-identifier { max-width: 86%; }
+.service-detail-page.service-erp .service-glass-identifier,
+.service-detail-page.service-crm .service-glass-identifier { font-size: clamp(4.6rem, 7vw, 6rem); letter-spacing: .02em; transform: translateZ(30px) translateY(-2%) scale(1.02); }
+.service-detail-page.service-design .service-glass-identifier { font-size: clamp(4.4rem, 6.5vw, 5.6rem); letter-spacing: .02em; transform: translateZ(30px) translateY(-2%) scale(1.02); }
+.service-detail-page:not(.service-ai-page) .service-glass-cube-hero .service-glass-identifier { font-size: clamp(5.8rem, 8vw, 6.8rem); line-height: .82; transform: translateZ(30px) translateY(-2%) scale(1.02); }
+.service-detail-page:not(.service-ai-page).service-erp .service-glass-cube-hero .service-glass-identifier,
+.service-detail-page:not(.service-ai-page).service-crm .service-glass-cube-hero .service-glass-identifier { font-size: clamp(3.8rem, 5.5vw, 4.8rem); letter-spacing: .02em; transform: translateZ(30px) translateY(-2%) scale(1.01); }
+.service-detail-page:not(.service-ai-page).service-design .service-glass-cube-hero .service-glass-identifier { font-size: clamp(3.6rem, 5vw, 4.5rem); letter-spacing: .02em; transform: translateZ(30px) translateY(-2%) scale(1.01); }
+@media (max-width: 720px) {
+	.service-detail-page:not(.service-ai-page) .service-glass-cube-hero .service-glass-identifier { font-size: 5.6rem; transform: translateZ(25px) translateY(-2%) scale(1.01); }
+	.service-detail-page:not(.service-ai-page).service-erp .service-glass-cube-hero .service-glass-identifier,
+	.service-detail-page:not(.service-ai-page).service-crm .service-glass-cube-hero .service-glass-identifier { font-size: 3.9rem; transform: translateZ(25px) translateY(-2%) scale(1.01); }
+	.service-detail-page:not(.service-ai-page).service-design .service-glass-cube-hero .service-glass-identifier { font-size: 3.7rem; transform: translateZ(25px) translateY(-2%) scale(1.01); }
+}
+
+/* Final identifier containment: resize and center the existing label only. */
+.service-detail-page.service-ai-page .service-glass-cube-hero .service-glass-identifier,
+.service-detail-page:not(.service-ai-page) .service-glass-cube-hero .service-glass-identifier {
+	font-size: 5.2rem;
+	line-height: .82;
+	max-width: 72%;
+	transform: translateZ(24px) translate(-50%, -50%);
+	top: 50%;
+	left: 50%;
+	inset: auto;
+}
+.service-detail-page:not(.service-ai-page).service-erp .service-glass-cube-hero .service-glass-identifier,
+.service-detail-page:not(.service-ai-page).service-crm .service-glass-cube-hero .service-glass-identifier,
+.service-detail-page:not(.service-ai-page).service-design .service-glass-cube-hero .service-glass-identifier {
+	font-size: 3.8rem;
+	letter-spacing: .01em;
+}
+@media (max-width: 720px) {
+	.service-detail-page.service-ai-page .service-glass-cube-hero .service-glass-identifier,
+	.service-detail-page:not(.service-ai-page) .service-glass-cube-hero .service-glass-identifier {
+		font-size: 4.5rem;
+	}
+	.service-detail-page:not(.service-ai-page).service-erp .service-glass-cube-hero .service-glass-identifier,
+	.service-detail-page:not(.service-ai-page).service-crm .service-glass-cube-hero .service-glass-identifier,
+	.service-detail-page:not(.service-ai-page).service-design .service-glass-cube-hero .service-glass-identifier {
+		font-size: 3.3rem;
+	}
+}
+
+/* Keep the service identifier completely inside the existing glass cube */
+.service-detail-page .service-glass-cube-hero .service-glass-identifier {
+    width: 70%;
+    height: 70%;
+    max-width: 70%;
+    max-height: 70%;
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    font-size: 4.4rem;
+    line-height: 1;
+    z-index: 20;
+    transform: none !important;
+}
+
+/* Center the identifier inside the existing front glass face */
+.service-detail-page .service-glass-plane--front > .service-glass-identifier {
+    position: absolute !important;
+    inset: 15% !important;
+    width: 70% !important;
+    height: 70% !important;
+    max-width: 70% !important;
+    max-height: 70% !important;
+    display: grid !important;
+    place-items: center !important;
+    overflow: hidden !important;
+    transform: none !important;
+}
+
+/* Smaller identifiers */
+.service-detail-page.service-erp .service-glass-cube-hero .service-glass-identifier,
+.service-detail-page.service-crm .service-glass-cube-hero .service-glass-identifier,
+.service-detail-page.service-design .service-glass-cube-hero .service-glass-identifier {
+    font-size: 2.8rem;
+}
+
+@media (max-width: 720px) {
+
+    .service-detail-page .service-glass-cube-hero .service-glass-identifier {
+        font-size: 3.8rem;
+    }
+
+    .service-detail-page.service-erp .service-glass-cube-hero .service-glass-identifier,
+    .service-detail-page.service-crm .service-glass-cube-hero .service-glass-identifier,
+    .service-detail-page.service-design .service-glass-cube-hero .service-glass-identifier {
+        font-size: 2.4rem;
+    }
+}

@@ -51,6 +51,7 @@
     width: 28px;
     height: 28px;
     transition: transform var(--transition-base);
+    animation: aiSparkleDrift 6s ease-in-out infinite;
 }
 
 .ai-assistant-trigger:hover .icon-sparkle { transform: scale(1.05); }
@@ -115,7 +116,10 @@
     height: 32px;
     color: var(--color-accent);
     flex-shrink: 0;
+    transition: transform var(--transition-base);
 }
+
+.ai-assistant-panel.is-open .ai-assistant-brand .icon-sparkle { transform: rotate(-4deg) scale(1.04); }
 
 .ai-assistant-brand strong {
     display: block;
@@ -195,6 +199,7 @@
 .ai-message {
     display: flex;
     max-width: 90%;
+    animation: aiMessageIn 280ms cubic-bezier(.22, 1, .36, 1) both;
 }
 
 .ai-message-assistant {
@@ -305,7 +310,14 @@
 
 .ai-suggestion-chip:hover::after {
     opacity: 1;
+    transform: translateX(2px);
 }
+
+.ai-suggestion-chip::after { transform: translateX(0); }
+
+.ai-assistant-panel.is-open .ai-suggestion-chip { animation: aiSuggestionIn 360ms cubic-bezier(.22, 1, .36, 1) both; }
+.ai-assistant-panel.is-open .ai-suggestion-chip:nth-child(2) { animation-delay: 60ms; }
+.ai-assistant-panel.is-open .ai-suggestion-chip:nth-child(3) { animation-delay: 120ms; }
 
 /* ---------- CTA suggestions ---------- */
 .ai-cta-suggestions {
@@ -438,6 +450,21 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes aiSparkleDrift {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-2px) rotate(4deg); }
+}
+
+@keyframes aiMessageIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes aiSuggestionIn {
+    from { opacity: 0; transform: translateX(-5px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
     .ai-assistant-panel {
@@ -445,9 +472,12 @@
     }
 
     .ai-assistant-trigger::before,
+    .ai-assistant-trigger .icon-sparkle,
     .ai-assistant-panel.is-open .ai-assistant-header,
     .ai-assistant-panel.is-open .ai-assistant-messages,
-    .ai-assistant-panel.is-open .ai-assistant-form { animation: none; }
+    .ai-assistant-panel.is-open .ai-assistant-form,
+    .ai-assistant-panel.is-open .ai-suggestion-chip,
+    .ai-message { animation: none; }
 
     .ai-assistant-trigger,
     .ai-assistant-trigger .icon-sparkle,
