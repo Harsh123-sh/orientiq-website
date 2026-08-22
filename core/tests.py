@@ -247,6 +247,8 @@ class AuthenticationTests(OrientiqTestCase):
 
 
 class ProductionAdminCommandTests(OrientiqTestCase):
+    """Comprehensive tests for the create_production_admin management command."""
+
     @patch.dict(
         os.environ,
         {
@@ -256,16 +258,357 @@ class ProductionAdminCommandTests(OrientiqTestCase):
         },
         clear=False,
     )
-    def test_production_admin_command_is_idempotent_and_repairs_account(self):
-        call_command("create_production_admin")
+    def test_create_new_production_admin(self):
+        """Test creating a brand new production admin user."""
         call_command("create_production_admin")
         user = User.objects.get(username="deploymentadmin")
+        self.assertEqual(user.username, "deploymentadmin")
+        self.assertEqual(user.email, "deployment@example.com")
         self.assertTrue(user.is_active)
         self.assertTrue(user.is_staff)
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.check_password("DeploymentPass123!"))
-        self.assertEqual(User.objects.filter(username="deploymentadmin").count(), 1)
         self.assertEqual(user.profile.role, UserRole.SUPER_ADMIN)
+
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "deploymentadmin",
+            "DJANGO_SUPERUSER_EMAIL": "deployment@example.com",
+            "DJANGO_SUPERUSER_PASSWORD": "DeploymentPass123!",
+        },
+        clear=False,
+    )
+    def test_command_is_idempotent_no_duplicate_users(self):
+        """Test that running the command twice does not create duplicate users."""
+        call_command("create_production_admin")
+        call_command("create_production_admin")
+        user_count = User.objects.filter(username="deploymentadmin").count()
+        self.assertEqual(user_count, 1, "Command is not idempotent; created multiple users.")
+
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "deploymentadmin",
+            "DJANGO_SUPERUSER_EMAIL": "deployment@example.com",
+            "DJANGO_SUPERUSER_PASSWORD": "DeploymentPass123!",
+        },
+        clear=False,
+    )
+    def test_command_repairs_existing_admin(self):
+        """Test that running the command on an existing user repairs/updates it."""
+        # Create a user with wrong settings
+        admin = User.objects.create_user(
+            username="deploymentadmin",
+            email="old@example.com",
+            password="OldPassword123!",
+        )
+        admin.is_active = False
+        admin.is_staff = False
+        admin.is_superuser = False
+        admin.save()
+
+        # Create a profile with wrong role
+        profile = Profile.objects.create(user=admin, role=UserRole.CLIENT)
+
+        # Run command to repair
+        call_command("create_production_admin")
+
+        # Refresh and verify repairs
+        admin.refresh_from_db()
+        profile.refresh_from_db()
+
+        self.assertEqual(admin.email, "deployment@example.com")
+        self.assertTrue(admin.is_active)
+        self.assertTrue(admin.is_staff)
+        self.assertTrue(admin.is_superuser)
+        self.assertTrue(admin.check_password("DeploymentPass123!"))
+        self.assertEqual(profile.role, UserRole.SUPER_ADMIN)
+
+    @patch.dict(
+        os.environ,
+        {},
+        clear=True,
+    )
+    def test_missing_username_raises_error(self):
+        """Test that missing DJANGO_SUPERUSER_USERNAME raises CommandError."""
+        from django.core.management import CommandError
+
+        with self.assertRaises(CommandError) as ctx:
+            call_command("create_production_admin")
+        self.assertIn("DJANGO_SUPERUSER_USERNAME", str(ctx.exception))
+
+    @patch.dict(
+        os.environ,
+        {"DJANGO_SUPERUSER_USERNAME": ""},
+        clear=True,
+    )
+    def test_empty_username_raises_error(self):
+        """Test that empty DJANGO_SUPERUSER_USERNAME raises CommandError."""
+        from django.core.management import CommandError
+
+        with self.assertRaises(CommandError) as ctx:
+            call_command("create_production_admin")
+        self.assertIn("DJANGO_SUPERUSER_USERNAME", str(ctx.exception))
+
+    @patch.dict(
+        os.environ,
+        {"DJANGO_SUPERUSER_USERNAME": "deploymentadmin"},
+        clear=True,
+    )
+    def test_missing_email_raises_error(self):
+        """Test that missing DJANGO_SUPERUSER_EMAIL raises CommandError."""
+        from django.core.management import CommandError
+
+        with self.assertRaises(CommandError) as ctx:
+            call_command("create_production_admin")
+        self.assertIn("DJANGO_SUPERUSER_EMAIL", str(ctx.exception))
+
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "deploymentadmin",
+            "DJANGO_SUPERUSER_EMAIL": "",
+        },
+        clear=True,
+    )
+    def test_empty_email_raises_error(self):
+        """Test that empty DJANGO_SUPERUSER_EMAIL raises CommandError."""
+        from django.core.management import CommandError
+
+        with self.assertRaises(CommandError) as ctx:
+            call_command("create_production_admin")
+        self.assertIn("DJANGO_SUPERUSER_EMAIL", str(ctx.exception))
+
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "deploymentadmin",
+            "DJANGO_SUPERUSER_EMAIL": "deployment@example.com",
+        },
+        clear=True,
+    )
+    def test_missing_password_raises_error(self):
+        """Test that missing DJANGO_SUPERUSER_PASSWORD raises CommandError."""
+        from django.core.management import CommandError
+
+        with self.assertRaises(CommandError) as ctx:
+            call_command("create_production_admin")
+        self.assertIn("DJANGO_SUPERUSER_PASSWORD", str(ctx.exception))
+
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "deploymentadmin",
+            "DJANGO_SUPERUSER_EMAIL": "deployment@example.com",
+            "DJANGO_SUPERUSER_PASSWORD": "",
+        },
+        clear=True,
+    )
+    def test_empty_password_raises_error(self):
+        """Test that empty DJANGO_SUPERUSER_PASSWORD raises CommandError."""
+        from django.core.management import CommandError
+
+        with self.assertRaises(CommandError) as ctx:
+            call_command("create_production_admin")
+        self.assertIn("DJANGO_SUPERUSER_PASSWORD", str(ctx.exception))
+
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "deploymentadmin",
+            "DJANGO_SUPERUSER_EMAIL": "deployment@example.com",
+            "DJANGO_SUPERUSER_PASSWORD": "DeploymentPass123!",
+        },
+        clear=False,
+    )
+    def test_password_reset_on_repair(self):
+        """Test that password is always reset when command is run."""
+        # Create user with different password
+        admin = User.objects.create_user(
+            username="deploymentadmin",
+            email="deployment@example.com",
+            password="OldPassword123!",
+        )
+        Profile.objects.create(user=admin, role=UserRole.CLIENT)
+
+        # Run command
+        call_command("create_production_admin")
+
+        # Verify password changed
+        admin.refresh_from_db()
+        self.assertTrue(admin.check_password("DeploymentPass123!"))
+        self.assertFalse(admin.check_password("OldPassword123!"))
+
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "deploymentadmin",
+            "DJANGO_SUPERUSER_EMAIL": "deployment@example.com",
+            "DJANGO_SUPERUSER_PASSWORD": "DeploymentPass123!",
+        },
+        clear=False,
+    )
+    def test_user_flags_set_correctly(self):
+        """Test that is_active, is_staff, is_superuser are all True."""
+        call_command("create_production_admin")
+        user = User.objects.get(username="deploymentadmin")
+        self.assertTrue(user.is_active, "is_active should be True")
+        self.assertTrue(user.is_staff, "is_staff should be True")
+        self.assertTrue(user.is_superuser, "is_superuser should be True")
+
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "deploymentadmin",
+            "DJANGO_SUPERUSER_EMAIL": "deployment@example.com",
+            "DJANGO_SUPERUSER_PASSWORD": "DeploymentPass123!",
+        },
+        clear=False,
+    )
+    def test_profile_created_with_correct_role(self):
+        """Test that Profile is created with SUPER_ADMIN role."""
+        call_command("create_production_admin")
+        user = User.objects.get(username="deploymentadmin")
+        self.assertTrue(hasattr(user, "profile"), "User should have a Profile")
+        self.assertEqual(user.profile.role, UserRole.SUPER_ADMIN)
+        self.assertEqual(user.profile.get_role_display(), "Super Admin")
+
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "deploymentadmin",
+            "DJANGO_SUPERUSER_EMAIL": "deployment@example.com",
+            "DJANGO_SUPERUSER_PASSWORD": "DeploymentPass123!",
+        },
+        clear=False,
+    )
+    def test_existing_profile_role_updated_to_super_admin(self):
+        """Test that an existing Profile with wrong role is updated to SUPER_ADMIN."""
+        # Create user with admin profile
+        admin = User.objects.create_user(
+            username="deploymentadmin",
+            email="deployment@example.com",
+            password="OldPassword123!",
+        )
+        profile = Profile.objects.create(user=admin, role=UserRole.ADMIN)
+
+        # Run command
+        call_command("create_production_admin")
+
+        # Verify profile role updated
+        profile.refresh_from_db()
+        self.assertEqual(profile.role, UserRole.SUPER_ADMIN)
+
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "deploymentadmin",
+            "DJANGO_SUPERUSER_EMAIL": "deployment@example.com",
+            "DJANGO_SUPERUSER_PASSWORD": "DeploymentPass123!",
+        },
+        clear=False,
+    )
+    def test_no_duplicate_users_after_multiple_runs(self):
+        """Test that running command multiple times never creates duplicates."""
+        for i in range(5):
+            call_command("create_production_admin")
+            user_count = User.objects.filter(username="deploymentadmin").count()
+            self.assertEqual(user_count, 1, f"After run {i+1}, found {user_count} users instead of 1")
+
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "deploymentadmin",
+            "DJANGO_SUPERUSER_EMAIL": "deployment@example.com",
+            "DJANGO_SUPERUSER_PASSWORD": "DeploymentPass123!",
+        },
+        clear=False,
+    )
+    def test_no_other_users_deleted(self):
+        """Test that command does not delete any other users."""
+        # Create multiple test users (avoid usernames that already exist from setUp)
+        User.objects.create_user(username="user1", email="user1@test.com", password="Pass123!")
+        User.objects.create_user(username="user2", email="user2@test.com", password="Pass123!")
+        User.objects.create_superuser(
+            username="othersuperadmin", email="othersuperadmin@test.com", password="Pass123!"
+        )
+
+        initial_count = User.objects.count()
+
+        # Run command
+        call_command("create_production_admin")
+
+        # Verify no other users were deleted
+        final_count = User.objects.count()
+        self.assertEqual(
+            final_count, initial_count + 1,
+            "Command should only add one new user, not delete others"
+        )
+        self.assertTrue(User.objects.filter(username="user1").exists())
+        self.assertTrue(User.objects.filter(username="user2").exists())
+        self.assertTrue(User.objects.filter(username="othersuperadmin").exists())
+
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "deploymentadmin",
+            "DJANGO_SUPERUSER_EMAIL": "deployment@example.com",
+            "DJANGO_SUPERUSER_PASSWORD": "DeploymentPass123!",
+        },
+        clear=False,
+    )
+    def test_no_other_profiles_deleted(self):
+        """Test that command does not delete any other Profile records."""
+        # Create multiple users with profiles
+        user1 = User.objects.create_user(username="user1", email="user1@test.com", password="Pass123!")
+        Profile.objects.create(user=user1, role=UserRole.CLIENT)
+        user2 = User.objects.create_user(username="user2", email="user2@test.com", password="Pass123!")
+        Profile.objects.create(user=user2, role=UserRole.ADMIN)
+
+        initial_profile_count = Profile.objects.count()
+
+        # Run command
+        call_command("create_production_admin")
+
+        # Verify no profiles were deleted
+        final_profile_count = Profile.objects.count()
+        self.assertEqual(
+            final_profile_count, initial_profile_count + 1,
+            "Command should only add one new Profile, not delete others"
+        )
+        self.assertTrue(Profile.objects.filter(user__username="user1").exists())
+        self.assertTrue(Profile.objects.filter(user__username="user2").exists())
+
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "deploymentadmin",
+            "DJANGO_SUPERUSER_EMAIL": "deployment@example.com",
+            "DJANGO_SUPERUSER_PASSWORD": "DeploymentPass123!",
+        },
+        clear=False,
+    )
+    def test_command_output_format(self):
+        """Test that command produces expected output (no password in output)."""
+        from io import StringIO
+        out = StringIO()
+        call_command("create_production_admin", stdout=out)
+        output = out.getvalue()
+        
+        # Verify success message present
+        self.assertIn("Production admin ready", output)
+        
+        # Verify credentials are shown (but not password)
+        self.assertIn("Username", output)
+        self.assertIn("Email", output)
+        self.assertIn("is_active", output)
+        self.assertIn("is_staff", output)
+        self.assertIn("is_superuser", output)
+        self.assertIn("Profile role", output)
+        
+        # Verify password is NOT shown
+        self.assertNotIn("DeploymentPass123!", output)
 
 
 class PermissionTests(OrientiqTestCase):
