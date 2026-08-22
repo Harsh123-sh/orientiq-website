@@ -22,13 +22,18 @@ class EmailOrUsernameModelBackend(ModelBackend):
 
         identifier = username.strip()
 
-        # Try matching by email first (case-insensitive), falling back to username.
+        # An exact username is unambiguous and must win over email matching.
         try:
-            user = UserModel.objects.get(email__iexact=identifier)
+            user = UserModel.objects.get(username=identifier)
         except UserModel.DoesNotExist:
-            try:
-                user = UserModel.objects.get(username=identifier)
-            except UserModel.DoesNotExist:
+            email_matches = UserModel.objects.filter(email__iexact=identifier)
+            if email_matches.count() == 1:
+                user = email_matches.first()
+            elif email_matches.exists():
+                # Duplicate emails are ambiguous; never authenticate an arbitrary row.
+                UserModel().set_password(password)
+                return None
+            else:
                 # Run the password hasher regardless to reduce timing differences
                 # between "user exists" and "user does not exist" responses.
                 UserModel().set_password(password)

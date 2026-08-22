@@ -276,6 +276,8 @@ class OrientiqLoginView(LoginView):
     redirect_authenticated_user = True
 
     def get_success_url(self):
+        if self.get_redirect_url():
+            return self.get_redirect_url()
         # Redirect admins to the admin dashboard, others to their profile.
         if self.request.user.is_authenticated:
             from .permissions import is_admin

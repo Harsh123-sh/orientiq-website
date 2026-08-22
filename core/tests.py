@@ -1,8 +1,10 @@
 import json
+import os
 from unittest.mock import patch
 
 from django.contrib.auth.models import User
 from django.core.cache import cache
+from django.core.management import call_command
 from django.db import IntegrityError, transaction
 from django.test import Client, TestCase
 from django.urls import reverse
@@ -88,6 +90,36 @@ class AuthenticationTests(OrientiqTestCase):
         )
         self.assertEqual(resp.status_code, 302)
 
+    def test_login_with_next_redirects_to_safe_destination(self):
+        self._register_user("nextuser", "next@test.com")
+        self.client.logout()
+        resp = self.client.post(
+            "/accounts/login/?next=/accounts/profile/",
+            {"username": "nextuser", "password": "StrongPass123!"},
+        )
+        self.assertRedirects(resp, "/accounts/profile/", fetch_redirect_response=False)
+
+    def test_inactive_user_cannot_login(self):
+        user = User.objects.create_user(
+            username="inactive", email="inactive@test.com", password="StrongPass123!"
+        )
+        user.is_active = False
+        user.save(update_fields=["is_active"])
+        self.client.logout()
+        resp = self.client.post(
+            "/accounts/login/",
+            {"username": "inactive", "password": "StrongPass123!"},
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Please enter a correct username and password")
+
+    def test_logout_removes_access_to_protected_dashboard(self):
+        self.client.login(username="testadmin", password="AdminPass123!")
+        self.client.get("/accounts/logout/")
+        resp = self.client.get("/admin/")
+        self.assertRedirects(resp, "/admin/login/?next=/admin/", fetch_redirect_response=False)
+
+
     def test_login_with_email(self):
         """Login with a valid email should succeed."""
         self._register_user("emailuser", "email@test.com", "StrongPass123!")
@@ -105,6 +137,37 @@ class AuthenticationTests(OrientiqTestCase):
         resp = self.client.post(
             "/accounts/login/",
             {"username": "CASE@TEST.COM", "password": "StrongPass123!"},
+        )
+        self.assertEqual(resp.status_code, 302)
+
+    def test_login_with_duplicate_email_fails_cleanly(self):
+        """Ambiguous duplicate emails must not crash the authentication backend."""
+        User.objects.create_user(
+            username="duplicateone", email="duplicate@test.com", password="StrongPass123!"
+        )
+        User.objects.create_user(
+            username="duplicatetwo", email="duplicate@test.com", password="StrongPass123!"
+        )
+        self.client.logout()
+        resp = self.client.post(
+            "/accounts/login/",
+            {"username": "duplicate@test.com", "password": "StrongPass123!"},
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Please enter a correct username and password")
+
+    def test_login_with_username_wins_over_duplicate_email(self):
+        """An exact username must authenticate even when email lookup is ambiguous."""
+        User.objects.create_user(
+            username="productionadmin", email="shared@test.com", password="StrongPass123!"
+        )
+        User.objects.create_user(
+            username="otheruser", email="productionadmin", password="OtherPass123!"
+        )
+        self.client.logout()
+        resp = self.client.post(
+            "/accounts/login/",
+            {"username": "productionadmin", "password": "StrongPass123!"},
         )
         self.assertEqual(resp.status_code, 302)
 
@@ -181,6 +244,28 @@ class AuthenticationTests(OrientiqTestCase):
         self.login_as("testadmin")
         resp = self.client.get("/accounts/logout/")
         self.assertEqual(resp.status_code, 302)
+
+
+class ProductionAdminCommandTests(OrientiqTestCase):
+    @patch.dict(
+        os.environ,
+        {
+            "DJANGO_SUPERUSER_USERNAME": "deploymentadmin",
+            "DJANGO_SUPERUSER_EMAIL": "deployment@example.com",
+            "DJANGO_SUPERUSER_PASSWORD": "DeploymentPass123!",
+        },
+        clear=False,
+    )
+    def test_production_admin_command_is_idempotent_and_repairs_account(self):
+        call_command("create_production_admin")
+        call_command("create_production_admin")
+        user = User.objects.get(username="deploymentadmin")
+        self.assertTrue(user.is_active)
+        self.assertTrue(user.is_staff)
+        self.assertTrue(user.is_superuser)
+        self.assertTrue(user.check_password("DeploymentPass123!"))
+        self.assertEqual(User.objects.filter(username="deploymentadmin").count(), 1)
+        self.assertEqual(user.profile.role, UserRole.SUPER_ADMIN)
 
 
 class PermissionTests(OrientiqTestCase):
