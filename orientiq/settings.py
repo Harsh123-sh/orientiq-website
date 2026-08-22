@@ -95,19 +95,8 @@ WSGI_APPLICATION = 'orientiq.wsgi.application'
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DATABASE_URL:
-    # Example: postgresql://user:password@localhost:5432/orientiq
-    from urllib.parse import urlparse
-
-    _parsed = urlparse(DATABASE_URL)
     DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": _parsed.path.lstrip("/"),
-            "USER": _parsed.username,
-            "PASSWORD": _parsed.password,
-            "HOST": _parsed.hostname,
-            "PORT": _parsed.port or 5432,
-        }
+        "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600),
     }
 else:
     DATABASES = {
