@@ -31,6 +31,7 @@ from .models import (
     BookingType,
     ContactInquiry,
     Profile,
+    UserRole,
 )
 from .forms import (
     CustomPasswordChangeForm,
@@ -284,7 +285,7 @@ class OrientiqLoginView(LoginView):
         if self.request.user.is_staff or self.request.user.is_superuser:
             return "/admin/"
 
-        return "/accounts/profile/"
+        return "/accounts/dashboard/"
 
 
 def logout_view(request):
@@ -574,7 +575,21 @@ def booking_review_page(request):
             "demo_disclaimer": DEMO_DISCLAIMER,
         },
     )
+@login_required
+def client_dashboard(request):
+    if request.user.is_staff or request.user.is_superuser:
+        return redirect("/admin/")
 
+    profile = getattr(request.user, "profile", None)
+
+    if not profile or profile.role != UserRole.CLIENT:
+        return redirect("/accounts/profile/")
+
+    return render(
+        request,
+        "accounts/client_dashboard.html",
+        {"profile": profile},
+    )
 
 @login_required
 @require_POST
