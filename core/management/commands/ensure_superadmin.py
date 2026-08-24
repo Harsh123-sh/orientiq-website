@@ -1,7 +1,7 @@
 import os
 
-from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
+from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
@@ -10,24 +10,29 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         User = get_user_model()
 
-        username = os.environ.get("Superadmin")
-        email = os.environ.get("sachwani25harsh@gmail.com")
-        password = os.environ.get("Harsh@31")
+        username = os.getenv("DJANGO_SUPERUSER_USERNAME", "").strip()
+        email = os.getenv("DJANGO_SUPERUSER_EMAIL", "").strip().lower()
+        password = os.getenv("DJANGO_SUPERUSER_PASSWORD", "")
 
-        if not username or not password:
+        if not username:
             self.stdout.write(
-                self.style.WARNING(
-                    "DJANGO_SUPERUSER_USERNAME/PASSWORD not configured. "
-                    "Skipping Superadmin setup."
+                self.style.ERROR(
+                    "DJANGO_SUPERUSER_USERNAME is not configured."
+                )
+            )
+            return
+
+        if not password:
+            self.stdout.write(
+                self.style.ERROR(
+                    "DJANGO_SUPERUSER_PASSWORD is not configured."
                 )
             )
             return
 
         user, created = User.objects.get_or_create(
             username=username,
-            defaults={
-                "email": email or "",
-            },
+            defaults={"email": email},
         )
 
         if email:
@@ -36,7 +41,6 @@ class Command(BaseCommand):
         user.is_staff = True
         user.is_superuser = True
         user.is_active = True
-
         user.set_password(password)
         user.save()
 
