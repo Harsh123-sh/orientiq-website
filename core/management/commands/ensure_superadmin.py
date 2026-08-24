@@ -1,11 +1,13 @@
 import os
 
 from django.contrib.auth import get_user_model
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
+
+from core.models import Profile, UserRole
 
 
 class Command(BaseCommand):
-    help = "Create or update the production Superadmin account."
+    help = "Create or repair the production Superadmin account."
 
     def handle(self, *args, **options):
         User = get_user_model()
@@ -15,44 +17,46 @@ class Command(BaseCommand):
         password = os.getenv("DJANGO_SUPERUSER_PASSWORD", "")
 
         if not username:
-            self.stdout.write(
-                self.style.ERROR(
-                    "DJANGO_SUPERUSER_USERNAME is not configured."
-                )
-            )
-            return
+            raise CommandError("DJANGO_SUPERUSER_USERNAME is not configured.")
+
+        if not email:
+            raise CommandError("DJANGO_SUPERUSER_EMAIL is not configured.")
 
         if not password:
-            self.stdout.write(
-                self.style.ERROR(
-                    "DJANGO_SUPERUSER_PASSWORD is not configured."
-                )
-            )
-            return
+            raise CommandError("DJANGO_SUPERUSER_PASSWORD is not configured.")
 
         user, created = User.objects.get_or_create(
             username=username,
             defaults={"email": email},
         )
 
-        if email:
-            user.email = email
-
+        user.email = email
+        user.is_active = True
         user.is_staff = True
         user.is_superuser = True
-        user.is_active = True
         user.set_password(password)
         user.save()
 
-        if created:
-            self.stdout.write(
-                self.style.SUCCESS(
-                    f"Superadmin '{username}' created successfully."
-                )
+        profile, _ = Profile.objects.get_or_create(user=user)
+        profile.role = UserRole.SUPER_ADMIN
+        profile.save(update_fields=["role"])
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Superadmin '{user.username}' "
+                f"{'created' if created else 'updated'} successfully."
             )
-        else:
-            self.stdout.write(
-                self.style.SUCCESS(
-                    f"Superadmin '{username}' updated successfully."
-                )
-            )
+        )
+
+        self.stdout.write(
+            f"  is_active={user.is_active}"
+        )
+        self.stdout.write(
+            f"  is_staff={user.is_staff}"
+        )
+        self.stdout.write(
+            f"  is_superuser={user.is_superuser}"
+        )
+        self.stdout.write(
+            f"  profile_role={profile.role}"
+        )
