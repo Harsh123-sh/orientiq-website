@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Client Dashboard</h1>
+
+    <p>Welcome, {{ request.user.username }}.</p>
+
+    <p>Email: {{ request.user.email }}</p>
+
+    <a href="{% url 'accounts_profile' %}">
+        My Profile
+    </a>
+</div>
+
+{% endblock %}

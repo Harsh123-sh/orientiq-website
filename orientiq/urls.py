@@ -61,6 +61,7 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(template_name='accounts/password_reset_complete.html'),
         name='accounts_password_reset_complete',
     ),
+    path('accounts/dashboard/', views.client_dashboard, name='client_dashboard'),
     path('accounts/profile/', views.profile, name='accounts_profile'),
     path('accounts/settings/', views.account_settings, name='accounts_settings'),
     path('accounts/change-password/', views.OrientiqPasswordChangeView.as_view(), name='accounts_change_password'),
