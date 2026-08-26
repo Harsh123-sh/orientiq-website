@@ -37,12 +37,10 @@ SECRET_KEY = os.getenv(
 DEBUG = os.getenv("DJANGO_DEBUG", "True").lower() in ("1", "true", "yes")
 
 ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.getenv(
-        "DJANGO_ALLOWED_HOSTS",
-        "127.0.0.1,localhost,orientiq-website.onrender.com",
-    ).split(",")
-    if host.strip()
+    "orentiq.me",
+    "www.orentiq.me",
+    "orentiq.vercel.app",
+    ".vercel.app",
 ]
 
 
