@@ -54,14 +54,10 @@ DEBUG = os.getenv(
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-
-    # Vercel
     "orentiq.vercel.app",
-    ".vercel.app",
-
-    # Custom domain
     "orentiq.me",
     "www.orentiq.me",
+    ".vercel.app",
 ]
 
 
@@ -289,7 +285,6 @@ if not DEBUG:
 
 CSRF_TRUSTED_ORIGINS = [
     "https://orentiq.vercel.app",
-    "https://*.vercel.app",
     "https://orentiq.me",
     "https://www.orentiq.me",
 ]
