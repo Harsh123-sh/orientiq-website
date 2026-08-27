@@ -1,5 +1,5 @@
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orientiq.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orentiq.settings")
 import django
 django.setup()
 

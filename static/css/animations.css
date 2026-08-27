@@ -1,5 +1,5 @@
 /* ============================================================
-   ORIENTIQ — ANIMATION SYSTEM
+   ORENTIQ — ANIMATION SYSTEM
    ============================================================ */
 
 /* ---------- Page/Section Reveal Foundation ---------- */
@@ -61,10 +61,10 @@ html.motion-ready .reveal-scale {
 
 /* A short entrance gives page changes continuity without delaying interaction. */
 .site-main {
-    animation: orientiq-page-enter var(--transition-slow) both;
+    animation: orentiq-page-enter var(--transition-slow) both;
 }
 
-@keyframes orientiq-page-enter {
+@keyframes orentiq-page-enter {
     from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
 }

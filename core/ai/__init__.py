@@ -1,1 +1,1 @@
-"""Orientiq AI assistant packages."""
+"""Orentiq AI assistant packages."""

@@ -85,7 +85,7 @@ class RegisterForm(UserCreationForm):
 
 
 class LoginForm(AuthenticationForm):
-    """Login form styled with the Orientiq design system."""
+    """Login form styled with the Orentiq design system."""
 
     username = forms.CharField(
         widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Username or email"}),
@@ -151,7 +151,7 @@ class ProfileForm(forms.ModelForm):
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):
-    """Password change form styled for Orientiq."""
+    """Password change form styled for Orentiq."""
 
     old_password = forms.CharField(
         widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Current password"}),
@@ -165,7 +165,7 @@ class CustomPasswordChangeForm(PasswordChangeForm):
 
 
 class CustomPasswordResetForm(PasswordResetForm):
-    """Password reset form styled for Orientiq."""
+    """Password reset form styled for Orentiq."""
 
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "you@company.com"}),
@@ -173,7 +173,7 @@ class CustomPasswordResetForm(PasswordResetForm):
 
 
 class CustomSetPasswordForm(SetPasswordForm):
-    """Set new password form styled for Orientiq."""
+    """Set new password form styled for Orentiq."""
 
     new_password1 = forms.CharField(
         widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "New password"}),

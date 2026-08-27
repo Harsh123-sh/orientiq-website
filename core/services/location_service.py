@@ -1,4 +1,4 @@
-"""Location service for the Orientiq live intelligence foundation.
+"""Location service for the Orentiq live intelligence foundation.
 
 Provides a provider-independent way to search and look up locations.
 Supports arbitrary city/state/country/landmark searches via a real
@@ -267,7 +267,7 @@ class NominatimLocationProvider(BaseLocationProvider):
         req = urllib.request.Request(
             url,
             headers={
-                "User-Agent": "OrientiqWebsite/1.0 (contact: hello@orientiq.com)",
+                "User-Agent": "OrentiqWebsite/1.0 (contact: hello@orentiq.com)",
                 "Accept": "application/json",
             },
         )

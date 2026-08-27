@@ -159,7 +159,7 @@ class Migration(migrations.Migration):
             name='SiteSetting',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('company_name', models.CharField(default='Orientiq', max_length=120)),
+                ('company_name', models.CharField(default='Orentiq', max_length=120)),
                 ('tagline', models.CharField(blank=True, max_length=200)),
                 ('email', models.EmailField(blank=True, max_length=254)),
                 ('phone', models.CharField(blank=True, max_length=30)),

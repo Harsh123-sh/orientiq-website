@@ -5,8 +5,8 @@ LOGIN STATUS 200 BODY SNIPPET: <!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile — Orientiq</title>
-    <meta name="description" content="View your Orientiq account profile.">
+    <title>My Profile ï¿½ Orentiq</title>
+    <meta name="description" content="View your Orentiq account profile.">
     <link rel="icon" type="image/png" href="/static/images/brand/Icon%20Luxry%20Light..png">
 
     <!-- Theme init: prevent 

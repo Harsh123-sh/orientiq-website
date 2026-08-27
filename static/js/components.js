@@ -1,5 +1,5 @@
 /* ============================================================
-   ORIENTIQ — COMPONENTS
+   ORENTIQ — COMPONENTS
    ============================================================ */
 
 (function () {
@@ -66,8 +66,8 @@
     /* ---------- Theme toggle buttons ---------- */
     document.querySelectorAll("[data-theme-toggle]").forEach(function (btn) {
         btn.addEventListener("click", function () {
-            if (window.OrientiqTheme) {
-                window.OrientiqTheme.toggle();
+            if (window.OrentiqTheme) {
+                window.OrentiqTheme.toggle();
             }
         });
     });

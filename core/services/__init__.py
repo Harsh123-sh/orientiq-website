@@ -1,1 +1,1 @@
-"""Orientiq live intelligence services."""
+"""Orentiq live intelligence services."""

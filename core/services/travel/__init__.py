@@ -1,1 +1,1 @@
-"""Travel inventory services for the Orientiq foundation."""
+"""Travel inventory services for the Orentiq foundation."""

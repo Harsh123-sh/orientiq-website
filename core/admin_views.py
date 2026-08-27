@@ -1,4 +1,4 @@
-"""Admin dashboard + CMS views for the Orientiq corporate website."""
+"""Admin dashboard + CMS views for the Orentiq corporate website."""
 
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash

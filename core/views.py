@@ -239,7 +239,7 @@ def design_system(request):
 
 
 class FaviconRedirectView(RedirectView):
-    """Redirect /favicon.ico to the official Orientiq icon."""
+    """Redirect /favicon.ico to the official Orentiq icon."""
 
     permanent = True
 
@@ -269,8 +269,8 @@ def register(request):
     return render(request, "accounts/register.html", {"form": form})
 
 
-class OrientiqLoginView(LoginView):
-    """Login view styled for Orientiq."""
+class OrentiqLoginView(LoginView):
+    """Login view styled for Orentiq."""
 
     template_name = "accounts/login.html"
     authentication_form = LoginForm
@@ -295,7 +295,7 @@ def logout_view(request):
     return redirect("home")
 
 
-class OrientiqPasswordResetView(PasswordResetView):
+class OrentiqPasswordResetView(PasswordResetView):
     """Password reset request view."""
 
     template_name = "accounts/forgot_password.html"
@@ -305,7 +305,7 @@ class OrientiqPasswordResetView(PasswordResetView):
     success_url = reverse_lazy("accounts_password_reset_done")
 
 
-class OrientiqPasswordResetConfirmView(PasswordResetConfirmView):
+class OrentiqPasswordResetConfirmView(PasswordResetConfirmView):
     """Password reset confirmation view."""
 
     template_name = "accounts/reset_password.html"
@@ -341,7 +341,7 @@ def account_settings(request):
     )
 
 
-class OrientiqPasswordChangeView(PasswordChangeView):
+class OrentiqPasswordChangeView(PasswordChangeView):
     """Change password view."""
 
     template_name = "accounts/change_password.html"

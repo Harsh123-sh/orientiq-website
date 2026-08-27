@@ -1,11 +1,11 @@
 /* ============================================================
-   ORIENTIQ — ADMIN THEME SYSTEM
+   ORENTIQ — ADMIN THEME SYSTEM
    ============================================================ */
 
 (function () {
     "use strict";
 
-    var STORAGE_KEY = "orientiq-admin-theme";
+    var STORAGE_KEY = "orentiq-admin-theme";
     var root = document.documentElement;
     var toggleButtons = document.querySelectorAll("[data-theme-toggle]");
 
@@ -60,7 +60,7 @@
         button.addEventListener("click", toggleTheme);
     });
 
-    window.OrientiqAdminTheme = {
+    window.OrentiqAdminTheme = {
         get current() {
             return root.getAttribute("data-theme");
         },

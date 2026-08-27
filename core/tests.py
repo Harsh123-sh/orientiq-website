@@ -28,24 +28,24 @@ from .models import (
 )
 
 
-class OrientiqTestCase(TestCase):
+class OrentiqTestCase(TestCase):
     """Base test case with helper methods."""
 
     def setUp(self):
         self.client = Client(HTTP_HOST="127.0.0.1")
 
         self.superadmin_user = User.objects.create_superuser(
-            username="superadmin", email="super@orientiq.com", password="AdminPass123!"
+            username="superadmin", email="super@orentiq.com", password="AdminPass123!"
         )
         Profile.objects.create(user=self.superadmin_user, role=UserRole.SUPER_ADMIN)
 
         self.admin_user = User.objects.create_user(
-            username="testadmin", email="admin@orientiq.com", password="AdminPass123!"
+            username="testadmin", email="admin@orentiq.com", password="AdminPass123!"
         )
         Profile.objects.create(user=self.admin_user, role=UserRole.ADMIN)
 
         self.client_user = User.objects.create_user(
-            username="testclient", email="client@orientiq.com", password="ClientPass123!"
+            username="testclient", email="client@orentiq.com", password="ClientPass123!"
         )
         Profile.objects.create(user=self.client_user, role=UserRole.CLIENT)
 
@@ -62,7 +62,7 @@ class OrientiqTestCase(TestCase):
         return service, industry, portfolio, product, tech, testimonial
 
 
-class AuthenticationTests(OrientiqTestCase):
+class AuthenticationTests(OrentiqTestCase):
     def _register_user(self, username, email, password="StrongPass123!"):
         self.client.post(
             "/accounts/register/",
@@ -205,7 +205,7 @@ class AuthenticationTests(OrientiqTestCase):
         self.client.logout()
         resp = self.client.post(
             "/accounts/login/",
-            {"username": "admin@orientiq.com", "password": "AdminPass123!"},
+            {"username": "admin@orentiq.com", "password": "AdminPass123!"},
         )
         self.assertEqual(resp.status_code, 302)
         self.assertIn("/admin/", resp["Location"])
@@ -246,7 +246,7 @@ class AuthenticationTests(OrientiqTestCase):
         self.assertEqual(resp.status_code, 302)
 
 
-class ProductionAdminCommandTests(OrientiqTestCase):
+class ProductionAdminCommandTests(OrentiqTestCase):
     """Comprehensive tests for the create_production_admin management command."""
 
     @patch.dict(
@@ -611,7 +611,7 @@ class ProductionAdminCommandTests(OrientiqTestCase):
         self.assertNotIn("DeploymentPass123!", output)
 
 
-class PermissionTests(OrientiqTestCase):
+class PermissionTests(OrentiqTestCase):
     def test_anonymous_redirected_to_admin_login(self):
         resp = self.client.get("/admin/")
         self.assertEqual(resp.status_code, 302)
@@ -639,7 +639,7 @@ class PermissionTests(OrientiqTestCase):
         self.assertEqual(resp.status_code, 403)
 
 
-class AdminCRUDTests(OrientiqTestCase):
+class AdminCRUDTests(OrentiqTestCase):
     def setUp(self):
         super().setUp()
         self.login_as("testadmin")
@@ -701,7 +701,7 @@ class AdminCRUDTests(OrientiqTestCase):
         self.assertTrue(Testimonial.objects.filter(client_name="ACME").exists())
 
 
-class ContactFormTests(OrientiqTestCase):
+class ContactFormTests(OrentiqTestCase):
     def test_contact_form_submits_and_saves_record(self):
         resp = self.client.post(
             "/company/contact/",
@@ -728,7 +728,7 @@ class ContactFormTests(OrientiqTestCase):
         self.assertEqual(ContactInquiry.objects.filter(email="not-an-email").count(), 0)
 
 
-class InquiryTests(OrientiqTestCase):
+class InquiryTests(OrentiqTestCase):
     def test_inquiry_creation_from_public_form(self):
         resp = self.client.post(
             "/start-project/",
@@ -749,7 +749,7 @@ class InquiryTests(OrientiqTestCase):
         self.assertEqual(ContactInquiry.objects.count(), 0)
 
 
-class PublicRouteTests(OrientiqTestCase):
+class PublicRouteTests(OrentiqTestCase):
     def test_all_public_routes(self):
         routes = [
             "/", "/about/", "/services/", "/services/ai-automation/",
@@ -817,14 +817,14 @@ class PublicRouteTests(OrientiqTestCase):
         self.assertEqual(resp.status_code, 404)
 
 
-class PasswordResetTests(OrientiqTestCase):
+class PasswordResetTests(OrentiqTestCase):
     """Complete forgot-password → reset → login flow."""
 
     def test_forgot_password_flow(self):
         """Forgot password should generate a reset email without crashing."""
         resp = self.client.post(
             "/accounts/forgot-password/",
-            {"email": "admin@orientiq.com"},
+            {"email": "admin@orentiq.com"},
         )
         self.assertEqual(resp.status_code, 302)
         self.assertIn("/accounts/reset-password/", resp["Location"])
@@ -887,12 +887,12 @@ class PasswordResetTests(OrientiqTestCase):
 
         resp = self.client.post(
             "/accounts/login/",
-            {"username": "admin@orientiq.com", "password": "NewPass456!"},
+            {"username": "admin@orentiq.com", "password": "NewPass456!"},
         )
         self.assertEqual(resp.status_code, 302)
 
 
-class AIAssistantTests(OrientiqTestCase):
+class AIAssistantTests(OrentiqTestCase):
     """Tests for the AI assistant endpoint and knowledge layer."""
 
     def test_ai_endpoint_rejects_get(self):
@@ -948,7 +948,7 @@ class AIAssistantTests(OrientiqTestCase):
         """The API key must never be exposed in the response."""
         resp = self.client.post(
             "/api/ai/chat/",
-            data='{"message": "What does Orientiq do?"}',
+            data='{"message": "What does Orentiq do?"}',
             content_type="application/json",
         )
         body = resp.content.decode("utf-8")
@@ -1009,7 +1009,7 @@ class AIAssistantTests(OrientiqTestCase):
         self.assertEqual(resp.status_code, 200)
 
 
-class LiveIntelligenceTests(OrientiqTestCase):
+class LiveIntelligenceTests(OrentiqTestCase):
     """Tests for the Phase 7 live intelligence foundation."""
 
     def setUp(self):
@@ -1211,7 +1211,7 @@ class LiveIntelligenceTests(OrientiqTestCase):
         self.assertEqual(resp.status_code, 200)
 
 
-class TravelInventoryTests(OrientiqTestCase):
+class TravelInventoryTests(OrentiqTestCase):
     """Tests for the Phase 8 travel inventory foundation."""
 
     def test_flights_valid_search(self):
@@ -1390,7 +1390,7 @@ class TravelInventoryTests(OrientiqTestCase):
         self.assertEqual(resp.status_code, 200)
 
 
-class MediaUploadTests(OrientiqTestCase):
+class MediaUploadTests(OrentiqTestCase):
     def test_media_upload(self):
         self.login_as("testadmin")
         from django.core.files.uploadedfile import SimpleUploadedFile
@@ -1400,7 +1400,7 @@ class MediaUploadTests(OrientiqTestCase):
             {"file": file, "name": "Test File", "category": "general", "alt_text": ""},
         )
         self.assertEqual(resp.status_code, 302)
-class BookingTests(OrientiqTestCase):
+class BookingTests(OrentiqTestCase):
     """Phase 9 — Booking + Reservation Workflow Foundation tests."""
 
     def setUp(self):

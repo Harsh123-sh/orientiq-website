@@ -1,4 +1,4 @@
-"""Maps service for the Orientiq live intelligence foundation.
+"""Maps service for the Orentiq live intelligence foundation.
 
 Provider-independent maps abstraction. The rest of the application
 communicates with this service layer rather than a concrete provider.

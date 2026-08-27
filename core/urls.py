@@ -1,6 +1,6 @@
 """URL patterns for the core app.
 
-Note: the project's ROOT_URLCONF (orientiq/urls.py) wires all booking routes
+Note: the project's ROOT_URLCONF (orentiq/urls.py) wires all booking routes
 directly. This module is kept in sync so `include('core.urls')` also works;
 no user-facing routes are registered here that are not in the root config.
 """

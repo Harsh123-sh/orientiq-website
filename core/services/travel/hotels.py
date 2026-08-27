@@ -1,4 +1,4 @@
-"""Hotel search service for the Orientiq travel inventory foundation."""
+"""Hotel search service for the Orentiq travel inventory foundation."""
 
 import hashlib
 from datetime import datetime, timedelta

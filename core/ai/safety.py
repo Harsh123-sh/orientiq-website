@@ -1,4 +1,4 @@
-"""Safety and validation helpers for the Orientiq AI assistant."""
+"""Safety and validation helpers for the Orentiq AI assistant."""
 
 import re
 

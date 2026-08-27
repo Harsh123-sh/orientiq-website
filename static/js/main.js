@@ -1,5 +1,5 @@
 /* ============================================================
-   ORIENTIQ — MAIN SCRIPT
+   ORENTIQ — MAIN SCRIPT
    ============================================================ */
 
 document.addEventListener("DOMContentLoaded", function () {

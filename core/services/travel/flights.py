@@ -1,4 +1,4 @@
-"""Flight search service for the Orientiq travel inventory foundation."""
+"""Flight search service for the Orentiq travel inventory foundation."""
 
 import hashlib
 from datetime import date, datetime

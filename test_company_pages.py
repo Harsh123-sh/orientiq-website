@@ -2,7 +2,7 @@
 import os
 import django
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'orientiq.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'orentiq.settings')
 django.setup()
 
 from django.test import Client

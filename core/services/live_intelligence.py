@@ -1,4 +1,4 @@
-"""Live Intelligence service for the Orientiq foundation.
+"""Live Intelligence service for the Orentiq foundation.
 
 Combines multiple live-data sources (location, weather, maps) into a
 single normalized result. Designed so future modules (traffic, events,

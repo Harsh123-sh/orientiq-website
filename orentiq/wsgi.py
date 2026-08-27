@@ -2,9 +2,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault(
-    "DJANGO_SETTINGS_MODULE",
-    "orientiq.settings",
-)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orentiq.settings")
 
 application = get_wsgi_application()

@@ -2,39 +2,39 @@
 {% if messages %}
     {% for message in messages %}
         {% if message.level_tag == 'success' %}
-            <div class="orientiq-success-root" id="{{ modal_id }}-root" aria-live="polite">
-                <div class="orientiq-success-overlay" aria-hidden="true"></div>
-                <div class="orientiq-success-modal" id="{{ modal_id }}" role="dialog" aria-modal="true" aria-labelledby="{{ title_id }}" aria-describedby="{{ description_id }}" tabindex="-1">
+            <div class="orentiq-success-root" id="{{ modal_id }}-root" aria-live="polite">
+                <div class="orentiq-success-overlay" aria-hidden="true"></div>
+                <div class="orentiq-success-modal" id="{{ modal_id }}" role="dialog" aria-modal="true" aria-labelledby="{{ title_id }}" aria-describedby="{{ description_id }}" tabindex="-1">
                     <div class="visually-hidden" aria-live="polite">{{ message }}</div>
-                    <div class="orientiq-success-card">
-                        <div class="orientiq-success-brand" aria-label="ORENTIQ logo">
-                            <img src="{% static 'images/brand/orientiq-logo-on-light.png' %}" alt="ORENTIQ" class="orientiq-success-logo">
+                    <div class="orentiq-success-card">
+                        <div class="orentiq-success-brand" aria-label="ORENTIQ logo">
+                            <img src="{% static 'images/brand/orentiq-logo-on-light.png' %}" alt="ORENTIQ" class="orentiq-success-logo">
                         </div>
 
-                        <p class="orientiq-success-kicker">Message received</p>
+                        <p class="orentiq-success-kicker">Message received</p>
                         <h2 id="{{ title_id }}">{{ heading }}</h2>
-                        <p class="orientiq-success-copy" id="{{ description_id }}">{{ description }}</p>
+                        <p class="orentiq-success-copy" id="{{ description_id }}">{{ description }}</p>
 
-                        <div class="orientiq-success-visual" aria-hidden="true">
-                            <div class="orientiq-confirmation-ring ring-outer"></div>
-                            <div class="orientiq-confirmation-ring ring-inner"></div>
-                            <div class="orientiq-confirmation-mark">
+                        <div class="orentiq-success-visual" aria-hidden="true">
+                            <div class="orentiq-confirmation-ring ring-outer"></div>
+                            <div class="orentiq-confirmation-ring ring-inner"></div>
+                            <div class="orentiq-confirmation-mark">
                                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                                     <path d="M5 12.5L9.2 16.7L19 6.9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </div>
                         </div>
 
-                        <div class="orientiq-success-meta">
-                            <span class="orientiq-success-label">Returning to home</span>
-                            <span class="orientiq-success-countdown">in 5s</span>
+                        <div class="orentiq-success-meta">
+                            <span class="orentiq-success-label">Returning to home</span>
+                            <span class="orentiq-success-countdown">in 5s</span>
                         </div>
 
-                        <div class="orientiq-success-progress" aria-hidden="true">
-                            <span class="orientiq-success-progress-bar"></span>
+                        <div class="orentiq-success-progress" aria-hidden="true">
+                            <span class="orentiq-success-progress-bar"></span>
                         </div>
 
-                        <button type="button" class="orientiq-success-button" id="{{ button_id }}">Continue to Home →</button>
+                        <button type="button" class="orentiq-success-button" id="{{ button_id }}">Continue to Home →</button>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                     border: 0;
                 }
 
-                .orientiq-success-root {
+                .orentiq-success-root {
                     position: fixed;
                     inset: 0;
                     z-index: 1000;
@@ -62,7 +62,7 @@
                     padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
                 }
 
-                .orientiq-success-overlay {
+                .orentiq-success-overlay {
                     position: absolute;
                     inset: 0;
                     background: rgba(20, 20, 20, 0.52);
@@ -70,14 +70,14 @@
                     -webkit-backdrop-filter: blur(5px);
                 }
 
-                .orientiq-success-modal {
+                .orentiq-success-modal {
                     position: relative;
                     z-index: 1;
                     width: min(520px, calc(100vw - 32px));
                     max-width: 520px;
                 }
 
-                .orientiq-success-card {
+                .orentiq-success-card {
                     position: relative;
                     background: #f8f4f0;
                     border: 1px solid rgba(196, 122, 50, 0.35);
@@ -88,7 +88,7 @@
                     overflow: hidden;
                 }
 
-                .orientiq-success-card::before {
+                .orentiq-success-card::before {
                     content: "";
                     position: absolute;
                     inset: 0;
@@ -96,33 +96,33 @@
                     pointer-events: none;
                 }
 
-                .orientiq-success-brand,
-                .orientiq-success-kicker,
-                .orientiq-success-card h2,
-                .orientiq-success-copy,
-                .orientiq-success-visual,
-                .orientiq-success-meta,
-                .orientiq-success-progress,
-                .orientiq-success-button {
+                .orentiq-success-brand,
+                .orentiq-success-kicker,
+                .orentiq-success-card h2,
+                .orentiq-success-copy,
+                .orentiq-success-visual,
+                .orentiq-success-meta,
+                .orentiq-success-progress,
+                .orentiq-success-button {
                     position: relative;
                     z-index: 1;
                 }
 
-                .orientiq-success-brand {
+                .orentiq-success-brand {
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     margin-bottom: 0.9rem;
                 }
 
-                .orientiq-success-logo {
+                .orentiq-success-logo {
                     display: block;
                     width: auto;
                     height: 28px;
                     object-fit: contain;
                 }
 
-                .orientiq-success-kicker {
+                .orentiq-success-kicker {
                     margin: 0 0 0.7rem;
                     font-size: 0.72rem;
                     color: var(--color-accent);
@@ -131,7 +131,7 @@
                     text-transform: uppercase;
                 }
 
-                .orientiq-success-card h2 {
+                .orentiq-success-card h2 {
                     margin: 0;
                     color: #171513;
                     font-size: clamp(1.9rem, 3vw, 2.3rem);
@@ -140,7 +140,7 @@
                     font-weight: 700;
                 }
 
-                .orientiq-success-copy {
+                .orentiq-success-copy {
                     margin: 0.75rem auto 0;
                     max-width: 30ch;
                     color: #5f5a55;
@@ -148,7 +148,7 @@
                     line-height: 1.55;
                 }
 
-                .orientiq-success-visual {
+                .orentiq-success-visual {
                     position: relative;
                     display: grid;
                     place-items: center;
@@ -157,7 +157,7 @@
                     margin: 1.5rem auto 1rem;
                 }
 
-                .orientiq-confirmation-ring {
+                .orentiq-confirmation-ring {
                     position: absolute;
                     border-radius: 50%;
                     border: 1px solid rgba(196, 122, 50, 0.42);
@@ -180,7 +180,7 @@
                     animation-delay: 130ms;
                 }
 
-                .orientiq-confirmation-mark {
+                .orentiq-confirmation-mark {
                     width: 52px;
                     height: 52px;
                     display: grid;
@@ -195,12 +195,12 @@
                     animation: confirmMark 0.7s ease-out 0.2s forwards;
                 }
 
-                .orientiq-confirmation-mark svg {
+                .orentiq-confirmation-mark svg {
                     width: 22px;
                     height: 22px;
                 }
 
-                .orientiq-success-meta {
+                .orentiq-success-meta {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
@@ -213,17 +213,17 @@
                     font-weight: 600;
                 }
 
-                .orientiq-success-label {
+                .orentiq-success-label {
                     opacity: 0.85;
                 }
 
-                .orientiq-success-countdown {
+                .orentiq-success-countdown {
                     color: #201d1a;
                     min-width: 52px;
                     text-align: right;
                 }
 
-                .orientiq-success-progress {
+                .orentiq-success-progress {
                     width: 100%;
                     height: 4px;
                     margin-top: 0.8rem;
@@ -232,7 +232,7 @@
                     overflow: hidden;
                 }
 
-                .orientiq-success-progress-bar {
+                .orentiq-success-progress-bar {
                     display: block;
                     width: 100%;
                     height: 100%;
@@ -241,7 +241,7 @@
                     animation: progressDecay 5s linear forwards;
                 }
 
-                .orientiq-success-button {
+                .orentiq-success-button {
                     display: block;
                     width: 100%;
                     margin-top: 1rem;
@@ -259,15 +259,15 @@
                     box-shadow: 0 10px 20px rgba(196, 122, 50, 0.18);
                 }
 
-                .orientiq-success-button:hover,
-                .orientiq-success-button:focus-visible {
+                .orentiq-success-button:hover,
+                .orentiq-success-button:focus-visible {
                     background: #b86d2d;
                     transform: translateY(-1px);
                     outline: none;
                 }
 
-                .orientiq-success-button:focus-visible,
-                .orientiq-success-modal:focus-visible {
+                .orentiq-success-button:focus-visible,
+                .orentiq-success-modal:focus-visible {
                     box-shadow: 0 0 0 3px rgba(196, 122, 50, 0.22);
                 }
 
@@ -307,33 +307,33 @@
                 }
 
                 @media (max-width: 480px) {
-                    .orientiq-success-card {
+                    .orentiq-success-card {
                         border-radius: 20px;
                         padding: 1.15rem 1rem 1rem;
                     }
 
-                    .orientiq-success-logo {
+                    .orentiq-success-logo {
                         height: 24px;
                     }
 
-                    .orientiq-success-kicker {
+                    .orentiq-success-kicker {
                         letter-spacing: 0.12em;
                     }
 
-                    .orientiq-success-card h2 {
+                    .orentiq-success-card h2 {
                         font-size: clamp(1.7rem, 7vw, 2rem);
                     }
 
-                    .orientiq-success-meta {
+                    .orentiq-success-meta {
                         font-size: 0.64rem;
                         letter-spacing: 0.06em;
                     }
                 }
 
                 @media (prefers-reduced-motion: reduce) {
-                    .orientiq-confirmation-ring,
-                    .orientiq-confirmation-mark,
-                    .orientiq-success-progress-bar {
+                    .orentiq-confirmation-ring,
+                    .orentiq-confirmation-mark,
+                    .orentiq-success-progress-bar {
                         animation: none !important;
                     }
                 }
@@ -350,7 +350,7 @@
 
                     var modal = document.getElementById('{{ modal_id }}');
                     var button = document.getElementById('{{ button_id }}');
-                    var countdown = root.querySelector('.orientiq-success-countdown');
+                    var countdown = root.querySelector('.orentiq-success-countdown');
                     var remaining = 5;
                     var timer = null;
 

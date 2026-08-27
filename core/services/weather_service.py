@@ -1,4 +1,4 @@
-"""Weather service for the Orientiq live intelligence foundation.
+"""Weather service for the Orentiq live intelligence foundation.
 
 Provider-independent weather abstraction. Normalizes provider responses
 into a consistent internal format so the rest of the application never

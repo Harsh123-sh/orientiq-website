@@ -1,4 +1,4 @@
-"""Role-based permission helpers for the Orientiq admin dashboard."""
+"""Role-based permission helpers for the Orentiq admin dashboard."""
 
 from django.core.exceptions import PermissionDenied
 

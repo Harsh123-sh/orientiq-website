@@ -1,5 +1,5 @@
 """
-URL configuration for orientiq project.
+URL configuration for orentiq project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
@@ -43,9 +43,9 @@ urlpatterns = [
 
     # ============ ACCOUNTS / AUTHENTICATION ============
     path('accounts/register/', views.register, name='accounts_register'),
-    path('accounts/login/', views.OrientiqLoginView.as_view(), name='accounts_login'),
+    path('accounts/login/', views.OrentiqLoginView.as_view(), name='accounts_login'),
     path('accounts/logout/', views.logout_view, name='accounts_logout'),
-    path('accounts/forgot-password/', views.OrientiqPasswordResetView.as_view(), name='accounts_forgot_password'),
+    path('accounts/forgot-password/', views.OrentiqPasswordResetView.as_view(), name='accounts_forgot_password'),
     path(
         'accounts/reset-password/',
         auth_views.PasswordResetDoneView.as_view(template_name='accounts/password_reset_done.html'),
@@ -53,7 +53,7 @@ urlpatterns = [
     ),
     path(
         'accounts/reset-password/<uidb64>/<token>/',
-        views.OrientiqPasswordResetConfirmView.as_view(),
+        views.OrentiqPasswordResetConfirmView.as_view(),
         name='accounts_password_reset_confirm',
     ),
     path(
@@ -64,10 +64,10 @@ urlpatterns = [
     path('accounts/dashboard/', views.client_dashboard, name='client_dashboard'),
     path('accounts/profile/', views.profile, name='accounts_profile'),
     path('accounts/settings/', views.account_settings, name='accounts_settings'),
-    path('accounts/change-password/', views.OrientiqPasswordChangeView.as_view(), name='accounts_change_password'),
+    path('accounts/change-password/', views.OrentiqPasswordChangeView.as_view(), name='accounts_change_password'),
 
     # ============ ADMIN DASHBOARD / CMS ============
-    path('admin/login/', views.OrientiqLoginView.as_view(), name='admin_login'),
+    path('admin/login/', views.OrentiqLoginView.as_view(), name='admin_login'),
     path('admin/logout/', views.logout_view, name='admin_logout'),
     path('admin/', admin_views.dashboard, name='admin_dashboard'),
     path('admin/profile/', admin_views.admin_profile, name='admin_profile'),

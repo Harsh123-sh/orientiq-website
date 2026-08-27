@@ -2,7 +2,7 @@
 (function () {
     "use strict";
 
-    var STORAGE_KEY = "orientiq-admin-theme";
+    var STORAGE_KEY = "orentiq-admin-theme";
     var preferred = null;
 
     try {

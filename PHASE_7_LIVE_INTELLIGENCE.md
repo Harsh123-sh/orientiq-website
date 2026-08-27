@@ -1,8 +1,8 @@
-# Orientiq Live Intelligence Foundation — Phase 7
+# Orentiq Live Intelligence Foundation — Phase 7
 
 ## 1. Objective
 
-Create a reusable location, maps, weather, and live-data infrastructure that future Orientiq products (especially the AI Travel Platform) will use. This is a foundation only — no booking, flights, hotels, activities, payments, or full travel planning.
+Create a reusable location, maps, weather, and live-data infrastructure that future Orentiq products (especially the AI Travel Platform) will use. This is a foundation only — no booking, flights, hotels, activities, payments, or full travel planning.
 
 ## 2. Architecture
 

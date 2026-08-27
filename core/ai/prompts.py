@@ -45,7 +45,7 @@ def build_ai_prompt(context, history, user_message):
 
     return f"""{SYSTEM_PROMPT}
 
-=== ORIENTIQ COMPANY KNOWLEDGE ===
+=== ORENTIQ COMPANY KNOWLEDGE ===
 {context_text}
 
 === SHORT-TERM CONVERSATION CONTEXT ===

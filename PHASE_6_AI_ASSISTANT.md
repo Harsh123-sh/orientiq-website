@@ -1,4 +1,4 @@
-# Orientiq AI Assistant — Phase 6
+# Orentiq AI Assistant — Phase 6
 
 ## Architecture
 
@@ -63,12 +63,12 @@ POST /api/ai/chat/
 Content-Type: application/json
 
 Request:
-{ "message": "What services does Orientiq provide?", "history": [] }
+{ "message": "What services does Orentiq provide?", "history": [] }
 
 Response:
 {
   "success": true,
-  "message": "Orientiq provides...",
+  "message": "Orentiq provides...",
   "suggestions": [ { "label": "View Services", "url": "/services/" } ]
 }
 ```

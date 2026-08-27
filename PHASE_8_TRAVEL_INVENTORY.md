@@ -1,4 +1,4 @@
-# Orientiq Travel Inventory Foundation — Phase 8
+# Orentiq Travel Inventory Foundation — Phase 8
 
 ## Architecture
 
