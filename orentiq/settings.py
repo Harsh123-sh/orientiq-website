@@ -54,10 +54,9 @@ DEBUG = os.getenv(
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "orentiq.vercel.app",
     "orentiq.me",
     "www.orentiq.me",
-    ".vercel.app",
+    "orentiq-website.onrender.com",
 ]
 
 
@@ -284,7 +283,7 @@ if not DEBUG:
 # ============================================================
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://orentiq.vercel.app",
+    
     "https://orentiq.me",
     "https://www.orentiq.me",
 ]
