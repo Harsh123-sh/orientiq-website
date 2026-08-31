@@ -52,11 +52,11 @@ DEBUG = os.getenv(
 # ============================================================
 
 ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
     "orentiq.me",
     "www.orentiq.me",
-    "orentiq-website.onrender.com",
+    "orientiq-website.onrender.com",
+    "localhost",
+    "127.0.0.1",
 ]
 
 
@@ -283,9 +283,9 @@ if not DEBUG:
 # ============================================================
 
 CSRF_TRUSTED_ORIGINS = [
-    
     "https://orentiq.me",
     "https://www.orentiq.me",
+    "https://orientiq-website.onrender.com",
 ]
 
 
