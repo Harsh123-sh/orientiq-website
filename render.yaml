@@ -1,6 +1,6 @@
 services:
   - type: web
     name: orientiq-website
-    env: python
+    runtime: python
     buildCommand: python -m pip install -r requirements.txt
-    startCommand: python manage.py migrate && python manage.py ensure_superadmin && gunicorn orientiq.wsgi:application
+    startCommand: python manage.py migrate && python manage.py ensure_superadmin && gunicorn orentiq.wsgi:application
