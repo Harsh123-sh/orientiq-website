@@ -2,7 +2,7 @@ services:
   - type: web
     name: orientiq-website
     runtime: python
-    buildCommand: python -m pip install -r requirements.txt
+    buildCommand: python -m pip install -r requirements.txt && python manage.py collectstatic --noinput
     startCommand: python manage.py migrate && python manage.py ensure_superadmin && gunicorn orentiq.wsgi:application
     envVars:
       - key: PYTHON_VERSION
