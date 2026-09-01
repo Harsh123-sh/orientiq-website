@@ -1,0 +1,142 @@
+/* ============================================================
+   ORENTIQ — ANIMATION SYSTEM
+   ============================================================ */
+
+/* ---------- Page/Section Reveal Foundation ---------- */
+html.motion-ready .reveal,
+html.motion-ready .reveal-up,
+html.motion-ready .reveal-left,
+html.motion-ready .reveal-right {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 520ms cubic-bezier(.22, 1, .36, 1), transform 520ms cubic-bezier(.22, 1, .36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+}
+
+.reveal-left { transform: translateX(-20px); }
+.reveal-right { transform: translateX(20px); }
+
+html.motion-ready .reveal.is-visible,
+html.motion-ready .reveal-up.is-visible,
+html.motion-ready .reveal-left.is-visible,
+html.motion-ready .reveal-right.is-visible {
+    opacity: 1;
+    transform: translate(0);
+}
+
+html.motion-ready .reveal-image {
+    opacity: 0;
+    transform: scale(.98);
+    transition: opacity 620ms cubic-bezier(.22, 1, .36, 1), transform 620ms cubic-bezier(.22, 1, .36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+}
+
+html.motion-ready .reveal-image.is-visible,
+html.motion-ready .reveal-scale.is-visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+html.motion-ready .reveal-scale {
+    opacity: 0;
+    transform: scale(.96);
+    transition: opacity 620ms cubic-bezier(.22, 1, .36, 1), transform 620ms cubic-bezier(.22, 1, .36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+}
+
+.motion-float { animation: gentleFloat 8s ease-in-out infinite; }
+
+@keyframes gentleFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+/* ---------- Fade ---------- */
+.fade-in {
+    animation: fadeIn var(--transition-slow) ease forwards;
+}
+
+/* A short entrance gives page changes continuity without delaying interaction. */
+.site-main {
+    animation: orentiq-page-enter var(--transition-slow) both;
+}
+
+@keyframes orentiq-page-enter {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ---------- Theme Transition ----------
+   Applied only to specific surfaces to avoid overriding
+   component-level transitions (transform, etc.). */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+    transition: background-color var(--transition-fast),
+        border-color var(--transition-fast),
+        color var(--transition-fast),
+        box-shadow var(--transition-fast) !important;
+}
+
+/* ---------- Logo Interaction ---------- */
+.navbar-brand img,
+.footer-brand img {
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.navbar-brand:hover img,
+.footer-brand:hover img {
+    opacity: 0.85;
+    transform: scale(1.02);
+}
+
+/* ---------- Reduced Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+    html.motion-ready .reveal,
+    html.motion-ready .reveal-up,
+    html.motion-ready .reveal-left,
+    html.motion-ready .reveal-right,
+    html.motion-ready .reveal-scale {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .fade-in {
+        animation: none;
+        opacity: 1;
+    }
+
+    .reveal-image {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .motion-float { animation: none; }
+
+    .site-main { animation: none; }
+
+    .tech-orbit,
+    .tech-core,
+    .tech-node,
+    .tech-particle {
+        animation: none;
+    }
+
+    html.theme-transitioning,
+    html.theme-transitioning *,
+    html.theme-transitioning *::before,
+    html.theme-transitioning *::after {
+        transition: none !important;
+    }
+}
