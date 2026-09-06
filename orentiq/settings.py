@@ -52,11 +52,13 @@ DEBUG = os.getenv(
 # ============================================================
 
 ALLOWED_HOSTS = [
-    "orentiq.me",
-    "www.orentiq.me",
-    "orientiq-website.onrender.com",
-    "localhost",
-    "127.0.0.1",
+    'orentiq.me',
+    'www.orentiq.me',
+    'orientiq-website.onrender.com',
+    'localhost',
+    '127.0.0.1',
+    '13.126.157.2',
+    'ec2-13-126-157-2.ap-south-1.compute.amazonaws.com',
 ]
 
 
