@@ -531,3 +531,41 @@ html:has(.service-detail-page), body:has(.service-detail-page) { overflow-x: hid
         font-size: 2.4rem;
     }
 }
+
+/* Shared premium service-detail refinement: title light is clipped to text only. */
+.service-detail-page .service-detail-title {
+    display: inline-block;
+    color: var(--color-text);
+    background: linear-gradient(100deg, var(--color-text) 0%, var(--color-text) 42%, var(--color-copper-dark) 47%, #f0c394 50%, var(--color-copper) 53%, var(--color-text) 58%, var(--color-text) 100%) 112% 0 / 290% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 1px 12px rgba(109, 65, 26, .06);
+    animation: serviceTitleMetallicSweep 2.7s linear infinite;
+}
+[data-theme="dark"] .service-detail-page .service-detail-title {
+    background-image: linear-gradient(100deg, var(--color-text) 0%, var(--color-text) 42%, var(--color-copper) 47%, #f3d0a9 50%, var(--color-copper-light) 53%, var(--color-text) 58%, var(--color-text) 100%);
+    text-shadow: 0 1px 12px rgba(0, 0, 0, .22);
+}
+
+/* The visual is a connected system rather than a generic floating cube. */
+.service-detail-visual--data-flow { border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: radial-gradient(circle at 50% 47%, color-mix(in srgb, var(--color-accent) 12%, transparent), transparent 39%), var(--color-surface-elevated); box-shadow: var(--shadow-card); }
+.service-data-paths path { stroke: var(--color-accent); stroke-width: .85; opacity: .28; }
+.service-flow-particle { opacity: .62; }
+.service-detail-node { min-width: 148px; padding: .9rem 1rem; border-color: color-mix(in srgb, var(--color-border-strong) 78%, var(--color-accent)); background: var(--color-surface-glass); box-shadow: var(--shadow-sm); backdrop-filter: blur(6px); }
+.service-detail-node strong { font-size: .78rem; letter-spacing: .025em; }.service-detail-node span { font-size: .68rem; }
+.service-detail-page .service-glass-core { width: 190px; height: 190px; filter: drop-shadow(0 22px 28px color-mix(in srgb, var(--color-accent) 18%, transparent)); }
+.service-detail-page .service-glass-shell { animation: serviceCoreBreathe 7s ease-in-out infinite; }
+.service-detail-page .service-glass-plane { border-color: color-mix(in srgb, var(--color-accent) 66%, var(--color-border)); box-shadow: inset 1px 1px 0 rgba(255, 244, 230, .45), inset -12px -12px 25px color-mix(in srgb, var(--color-accent) 12%, transparent); }
+.service-detail-page .service-glass-identifier { color: var(--color-accent); text-shadow: 0 0 14px color-mix(in srgb, var(--color-accent) 22%, transparent); }
+
+/* Service-specific visual metaphors using the existing shared structure. */
+.service-detail-page.service-web .service-glass-plane { border-radius: 4px; }.service-detail-page.service-web .service-glass-plane--front::before { content: ""; position: absolute; inset: 18px; border: 1px solid var(--color-accent); border-radius: 3px; opacity: .5; }
+.service-detail-page.service-mobile .service-glass-core { width: 150px; height: 216px; }.service-detail-page.service-mobile .service-glass-plane { top: 38px; left: 20px; width: 110px; height: 140px; border-radius: 22px; }.service-detail-page.service-mobile .service-glass-plane--front { transform: translateZ(45px); }.service-detail-page.service-mobile .service-glass-plane--back { transform: rotateY(180deg) translateZ(45px); }.service-detail-page.service-mobile .service-glass-plane--right { transform: rotateY(90deg) translateZ(45px); }.service-detail-page.service-mobile .service-glass-plane--left { transform: rotateY(-90deg) translateZ(45px); }.service-detail-page.service-mobile .service-glass-plane--top { transform: rotateX(90deg) translateZ(45px); }.service-detail-page.service-mobile .service-glass-plane--bottom { transform: rotateX(-90deg) translateZ(45px); }
+.service-detail-page.service-software .service-glass-core::before, .service-detail-page.service-erp .service-glass-core::before { content: ""; position: absolute; inset: 17px; border: 1px dashed var(--color-accent); border-radius: 14px; opacity: .45; }.service-detail-page.service-crm .service-glass-core { border-radius: 50%; }.service-detail-page.service-crm .service-glass-plane { border-radius: 50%; }.service-detail-page.service-design .service-glass-core { transform: rotate(-8deg); }.service-detail-page.service-design .service-glass-plane { border-radius: 3px 18px 3px 18px; }
+.service-detail-page.service-ai-page .service-glass-core { width: 208px; height: 208px; }.service-detail-page.service-ai-page .service-glass-shell { animation: serviceCoreBreathe 6s ease-in-out infinite; }.service-detail-page.service-ai-page .service-glass-plane { border-radius: 18px; border-width: 1px; background: linear-gradient(135deg, rgba(255,255,255,.3), rgba(255,255,255,.04) 45%, color-mix(in srgb, var(--color-accent) 19%, transparent)); }.service-detail-page.service-ai-page .service-glass-plane--front::after { content: ""; position: absolute; inset: 20px; border: 1px solid color-mix(in srgb, var(--color-accent) 70%, transparent); border-radius: 12px; box-shadow: 0 0 24px color-mix(in srgb, var(--color-accent) 18%, transparent); }
+
+@keyframes serviceTitleMetallicSweep { from { background-position: 112% 0; } to { background-position: -112% 0; } }
+@keyframes serviceCoreBreathe { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-4px) scale(1.018); } }
+@media (max-width: 720px) { .service-detail-page .service-detail-title { max-width: 100%; }.service-detail-node { min-width: 112px; padding: .7rem; }.service-detail-page .service-glass-core { transform: scale(.82); }.service-detail-page.service-mobile .service-glass-core { transform: scale(.76); } }
+@media (prefers-reduced-motion: reduce) { .service-detail-page .service-detail-title { animation: none; background: none; color: var(--color-text); -webkit-text-fill-color: currentColor; text-shadow: none; }.service-detail-page .service-glass-shell { animation: none; }.service-flow-particle { display: none; } }

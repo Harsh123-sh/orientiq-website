@@ -149,6 +149,11 @@ def company_about(request):
     return render(request, "company/about.html")
 
 
+def company_founder(request):
+    """Render the Founder page."""
+    return render(request, "company/founder.html")
+
+
 def company_process(request):
     """Render the Company Process page."""
     return render(request, "company/process.html")

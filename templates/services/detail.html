@@ -8,39 +8,23 @@
 <link rel="stylesheet" href="{% static 'css/services-page.css' %}?v=services-final">
 <link rel="stylesheet" href="{% static 'css/service-detail.css' %}?v=detail-data-flow-2026">
 {% if service.slug == "ai-automation" %}<link rel="stylesheet" href="{% static 'css/ai-automation-page.css' %}?v=ai-final-3">{% endif %}
+<link rel="stylesheet" href="{% static 'css/service-detail-redesign.css' %}?v=service-artifact-family-2026-6">
 {% endblock %}
 
 {% block content %}
-<div class="service-detail-page service-{{ service.icon }}{% if service.slug == "ai-automation" %} service-ai-page{% endif %}">
+<div class="service-detail-page service-{{ service.icon }}{% if service.slug == "ai-automation" %} service-ai-page service-detail--ai-automation{% elif service.slug == "ai-assistants" or service.slug == "rag-solutions" or service.slug == "ai-development" %} service-detail--ai-family{% else %} service-detail--standard{% endif %}">
     <section class="service-detail-hero reveal-up">
         <div class="container service-detail-hero-grid">
             <div class="service-detail-hero-copy">
                 <span class="eyebrow">{{ service.tagline }}</span>
-                <h1>{{ service.name }}</h1>
+                <h1 class="service-detail-title">{{ service.name }}</h1>
                 <p>{{ service.short }}</p>
                 <div class="service-detail-hero-actions">
                     <a href="{% url 'start_project' %}" class="btn btn-primary">Start a Project</a>
                     <a href="{% url 'services' %}" class="btn btn-outline">All Services</a>
                 </div>
             </div>
-            <div class="service-detail-visual service-detail-visual--data-flow service-visual-{{ service.icon }} reveal-scale" aria-hidden="true">
-                <svg class="service-data-paths" viewBox="0 0 600 460" preserveAspectRatio="none">
-                    <path d="M86 92 C170 108 205 170 267 207"></path>
-                    <path d="M514 92 C430 108 395 170 333 207"></path>
-                    <path d="M86 368 C170 352 205 290 267 253"></path>
-                    <path d="M332 253 C394 291 430 352 514 368"></path>
-                    <circle class="service-flow-particle" r="4"><animateMotion dur="4.8s" repeatCount="indefinite" path="M86 92 C170 108 205 170 267 207" /></circle>
-                    <circle class="service-flow-particle" r="3.5"><animateMotion dur="5.9s" begin="-2.2s" repeatCount="indefinite" path="M514 92 C430 108 395 170 333 207" /></circle>
-                    <circle class="service-flow-particle" r="3.5"><animateMotion dur="5.2s" begin="-3.5s" repeatCount="indefinite" path="M86 368 C170 352 205 290 267 253" /></circle>
-                    <circle class="service-flow-particle service-flow-particle--output" r="4"><animateMotion dur="4.5s" begin="-1.4s" repeatCount="indefinite" path="M332 253 C394 291 430 352 514 368" /></circle>
-                </svg>
-                <span class="service-detail-gridline"></span>
-                <span class="service-detail-node service-detail-node-a"><strong>Capability</strong><span>active layer</span></span>
-                <span class="service-detail-node service-detail-node-b"><strong>System</strong><span>connected flow</span></span>
-                <span class="service-detail-node service-detail-node-c"><strong>Scale</strong><span>ready foundation</span></span>
-                <span class="service-detail-node service-detail-node-d"><strong>Delivery</strong><span>measurable output</span></span>
-                {% include "components/service-glass-cube-hero.html" with service=service %}
-            </div>
+            {% include "components/service-premium-visual.html" with service=service %}
         </div>
     </section>
 

@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Harsh Sachwani — Founder | ORENTIQ{% endblock %}
+{% block meta_description %}Meet Harsh Sachwani, Founder of ORENTIQ Technologies, and explore a practical vision for intelligent technology.{% endblock %}
+
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/founder.css' %}">{% endblock %}
+
+{% block content %}
+<section class="founder-hero">
+    <div class="founder-hero-atmosphere" aria-hidden="true">
+        <span class="founder-js-monogram">JS</span>
+        <span class="founder-light-trail founder-light-trail-one"></span>
+        <span class="founder-light-trail founder-light-trail-two"></span>
+        <span class="founder-particle founder-particle-one"></span>
+        <span class="founder-particle founder-particle-two"></span>
+        <span class="founder-particle founder-particle-three"></span>
+    </div>
+    <div class="container founder-hero-grid">
+        <div class="founder-hero-copy">
+            <span class="eyebrow founder-hero-eyebrow">Founder &amp; Technology Lead</span>
+            <h1 class="founder-name" aria-label="Harsh Sachwani"><span class="founder-name-line">Harsh</span><span class="founder-name-line founder-name-accent">Sachwani</span><svg class="founder-signature-trail" viewBox="0 0 760 145" preserveAspectRatio="none" aria-hidden="true"><path class="founder-signature-base" pathLength="100" d="M12 76 C102 112 183 116 250 91 C323 64 359 30 415 52 C470 74 440 122 510 124 C580 126 583 55 651 57 C703 58 718 94 748 101"></path><path class="founder-signature-light" pathLength="100" d="M12 76 C102 112 183 116 250 91 C323 64 359 30 415 52 C470 74 440 122 510 124 C580 126 583 55 651 57 C703 58 718 94 748 101"></path></svg></h1>
+            <p class="founder-role founder-hero-detail">Founder, ORENTIQ Technologies</p>
+            <p class="founder-intro founder-hero-detail">Building ORENTIQ with a focus on intelligent technology, practical software, and AI-powered solutions that help businesses work smarter and grow with confidence.</p>
+            <a class="founder-scroll-link founder-hero-action" href="#founder-vision">Explore the vision <span aria-hidden="true">↓</span></a>
+        </div>
+        <div class="founder-portrait-wrap">
+            <div class="founder-portrait">
+                <img src="{% static 'images/photo.png' %}" alt="Harsh Sachwani, Founder of ORENTIQ Technologies" class="founder-portrait-image">
+            </div>
+            <div class="founder-identity"><span>ORENTIQ</span><small>Founder &amp; Technology Lead</small></div>
+        </div>
+    </div>
+</section>
+
+<section class="section founder-about">
+    <div class="container founder-two-column">
+        <div class="founder-section-intro reveal-up">
+            <span class="eyebrow">About the Founder</span>
+            <h2>Building with<br>Purpose</h2>
+        </div>
+        <div class="founder-prose reveal-up">
+            <p>ORENTIQ is shaped by a belief that technology is most valuable when it makes the real work of a business clearer, simpler, and more capable.</p>
+            <p>With a focus on software and AI, the work begins with the problem—not the platform. Each engagement is an opportunity to understand a business workflow, identify where thoughtful technology can help, and build something that is useful long after launch.</p>
+            <p>Founder background and personal journey can be added here. This space is intentionally ready for a founder-approved story.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section founder-vision" id="founder-vision">
+    <div class="container founder-vision-card reveal-up">
+        <div>
+            <span class="eyebrow">Founder Vision</span>
+            <h2>A Vision for<br>Intelligent Technology</h2>
+        </div>
+        <div class="founder-vision-copy">
+            <p>AI should solve real business problems. Software should feel practical from day one and remain ready to scale as the business evolves.</p>
+            <p>That means designing around actual workflows, reducing repetitive work, and bringing software, AI, and automation together with intention—not as separate ideas, but as one dependable system.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section founder-beliefs">
+    <div class="container">
+        <div class="founder-beliefs-heading reveal-up"><span class="eyebrow">Principles</span><h2>What I Believe</h2></div>
+        <div class="founder-beliefs-grid">
+            <article class="founder-belief reveal-up"><span>01</span><h3>Understand First</h3><p>Understand the business before building technology.</p></article>
+            <article class="founder-belief reveal-up"><span>02</span><h3>Build With Purpose</h3><p>Every feature should have a clear reason.</p></article>
+            <article class="founder-belief reveal-up"><span>03</span><h3>Keep It Scalable</h3><p>Solutions should be able to grow with the business.</p></article>
+            <article class="founder-belief reveal-up"><span>04</span><h3>Use AI Practically</h3><p>AI should create useful business outcomes, not just look impressive.</p></article>
+            <article class="founder-belief reveal-up"><span>05</span><h3>Build Long-Term</h3><p>Focus on relationships, reliability, and continuous improvement.</p></article>
+        </div>
+    </div>
+</section>
+
+<section class="section founder-direction">
+    <div class="container founder-direction-grid">
+        <div class="founder-direction-mark reveal-up" aria-hidden="true"><span>O</span><i></i><b>Q</b></div>
+        <div class="reveal-up"><span class="eyebrow">ORENTIQ &amp; Founder</span><h2>One Vision.<br>One Direction.</h2><p>ORENTIQ was created to bring modern software, AI, automation, and digital solutions together under one technology partner.</p></div>
+    </div>
+</section>
+
+<section class="section founder-message">
+    <div class="container">
+        <div class="founder-message-card reveal-up">
+            <span class="founder-quote-mark" aria-hidden="true">“</span>
+            <span class="eyebrow">A Message from the Founder</span>
+            <p>[Founder message to be added]</p>
+            <small>Harsh Sachwani · Founder, ORENTIQ Technologies</small>
+        </div>
+    </div>
+</section>
+
+<section class="section founder-final-cta">
+    <div class="container reveal-up">
+        <span class="eyebrow">Let’s Build</span>
+        <h2>Have an idea or business challenge?</h2>
+        <p>Let’s turn a meaningful problem into a practical next step.</p>
+        <div class="founder-cta-actions"><a href="{% url 'start_project' %}" class="btn btn-primary btn-lg">Start a Project</a><a href="{% url 'services' %}" class="btn btn-secondary btn-lg">Explore Our Services</a></div>
+    </div>
+</section>
+{% endblock %}

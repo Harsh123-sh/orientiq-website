@@ -1,0 +1,27 @@
+<div class="visual-standard-artifact visual-standard-artifact--{{ service.icon }}">
+    <span class="ai-atmosphere"></span>
+    <span class="ai-pedestal ai-pedestal--shadow"></span>
+    <span class="ai-pedestal ai-pedestal--lower"></span>
+    <span class="ai-pedestal ai-pedestal--base"></span>
+    <span class="ai-pedestal ai-pedestal--rim"></span>
+    <span class="ai-pedestal ai-pedestal--top"></span>
+    <span class="ai-energy-support"></span>
+    <span class="ai-glass-sphere">
+        <span class="ai-glass-reflection ai-glass-reflection--one"></span>
+        <span class="ai-glass-reflection ai-glass-reflection--two"></span>
+        <span class="ai-inner-halo"></span>
+        <svg class="ai-core-lattice" viewBox="0 0 200 200" aria-hidden="true"><path d="M48 57 100 30l52 27v60l-52 31-52-31zM48 57l52 30 52-30M100 87v61M48 117l52-30 52 30"/><path d="m68 73 32-18 32 18v37l-32 19-32-19z"/><circle cx="48" cy="57" r="3"/><circle cx="152" cy="57" r="3"/><circle cx="48" cy="117" r="3"/><circle cx="152" cy="117" r="3"/><circle cx="100" cy="30" r="3"/><circle cx="100" cy="148" r="3"/></svg>
+        <span class="ai-core-facet ai-core-facet--one"></span><span class="ai-core-facet ai-core-facet--two"></span>
+        <span class="ai-energy-core"><i></i><b></b></span>
+        <strong class="service-core-mark service-core-mark--{{ service.icon }}">{% if service.icon == "web" %}WEB{% elif service.icon == "mobile" %}MOBILE{% elif service.icon == "software" %}SOFTWARE{% elif service.icon == "design" %}UI/UX{% elif service.icon == "cloud" %}CLOUD{% elif service.icon == "erp" %}ERP{% elif service.icon == "crm" %}CRM{% else %}{{ service.name|upper }}{% endif %}</strong>
+        <span class="ai-light-sweep"></span>
+    </span>
+    <span class="ai-ring ai-ring--one"><i></i></span>
+    <span class="ai-ring ai-ring--two"><i></i></span>
+    <span class="ai-ring ai-ring--three"><i></i></span>
+    <span class="ai-ring ai-ring--front"><i></i></span>
+    <span class="ai-particle ai-particle--one"></span>
+    <span class="ai-particle ai-particle--two"></span>
+    <span class="ai-particle ai-particle--three"></span>
+    <span class="ai-particle ai-particle--four"></span>
+</div>

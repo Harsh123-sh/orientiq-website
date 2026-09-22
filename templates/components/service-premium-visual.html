@@ -1,0 +1,83 @@
+<div class="service-detail-visual service-premium-visual service-visual-{{ service.icon }} reveal-scale" aria-hidden="true">
+    <svg class="service-premium-links" viewBox="0 0 620 470" preserveAspectRatio="none">
+        <path d="M100 100 C180 115 225 166 285 214"></path>
+        <path d="M520 100 C440 115 395 166 335 214"></path>
+        <path d="M100 370 C180 354 225 300 285 256"></path>
+        <path d="M335 256 C395 300 440 354 520 370"></path>
+        <circle r="3.5"><animateMotion dur="5s" repeatCount="indefinite" path="M100 100 C180 115 225 166 285 214" /></circle>
+        <circle r="3.5"><animateMotion dur="6s" begin="-2s" repeatCount="indefinite" path="M520 100 C440 115 395 166 335 214" /></circle>
+        <circle r="3"><animateMotion dur="5.5s" begin="-3.6s" repeatCount="indefinite" path="M100 370 C180 354 225 300 285 256" /></circle>
+    </svg>
+    <span class="service-premium-grain"></span>
+    {% if service.slug != "ai-automation" %}
+    <span class="service-visual-particle service-visual-particle--one"></span>
+    <span class="service-visual-particle service-visual-particle--two"></span>
+    <span class="service-visual-particle service-visual-particle--three"></span>
+    {% endif %}
+    {% if service.slug == "ai-assistants" %}
+    <div class="service-visual-card service-visual-card--a"><span class="service-visual-card-dot"></span><span>Intelligent AI assistants</span></div>
+    <div class="service-visual-card service-visual-card--b"><span class="service-visual-card-dot"></span><span>AI agents and workflows</span></div>
+    <div class="service-visual-card service-visual-card--c"><span class="service-visual-card-dot"></span><span>Conversational interfaces</span></div>
+    <div class="service-visual-card service-visual-card--d"><span class="service-visual-card-dot"></span><span>Task automation</span></div>
+    {% elif service.slug == "rag-solutions" %}
+    <div class="service-visual-card service-visual-card--a"><span class="service-visual-card-dot"></span><span>Knowledge retrieval</span></div>
+    <div class="service-visual-card service-visual-card--b"><span class="service-visual-card-dot"></span><span>Document intelligence</span></div>
+    <div class="service-visual-card service-visual-card--c"><span class="service-visual-card-dot"></span><span>Context-aware responses</span></div>
+    <div class="service-visual-card service-visual-card--d"><span class="service-visual-card-dot"></span><span>Enterprise knowledge systems</span></div>
+    {% elif service.slug == "ai-development" %}
+    <div class="service-visual-card service-visual-card--a"><span class="service-visual-card-dot"></span><span>Custom AI solutions</span></div>
+    <div class="service-visual-card service-visual-card--b"><span class="service-visual-card-dot"></span><span>AI model integration</span></div>
+    <div class="service-visual-card service-visual-card--c"><span class="service-visual-card-dot"></span><span>Intelligent automation</span></div>
+    <div class="service-visual-card service-visual-card--d"><span class="service-visual-card-dot"></span><span>AI-powered applications</span></div>
+    {% else %}
+    <div class="service-visual-card service-visual-card--a"><span class="service-visual-card-dot"></span><span>{{ service.features.0 }}</span></div>
+    <div class="service-visual-card service-visual-card--b"><span class="service-visual-card-dot"></span><span>{{ service.features.1 }}</span></div>
+    <div class="service-visual-card service-visual-card--c"><span class="service-visual-card-dot"></span><span>{{ service.features.2 }}</span></div>
+    <div class="service-visual-card service-visual-card--d"><span class="service-visual-card-dot"></span><span>{{ service.features.3 }}</span></div>
+    {% endif %}
+
+    <div class="service-premium-core service-premium-core--{{ service.icon }}">
+        {% if service.icon == "ai" %}
+        <div class="visual-ai-artifact">
+            <span class="ai-atmosphere"></span>
+            <span class="ai-pedestal ai-pedestal--shadow"></span>
+            <span class="ai-pedestal ai-pedestal--lower"></span>
+            <span class="ai-pedestal ai-pedestal--base"></span>
+            <span class="ai-pedestal ai-pedestal--rim"></span>
+            <span class="ai-pedestal ai-pedestal--top"></span>
+            <span class="ai-energy-support"></span>
+            <span class="ai-glass-sphere">
+                <span class="ai-glass-reflection ai-glass-reflection--one"></span>
+                <span class="ai-glass-reflection ai-glass-reflection--two"></span>
+                <span class="ai-inner-halo"></span>
+                <svg class="ai-core-lattice" viewBox="0 0 200 200" aria-hidden="true"><path d="M48 57 100 30l52 27v60l-52 31-52-31zM48 57l52 30 52-30M100 87v61M48 117l52-30 52 30"/><path d="m68 73 32-18 32 18v37l-32 19-32-19z"/><circle cx="48" cy="57" r="3"/><circle cx="152" cy="57" r="3"/><circle cx="48" cy="117" r="3"/><circle cx="152" cy="117" r="3"/><circle cx="100" cy="30" r="3"/><circle cx="100" cy="148" r="3"/></svg>
+                <span class="ai-core-facet ai-core-facet--one"></span><span class="ai-core-facet ai-core-facet--two"></span>
+                <span class="ai-energy-core"><i></i><b></b></span>
+                {% if service.slug == "ai-assistants" %}
+                <strong class="ai-mark ai-mark--assistant">AI<i></i><b></b></strong>
+                <span class="ai-core-service-label">ASSISTANT</span>
+                {% elif service.slug == "rag-solutions" %}
+                <strong class="ai-mark ai-mark--rag">RAG<i></i><b></b></strong>
+                <span class="ai-core-service-label">RETRIEVAL</span>
+                {% elif service.slug == "ai-development" %}
+                <strong class="ai-mark ai-mark--development">AI<i></i><b></b></strong>
+                <span class="ai-core-service-label">DEVELOPMENT</span>
+                {% else %}
+                <strong class="ai-mark">AI</strong>
+                {% endif %}
+                <span class="ai-light-sweep"></span>
+            </span>
+            <span class="ai-ring ai-ring--one"><i></i></span>
+            <span class="ai-ring ai-ring--two"><i></i></span>
+            <span class="ai-ring ai-ring--three"><i></i></span>
+            <span class="ai-ring ai-ring--front"><i></i></span>
+            <span class="ai-particle ai-particle--one"></span>
+            <span class="ai-particle ai-particle--two"></span>
+            <span class="ai-particle ai-particle--three"></span>
+            <span class="ai-particle ai-particle--four"></span>
+        </div>
+        {% else %}
+        {% include "components/service-standard-core-artifact.html" with service=service %}
+        {% endif %}
+    </div>
+</div>

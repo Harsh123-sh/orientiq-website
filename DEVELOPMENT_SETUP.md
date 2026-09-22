@@ -4,6 +4,23 @@ This guide explains how to enable real password-reset emails via Gmail SMTP.
 
 ---
 
+## Starting the local development server
+
+From the project root in Windows PowerShell, run:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\run-dev.ps1
+```
+
+The launcher uses the project's `.venv` automatically and starts Django at
+`http://127.0.0.1:8000/` when that port is free. If it is already in use, it
+selects the next available localhost port (8001, 8002, and so on) without
+stopping or changing the process that is already using a port. It retains
+Django's normal development-server auto-reload behavior.
+
+`-ExecutionPolicy Bypass` applies only to this launcher process; it does not
+change the execution policy configured on your computer.
+
 ## 1. Enable Google 2-Step Verification
 
 1. Go to https://myaccount.google.com/security

@@ -10,45 +10,61 @@
 
 {% block content %}
 <div class="services-page">
-    <section class="services-hero reveal-up">
-        <div class="container services-hero-content">
-            <span class="eyebrow">OUR SERVICES</span>
-            <h1>Digital Solutions Built for Your Business</h1>
-            <p>We design and develop modern websites, applications, software, SaaS platforms, AI solutions, and digital systems tailored to your business needs.</p>
-            <div class="services-hero-actions">
-                <a href="{% url 'start_project' %}" class="btn btn-primary btn-lg">Start a Project</a>
-                <a href="#technology-ecosystem" class="btn btn-outline btn-lg">Explore the Ecosystem</a>
+    <section class="services-page-hero reveal-up">
+        <div class="container services-page-hero__layout">
+            <div class="services-page-hero__content">
+                <span class="services-page-hero__eyebrow">ORENTIQ SERVICES</span>
+                <h1 class="services-page-hero__title">Digital Solutions Built for Your Business</h1>
+                <p class="services-page-hero__description">We design and develop modern websites, applications, software, SaaS platforms, AI solutions, and digital systems tailored to your business needs.</p>
+                <div class="services-page-hero__actions">
+                    <a href="{% url 'start_project' %}" class="btn btn-primary btn-lg">Start a Project</a>
+                    <a href="#technology-ecosystem" class="btn btn-outline btn-lg">Explore the Ecosystem</a>
+                </div>
+                <p class="services-page-hero__systems" aria-label="AI, Web, Data, and Systems">AI <i aria-hidden="true"></i> WEB <i aria-hidden="true"></i> DATA <i aria-hidden="true"></i> SYSTEMS</p>
+            </div>
+            <div class="services-page-hero__visual" aria-label="ORENTIQ digital ecosystem: AI Systems, Web Platforms, Data Foundations, and Business Systems connected to the ORENTIQ digital core">
+                <div class="services-page-hero__grid"></div>
+                <div class="services-page-hero__halo services-page-hero__halo--outer"></div>
+                <div class="services-page-hero__halo services-page-hero__halo--inner"></div>
+                <span class="services-page-hero__connector services-page-hero__connector--ai"></span>
+                <span class="services-page-hero__connector services-page-hero__connector--web"></span>
+                <span class="services-page-hero__connector services-page-hero__connector--data"></span>
+                <span class="services-page-hero__connector services-page-hero__connector--business"></span>
+                <div class="services-page-hero__core"><span class="services-page-hero__core-mark">&#x2318;</span><strong>ORENTIQ</strong><small>digital core</small></div>
+                <div class="services-page-hero__node services-page-hero__node--ai"><i></i><strong>AI Systems</strong><span>intelligence</span></div>
+                <div class="services-page-hero__node services-page-hero__node--web"><i></i><strong>Web Platforms</strong><span>experiences</span></div>
+                <div class="services-page-hero__node services-page-hero__node--data"><i></i><strong>Data Foundations</strong><span>reliability</span></div>
+                <div class="services-page-hero__node services-page-hero__node--business"><i></i><strong>Business Systems</strong><span>operations</span></div>
             </div>
         </div>
     </section>
 
-    <section class="services-section" id="technology-ecosystem">
+    <section class="services-core-spec" id="technology-ecosystem">
         <div class="container">
-            <div class="services-section-heading section-heading reveal-up">
-                <span class="eyebrow">TECHNOLOGY ECOSYSTEM</span>
-                <h2>Connected capabilities. One intelligent core.</h2>
-                <p>Explore the systems and disciplines that let ORENTIQ turn complex business requirements into coherent digital products.</p>
-            </div>
-            <div class="services-ecosystem reveal-scale" aria-label="ORENTIQ technology ecosystem">
-                <div class="ecosystem-core"><div><strong>ORENTIQ</strong><span>digital core</span></div></div>
-                <div class="ecosystem-node ecosystem-node-a reveal-up"><strong>AI Systems</strong><span>intelligence</span></div>
-                <div class="ecosystem-node ecosystem-node-b reveal-up"><strong>Web Platforms</strong><span>experiences</span></div>
-                <div class="ecosystem-node ecosystem-node-c reveal-up"><strong>Data Foundations</strong><span>reliability</span></div>
-                <div class="ecosystem-node ecosystem-node-d reveal-up"><strong>Business Systems</strong><span>operations</span></div>
+            <div class="services-core-spec__heading reveal-up"><span class="eyebrow">DIGITAL CORE</span><p>Connected disciplines, designed as one dependable system.</p></div>
+            <div class="services-core-spec__list reveal-up" aria-label="ORENTIQ digital core capabilities">
+                <div class="services-core-spec__item"><span>01</span><i aria-hidden="true"></i><strong>AI Systems</strong><em>Intelligence</em></div>
+                <div class="services-core-spec__item"><span>02</span><i aria-hidden="true"></i><strong>Web Platforms</strong><em>Experiences</em></div>
+                <div class="services-core-spec__item"><span>03</span><i aria-hidden="true"></i><strong>Data Foundations</strong><em>Reliability</em></div>
+                <div class="services-core-spec__item"><span>04</span><i aria-hidden="true"></i><strong>Business Systems</strong><em>Operations</em></div>
             </div>
         </div>
     </section>
 
-    <section class="services-section">
+    <section class="services-section services-showcase">
         <div class="container">
-            <div class="services-section-heading section-heading section-heading-center reveal-up">
-                <span class="eyebrow">FEATURED SERVICES</span>
-                <h2>What we build</h2>
-                <p>From websites and applications to AI-powered systems and cloud solutions, we build technology that helps businesses operate, grow, and scale.</p>
-            </div>
-            <div class="services-grid">
-                {% for service in services|slice:":4" %}
-                {% include "components/service-card.html" %}
+            <div class="services-transition section-heading reveal-up"><span class="eyebrow">WHAT WE BUILD</span><h2>Digital systems with a clear purpose.</h2><p>From AI-enabled operations to refined customer experiences, every capability is designed to work together and move your business forward.</p></div>
+            {% for service in services|slice:":1" %}
+            <a class="services-feature-card reveal-up" href="{% url 'service_detail' service.slug %}">
+                <div class="services-feature-card__copy"><span class="services-card-index">01 / FEATURED</span><h3>{{ service.name }}</h3><p>{{ service.short }}</p><span class="services-card-link">Explore service <b aria-hidden="true">&#8594;</b></span></div>
+                <div class="services-feature-card__visual" aria-hidden="true"><span class="services-feature-card__line services-feature-card__line--one"></span><span class="services-feature-card__line services-feature-card__line--two"></span><span class="services-feature-card__node services-feature-card__node--one"></span><span class="services-feature-card__node services-feature-card__node--two"></span><span class="services-feature-card__node services-feature-card__node--three"></span><span class="services-feature-card__core"><b>AI</b><i>WORKFLOW</i></span></div>
+            </a>
+            {% endfor %}
+            <div class="services-catalogue">
+                {% for service in services|slice:"1:" %}
+                <a class="services-catalogue-card services-catalogue-card--{{ service.icon }} reveal-up" href="{% url 'service_detail' service.slug %}">
+                    <div class="services-catalogue-card__top"><span>{{ forloop.counter|add:"1"|stringformat:"02d" }}</span><i aria-hidden="true"></i></div><div class="services-catalogue-card__motif" aria-hidden="true"><b></b><i></i><em></em><strong></strong></div><h3>{{ service.name }}</h3><p>{{ service.short }}</p><span class="services-card-link">Learn more <b aria-hidden="true">&#8594;</b></span>
+                </a>
                 {% endfor %}
             </div>
         </div>
@@ -71,15 +87,22 @@
         </div>
     </section>
 
-    <section class="services-section">
+    <section class="services-section services-more services-more--utility">
         <div class="container">
-            <div class="services-explore-cta reveal-up">
+            <div class="services-more-heading reveal-up">
                 <div>
                     <span class="eyebrow">MORE SERVICES</span>
                     <h2>Explore other capabilities</h2>
                     <p>Open the complete ORENTIQ service constellation.</p>
                 </div>
                 <button type="button" class="btn btn-primary btn-lg" data-service-explorer-open>Explore All Services <span aria-hidden="true">→</span></button>
+            </div>
+            <div class="services-more-grid">
+                {% for service in services|slice:"4:" %}
+                <a class="services-more-card reveal-up" href="{% url 'service_detail' service.slug %}">
+                    <span class="services-more-index">0{{ forloop.counter }}</span><strong>{{ service.name }}</strong><span aria-hidden="true">&rarr;</span>
+                </a>
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -90,7 +113,7 @@
                 <span class="eyebrow">HOW WE WORK</span>
                 <h2>From Idea to Digital Solution</h2>
             </div>
-            <div class="process-grid">
+            <div class="process-grid services-process-grid">
                 {% include "components/process-step.html" with number="01" title="Understand" description="We understand your business, goals, users, and requirements." %}
                 {% include "components/process-step.html" with number="02" title="Design" description="We plan the experience, architecture, and solution." %}
                 {% include "components/process-step.html" with number="03" title="Develop" description="We build, integrate, test, and refine the product." %}
@@ -114,7 +137,9 @@
         </div>
     </section>
 
-    {% include "components/cta.html" with eyebrow="Let's Talk" title="Need a custom solution?" subtitle="Tell us about your project and we'll recommend the right approach." %}
+    <section class="services-final-cta">
+        <div class="container"><div class="services-final-cta__card reveal-up"><span class="eyebrow">START A CONVERSATION</span><h2>Ready to build something that matters?</h2><p>Turn your business requirements into a scalable digital system.</p><a href="{% url 'start_project' %}" class="btn btn-primary btn-lg">Start a Project <span aria-hidden="true">&#8594;</span></a></div></div>
+    </section>
 </div>
 
 <div class="service-explorer-backdrop" data-service-explorer aria-hidden="true">
