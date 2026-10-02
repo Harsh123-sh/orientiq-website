@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 620" fill="none">
+  <defs>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(0 238 -253 0 331 307)" gradientUnits="userSpaceOnUse"><stop stop-color="#EAC597" stop-opacity=".3"/><stop offset="1" stop-color="#EAC597" stop-opacity="0"/></radialGradient>
+    <radialGradient id="earth" cx="0" cy="0" r="1" gradientTransform="matrix(125 145 -141 122 279 203)" gradientUnits="userSpaceOnUse"><stop stop-color="#F2D8B5"/><stop offset=".55" stop-color="#B98351"/><stop offset="1" stop-color="#67452D"/></radialGradient>
+    <linearGradient id="case" x1="373" x2="463" y1="325" y2="446" gradientUnits="userSpaceOnUse"><stop stop-color="#8D5A37"/><stop offset="1" stop-color="#3F3028"/></linearGradient>
+    <filter id="shadow" x="126" y="110" width="403" height="391" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="16"/></filter>
+  </defs>
+  <style>
+    .industry-aura { animation: industry-aura-breathe 10s ease-in-out infinite alternate; }
+    .industry-orbit { transform-box: view-box; transform-origin: 331px 307px; animation: industry-orbit-turn 76s linear infinite; }
+    .industry-particle { transform-box: fill-box; transform-origin: center; animation: industry-particle-drift 8s ease-in-out infinite; }
+    .industry-particle:nth-of-type(2) { animation-delay: -2s; }.industry-particle:nth-of-type(3) { animation-delay: -4s; }.industry-particle:nth-of-type(4) { animation-delay: -6s; }
+    .travel-globe { transform-box: fill-box; transform-origin: center; animation: travel-globe-breathe 13s ease-in-out infinite alternate; }
+    .travel-plane-motion { transform-box: view-box; transform-origin: 312px 147px; animation: travel-plane-drift 9s ease-in-out infinite; }
+    .travel-case { animation: travel-case-float 8s ease-in-out infinite; }
+    .industry-card-glow { animation: industry-card-glow-breathe 8s ease-in-out infinite alternate; }
+    .travel-card-a, .travel-icon-a { transform-box: fill-box; transform-origin: center; animation: industry-card-float 7s ease-in-out infinite; }
+    .travel-card-b, .travel-icon-b { transform-box: fill-box; transform-origin: center; animation: industry-card-float 7.5s ease-in-out infinite; animation-delay: -2.4s; }
+    .travel-card-c, .travel-icon-c { transform-box: fill-box; transform-origin: center; animation: industry-card-float 7.2s ease-in-out infinite; animation-delay: -4.3s; }
+    @keyframes industry-aura-breathe { from { opacity: .88; } to { opacity: 1; } }
+    @keyframes industry-orbit-turn { to { transform: rotate(360deg); } }
+    @keyframes industry-particle-drift { 0%, 100% { opacity: .7; transform: translateY(0) scale(1); } 50% { opacity: .95; transform: translateY(-1.5px) scale(1.07); } }
+    @keyframes industry-card-glow-breathe { from { opacity: .82; } to { opacity: 1; } }
+    @keyframes industry-card-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
+    @keyframes travel-globe-breathe { from { transform: scale(1); } to { transform: scale(1.006); } }
+    @keyframes travel-plane-drift { 0%, 100% { transform: translate(0, 0) rotate(0); } 50% { transform: translate(1px, -1.5px) rotate(.18deg); } }
+    @keyframes travel-case-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1px); } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+  <ellipse class="industry-aura" cx="331" cy="307" fill="url(#glow)" rx="246" ry="240"/>
+  <g class="industry-orbit" stroke="#C98343" stroke-linecap="round" opacity=".46">
+    <ellipse cx="331" cy="307" rx="212" ry="176" transform="rotate(-18 331 307)" stroke-dasharray="2 7"/>
+    <path d="M153 211c45-77 118-122 202-126m96 351c-56 60-133 88-211 82"/>
+    <circle class="industry-particle" cx="156" cy="208" r="3" fill="#C98343"/><circle class="industry-particle" cx="452" cy="151" r="3" fill="#C98343"/><circle class="industry-particle" cx="511" cy="370" r="2.5" fill="#C98343"/><circle class="industry-particle" cx="233" cy="472" r="2.5" fill="#C98343"/>
+  </g>
+  <ellipse cx="327" cy="470" fill="#6A472A" opacity=".18" rx="150" ry="22" filter="url(#shadow)"/>
+  <g class="travel-main">
+    <g class="travel-globe">
+    <circle cx="300" cy="294" r="119" fill="url(#earth)" stroke="#F8E5CA" stroke-width="3"/>
+    <path d="M222 218c18-17 37-18 48-6l-5 21 21 9 8 24-18 17-25-7-17 14-22-18-15-27 25-27Zm112-30 22 9 12 20-12 18-22-5-9-19 9-23Zm39 66 20 8 15 25-12 20-20-5-9-20 6-28Zm-97 78 22 4 17 20-10 25-25 11-19-15 2-29 13-16Zm91 38 18 3 10 19-9 16-20-3-8-17 9-18Z" fill="#754D33" opacity=".72"/>
+    <path d="M181 290c56-33 179-43 238-4M197 337c62-18 144-18 206 4M269 178c-23 37-34 75-34 116 0 42 14 81 41 117m49-231c25 36 38 75 38 116 0 40-12 77-35 111" stroke="#F7E4CA" stroke-opacity=".58" stroke-width="1.7"/>
+    <ellipse cx="300" cy="294" stroke="#F7E4CA" stroke-opacity=".42" stroke-width="1.4" rx="53" ry="119"/>
+    <path d="M228 406c64 22 144 18 202-11l-20 29c-57 29-126 33-186 11l4-29Z" fill="#F3E3CF" stroke="#A8754B" stroke-width="2"/>
+    <path d="m305 424 18 2 8 15-17 11-17-10 8-18Z" fill="#A86D3D"/><circle cx="314" cy="432" r="4" fill="#F3D3A3"/>
+    </g>
+    <g class="travel-plane-motion">
+    <g transform="rotate(-17 312 147)">
+      <path d="m277 149 43-11 19-46c4-9 14-8 15 2l-3 47 42 19c9 4 7 14-2 15l-45-7-29 38c-6 8-15 4-13-5l12-42-39-8c-8-2-8-11 0-13Z" fill="#FFF9EF" stroke="#9F6235" stroke-width="2"/>
+      <path d="m320 138 13 3-10 31-13-3 10-31Z" fill="#C27C43"/>
+    </g>
+    </g>
+    <g class="travel-case">
+      <path d="M376 327h84l12 112h-98l2-112Z" fill="url(#case)" stroke="#D5A26E" stroke-width="2.5"/>
+      <path d="M395 328v-15c0-16 9-25 24-25s24 9 24 25v15" stroke="#765034" stroke-width="8"/>
+      <path d="M395 329v-16c0-12 8-19 24-19 15 0 23 7 23 19v16" stroke="#D1A06C" stroke-width="3"/>
+      <path d="M411 353h14v31h-14z" fill="#D8B888"/><path d="M418 357v23" stroke="#8A5A35" stroke-width="2"/>
+      <path d="M383 410h78" stroke="#DDAA70" stroke-width="2" opacity=".6"/>
+    </g>
+    <path d="M222 435h70l-8 16h-54l-8-16Z" fill="#FFF9EF" stroke="#B98454" stroke-width="2"/><path d="M233 435v-31h43v31" stroke="#B98454" stroke-width="2"/>
+  </g>
+  <g class="industry-cards industry-card-glow" fill="#FFFCF7" stroke="#D6A06A" stroke-width="1.4">
+    <rect class="travel-card-a" x="139" y="304" width="56" height="54" rx="14"/><rect class="travel-card-b" x="475" y="229" width="58" height="56" rx="14"/><rect class="travel-card-c" x="464" y="385" width="56" height="54" rx="14"/>
+  </g>
+  <g class="industry-icons" stroke="#A96735" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <g class="travel-icon-a"><path d="M156 319h23v22h-23zM161 325h13m-13 6h9"/></g><g class="travel-icon-b"><path d="m487 257 8-10 8 10v14h-16v-14Z"/><circle cx="495" cy="256" r="2" fill="#A96735"/></g><g class="travel-icon-c"><path d="M478 405c5-7 11-8 17-2 5-6 11-5 16 2v17h-33v-17Z"/></g>
+  </g>
+</svg>

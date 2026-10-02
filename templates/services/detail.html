@@ -6,8 +6,9 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/services-page.css' %}?v=services-final">
-<link rel="stylesheet" href="{% static 'css/service-detail.css' %}?v=detail-data-flow-2026">
+<link rel="stylesheet" href="{% static 'css/service-detail.css' %}?v=detail-ai-system-2026-2">
 {% if service.slug == "ai-automation" %}<link rel="stylesheet" href="{% static 'css/ai-automation-page.css' %}?v=ai-final-3">{% endif %}
+<link rel="stylesheet" href="{% static 'css/service-technology-ecosystem.css' %}?v=enterprise-robot-5">
 <link rel="stylesheet" href="{% static 'css/service-detail-redesign.css' %}?v=service-artifact-family-2026-6">
 {% endblock %}
 
@@ -52,6 +53,14 @@
                 <h2>Tools we use</h2>
                 <p>A modern, proven technology stack.</p>
             </div>
+            <div class="service-technology-ecosystem" aria-label="{{ service.name }} technology ecosystem">
+                <div class="service-technology-map">
+            {% if service.slug == "ai-automation" %}
+                    {% include "components/ai-technology-robot.html" %}
+            {% else %}
+                    {% include "components/ai-technology-robot.html" with core_label=service.name %}
+            {% endif %}
+                    <div class="service-technology-connectors" aria-hidden="true"><i></i><i></i><i></i></div>
             <div class="service-detail-tech-grid">
                 {% for tech in service.tech %}
                 <div class="service-detail-tech-card reveal-up">
@@ -84,6 +93,9 @@
                     <span>Technology layer</span>
                 </div>
                 {% endfor %}
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
     </section>
@@ -137,6 +149,10 @@
     <div class="service-explorer" role="dialog" aria-modal="true" aria-labelledby="service-explorer-title" aria-describedby="service-explorer-description">
         <header class="service-explorer-header">
             <div><span class="eyebrow">SERVICES</span><h2 id="service-explorer-title">Explore our capabilities</h2><p id="service-explorer-description">Move between the systems ORENTIQ builds.</p></div>
+            <span class="orentiq-legal-modal__brand service-explorer-brand" aria-hidden="true">
+                <img src="{% static 'images/brand/orentiq-logo-on-light.png' %}" alt="" class="orentiq-legal-modal__brand-image orentiq-legal-modal__brand-image--light">
+                <img src="{% static 'images/brand/orentiq-logo-on-dark.png' %}" alt="" class="orentiq-legal-modal__brand-image orentiq-legal-modal__brand-image--dark">
+            </span>
             <button type="button" class="service-explorer-close" data-service-explorer-close aria-label="Close service navigator">×</button>
         </header>
         <div class="service-explorer-body">

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 620" fill="none">
+  <defs>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(0 244 -255 0 331 307)" gradientUnits="userSpaceOnUse"><stop stop-color="#ECC99D" stop-opacity=".31"/><stop offset="1" stop-color="#ECC99D" stop-opacity="0"/></radialGradient>
+    <linearGradient id="bulb" x1="272" x2="378" y1="151" y2="296" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFDF7"/><stop offset=".55" stop-color="#F6D9A6"/><stop offset="1" stop-color="#C78A4D"/></linearGradient>
+    <linearGradient id="rocket" x1="373" x2="438" y1="257" y2="397" gradientUnits="userSpaceOnUse"><stop stop-color="#FFF8ED"/><stop offset="1" stop-color="#B77A45"/></linearGradient>
+    <filter id="glowblur" x="198" y="103" width="238" height="294" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+  <style>
+    .industry-aura { animation: industry-aura-breathe 9.5s ease-in-out infinite alternate; }
+    .industry-orbit { transform-box: view-box; transform-origin: 331px 307px; animation: industry-orbit-turn 82s linear infinite; }
+    .industry-particle { transform-box: fill-box; transform-origin: center; animation: industry-particle-drift 8s ease-in-out infinite; }
+    .industry-particle:nth-of-type(2) { animation-delay: -2s; }.industry-particle:nth-of-type(3) { animation-delay: -4s; }.industry-particle:nth-of-type(4) { animation-delay: -6s; }
+    .startup-bulb-glow { animation: startup-bulb-glow 9s ease-in-out infinite alternate; }
+    .startup-bulb { transform-box: view-box; transform-origin: 321px 249px; animation: startup-bulb-breathe 9s ease-in-out infinite alternate; }
+    .startup-rocket { transform-box: view-box; transform-origin: 414px 300px; animation: startup-rocket-drift 8.5s ease-in-out infinite; }
+    .startup-growth { animation: startup-growth-breathe 9.5s ease-in-out infinite alternate; }
+    .industry-card-glow { animation: industry-card-glow-breathe 8s ease-in-out infinite alternate; }
+    .startup-card-a, .startup-icon-a { transform-box: fill-box; transform-origin: center; animation: industry-card-float 7s ease-in-out infinite; }
+    .startup-card-b, .startup-icon-b { transform-box: fill-box; transform-origin: center; animation: industry-card-float 7.5s ease-in-out infinite; animation-delay: -2.4s; }
+    .startup-card-c, .startup-icon-c { transform-box: fill-box; transform-origin: center; animation: industry-card-float 7.2s ease-in-out infinite; animation-delay: -4.3s; }
+    @keyframes industry-aura-breathe { from { opacity: .88; } to { opacity: 1; } }
+    @keyframes industry-orbit-turn { to { transform: rotate(360deg); } }
+    @keyframes industry-particle-drift { 0%, 100% { opacity: .7; transform: translateY(0) scale(1); } 50% { opacity: .95; transform: translateY(-1.5px) scale(1.07); } }
+    @keyframes industry-card-glow-breathe { from { opacity: .82; } to { opacity: 1; } }
+    @keyframes industry-card-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
+    @keyframes startup-bulb-glow { from { opacity: .45; } to { opacity: .58; } }
+    @keyframes startup-bulb-breathe { from { transform: scale(1); } to { transform: scale(1.004); } }
+    @keyframes startup-rocket-drift { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-.8px, -1.2px); } }
+    @keyframes startup-growth-breathe { from { opacity: .96; } to { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+  <ellipse class="industry-aura" cx="331" cy="307" fill="url(#glow)" rx="246" ry="242"/>
+  <g class="industry-orbit" stroke="#C98343" stroke-linecap="round" opacity=".46">
+    <ellipse cx="331" cy="307" rx="211" ry="178" transform="rotate(-24 331 307)" stroke-dasharray="2 7"/>
+    <path d="M143 211c48-82 127-128 216-128m99 355c-62 58-141 81-220 73"/>
+    <circle class="industry-particle" cx="151" cy="200" r="3" fill="#C98343"/><circle class="industry-particle" cx="471" cy="165" r="3" fill="#C98343"/><circle class="industry-particle" cx="505" cy="380" r="2.5" fill="#C98343"/><circle class="industry-particle" cx="240" cy="478" r="2.5" fill="#C98343"/>
+  </g>
+  <ellipse cx="325" cy="470" fill="#6A472A" opacity=".17" rx="146" ry="21"/>
+  <g class="startup-bulb-glow" opacity=".5" filter="url(#glowblur)"><circle cx="329" cy="249" r="88" fill="#F1C680"/></g>
+  <g class="startup-main">
+    <g class="startup-bulb">
+    <path d="M321 149c-40 0-72 31-72 70 0 23 11 43 28 57 12 10 19 22 19 36h51c0-14 7-26 19-36 17-14 28-34 28-57 0-39-32-70-73-70Z" fill="url(#bulb)" stroke="#A66B39" stroke-width="2.5"/>
+    <path d="M293 308h57v19h-57zm5 22h47v15h-47zm8 18h31v13h-31z" fill="#806044" stroke="#A66B39" stroke-width="2"/>
+    <path d="M307 258c-13-12-19-25-18-40 1-20 15-34 35-34 17 0 31 14 32 32" stroke="#FFF9EC" stroke-width="6" stroke-linecap="round" opacity=".85"/>
+    <path d="M319 232c-7 9-8 18-1 26 6 7 6 14 0 23" stroke="#BE7B3D" stroke-width="4" stroke-linecap="round"/>
+    </g>
+    <g class="startup-rocket">
+    <path d="m392 298 18-57c4-14 12-27 23-39 9 18 13 35 11 51l-9 61-34 28-9-44Z" fill="url(#rocket)" stroke="#9B6237" stroke-width="2.5"/>
+    <path d="m412 293 31 16-42 34-8-41 19-9Z" fill="#D8B288" stroke="#8F5C34" stroke-width="2"/>
+    <path d="m412 304 19 10-25 20-4-24 10-6Z" fill="#FBF0DF"/>
+    <circle cx="421" cy="270" r="10" fill="#FFF8ED" stroke="#A66B39" stroke-width="3"/><circle cx="421" cy="270" r="4" fill="#B67842"/>
+    <path d="m396 339-14 29 24-17 18 2 16-18" stroke="#C4773A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <g class="startup-growth">
+    <path d="M209 436h226l-18 20H224l-15-20Z" fill="#6C5040" stroke="#C08B59" stroke-width="2"/>
+    <path d="M226 425h172l20 11H209l17-11Z" fill="#F2E1CC" stroke="#AC805A" stroke-width="2"/>
+    <path d="M249 414h120l29 11H226l23-11Z" fill="#A96A3B" stroke="#714628" stroke-width="2"/>
+    <path d="M253 404h108l8 10H249l4-10Z" fill="#FFF6E9" stroke="#B88B62" stroke-width="1.5"/>
+    <path d="m243 414 4-23 8 23m99 0 9-23 9 23" stroke="#B77B46" stroke-width="2"/>
+    </g>
+  </g>
+  <g class="industry-cards industry-card-glow" fill="#FFFCF7" stroke="#D6A06A" stroke-width="1.4">
+    <rect class="startup-card-a" x="143" y="296" width="56" height="54" rx="14"/><rect class="startup-card-b" x="464" y="195" width="57" height="55" rx="14"/><rect class="startup-card-c" x="455" y="386" width="56" height="54" rx="14"/>
+  </g>
+  <g class="industry-icons" stroke="#A96735" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <g class="startup-icon-a"><circle cx="171" cy="323" r="12"/><circle cx="171" cy="323" r="5"/><path d="m169 325 12-13m-6 0h6v6"/></g>
+    <g class="startup-icon-b"><path d="M477 231v-18h30v18m-22 0v-9h14v9"/></g>
+    <g class="startup-icon-c"><path d="M467 426v-16h10v16m5 0v-23h10v23m5 0v-31h10v31"/></g>
+  </g>
+</svg>

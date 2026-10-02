@@ -4,13 +4,24 @@
 {% block title %}Technology — ORENTIQ{% endblock %}
 {% block meta_description %}ORENTIQ selects practical, proven technologies based on product requirements, scalability, security, performance, and long-term maintainability.{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/technology-hero.css' %}?v=ecosystem-hero-2026">
+{% endblock %}
+
 {% block content %}
 <!-- ==================== HERO ==================== -->
-<section class="page-hero reveal-up">
+<section class="page-hero reveal-up technology-page-hero">
     <div class="container">
-        <span class="eyebrow">Technology</span>
-        <h1>Technology that powers better products</h1>
-        <p>We choose practical, proven technologies based on product requirements, scalability, security, performance, and long-term maintainability.</p>
+        <div class="technology-page-hero__layout">
+            <div class="technology-page-hero__content">
+                <span class="eyebrow">Technology</span>
+                <h1>Technology that powers better products</h1>
+                <p>We choose practical, proven technologies based on product requirements, scalability, security, performance, and long-term maintainability.</p>
+            </div>
+            <div class="technology-page-hero__visual">
+                <img src="{% static 'images/technology-ecosystem-hero.svg' %}" alt="Technology core connected to Modern Frameworks, Cloud Technologies, AI and Machine Learning, Security First, Scalable Architecture, and DevOps and Automation" width="1600" height="1100" fetchpriority="high" decoding="async">
+            </div>
+        </div>
     </div>
 </section>
 

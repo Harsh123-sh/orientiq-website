@@ -4,13 +4,103 @@
 {% block title %}About ORENTIQ — Company{% endblock %}
 {% block meta_description %}Learn about ORENTIQ's story, mission, values, and technology philosophy.{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/company-about-hero.css' %}?v=about-avatar-2026">
+{% endblock %}
+
 {% block content %}
 <!-- ==================== HERO ==================== -->
-<section class="page-hero reveal-up">
+<section class="page-hero reveal-up company-about-hero">
     <div class="container">
-        <span class="eyebrow">Company / About</span>
-        <h1>Who we are</h1>
-        <p>ORENTIQ is a premium technology and digital solutions company building intelligent products for ambitious businesses.</p>
+        <div class="company-about-hero__layout">
+            <div class="company-about-hero__content">
+                <span class="eyebrow">Company / About</span>
+                <h1>Who we are</h1>
+                <p>ORENTIQ is a premium technology and digital solutions company building intelligent products for ambitious businesses.</p>
+            </div>
+            <div class="company-about-hero__visual" aria-hidden="true">
+                <svg viewBox="0 0 640 520" role="presentation" focusable="false">
+                    <defs>
+                        <radialGradient id="aboutAmbient" cx="50%" cy="49%" r="52%">
+                            <stop offset="0" stop-color="var(--color-accent)" stop-opacity=".14"/>
+                            <stop offset=".58" stop-color="var(--color-accent)" stop-opacity=".045"/>
+                            <stop offset="1" stop-color="var(--color-accent)" stop-opacity="0"/>
+                        </radialGradient>
+                        <linearGradient id="aboutPorcelain" x1=".12" y1=".08" x2=".88" y2=".92">
+                            <stop stop-color="#fffdf8"/>
+                            <stop offset=".38" stop-color="#eee5d8"/>
+                            <stop offset=".72" stop-color="#d2c2ae"/>
+                            <stop offset="1" stop-color="#f8f0e5"/>
+                        </linearGradient>
+                        <linearGradient id="aboutFace" x1=".18" y1=".2" x2=".86" y2=".86">
+                            <stop stop-color="#fffaf1"/>
+                            <stop offset=".47" stop-color="#e9ddcd"/>
+                            <stop offset="1" stop-color="#c6b39e"/>
+                        </linearGradient>
+                        <linearGradient id="aboutShade" x1="0" y1="0" x2="1" y2="1">
+                            <stop stop-color="#282521"/>
+                            <stop offset=".55" stop-color="#484039"/>
+                            <stop offset="1" stop-color="#211f1c"/>
+                        </linearGradient>
+                        <linearGradient id="aboutCopper" x1="0" y1="0" x2="1" y2="1">
+                            <stop stop-color="#f0cfaa"/>
+                            <stop offset=".48" stop-color="#b8784e"/>
+                            <stop offset="1" stop-color="#835038"/>
+                        </linearGradient>
+                        <filter id="aboutShadow" x="-40%" y="-30%" width="180%" height="190%">
+                            <feGaussianBlur in="SourceAlpha" stdDeviation="14" result="blur"/>
+                            <feOffset dy="17" result="offset"/>
+                            <feComponentTransfer><feFuncA type="linear" slope=".2"/></feComponentTransfer>
+                            <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+                        </filter>
+                        <filter id="aboutGlow" x="-100%" y="-100%" width="300%" height="300%">
+                            <feGaussianBlur stdDeviation="14"/>
+                        </filter>
+                    </defs>
+                    <ellipse cx="320" cy="264" rx="224" ry="205" fill="url(#aboutAmbient)"/>
+                    <g class="company-about-hero__orbits" fill="none" stroke="var(--color-accent)" stroke-linecap="round">
+                        <ellipse cx="320" cy="273" rx="213" ry="166" stroke-opacity=".2" stroke-width="1" transform="rotate(-18 320 273)"/>
+                        <path d="M115 263c27-104 101-170 205-177 92-6 167 38 201 112" stroke-opacity=".28" stroke-width="1.1"/>
+                        <path d="M147 372c53 57 112 85 177 85 63 0 119-24 169-72" stroke-opacity=".17" stroke-width="1"/>
+                        <path d="m154 213 73 27m258-33-69 30M199 408l42-35m200 36-43-35" stroke-opacity=".24" stroke-width=".9"/>
+                    </g>
+                    <g fill="none" stroke="url(#aboutCopper)" stroke-width="1">
+                        <path d="M154 213h-20m20 0v-20M485 207h20m-20 0v-20M199 408h-18m18 0v18m242-18h18m-18 0v18" opacity=".7"/>
+                    </g>
+                    <g class="company-about-hero__nodes" fill="url(#aboutCopper)">
+                        <circle class="company-about-hero__node" cx="134" cy="213" r="3"/>
+                        <circle class="company-about-hero__node" cx="505" cy="207" r="3"/>
+                        <circle class="company-about-hero__node" cx="320" cy="96" r="2.5"/>
+                        <circle class="company-about-hero__node" cx="181" cy="426" r="2.5"/>
+                    </g>
+                    <ellipse class="company-about-hero__light" cx="320" cy="437" rx="107" ry="15" fill="#35291f" fill-opacity=".12" filter="url(#aboutGlow)"/>
+                    <g class="company-about-hero__core" filter="url(#aboutShadow)">
+                        <path d="M191 438c9-39 36-61 85-73l33-11 22 1 34 10c47 13 75 35 84 73l4 18H187z" fill="url(#aboutShade)"/>
+                        <path d="M207 433c13-28 35-44 71-55l29-9 14 1 28 9c33 10 55 27 68 54l-3 13H209z" fill="url(#aboutPorcelain)" stroke="url(#aboutCopper)" stroke-opacity=".52" stroke-width="1.1"/>
+                        <path d="M285 324h70v59c-10 18-21 27-35 27s-26-9-35-27z" fill="url(#aboutFace)"/>
+                        <path d="M285 344c11 12 23 17 35 17s24-5 35-17v24c-10 16-21 23-35 23s-25-7-35-23z" fill="url(#aboutCopper)" opacity=".3"/>
+                        <path d="M320 122c-55 0-91 42-91 101v28c0 48 23 87 59 106 11 6 21 9 32 9 12 0 24-4 36-11 35-20 56-57 56-104v-28c0-60-36-101-92-101z" fill="url(#aboutPorcelain)" stroke="url(#aboutCopper)" stroke-opacity=".7" stroke-width="1.4"/>
+                        <path d="M320 132c-48 0-77 38-77 91v27c0 40 18 75 48 94-15-28-19-60-16-99 3-47 22-83 45-113z" fill="#fffdf8" opacity=".54"/>
+                        <path d="M320 123c-45 0-77 27-88 71 20-19 37-23 57-23 39 0 75 15 106 43-4-52-32-91-75-91z" fill="url(#aboutShade)"/>
+                        <path d="M234 203c17-39 46-56 86-56 38 0 66 15 82 48" fill="none" stroke="url(#aboutCopper)" stroke-opacity=".82" stroke-width="1.5"/>
+                        <path d="M249 253c8-9 20-13 34-11 8 1 15 4 21 9m26 0c7-6 16-9 26-9 12 0 22 4 30 12" fill="none" stroke="#54483d" stroke-linecap="round" stroke-width="3"/>
+                        <path d="M264 256c6-3 12-4 18-3m50 0c6-1 12 0 18 3" fill="none" stroke="url(#aboutCopper)" stroke-linecap="round" stroke-width="1.4"/>
+                        <path d="M320 256c-2 16-8 28-15 39 5 4 10 6 16 6" fill="none" stroke="#9c8066" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+                        <path d="M294 321c8 5 17 7 26 7 10 0 19-2 27-7" fill="none" stroke="#8b6550" stroke-linecap="round" stroke-width="2"/>
+                        <path d="M276 341c13 7 27 11 44 11 17 0 32-4 45-12" fill="none" stroke="url(#aboutCopper)" stroke-opacity=".76" stroke-width="1.2"/>
+                        <path d="M239 240c-8-5-13-1-13 9 0 12 6 21 16 25m155-34c9-5 14-1 14 9 0 12-6 21-16 25" fill="none" stroke="url(#aboutCopper)" stroke-width="2"/>
+                        <path d="M246 284c3 32 19 57 43 74m62 1c25-17 40-42 44-75" fill="none" stroke="url(#aboutCopper)" stroke-opacity=".72" stroke-width="1.1"/>
+                        <path d="M252 226c7-6 15-9 25-9m91 0c9 0 17 3 24 9" fill="none" stroke="#d09a70" stroke-width="1"/>
+                    </g>
+                    <g fill="none" stroke="url(#aboutCopper)" stroke-linecap="round" stroke-width="1.1">
+                        <path d="M237 274h-13v23h18m161-23h13v23h-18" opacity=".8"/>
+                        <path d="M246 292v14h17m114 0h17v-14" opacity=".48"/>
+                        <path d="M320 113v-12m-7 6h14" opacity=".8"/>
+                    </g>
+                    <circle cx="320" cy="107" r="2.2" fill="#c58b61"/>
+                </svg>
+            </div>
+        </div>
     </div>
 </section>
 

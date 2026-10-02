@@ -5,42 +5,90 @@
 {% block meta_description %}{{ industry.short }}{% endblock %}
 
 {% block content %}
+{% if industry.slug == "real-estate" %}<div class="real-estate-page">{% endif %}
 <!-- ==================== HERO ==================== -->
-<section class="page-hero reveal-up">
+<section class="page-hero reveal-up{% if industry.slug == 'real-estate' %} real-estate-hero{% elif industry.slug == 'healthcare' or industry.slug == 'education' or industry.slug == 'travel' or industry.slug == 'manufacturing' or industry.slug == 'startups' or industry.slug == 'enterprise' %} industry-visual-hero industry-visual-hero--{{ industry.slug }}{% endif %}">
     <div class="container">
-        <span class="eyebrow">{{ industry.tagline }}</span>
-        <h1>{{ industry.name }} Solutions</h1>
-        <p>{{ industry.short }}</p>
-        <div class="flex gap-4 flex-wrap mt-6">
-            <a href="{% url 'start_project' %}" class="btn btn-primary">Start a Project</a>
-            <a href="{% url 'industries' %}" class="btn btn-outline">All Industries</a>
+        {% if industry.slug == "real-estate" %}
+        <link rel="stylesheet" href="{% static 'css/real-estate-hero.css' %}?v=real-estate-editorial-2026">
+        <div class="real-estate-hero__layout">
+            <div class="real-estate-hero__content">
+                <span class="eyebrow">{{ industry.tagline }}</span>
+                <h1>{{ industry.name }}<br>Solutions</h1>
+                <p>{{ industry.short }}</p>
+                <div class="flex gap-4 flex-wrap mt-6">
+                    <a href="{% url 'start_project' %}" class="btn btn-primary">Start a Project</a>
+                    <a href="{% url 'industries' %}" class="btn btn-outline">All Industries</a>
+                </div>
+            </div>
+            <figure class="real-estate-hero__visual">
+                <img src="{% static 'images/real-estate-consultant.jpg' %}" alt="Real estate consultant reviewing a tablet in a bright modern home" width="1800" height="1200" fetchpriority="high" decoding="async">
+            </figure>
+        {% elif industry.slug == "healthcare" or industry.slug == "education" or industry.slug == "travel" or industry.slug == "manufacturing" or industry.slug == "startups" or industry.slug == "enterprise" %}
+        <link rel="stylesheet" href="{% static 'css/industry-visual-hero.css' %}?v=industry-art-2026-10">
+        <div class="industry-visual-hero__layout">
+            <div class="industry-visual-hero__content">
+                <span class="eyebrow">{{ industry.tagline }}</span>
+                <h1>{{ industry.name }} Solutions</h1>
+                <p>{{ industry.short }}</p>
+                <div class="flex gap-4 flex-wrap mt-6">
+                    <a href="{% url 'start_project' %}" class="btn btn-primary">Start a Project</a>
+                    <a href="{% url 'industries' %}" class="btn btn-outline">All Industries</a>
+                </div>
+            </div>
+            <figure class="industry-visual-hero__visual">
+                {% if industry.slug == "healthcare" %}
+                <img src="{% static 'images/industries/healthcare.svg' %}" alt="Healthcare professional using a digital tablet, surrounded by medical technology details" width="640" height="620" fetchpriority="high" decoding="async">
+                {% elif industry.slug == "education" %}
+                <img src="{% static 'images/industries/education.svg' %}" alt="Stacked books, a graduation cap, and digital learning symbols" width="640" height="620" fetchpriority="high" decoding="async">
+                {% elif industry.slug == "travel" %}
+                <img src="{% static 'images/industries/travel.svg' %}" alt="A detailed globe with an airplane, travel case, and route markers" width="640" height="620" fetchpriority="high" decoding="async">
+                {% elif industry.slug == "enterprise" %}
+                <img src="{% static 'images/industries/enterprise.svg' %}" alt="Connected enterprise towers with cloud, data, security, and analytics symbols" width="640" height="620" fetchpriority="high" decoding="async">
+                {% elif industry.slug == "startups" %}
+                <img src="{% static 'images/industries/startup.svg' %}" alt="A glowing idea bulb and product rocket with growth and planning symbols" width="640" height="620" fetchpriority="high" decoding="async">
+                {% elif industry.slug == "manufacturing" %}
+                <img src="{% static 'images/industries/manufacturing.svg' %}" alt="Robotic manufacturing arm assembling components on a connected production line" width="640" height="620" fetchpriority="high" decoding="async">
+                {% endif %}
+            </figure>
         </div>
+        {% else %}
+            <span class="eyebrow">{{ industry.tagline }}</span>
+            <h1>{{ industry.name }} Solutions</h1>
+            <p>{{ industry.short }}</p>
+            <div class="flex gap-4 flex-wrap mt-6">
+                <a href="{% url 'start_project' %}" class="btn btn-primary">Start a Project</a>
+                <a href="{% url 'industries' %}" class="btn btn-outline">All Industries</a>
+            </div>
+        {% endif %}
     </div>
 </section>
 
 <!-- ==================== CHALLENGES ==================== -->
-<section class="section">
+{% if industry.challenges or industry.solutions %}
+<section class="section{% if industry.slug == 'real-estate' %} real-estate-challenges{% endif %}">
     <div class="container">
         <div class="grid grid-2">
             <div>
                 {% include "components/section-heading.html" with eyebrow="Industry Challenges" title="The problems we solve" subtitle="Every industry has unique pain points. We build technology around them." %}
-                <ul class="feature-list">
+                <ul class="feature-list{% if industry.slug == 'real-estate' %} real-estate-page__list real-estate-page__list--challenges{% endif %}">
                     {% for challenge in industry.challenges %}
-                    <li style="margin-bottom:0.5rem;">{{ challenge }}</li>
+                    <li{% if industry.slug == 'real-estate' %} class="real-estate-page__list-item reveal-up"{% endif %} style="margin-bottom:0.5rem;">{{ challenge }}</li>
                     {% endfor %}
                 </ul>
             </div>
             <div>
                 {% include "components/section-heading.html" with eyebrow="Our Solutions" title="How we help" %}
-                <ul class="feature-list">
+                <ul class="feature-list{% if industry.slug == 'real-estate' %} real-estate-page__list real-estate-page__list--solutions{% endif %}">
                     {% for solution in industry.solutions %}
-                    <li style="margin-bottom:0.5rem;">{{ solution }}</li>
+                    <li{% if industry.slug == 'real-estate' %} class="real-estate-page__list-item reveal-up"{% endif %} style="margin-bottom:0.5rem;">{{ solution }}</li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
 </section>
+{% endif %}
 
 <!-- ==================== BENEFITS ==================== -->
 {% if industry.benefits %}
@@ -59,6 +107,7 @@
 {% endif %}
 
 <!-- ==================== USE CASES ==================== -->
+{% if industry.use_cases %}
 <section class="section">
     <div class="container">
         {% include "components/section-heading.html" with eyebrow="Use Cases" title="Where it applies" subtitle="Real-world applications of technology in {{ industry.name }}." align="center" %}
@@ -72,6 +121,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 <!-- ==================== FAQ ==================== -->
 {% if industry.faqs %}
@@ -106,4 +156,5 @@
 
 <!-- ==================== CTA ==================== -->
 {% include "components/cta.html" with eyebrow="Discuss Your Project" title="Ready to build something better?" subtitle="Tell us about your project, business needs, or technical challenge. We'll help you identify the right approach and next steps." primary_label="Discuss Your Project →" %}
+{% if industry.slug == "real-estate" %}</div>{% endif %}
 {% endblock %}

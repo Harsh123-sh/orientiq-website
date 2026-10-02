@@ -1,0 +1,25 @@
+.orentiq-legal-modal { position: fixed; inset: 0; z-index: var(--z-modal); display: grid; place-items: center; padding: var(--space-6); visibility: hidden; opacity: 0; transition: opacity var(--transition-base), visibility var(--transition-base); }
+.orentiq-legal-modal.is-open { visibility: visible; opacity: 1; }
+.orentiq-legal-modal__backdrop { position: absolute; inset: 0; background: var(--color-overlay); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.orentiq-legal-modal__dialog { position: relative; display: flex; flex-direction: column; width: min(100%, 760px); max-height: min(820px, calc(100vh - 3rem)); overflow: hidden; color: var(--color-text); background: var(--color-surface-glass); border: 1px solid var(--color-border-strong); border-radius: var(--radius-lg); box-shadow: var(--shadow-elevated); transform: translateY(14px) scale(.98); transition: transform var(--transition-base); }
+.is-open .orentiq-legal-modal__dialog { transform: translateY(0) scale(1); }
+.orentiq-legal-modal__header { position: relative; z-index: 1; flex: 0 0 auto; padding: var(--space-8) var(--space-10) var(--space-6); border-bottom: 1px solid var(--color-border); }
+.orentiq-legal-modal__eyebrow { margin: 0 0 var(--space-3); color: var(--color-accent); font-size: var(--text-caption); font-weight: 700; letter-spacing: var(--tracking-caps); text-transform: uppercase; }
+.orentiq-legal-modal__title { margin: 0; padding-right: var(--space-10); color: var(--color-text); font-size: var(--text-h3); line-height: var(--line-h3); }
+.orentiq-legal-modal__brand { position: absolute; top: 50%; right: calc(var(--space-6) + 3.25rem); display: grid; width: 140px; height: 50px; place-items: center; pointer-events: none; transform: translateY(-50%); }
+.orentiq-legal-modal__brand-image { display: none; width: 100%; height: 100%; object-fit: contain; }
+.orentiq-legal-modal__brand-image--dark { display: block; }
+[data-theme="light"] .orentiq-legal-modal__brand-image--dark { display: none; }
+[data-theme="light"] .orentiq-legal-modal__brand-image--light { display: block; }
+.orentiq-legal-modal__close { position: absolute; z-index: 2; top: var(--space-6); right: var(--space-6); display: grid; width: 36px; height: 36px; place-items: center; color: var(--color-text-muted); background: transparent; border: 1px solid var(--color-border); border-radius: 50%; font-size: 1.5rem; line-height: 1; cursor: pointer; transition: color var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast); }
+.orentiq-legal-modal__close:hover { color: var(--color-accent); border-color: var(--color-accent); background: var(--color-hover); }
+.orentiq-legal-modal__content { overflow-y: auto; padding: var(--space-8) var(--space-10) var(--space-10); overscroll-behavior: contain; }
+.orentiq-legal-modal__content h3 { margin: var(--space-8) 0 var(--space-2); color: var(--color-text); font-size: var(--text-h5); line-height: var(--line-h5); }
+.orentiq-legal-modal__content h3:first-of-type { margin-top: 0; }
+.orentiq-legal-modal__content p { margin: 0; color: var(--color-text-muted); font-size: var(--text-body-small); line-height: var(--line-body); }
+.orentiq-legal-modal__content .orentiq-legal-modal__intro { margin-bottom: var(--space-6); color: var(--color-text); font-size: var(--text-body); }
+.orentiq-legal-modal__content:focus-visible, .orentiq-legal-modal__close:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+body.orentiq-legal-modal-open { overflow: hidden; }
+@media (max-width: 720px) { .orentiq-legal-modal { padding: var(--space-4); }.orentiq-legal-modal__dialog { max-height: calc(100vh - 2rem); }.orentiq-legal-modal__header { padding: var(--space-6) var(--space-6) var(--space-5); }.orentiq-legal-modal__content { padding: var(--space-6); }.orentiq-legal-modal__brand { right: calc(var(--space-6) + 2.75rem); width: 120px; height: 42px; } }
+@media (max-width: 560px) { .orentiq-legal-modal__brand { display: none; } }
+@media (prefers-reduced-motion: reduce) { .orentiq-legal-modal, .orentiq-legal-modal__dialog { transition-duration: 1ms; } }

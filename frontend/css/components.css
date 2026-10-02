@@ -299,7 +299,8 @@
 }
 
 .card-service:hover p { color: var(--color-text); }
-.card-service .link { display: inline-flex; transition: color var(--transition-fast), transform var(--transition-fast); }
+.card-service .link { position: relative; display: inline-flex; transition: color var(--transition-fast), transform var(--transition-fast); }
+.card-service .link::before { content: ""; position: absolute; z-index: 1; inset: -10px 0; pointer-events: auto; }
 .card-service:hover .link { transform: translateX(3px); }
 
 .card-technology {

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 620" fill="none">
+  <defs>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(0 239 -254 0 331 307)" gradientUnits="userSpaceOnUse"><stop stop-color="#E7C092" stop-opacity=".3"/><stop offset="1" stop-color="#E7C092" stop-opacity="0"/></radialGradient>
+    <linearGradient id="arm" x1="252" x2="404" y1="204" y2="345" gradientUnits="userSpaceOnUse"><stop stop-color="#F9E6C9"/><stop offset=".52" stop-color="#C18347"/><stop offset="1" stop-color="#80512F"/></linearGradient>
+    <linearGradient id="platform" x1="180" x2="472" y1="395" y2="469" gradientUnits="userSpaceOnUse"><stop stop-color="#F9F1E6"/><stop offset="1" stop-color="#B4A08A"/></linearGradient>
+    <filter id="shadow" x="138" y="137" width="374" height="377" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="17"/></filter>
+  </defs>
+  <style>
+    .industry-aura { animation: industry-aura-breathe 11s ease-in-out infinite alternate; }
+    .industry-orbit { transform-box: view-box; transform-origin: 331px 307px; animation: industry-orbit-turn 86s linear infinite; }
+    .industry-particle { transform-box: fill-box; transform-origin: center; animation: industry-particle-drift 8.5s ease-in-out infinite; }
+    .industry-particle:nth-of-type(2) { animation-delay: -2s; }.industry-particle:nth-of-type(3) { animation-delay: -4s; }.industry-particle:nth-of-type(4) { animation-delay: -6s; }
+    .manufacturing-arm { transform-box: view-box; transform-origin: 283px 228px; animation: manufacturing-arm-adjust 9.5s ease-in-out infinite; }
+    .manufacturing-platform { animation: manufacturing-line-breathe 9s ease-in-out infinite alternate; }
+    .industry-card-glow { animation: industry-card-glow-breathe 8s ease-in-out infinite alternate; }
+    .manufacturing-card-a, .manufacturing-icon-a { transform-box: fill-box; transform-origin: center; animation: industry-card-float 7s ease-in-out infinite; }
+    .manufacturing-card-b, .manufacturing-icon-b { transform-box: fill-box; transform-origin: center; animation: industry-card-float 7.5s ease-in-out infinite; animation-delay: -2.4s; }
+    .manufacturing-card-c, .manufacturing-icon-c { transform-box: fill-box; transform-origin: center; animation: industry-card-float 7.2s ease-in-out infinite; animation-delay: -4.3s; }
+    @keyframes industry-aura-breathe { from { opacity: .88; } to { opacity: 1; } }
+    @keyframes industry-orbit-turn { to { transform: rotate(360deg); } }
+    @keyframes industry-particle-drift { 0%, 100% { opacity: .7; transform: translateY(0) scale(1); } 50% { opacity: .95; transform: translateY(-1px) scale(1.06); } }
+    @keyframes industry-card-glow-breathe { from { opacity: .82; } to { opacity: 1; } }
+    @keyframes industry-card-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.25px); } }
+    @keyframes manufacturing-arm-adjust { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(.2deg); } }
+    @keyframes manufacturing-line-breathe { from { opacity: .96; } to { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+  <ellipse class="industry-aura" cx="331" cy="307" fill="url(#glow)" rx="246" ry="241"/>
+  <g class="industry-orbit" stroke="#C98343" stroke-linecap="round" opacity=".45">
+    <ellipse cx="331" cy="307" rx="210" ry="176" transform="rotate(19 331 307)" stroke-dasharray="2 7"/>
+    <path d="M144 208c49-80 125-124 212-127m101 355c-59 58-140 83-219 76"/>
+    <circle class="industry-particle" cx="155" cy="192" r="3" fill="#C98343"/><circle class="industry-particle" cx="464" cy="158" r="3" fill="#C98343"/><circle class="industry-particle" cx="507" cy="377" r="2.5" fill="#C98343"/><circle class="industry-particle" cx="237" cy="478" r="2.5" fill="#C98343"/>
+  </g>
+  <ellipse cx="323" cy="466" fill="#67482C" opacity=".18" rx="158" ry="24" filter="url(#shadow)"/>
+  <g class="manufacturing-main">
+    <g class="manufacturing-platform">
+    <path d="m171 414 152-48 174 48-166 55-160-55Z" fill="#55473B" stroke="#B77D48" stroke-width="2.5"/>
+    <path d="m186 414 137-42 148 41-140 47-145-46Z" fill="url(#platform)" stroke="#8E745B" stroke-width="2"/>
+    <path d="M215 415h212l-20 25H233l-18-25Z" fill="#D0B99D" stroke="#8C6A49" stroke-width="2"/>
+    <path d="M240 394h160v21H240z" fill="#776354" stroke="#4D4036" stroke-width="2"/>
+    <path d="M254 399h28v14h-28zm42 0h28v14h-28zm42 0h28v14h-28z" fill="#E8D7C1"/>
+    </g>
+    <g class="manufacturing-arm">
+    <path d="m264 229 39-20 74 91-35 31-78-102Z" fill="url(#arm)" stroke="#754A2D" stroke-width="3"/>
+    <path d="m299 211 28-20 70 68-19 32-79-80Z" fill="#E3B475" stroke="#7C502F" stroke-width="3"/>
+    <path d="m376 259 35-7 8 52-36 9-7-54Z" fill="url(#arm)" stroke="#754A2D" stroke-width="3"/>
+    <path d="m392 303 39-2-8 47-39 3 8-48Z" fill="#C28A50" stroke="#754A2D" stroke-width="3"/>
+    <path d="m386 344 44 5-7 21-42-6 5-20Z" fill="#E8C08B" stroke="#754A2D" stroke-width="3"/>
+    <circle cx="283" cy="228" r="24" fill="#F6E6D0" stroke="#77502F" stroke-width="5"/><circle cx="283" cy="228" r="9" fill="#AF7040"/>
+    <circle cx="371" cy="279" r="21" fill="#F3DFC3" stroke="#77502F" stroke-width="5"/><circle cx="371" cy="279" r="8" fill="#AF7040"/>
+    <circle cx="402" cy="307" r="17" fill="#E8C38F" stroke="#77502F" stroke-width="4"/><circle cx="402" cy="307" r="6" fill="#68452C"/>
+    <path d="m414 368-7 17m18-16 7 14m-27-13-13 11" stroke="#614735" stroke-width="5" stroke-linecap="round"/>
+    </g>
+    <path d="M221 391h49v-28l-13-13h-23l-13 13v28Z" fill="#F8E9D4" stroke="#986A42" stroke-width="2"/><path d="M231 363h29v28h-29z" fill="#B77B47"/><path d="M236 368h19v18h-19z" fill="#F6EAD8"/>
+    <path d="M339 386h45v-24h-45z" fill="#E6D1B5" stroke="#8D6846" stroke-width="2"/><path d="M347 368h9v10h-9zm16 0h9v10h-9z" fill="#A66B3B"/>
+    <path d="M185 441v20m20-14v20m226-21v21m20-27v20" stroke="#94765A" stroke-width="3"/>
+  </g>
+  <g class="industry-cards industry-card-glow" fill="#FFFCF7" stroke="#D6A06A" stroke-width="1.4">
+    <rect class="manufacturing-card-a" x="139" y="273" width="56" height="54" rx="14"/><rect class="manufacturing-card-b" x="462" y="190" width="58" height="56" rx="14"/><rect class="manufacturing-card-c" x="469" y="320" width="56" height="54" rx="14"/>
+  </g>
+  <g class="industry-icons" stroke="#A96735" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <g class="manufacturing-icon-a"><path d="M154 289h26v24h-26z"/><path d="M159 295h16m-16 6h11m-11 6h16"/></g>
+    <g class="manufacturing-icon-b"><path d="m477 211 13-7 13 7v16h-26v-16Z"/><path d="M482 216h4v6h-4zm10 0h4v6h-4z"/></g>
+    <g class="manufacturing-icon-c"><path d="m480 357 6-13 7 8 6-15 8 20"/></g>
+  </g>
+</svg>

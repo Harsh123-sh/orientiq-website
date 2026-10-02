@@ -9,6 +9,11 @@
                 </a>
                 <p>ORENTIQ designs and builds digital products, AI solutions, and modern technology systems for businesses that want to move faster, operate smarter, and grow with confidence.</p>
                 <div class="footer-social">
+                    {% if site_settings.instagram %}
+                    <a href="{{ site_settings.instagram }}" target="_blank" rel="noopener noreferrer" aria-label="Visit ORENTIQ on Instagram">
+                        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg>
+                    </a>
+                    {% endif %}
                     <a href="#" aria-label="LinkedIn">
                         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V8h4v2a6 6 0 0 1 2-2z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                     </a>
@@ -72,10 +77,116 @@
         <div class="footer-bottom">
             <p>&copy; {% now "Y" %} ORENTIQ. All rights reserved.</p>
             <div class="footer-legal">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Cookie Policy</a>
+                <a href="#orentiq-privacy-policy" data-legal-trigger="privacy" aria-haspopup="dialog">Privacy Policy</a>
+                <a href="#orentiq-terms-of-service" data-legal-trigger="terms" aria-haspopup="dialog">Terms of Service</a>
+                <a href="#orentiq-cookie-policy" data-legal-trigger="cookies" aria-haspopup="dialog">Cookie Policy</a>
             </div>
         </div>
     </div>
 </footer>
+
+<div class="orentiq-legal-modal" data-legal-modal aria-hidden="true" role="presentation">
+    <div class="orentiq-legal-modal__backdrop" data-legal-close></div>
+    <section class="orentiq-legal-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="orentiq-legal-modal-title" tabindex="-1">
+        <div class="orentiq-legal-modal__header">
+            <p class="orentiq-legal-modal__eyebrow">ORENTIQ / LEGAL</p>
+            <h2 id="orentiq-legal-modal-title" class="orentiq-legal-modal__title"></h2>
+            <span class="orentiq-legal-modal__brand" aria-hidden="true">
+                <img src="{% static 'images/brand/orentiq-logo-on-light.png' %}" alt="" class="orentiq-legal-modal__brand-image orentiq-legal-modal__brand-image--light">
+                <img src="{% static 'images/brand/orentiq-logo-on-dark.png' %}" alt="" class="orentiq-legal-modal__brand-image orentiq-legal-modal__brand-image--dark">
+            </span>
+            <button type="button" class="orentiq-legal-modal__close" data-legal-close aria-label="Close legal information">&times;</button>
+        </div>
+        <div class="orentiq-legal-modal__content" data-legal-content tabindex="0"></div>
+    </section>
+</div>
+
+<template data-legal-template="privacy">
+    <p class="orentiq-legal-modal__intro">This Privacy Policy explains how ORENTIQ approaches information shared through this website and its digital services. It is intended to provide clear, general information about our practices.</p>
+    <h3>Information We Collect</h3>
+    <p>We may receive information you choose to provide, such as your name, contact details, project requirements, and messages submitted through forms. We may also receive limited technical information needed to operate and protect the website.</p>
+    <h3>How We Use Information</h3>
+    <p>Information may be used to respond to inquiries, understand project needs, provide requested services, maintain website functionality, and protect our systems.</p>
+    <h3>Information Sharing</h3>
+    <p>ORENTIQ does not sell personal information. Information is shared only when needed to respond to your request, operate the website, meet a legal obligation, or protect our rights and users.</p>
+    <h3>Data Security</h3>
+    <p>We use reasonable administrative and technical measures intended to protect information. No method of transmission or storage can be guaranteed to be completely secure.</p>
+    <h3>Data Retention</h3>
+    <p>Information is retained only for as long as reasonably necessary for the purpose for which it was provided, ongoing business needs, legal obligations, or dispute resolution.</p>
+    <h3>Cookies</h3>
+    <p>This website may use cookies or similar technologies to support essential functionality, remember preferences, and understand how the website is used. See the Cookie Policy for more detail.</p>
+    <h3>Third-Party Services</h3>
+    <p>Some website functions may depend on service providers that help deliver hosting, forms, security, or other requested functionality. Their access is limited to what is needed for those services.</p>
+    <h3>Your Rights</h3>
+    <p>Depending on where you live, you may have rights to request access, correction, deletion, or information about how your personal information is used. Contact us to make a request.</p>
+    <h3>Children's Privacy</h3>
+    <p>This website is not directed to children. We do not knowingly seek personal information from children.</p>
+    <h3>Changes to Privacy Policy</h3>
+    <p>We may update this policy when our practices or legal obligations change. The updated version will be made available through this website.</p>
+    <h3>Contact Us</h3>
+    <p>For questions about this Privacy Policy or a privacy request, please contact ORENTIQ through the Contact page on this website.</p>
+</template>
+
+<template data-legal-template="terms">
+    <p class="orentiq-legal-modal__intro">These Terms of Service describe the general terms for using the ORENTIQ website and engaging with ORENTIQ. By using the website, you agree to these terms.</p>
+    <h3>About ORENTIQ</h3>
+    <p>ORENTIQ designs and builds digital products, AI solutions, and technology systems for businesses.</p>
+    <h3>Use of Website</h3>
+    <p>You may use this website for lawful purposes and in a way that does not impair its operation, security, or availability.</p>
+    <h3>Services</h3>
+    <p>Information about services on this website is general and may change. The scope of any work is defined by the applicable project agreement.</p>
+    <h3>Project Engagement</h3>
+    <p>Project work begins only after the parties agree on the relevant scope, responsibilities, deliverables, timing, and commercial terms.</p>
+    <h3>Quotes &amp; Pricing</h3>
+    <p>Quotes and pricing are discussed for each engagement. A quote is not binding until accepted under an applicable written agreement.</p>
+    <h3>Intellectual Property</h3>
+    <p>Ownership and licenses for project materials are determined by the applicable project agreement. ORENTIQ retains rights in its pre-existing tools, methods, and materials unless agreed otherwise.</p>
+    <h3>Third-Party Services</h3>
+    <p>Projects or website functions may involve third-party services. Their availability and terms are governed by the relevant provider and applicable agreement.</p>
+    <h3>Client Responsibilities</h3>
+    <p>Clients are responsible for providing accurate information, timely feedback, required access, and rights to materials supplied to ORENTIQ.</p>
+    <h3>Prohibited Use</h3>
+    <p>You may not use the website to break the law, infringe rights, introduce malicious code, attempt unauthorized access, or interfere with another person’s use.</p>
+    <h3>Warranties / Service Limitations</h3>
+    <p>The website and its content are provided on an availability basis. Specific warranties, service levels, and acceptance criteria are governed by the applicable project agreement.</p>
+    <h3>Limitation of Liability</h3>
+    <p>To the extent permitted by law, ORENTIQ is not liable for indirect, incidental, special, or consequential loss arising from use of this website. The applicable project agreement may contain additional terms.</p>
+    <h3>Confidentiality</h3>
+    <p>Confidential information shared during a project will be handled according to the applicable agreement or, where no agreement applies, with reasonable care.</p>
+    <h3>Termination</h3>
+    <p>Access to the website or a project engagement may end as allowed by applicable law or the relevant agreement.</p>
+    <h3>Changes to Terms</h3>
+    <p>These terms may be updated from time to time. Continued use of the website after an update indicates acceptance of the revised terms.</p>
+    <h3>Governing Law / Jurisdiction</h3>
+    <p>Governing law and jurisdiction for a project are determined by the applicable agreement. For website use without a separate agreement, applicable law governs.</p>
+    <h3>Contact Us</h3>
+    <p>Questions about these Terms of Service may be sent to ORENTIQ through the Contact page on this website.</p>
+</template>
+
+<template data-legal-template="cookies">
+    <p class="orentiq-legal-modal__intro">This Cookie Policy describes how cookies and similar technologies may be used on the ORENTIQ website.</p>
+    <h3>What Are Cookies?</h3>
+    <p>Cookies are small files stored by a website in a browser. Similar technologies can perform related functions, such as remembering a preference or supporting a session.</p>
+    <h3>Why ORENTIQ Uses Cookies</h3>
+    <p>Cookies may help the website function, remember choices, maintain security, and provide information about website use.</p>
+    <h3>Types of Cookies</h3>
+    <p>The website may use cookies that are necessary for operation and cookies that support optional preferences or measurement, where available.</p>
+    <h3>Essential Cookies</h3>
+    <p>Essential cookies support core website functions, security, and the delivery of requested features. They cannot be disabled through this website without affecting functionality.</p>
+    <h3>Functional Cookies</h3>
+    <p>Functional cookies may remember choices or settings that improve the experience. They are used only where the related feature is available.</p>
+    <h3>Analytics Cookies</h3>
+    <p>Where analytics functionality is enabled, analytics cookies may provide aggregated information about website use. This policy does not name a specific analytics provider because the active provider may vary.</p>
+    <h3>Preference Cookies</h3>
+    <p>Preference cookies may remember choices such as display or theme settings so the website can respond consistently.</p>
+    <h3>Third-Party Cookies</h3>
+    <p>Third-party services used for requested website functionality may set their own cookies under their respective policies. No specific third-party service is identified here unless it is active on the website.</p>
+    <h3>Cookie Duration</h3>
+    <p>Some cookies last only for a browsing session, while others remain until they expire or are deleted. Duration depends on the function of the cookie.</p>
+    <h3>How Users Can Control Cookies</h3>
+    <p>You can manage or delete cookies through your browser settings. Blocking essential cookies may affect how the website works.</p>
+    <h3>Changes to Cookie Policy</h3>
+    <p>We may update this policy when the website or its use of cookies changes. The current version will be available here.</p>
+    <h3>Contact Us</h3>
+    <p>Questions about this Cookie Policy may be sent to ORENTIQ through the Contact page on this website.</p>
+</template>

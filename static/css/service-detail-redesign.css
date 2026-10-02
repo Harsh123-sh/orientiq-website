@@ -61,12 +61,12 @@
 @media (prefers-reduced-motion: reduce) { .service-detail-page .service-detail-title, .service-premium-core, .service-visual-card, .service-premium-visual::after, .visual-ai-orb i, .visual-system-ring { animation: none; }.service-premium-links circle { display: none; } }
 
 /* Open, reference-led composition: the object and capability elements float in the hero. */
-.service-detail-page .service-premium-visual {
+.service-detail-page .service-detail-visual.service-premium-visual {
     min-height: 510px;
     overflow: visible;
     border: 0;
     border-radius: 0;
-    background: radial-gradient(circle at 51% 51%, color-mix(in srgb, var(--color-accent) 15%, transparent), transparent 21%), transparent;
+    background: transparent;
     box-shadow: none;
 }
 .service-detail-page .service-premium-visual::before,
@@ -591,4 +591,14 @@
     .service-detail-page.service-detail--standard .ai-ring,
     .service-detail-page.service-detail--standard .ai-particle { animation:none; }
     .service-detail-page.service-detail--standard .ai-light-sweep { display:none; }
+}
+
+/* Keep the shared hero visual integrated with the page background. */
+.service-detail-page .service-detail-visual.service-premium-visual {
+    background: transparent;
+    background-image: none;
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
 }

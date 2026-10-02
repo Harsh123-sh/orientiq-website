@@ -42,7 +42,7 @@
                     </div>
                 </li>
                 <li><a href="{% url 'products' %}" class="nav-link{% if request.resolver_match.url_name == 'products' or request.resolver_match.url_name == 'product_detail' %} is-active{% endif %}">Products</a></li>
-                <li><a href="{% url 'technologies' %}" class="nav-link{% if request.resolver_match.url_name == 'technologies' %} is-active{% endif %}">Technologies</a></li>
+                <li><a href="{% url 'company_founder' %}" class="nav-link{% if request.resolver_match.url_name == 'company_founder' %} is-active{% endif %}">Founder</a></li>
                 <li class="nav-item has-dropdown">
                     <a href="{% url 'company' %}" class="nav-link{% if request.resolver_match.url_name == 'company' or request.resolver_match.url_name == 'company_about' or request.resolver_match.url_name == 'company_founder' or request.resolver_match.url_name == 'company_process' or request.resolver_match.url_name == 'company_careers' or request.resolver_match.url_name == 'company_contact' %} is-active{% endif %}" aria-haspopup="true" aria-expanded="false">
                         Company
@@ -50,12 +50,12 @@
                     </a>
                     <div class="dropdown">
                         <a href="{% url 'company_about' %}" role="menuitem">About</a>
-                        <a href="{% url 'company_founder' %}" role="menuitem">Founder</a>
+                        <a href="{% url 'technologies' %}" role="menuitem">Technologies</a>
                         <a href="{% url 'company_process' %}" role="menuitem">Process</a>
                         <a href="{% url 'company_careers' %}" role="menuitem">Careers</a>
-                        <a href="{% url 'company_contact' %}" role="menuitem">Contact</a>
                     </div>
                 </li>
+                <li><a href="{% url 'company_contact' %}" class="nav-link{% if request.resolver_match.url_name == 'company_contact' %} is-active{% endif %}">Contact</a></li>
             </ul>
         </nav>
 
@@ -137,7 +137,7 @@
                 </div>
             </li>
             <li><a href="{% url 'products' %}" class="mobile-nav-link">Products</a></li>
-            <li><a href="{% url 'technologies' %}" class="mobile-nav-link">Technologies</a></li>
+            <li><a href="{% url 'company_founder' %}" class="mobile-nav-link">Founder</a></li>
             <li class="mobile-nav-item">
                 <a href="{% url 'company' %}" class="mobile-nav-link" aria-expanded="false">
                     Company
@@ -145,12 +145,12 @@
                 </a>
                 <div class="mobile-submenu">
                     <a href="{% url 'company_about' %}">About</a>
-                    <a href="{% url 'company_founder' %}">Founder</a>
+                    <a href="{% url 'technologies' %}">Technologies</a>
                     <a href="{% url 'company_process' %}">Process</a>
                     <a href="{% url 'company_careers' %}">Careers</a>
-                    <a href="{% url 'company_contact' %}">Contact</a>
                 </div>
             </li>
+            <li><a href="{% url 'company_contact' %}" class="mobile-nav-link">Contact</a></li>
         </ul>
     </nav>
 

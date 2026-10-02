@@ -4,15 +4,26 @@
 {% block title %}Products — ORENTIQ{% endblock %}
 {% block meta_description %}Explore intelligent digital products designed and developed by ORENTIQ to solve real-world business and consumer challenges.{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/products-hero.css' %}?v=ecosystem-hero-2026-10">
+{% endblock %}
+
 {% block content %}
 <!-- ==================== HERO ==================== -->
-<section class="page-hero reveal-up">
+<section class="page-hero reveal-up products-page-hero">
     <div class="container">
-        <span class="eyebrow">ORENTIQ Products</span>
-        <h1>Product ideas built for real-world problems</h1>
-        <p>We are building focused digital products for travel, communities, and business operations — each designed to solve a practical challenge with clarity and long-term value.</p>
-        <div class="flex gap-4 flex-wrap mt-6">
-            <a href="#featured" class="btn btn-primary btn-lg">Explore Products</a>
+        <div class="products-page-hero__layout">
+            <div class="products-page-hero__content">
+                <span class="eyebrow">ORENTIQ Products</span>
+                <h1>Product ideas built for real-world problems</h1>
+                <p>We are building focused digital products for travel, communities, and business operations — each designed to solve a practical challenge with clarity and long-term value.</p>
+                <div class="flex gap-4 flex-wrap mt-6">
+                    <a href="#featured" class="btn btn-primary btn-lg">Explore Products</a>
+                </div>
+            </div>
+            <figure class="products-page-hero__visual">
+                {% include "components/products-ecosystem-visual.html" %}
+            </figure>
         </div>
     </div>
 </section>
@@ -49,23 +60,46 @@
 <section class="section">
     <div class="container">
         {% include "components/section-heading.html" with eyebrow="Product Ecosystem" title="One company, a growing set of product directions" subtitle="How ORENTIQ's product lines fit together across different industries and use cases." align="center" %}
-        <div class="card ecosystem-card">
-            <div class="ecosystem-root">
-                <span class="eyebrow">ORENTIQ</span>
-            </div>
-            <div class="ecosystem-branches">
-                <div class="ecosystem-branch">
+        <div class="ecosystem-card" aria-label="ORENTIQ product ecosystem">
+            <div class="ecosystem-map">
+                <span class="ecosystem-line ecosystem-line--ai" aria-hidden="true"></span>
+                <span class="ecosystem-line ecosystem-line--travel" aria-hidden="true"></span>
+                <span class="ecosystem-line ecosystem-line--property" aria-hidden="true"></span>
+                <span class="ecosystem-node-point ecosystem-node-point--ai" aria-hidden="true"></span>
+                <span class="ecosystem-node-point ecosystem-node-point--travel" aria-hidden="true"></span>
+                <span class="ecosystem-node-point ecosystem-node-point--property" aria-hidden="true"></span>
+                <div class="ecosystem-root">
+                    <span class="ecosystem-root-ring" aria-hidden="true"></span>
+                    <span class="ecosystem-root-glow" aria-hidden="true"></span>
+                    <div class="ecosystem-robot" aria-hidden="true">
+                        <svg viewBox="0 0 160 142" role="presentation">
+                            <path class="robot-shoulders" d="M35 132c4-23 20-34 45-34s41 11 45 34" />
+                            <path class="robot-neck" d="M67 96v14m26-14v14" />
+                            <path class="robot-head" d="M49 25h62l11 13v45l-13 15H51L38 83V38z" />
+                            <path class="robot-panel" d="M50 46h60v27H50z" />
+                            <path class="robot-eye" d="M61 59h13m12 0h13" />
+                            <path class="robot-detail" d="M80 20v-8m-5 0h10M45 55h-8m78 0h8" />
+                            <path class="robot-chin" d="M67 84h26" />
+                        </svg>
+                    </div>
+                    <span class="eyebrow">ORENTIQ</span>
+                    <span class="ecosystem-core-label">INTELLIGENT CORE</span>
+                </div>
+                <a href="{% url 'product_detail' 'business-ai' %}" class="ecosystem-branch ecosystem-branch--ai">
                     <span class="badge">AI & Automation</span>
-                    <a href="{% url 'product_detail' 'business-ai' %}" class="link">Business AI Platform</a>
-                </div>
-                <div class="ecosystem-branch">
+                    <span class="ecosystem-visual ecosystem-visual--ai" aria-hidden="true"><svg viewBox="0 0 56 40"><path d="M8 20h12M36 10l12 10-12 10M20 20h16M20 20l8-10M20 20l8 10"></path><circle cx="8" cy="20" r="3"></circle><circle cx="48" cy="20" r="3"></circle><circle cx="28" cy="10" r="3"></circle><circle cx="28" cy="30" r="3"></circle></svg></span>
+                    <span class="ecosystem-product">Business AI Platform</span>
+                </a>
+                <a href="{% url 'product_detail' 'ai-travel' %}" class="ecosystem-branch ecosystem-branch--travel">
                     <span class="badge">Travel Technology</span>
-                    <a href="{% url 'product_detail' 'ai-travel' %}" class="link">AI Travel Platform</a>
-                </div>
-                <div class="ecosystem-branch">
+                    <span class="ecosystem-visual ecosystem-visual--travel" aria-hidden="true"><svg viewBox="0 0 56 40"><path d="M7 29c9-15 17-15 25-5s11 10 17-13"></path><circle cx="7" cy="29" r="3"></circle><circle cx="32" cy="24" r="3"></circle><circle cx="49" cy="11" r="3"></circle></svg></span>
+                    <span class="ecosystem-product">AI Travel Platform</span>
+                </a>
+                <a href="{% url 'product_detail' 'society-management' %}" class="ecosystem-branch ecosystem-branch--property">
                     <span class="badge">Property Technology</span>
-                    <a href="{% url 'product_detail' 'society-management' %}" class="link">Society Management Platform</a>
-                </div>
+                    <span class="ecosystem-visual ecosystem-visual--property" aria-hidden="true"><svg viewBox="0 0 56 40"><path d="M10 33V15l18-9 18 9v18M18 33V22h20v11M25 15h6M25 20h6M25 25h6"></path><path d="M7 33h42"></path></svg></span>
+                    <span class="ecosystem-product">Society Management Platform</span>
+                </a>
             </div>
         </div>
     </div>

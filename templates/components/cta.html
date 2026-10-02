@@ -6,7 +6,11 @@
                         <h2>{{ title }}</h2>
                         <p class="body-large text-muted">{{ subtitle }}</p>
                         <div class="flex gap-4 flex-wrap mt-6">
+                            {% if primary_mailto %}
+                            <a href="mailto:{{ primary_mailto }}" class="btn btn-primary btn-lg">{{ primary_label|default:"Email Us" }}</a>
+                            {% else %}
                             <a href="{% url 'start_project' %}" class="btn btn-primary btn-lg">{{ primary_label|default:"Start a Project" }}</a>
+                            {% endif %}
                             <a href="{% url 'company_contact' %}" class="btn btn-outline btn-lg">{{ secondary_label|default:"Contact Us" }}</a>
                         </div>
             </div>

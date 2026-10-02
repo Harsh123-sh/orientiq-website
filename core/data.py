@@ -1224,6 +1224,19 @@ INDUSTRIES = [
             },
         ],
     },
+    {
+        "slug": "enterprise",
+        "name": "Enterprise",
+        "tagline": "Industry / Enterprise",
+        "short": "We build scalable digital solutions for enterprises to streamline operations, boost productivity, and drive sustainable growth.",
+        "icon": "enterprise",
+        "challenges": [],
+        "solutions": [],
+        "benefits": [],
+        "relevant_services": [],
+        "use_cases": [],
+        "faqs": [],
+    },
 ]
 
 TECHNOLOGIES = [

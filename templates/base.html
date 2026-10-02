@@ -27,10 +27,12 @@
     <link rel="stylesheet" href="{% static 'css/components.css' %}?v=motion-final">
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}?v=motion-final">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}?v=motion-final">
+    <link rel="stylesheet" href="{% static 'css/legal-modal.css' %}">
     <link rel="stylesheet" href="{% static 'css/animations.css' %}?v=motion-final">
     <link rel="stylesheet" href="{% static 'css/themes.css' %}">
     <link rel="stylesheet" href="{% static 'css/pages.css' %}">
     <link rel="stylesheet" href="{% static 'css/ai-assistant.css' %}?v=motion-final">
+    <link rel="stylesheet" href="{% static 'css/social-actions.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -42,6 +44,8 @@
 
     {% include "components/footer.html" %}
 
+    {% include "components/social-actions.html" %}
+
     {% include "components/ai-assistant.html" %}
 
     <script src="{% static 'js/theme.js' %}"></script>
@@ -49,6 +53,7 @@
     <script src="{% static 'js/navigation.js' %}"></script>
     <script src="{% static 'js/components.js' %}?v=motion-final"></script>
     <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/legal-modal.js' %}"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

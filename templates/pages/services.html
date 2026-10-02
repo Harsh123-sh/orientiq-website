@@ -5,7 +5,7 @@
 {% block meta_description %}Explore ORENTIQ's services — AI & Automation, Web Development, Mobile Development, Software Development, UI/UX Design, ERP, and CRM.{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/services-page.css' %}?v=services-final">
+<link rel="stylesheet" href="{% static 'css/services-page.css' %}?v=services-js-core">
 {% endblock %}
 
 {% block content %}
@@ -22,20 +22,7 @@
                 </div>
                 <p class="services-page-hero__systems" aria-label="AI, Web, Data, and Systems">AI <i aria-hidden="true"></i> WEB <i aria-hidden="true"></i> DATA <i aria-hidden="true"></i> SYSTEMS</p>
             </div>
-            <div class="services-page-hero__visual" aria-label="ORENTIQ digital ecosystem: AI Systems, Web Platforms, Data Foundations, and Business Systems connected to the ORENTIQ digital core">
-                <div class="services-page-hero__grid"></div>
-                <div class="services-page-hero__halo services-page-hero__halo--outer"></div>
-                <div class="services-page-hero__halo services-page-hero__halo--inner"></div>
-                <span class="services-page-hero__connector services-page-hero__connector--ai"></span>
-                <span class="services-page-hero__connector services-page-hero__connector--web"></span>
-                <span class="services-page-hero__connector services-page-hero__connector--data"></span>
-                <span class="services-page-hero__connector services-page-hero__connector--business"></span>
-                <div class="services-page-hero__core"><span class="services-page-hero__core-mark">&#x2318;</span><strong>ORENTIQ</strong><small>digital core</small></div>
-                <div class="services-page-hero__node services-page-hero__node--ai"><i></i><strong>AI Systems</strong><span>intelligence</span></div>
-                <div class="services-page-hero__node services-page-hero__node--web"><i></i><strong>Web Platforms</strong><span>experiences</span></div>
-                <div class="services-page-hero__node services-page-hero__node--data"><i></i><strong>Data Foundations</strong><span>reliability</span></div>
-                <div class="services-page-hero__node services-page-hero__node--business"><i></i><strong>Business Systems</strong><span>operations</span></div>
-            </div>
+            {% include "components/services-premium-hero-visual.html" %}
         </div>
     </section>
 
@@ -53,19 +40,23 @@
 
     <section class="services-section services-showcase">
         <div class="container">
-            <div class="services-transition section-heading reveal-up"><span class="eyebrow">WHAT WE BUILD</span><h2>Digital systems with a clear purpose.</h2><p>From AI-enabled operations to refined customer experiences, every capability is designed to work together and move your business forward.</p></div>
-            {% for service in services|slice:":1" %}
-            <a class="services-feature-card reveal-up" href="{% url 'service_detail' service.slug %}">
-                <div class="services-feature-card__copy"><span class="services-card-index">01 / FEATURED</span><h3>{{ service.name }}</h3><p>{{ service.short }}</p><span class="services-card-link">Explore service <b aria-hidden="true">&#8594;</b></span></div>
-                <div class="services-feature-card__visual" aria-hidden="true"><span class="services-feature-card__line services-feature-card__line--one"></span><span class="services-feature-card__line services-feature-card__line--two"></span><span class="services-feature-card__node services-feature-card__node--one"></span><span class="services-feature-card__node services-feature-card__node--two"></span><span class="services-feature-card__node services-feature-card__node--three"></span><span class="services-feature-card__core"><b>AI</b><i>WORKFLOW</i></span></div>
-            </a>
-            {% endfor %}
-            <div class="services-catalogue">
-                {% for service in services|slice:"1:" %}
-                <a class="services-catalogue-card services-catalogue-card--{{ service.icon }} reveal-up" href="{% url 'service_detail' service.slug %}">
-                    <div class="services-catalogue-card__top"><span>{{ forloop.counter|add:"1"|stringformat:"02d" }}</span><i aria-hidden="true"></i></div><div class="services-catalogue-card__motif" aria-hidden="true"><b></b><i></i><em></em><strong></strong></div><h3>{{ service.name }}</h3><p>{{ service.short }}</p><span class="services-card-link">Learn more <b aria-hidden="true">&#8594;</b></span>
-                </a>
-                {% endfor %}
+            <div class="services-showcase__layout">
+                <div class="services-showcase__intro section-heading reveal-up">
+                    <span class="eyebrow">WHAT WE BUILD</span>
+                    <h2>Digital systems with a clear purpose.</h2>
+                    <p>From AI-enabled operations to refined customer experiences, every capability is designed to work together and move your business forward.</p>
+                </div>
+                <div class="services-showcase__system">
+                    <div class="services-flow" aria-label="ORENTIQ connected service network">
+                        {% for service in services %}
+                        <a class="services-flow__node{% if forloop.first %} is-active{% endif %}" href="{% url 'service_detail' service.slug %}" data-service-index="{{ forloop.counter0 }}" aria-label="{{ service.name }} — {{ service.short }}" title="{{ service.short }}">
+                            <span class="services-flow__index">{{ forloop.counter|stringformat:"02d" }}</span>
+                            <span class="services-flow__name">{{ service.name }}</span>
+                            <span class="services-flow__signal" aria-hidden="true"></span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -146,10 +137,14 @@
     <div class="service-explorer" role="dialog" aria-modal="true" aria-labelledby="service-explorer-title" aria-describedby="service-explorer-description">
         <header class="service-explorer-header">
             <div>
-                <span class="eyebrow">MORE SERVICES</span>
-                <h2 id="service-explorer-title">Explore other capabilities</h2>
-                <p id="service-explorer-description">The complete ORENTIQ service constellation, ready to connect with your next idea.</p>
+                <span class="eyebrow">EXPLORE OUR SERVICES</span>
+                <h2 id="service-explorer-title">Technology built around your business</h2>
+                <p id="service-explorer-description">We design and develop modern websites, applications, software, SaaS platforms, AI solutions, and digital systems tailored to your business needs.</p>
             </div>
+            <span class="orentiq-legal-modal__brand service-explorer-brand" aria-hidden="true">
+                <img src="{% static 'images/brand/orentiq-logo-on-light.png' %}" alt="" class="orentiq-legal-modal__brand-image orentiq-legal-modal__brand-image--light">
+                <img src="{% static 'images/brand/orentiq-logo-on-dark.png' %}" alt="" class="orentiq-legal-modal__brand-image orentiq-legal-modal__brand-image--dark">
+            </span>
             <button type="button" class="service-explorer-close" data-service-explorer-close aria-label="Close service explorer">×</button>
         </header>
         <div class="service-explorer-body">
@@ -176,5 +171,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/services-page.js' %}?v=services-final"></script>
+<script src="{% static 'js/services-page.js' %}?v=services-modal-reference"></script>
 {% endblock %}

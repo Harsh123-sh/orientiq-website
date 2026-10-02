@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 620" fill="none">
+  <defs>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(0 245 -255 0 331 315)" gradientUnits="userSpaceOnUse"><stop stop-color="#E8C395" stop-opacity=".3"/><stop offset="1" stop-color="#E8C395" stop-opacity="0"/></radialGradient>
+    <linearGradient id="pages" x1="195" x2="440" y1="329" y2="401" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFDF8"/><stop offset="1" stop-color="#E9D8C2"/></linearGradient>
+    <linearGradient id="cover" x1="192" x2="452" y1="383" y2="446" gradientUnits="userSpaceOnUse"><stop stop-color="#A45E32"/><stop offset="1" stop-color="#57351F"/></linearGradient>
+    <linearGradient id="gold" x1="267" x2="406" y1="195" y2="274" gradientUnits="userSpaceOnUse"><stop stop-color="#F5D7A8"/><stop offset="1" stop-color="#A96A36"/></linearGradient>
+    <filter id="shadow" x="138" y="92" width="370" height="425" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="16"/></filter>
+  </defs>
+  <style>
+    .industry-aura { animation: industry-aura-breathe 10s ease-in-out infinite alternate; }
+    .industry-orbit { transform-box: view-box; transform-origin: 331px 307px; animation: industry-orbit-turn 90s linear infinite; }
+    .industry-particle { transform-box: fill-box; transform-origin: center; animation: industry-particle-drift 8.5s ease-in-out infinite; }
+    .industry-particle:nth-of-type(2) { animation-delay: -2s; }.industry-particle:nth-of-type(3) { animation-delay: -4s; }.industry-particle:nth-of-type(4) { animation-delay: -6s; }
+    .education-books { animation: education-books-breathe 8.5s ease-in-out infinite; }
+    .education-cap { transform-box: view-box; transform-origin: 326px 250px; animation: education-cap-float 9s ease-in-out infinite; }
+    .industry-card-glow { animation: industry-card-glow-breathe 8s ease-in-out infinite alternate; }
+    .education-card-a, .education-icon-a { transform-box: fill-box; transform-origin: center; animation: industry-card-float 7s ease-in-out infinite; }
+    .education-card-b, .education-icon-b { transform-box: fill-box; transform-origin: center; animation: industry-card-float 7.5s ease-in-out infinite; animation-delay: -2.4s; }
+    .education-card-c, .education-icon-c { transform-box: fill-box; transform-origin: center; animation: industry-card-float 7.2s ease-in-out infinite; animation-delay: -4.3s; }
+    @keyframes industry-aura-breathe { from { opacity: .88; } to { opacity: 1; } }
+    @keyframes industry-orbit-turn { to { transform: rotate(360deg); } }
+    @keyframes industry-particle-drift { 0%, 100% { opacity: .7; transform: translateY(0) scale(1); } 50% { opacity: .95; transform: translateY(-1.25px) scale(1.06); } }
+    @keyframes industry-card-glow-breathe { from { opacity: .82; } to { opacity: 1; } }
+    @keyframes industry-card-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.25px); } }
+    @keyframes education-books-breathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.25px); } }
+    @keyframes education-cap-float { 0%, 100% { transform: translate(0, 0) rotate(0); } 50% { transform: translateY(-.8px) rotate(.12deg); } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+  <ellipse class="industry-aura" cx="331" cy="307" fill="url(#glow)" rx="245" ry="242"/>
+  <g class="industry-orbit" stroke="#C98343" stroke-linecap="round" opacity=".45">
+    <ellipse cx="331" cy="307" rx="209" ry="174" transform="rotate(28 331 307)" stroke-dasharray="2 7"/>
+    <path d="M142 210c49-82 129-125 222-124m103 367c-68 57-154 76-235 48"/>
+    <circle class="industry-particle" cx="167" cy="161" r="3" fill="#C98343"/><circle class="industry-particle" cx="480" cy="201" r="3" fill="#C98343"/><circle class="industry-particle" cx="428" cy="477" r="2.5" fill="#C98343"/><circle class="industry-particle" cx="122" cy="365" r="2.5" fill="#C98343"/>
+  </g>
+  <ellipse cx="325" cy="477" fill="#6A472A" opacity=".16" rx="149" ry="20"/>
+  <g filter="url(#shadow)" opacity=".18"><path fill="#68472C" d="M183 271h278v184H183z"/></g>
+  <g class="education-main">
+    <g class="education-books">
+    <path d="M199 400 319 372l131 29-121 33-130-34Z" fill="url(#cover)" stroke="#714322" stroke-width="2"/>
+    <path d="m201 391 118-28 130 29-121 31-127-32Z" fill="url(#pages)" stroke="#B89B79" stroke-width="2"/>
+    <path d="m213 382 107-25 108 25-108 27-107-27Z" fill="#FAF5EB" stroke="#D9C5A9" stroke-width="1.5"/>
+    <path d="M195 352 311 324l146 32-127 33-135-37Z" fill="#655047" stroke="#46372F" stroke-width="2"/>
+    <path d="m204 343 108-26 128 28-120 31-116-33Z" fill="url(#pages)" stroke="#B89B79" stroke-width="2"/>
+    <path d="m218 333 94-23 107 24-109 28-92-29Z" fill="#FFFCF5" stroke="#D9C5A9" stroke-width="1.5"/>
+    <path d="m183 304 116-34 155 35-132 40-139-41Z" fill="url(#cover)" stroke="#714322" stroke-width="2"/>
+    <path d="m193 294 106-31 135 31-113 35-128-35Z" fill="url(#pages)" stroke="#B89B79" stroke-width="2"/>
+    <path d="m208 285 90-25 114 26-95 29-109-30Z" fill="#FFFDF8" stroke="#D9C5A9" stroke-width="1.5"/>
+    <path d="M318 261v103m-6-104v105" stroke="#A5784F" stroke-opacity=".55" stroke-width="2"/>
+    </g>
+    <g class="education-cap">
+    <path d="M296 260c4-18 15-29 31-29 17 0 28 11 31 29l-31 10-31-10Z" fill="url(#gold)" stroke="#A96A36" stroke-width="2"/>
+    <path d="m292 257 35-38 39 38-39 13-35-13Z" fill="#49372A" stroke="#B8793F" stroke-width="2"/>
+    <path d="M326 220v-19" stroke="#A96A36" stroke-width="3" stroke-linecap="round"/><circle cx="326" cy="198" r="4" fill="#D79A55"/>
+    <path d="m362 257 25-8v41l-25-8v-25Z" fill="#A96838"/><path d="m387 249 3-9 4 9v42l-4 8-3-8v-42Z" fill="#D89B55"/>
+    </g>
+  </g>
+  <g class="industry-cards industry-card-glow" fill="#FFFCF7" stroke="#D6A06A" stroke-width="1.4">
+    <rect class="education-card-a" x="136" y="205" width="58" height="55" rx="14"/><rect class="education-card-b" x="457" y="157" width="59" height="56" rx="14"/><rect class="education-card-c" x="464" y="354" width="56" height="54" rx="14"/>
+  </g>
+  <g class="industry-icons" stroke="#A96735" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <g class="education-icon-a"><path d="M151 221c8-6 14-5 19 1 6-6 12-7 19-1v25c-7-5-13-4-19 1-5-5-11-6-19-1v-25Z"/><path d="M170 222v24"/></g>
+    <g class="education-icon-b"><path d="m472 177 15-8 15 8-15 8-15-8Z"/><path d="M478 181v9c6 5 13 5 19 0v-9m-10 5v6"/></g>
+    <g class="education-icon-c"><rect x="478" y="369" width="27" height="22" rx="4"/><path d="m484 380 5 5 10-11"/></g>
+  </g>
+</svg>

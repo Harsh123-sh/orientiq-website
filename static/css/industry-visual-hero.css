@@ -1,0 +1,227 @@
+.industry-visual-hero {
+    display: grid;
+    align-items: center;
+    padding-block: clamp(4rem, 7vw, 7rem) clamp(3rem, 5vw, 5rem);
+    background: linear-gradient(112deg, var(--color-surface-elevated), var(--color-bg) 72%);
+}
+
+.industry-visual-hero::before,
+.industry-visual-hero::after {
+    content: none;
+}
+
+.industry-visual-hero .container {
+    width: 100%;
+}
+
+.industry-visual-hero__layout {
+    display: grid;
+    grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+    align-items: center;
+    gap: clamp(1.25rem, 3vw, 3.5rem);
+}
+
+.industry-visual-hero__content {
+    position: relative;
+    z-index: 2;
+    max-width: 620px;
+}
+
+.industry-visual-hero__content .eyebrow {
+    display: inline-flex;
+    margin-bottom: var(--space-5);
+}
+
+.industry-visual-hero__content h1 {
+    max-width: 650px;
+    margin-bottom: var(--space-5);
+    font-family: var(--font-sans);
+    font-size: clamp(3.4rem, 5.4vw, 5.8rem);
+    font-weight: 700;
+    letter-spacing: -.045em;
+    line-height: .96;
+}
+
+.industry-visual-hero__content p {
+    max-width: 570px;
+    color: var(--color-text-muted);
+    font-size: var(--text-body-large);
+    line-height: 1.7;
+}
+
+.industry-visual-hero__visual {
+    position: relative;
+    min-width: 0;
+    width: 100%;
+    max-width: 660px;
+    aspect-ratio: 640 / 620;
+    margin: 0 auto;
+    isolation: isolate;
+}
+
+.industry-visual-hero__visual::before {
+    position: absolute;
+    z-index: -1;
+    inset: 14% 8%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(213, 157, 95, .22), rgba(213, 157, 95, .08) 42%, transparent 72%);
+    content: "";
+    filter: blur(22px);
+    animation: industry-glow 9s ease-in-out infinite alternate;
+}
+
+.industry-visual-hero__visual img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 22px 30px rgba(101, 68, 39, .13));
+    animation: industry-float 12s ease-in-out infinite;
+}
+
+.industry-visual-hero--healthcare .industry-visual-hero__visual {
+    --healthcare-float-x: 1px;
+    --healthcare-float-y: 4px;
+}
+
+.industry-visual-hero--healthcare .industry-visual-hero__visual::before {
+    animation: healthcare-glow 10s ease-in-out infinite alternate;
+}
+
+.industry-visual-hero--healthcare .industry-visual-hero__visual img {
+    animation: healthcare-float 7.5s ease-in-out infinite;
+}
+
+.industry-visual-hero--travel .industry-visual-hero__visual { --industry-hero-x: .8px; --industry-hero-y: 3.5px; --industry-hero-scale: 1.003; --industry-hero-duration: 8s; --industry-glow-duration: 10s; }
+.industry-visual-hero--manufacturing .industry-visual-hero__visual { --industry-hero-x: .4px; --industry-hero-y: 2.5px; --industry-hero-scale: 1.002; --industry-hero-duration: 8.5s; --industry-glow-duration: 11s; }
+.industry-visual-hero--startups .industry-visual-hero__visual { --industry-hero-x: .7px; --industry-hero-y: 3px; --industry-hero-scale: 1.003; --industry-hero-duration: 7.8s; --industry-glow-duration: 9.5s; }
+.industry-visual-hero--education .industry-visual-hero__visual { --industry-hero-x: .5px; --industry-hero-y: 3px; --industry-hero-scale: 1.002; --industry-hero-duration: 8.2s; --industry-glow-duration: 10s; }
+.industry-visual-hero--enterprise .industry-visual-hero__visual { --industry-hero-x: .3px; --industry-hero-y: 1.8px; --industry-hero-scale: 1.0015; --industry-hero-duration: 9s; --industry-glow-duration: 12s; }
+
+.industry-visual-hero--travel .industry-visual-hero__visual::before,
+.industry-visual-hero--manufacturing .industry-visual-hero__visual::before,
+.industry-visual-hero--startups .industry-visual-hero__visual::before,
+.industry-visual-hero--education .industry-visual-hero__visual::before,
+.industry-visual-hero--enterprise .industry-visual-hero__visual::before {
+    animation: industry-hero-glow var(--industry-glow-duration) ease-in-out infinite alternate;
+}
+
+.industry-visual-hero--travel .industry-visual-hero__visual img,
+.industry-visual-hero--manufacturing .industry-visual-hero__visual img,
+.industry-visual-hero--startups .industry-visual-hero__visual img,
+.industry-visual-hero--education .industry-visual-hero__visual img,
+.industry-visual-hero--enterprise .industry-visual-hero__visual img {
+    animation: industry-hero-float var(--industry-hero-duration) ease-in-out infinite;
+}
+
+@keyframes industry-hero-float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(var(--industry-hero-x), calc(var(--industry-hero-y) * -1)) scale(var(--industry-hero-scale)); }
+}
+
+@keyframes industry-hero-glow {
+    from { opacity: .72; transform: scale(.99); }
+    to { opacity: .86; transform: scale(1.015); }
+}
+
+@keyframes healthcare-float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(var(--healthcare-float-x), calc(var(--healthcare-float-y) * -1)) scale(1.004) rotate(.08deg); }
+}
+
+@keyframes healthcare-glow {
+    from { opacity: .72; transform: scale(.99); }
+    to { opacity: .86; transform: scale(1.015); }
+}
+
+@keyframes industry-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes industry-glow {
+    from { opacity: .62; transform: scale(.96); }
+    to { opacity: .9; transform: scale(1.04); }
+}
+
+@media (max-width: 1100px) {
+    .industry-visual-hero__layout {
+        gap: 1.25rem;
+    }
+}
+
+@media (max-width: 820px) {
+    .industry-visual-hero {
+        padding-block: 4rem 3rem;
+    }
+
+    .industry-visual-hero__layout {
+        grid-template-columns: 1fr;
+        gap: .5rem;
+    }
+
+    .industry-visual-hero__content {
+        max-width: 680px;
+    }
+
+    .industry-visual-hero__content h1 {
+        font-size: clamp(3.2rem, 8vw, 4.8rem);
+    }
+
+    .industry-visual-hero__visual {
+        width: min(100%, 540px);
+    }
+}
+
+@media (max-width: 560px) {
+    .industry-visual-hero {
+        padding-block: 3rem 2rem;
+    }
+
+    .industry-visual-hero__content h1 {
+        font-size: clamp(2.35rem, 10vw, 3.5rem);
+    }
+
+    .industry-visual-hero__content p {
+        font-size: 1rem;
+    }
+
+    .industry-visual-hero__visual {
+        width: min(100%, 420px);
+    }
+}
+
+@media (max-width: 820px) {
+    .industry-visual-hero--healthcare .industry-visual-hero__visual {
+        --healthcare-float-x: .5px;
+        --healthcare-float-y: 2px;
+    }
+
+    .industry-visual-hero--travel .industry-visual-hero__visual { --industry-hero-x: .4px; --industry-hero-y: 1.75px; }
+    .industry-visual-hero--manufacturing .industry-visual-hero__visual { --industry-hero-x: .2px; --industry-hero-y: 1.25px; }
+    .industry-visual-hero--startups .industry-visual-hero__visual { --industry-hero-x: .35px; --industry-hero-y: 1.5px; }
+    .industry-visual-hero--education .industry-visual-hero__visual { --industry-hero-x: .25px; --industry-hero-y: 1.5px; }
+    .industry-visual-hero--enterprise .industry-visual-hero__visual { --industry-hero-x: .15px; --industry-hero-y: .9px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .industry-visual-hero__visual::before,
+    .industry-visual-hero__visual img,
+    .industry-visual-hero--healthcare .industry-visual-hero__visual::before,
+    .industry-visual-hero--healthcare .industry-visual-hero__visual img {
+        animation: none;
+    }
+
+    .industry-visual-hero--travel .industry-visual-hero__visual::before,
+    .industry-visual-hero--manufacturing .industry-visual-hero__visual::before,
+    .industry-visual-hero--startups .industry-visual-hero__visual::before,
+    .industry-visual-hero--education .industry-visual-hero__visual::before,
+    .industry-visual-hero--enterprise .industry-visual-hero__visual::before,
+    .industry-visual-hero--travel .industry-visual-hero__visual img,
+    .industry-visual-hero--manufacturing .industry-visual-hero__visual img,
+    .industry-visual-hero--startups .industry-visual-hero__visual img,
+    .industry-visual-hero--education .industry-visual-hero__visual img,
+    .industry-visual-hero--enterprise .industry-visual-hero__visual img {
+        animation: none;
+    }
+}
