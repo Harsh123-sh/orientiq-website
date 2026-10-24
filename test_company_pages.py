@@ -23,16 +23,16 @@ print("=" * 60)
 all_pass = True
 for route, name in company_routes:
     resp = client.get(route)
-    status = "✓" if resp.status_code == 200 else "✗"
+    status = "[OK]" if resp.status_code == 200 else "[FAIL]"
     if resp.status_code != 200:
         all_pass = False
     print(f"{status} {name:<20} {route:<25} {resp.status_code}")
 
 print("=" * 60)
 if all_pass:
-    print("✓ All Company pages return 200")
+    print("[OK] All Company pages return 200")
 else:
-    print("✗ Some pages failed")
+    print("[FAIL] Some pages failed")
 
 # Check for problematic content in careers page
 print("\nVerifying Careers page content:")
@@ -70,13 +70,13 @@ for phrase in good_phrases:
         found_good_phrases.append(phrase)
 
 if found_bad_phrases:
-    print(f"✗ Found old job listings: {', '.join(found_bad_phrases)}")
+    print(f"[FAIL] Found old job listings: {', '.join(found_bad_phrases)}")
     all_pass = False
 else:
-    print("✓ No old job listings found")
+    print("[OK] No old job listings found")
 
 for phrase in good_phrases:
-    status = "✓" if phrase in careers_content else "✗"
+    status = "[OK]" if phrase in careers_content else "[FAIL]"
     print(f"{status} '{phrase}' present")
 
 print("\nVerifying Process page content:")
@@ -99,10 +99,10 @@ for phrase in bad_process:
         found_bad_process.append(phrase)
 
 if found_bad_process:
-    print(f"✗ Found unsupported claims: {', '.join(found_bad_process)}")
+    print(f"[FAIL] Found unsupported claims: {', '.join(found_bad_process)}")
     all_pass = False
 else:
-    print("✓ No unsupported claims found")
+    print("[OK] No unsupported claims found")
 
 # SHOULD contain qualified language
 good_process = [
@@ -111,11 +111,11 @@ good_process = [
 ]
 
 for phrase in good_process:
-    status = "✓" if phrase in process_content else "✗"
+    status = "[OK]" if phrase in process_content else "[FAIL]"
     print(f"{status} '{phrase}' present")
 
 print("\n" + "=" * 60)
 if all_pass:
-    print("✓✓✓ All verifications passed!")
+    print("[OK] All verifications passed!")
 else:
-    print("✗✗✗ Some verifications failed")
+    print("[FAIL] Some verifications failed")

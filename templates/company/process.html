@@ -1,57 +1,20 @@
 {% extends "base.html" %}
 {% load static %}
-
-{% block title %}Our Process — ORENTIQ{% endblock %}
-{% block meta_description %}Learn about ORENTIQ's proven process — Discovery, Strategy, Design, Development, Launch, and Growth.{% endblock %}
-
+{% block title %}Our Process &mdash; ORENTIQ{% endblock %}
+{% block meta_description %}Learn about ORENTIQ's proven process &mdash; Discovery, Strategy, Design, Development, Launch, and Growth.{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/company-process.css' %}?v=1"><link rel="stylesheet" href="{% static 'css/company-process-hero.css' %}?v=5">{% endblock %}
 {% block content %}
-<!-- ==================== HERO ==================== -->
-<section class="page-hero reveal-up">
-    <div class="container">
-        <span class="eyebrow">Company / Process</span>
-        <h1>How we deliver</h1>
-        <p>A transparent, collaborative process from first conversation to long-term growth.</p>
-    </div>
-</section>
-
-<!-- ==================== PROCESS ==================== -->
-<section class="section">
-    <div class="container">
-        <div class="process-grid">
-            {% include "components/process-step.html" with number="01" title="Discovery" description="We understand your goals, users, and constraints through deep collaboration." %}
-            {% include "components/process-step.html" with number="02" title="Strategy" description="We define the architecture, roadmap, and success metrics for your project." %}
-            {% include "components/process-step.html" with number="03" title="Design" description="We craft premium, user-centered experiences that align with your brand." %}
-            {% include "components/process-step.html" with number="04" title="Development" description="We build in transparent, testable increments with regular demos." %}
-            {% include "components/process-step.html" with number="05" title="Launch" description="We deploy carefully with rigorous testing, monitoring, documentation, and structured knowledge transfer." %}
-            {% include "components/process-step.html" with number="06" title="Growth" description="We iterate, optimize, and scale what works based on real data." %}
-        </div>
-    </div>
-</section>
-
-<!-- ==================== WHY IT WORKS ==================== -->
-<section class="section">
-    <div class="container">
-        <div class="grid grid-2">
-            <div>
-                {% include "components/section-heading.html" with eyebrow="Why It Works" title="A process built for results" %}
-                <ul class="feature-list">
-                    <li>Transparent, weekly progress updates</li>
-                    <li>Experienced team focused on your success</li>
-                    <li>Regular demos and feedback loops</li>
-                    <li>Clear milestones and deliverables</li>
-                    <li>Post-launch support and optimization</li>
-                </ul>
-            </div>
-            <div class="grid grid-2">
-                {% include "components/stat-card.html" with value="6" label="Core Phases" %}
-                {% include "components/stat-card.html" with value="Clear" label="Communication" %}
-                {% include "components/stat-card.html" with value="Careful" label="Deployment" %}
-                {% include "components/stat-card.html" with value="Long-term" label="Support" %}
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ==================== CTA ==================== -->
-{% include "components/cta.html" with eyebrow="Let's Begin" title="Ready to build something better?" subtitle="Tell us about your project and we'll show you the path forward." primary_label="Discuss Your Project →" %}
+<div class="process-page">
+<section class="process-hero"><div class="container process-hero__grid"><div class="process-hero__copy reveal-up"><span class="process-eyebrow">COMPANY / PROCESS</span><h1>How we deliver</h1><p class="process-hero__description">A transparent, collaborative process from first conversation to long-term growth.</p><span class="process-hero__label">FROM FIRST BRIEF TO LONG-TERM GROWTH</span></div><div class="process-art reveal-scale" aria-label="Six connected stages from discovery through growth" role="img"><svg class="process-art__lines" viewBox="0 0 500 440" fill="none" aria-hidden="true"><path d="M250 44C355 44 440 129 440 235S355 426 250 426 60 341 60 235 145 44 250 44Z"/><path d="M250 100C324 100 385 161 385 235S324 370 250 370 115 309 115 235 176 100 250 100Z"/></svg><span class="process-art__orbiter" aria-hidden="true"></span><section class="process-art__core"><span>DELIVERY</span><strong>01-06</strong><small>IN MOTION</small></section><ol class="process-art__markers"><li><b>01</b><span>Discover</span></li><li><b>02</b><span>Define</span></li><li><b>03</b><span>Design</span></li><li><b>04</b><span>Build</span></li><li><b>05</b><span>Launch</span></li><li><b>06</b><span>Grow</span></li></ol></div></div></section>
+<section class="process-phases"><div class="container"><div class="process-cards">
+<article class="process-stage"><span>01</span><i aria-hidden="true">&#x2315;</i><h2>Discovery</h2><p>We understand your goals, users, and constraints through deep collaboration.</p></article>
+<article class="process-stage"><span>02</span><i aria-hidden="true">&#x25CE;</i><h2>Strategy</h2><p>We define the architecture, roadmap, and success metrics for your project.</p></article>
+<article class="process-stage"><span>03</span><i aria-hidden="true">&#x25CC;</i><h2>Design</h2><p>We craft premium, user-centered experiences that align with your brand.</p></article>
+<article class="process-stage"><span>04</span><i aria-hidden="true">&lsaquo;/&rsaquo;</i><h2>Development</h2><p>We build in transparent, testable increments with regular demos.</p></article>
+<article class="process-stage"><span>05</span><i aria-hidden="true">&nearr;</i><h2>Launch</h2><p>We deploy carefully with rigorous testing, monitoring, documentation, and structured knowledge transfer.</p></article>
+<article class="process-stage"><span>06</span><i aria-hidden="true">&nearr;</i><h2>Growth</h2><p>We iterate, optimize, and scale what works based on real data.</p></article>
+</div></div></section>
+<section class="process-why"><div class="container process-why__grid"><div class="reveal-up"><span class="process-eyebrow">WHY IT WORKS</span><h2>A process built for results</h2><ul><li>Transparent, weekly progress updates</li><li>Experienced team focused on your success</li><li>Regular demos and feedback loops</li><li>Clear milestones and deliverables</li><li>Post-launch support and optimization</li></ul></div><aside class="process-principles reveal-up"><div class="process-principles__heading"><b>6</b><strong>Core Phases</strong></div><div class="process-principles__list"><div><b>Clear</b><span>Communication</span></div><div><b>Careful</b><span>Deployment</span></div><div><b>Long-term</b><span>Support</span></div></div></aside></div></section>
+<section class="process-cta process-cta--build"><div class="container"><div class="process-cta__card reveal-up"><div class="process-cta__content"><span class="process-eyebrow">LET'S BEGIN</span><h2>Ready to build something better?</h2><p>Tell us about your project and we'll show you the path forward.</p><a href="{% url 'start_project' %}" class="btn">Get Started <span aria-hidden="true">&rarr;</span></a></div><div class="process-cta__visual" aria-hidden="true"><span class="process-cta__glow"></span><i class="process-cta__orbit process-cta__orbit--one"></i><i class="process-cta__orbit process-cta__orbit--two"></i><i class="process-cta__orbit process-cta__orbit--three"></i><b class="process-cta__node process-cta__node--one"></b><b class="process-cta__node process-cta__node--two"></b><span class="process-cta__emblem"><small>ORENTIQ</small><strong>OQ</strong></span></div></div></div></section>
+</div>
 {% endblock %}

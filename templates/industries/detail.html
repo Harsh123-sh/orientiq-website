@@ -7,10 +7,10 @@
 {% block content %}
 {% if industry.slug == "real-estate" %}<div class="real-estate-page">{% endif %}
 <!-- ==================== HERO ==================== -->
-<section class="page-hero reveal-up{% if industry.slug == 'real-estate' %} real-estate-hero{% elif industry.slug == 'healthcare' or industry.slug == 'education' or industry.slug == 'travel' or industry.slug == 'manufacturing' or industry.slug == 'startups' or industry.slug == 'enterprise' %} industry-visual-hero industry-visual-hero--{{ industry.slug }}{% endif %}">
+<section class="page-hero reveal-up{% if industry.slug == 'real-estate' %} real-estate-hero industry-hero--real-estate{% elif industry.slug == 'healthcare' or industry.slug == 'education' or industry.slug == 'travel' or industry.slug == 'manufacturing' or industry.slug == 'startups' or industry.slug == 'enterprise' %} industry-visual-hero industry-visual-hero--{{ industry.slug }}{% endif %}">
     <div class="container">
         {% if industry.slug == "real-estate" %}
-        <link rel="stylesheet" href="{% static 'css/real-estate-hero.css' %}?v=real-estate-editorial-2026">
+        <link rel="stylesheet" href="{% static 'css/real-estate-hero.css' %}?v=real-estate-premium-2026-10">
         <div class="real-estate-hero__layout">
             <div class="real-estate-hero__content">
                 <span class="eyebrow">{{ industry.tagline }}</span>
@@ -21,8 +21,87 @@
                     <a href="{% url 'industries' %}" class="btn btn-outline">All Industries</a>
                 </div>
             </div>
-            <figure class="real-estate-hero__visual">
-                <img src="{% static 'images/real-estate-consultant.jpg' %}" alt="Real estate consultant reviewing a tablet in a bright modern home" width="1800" height="1200" fetchpriority="high" decoding="async">
+            <figure class="real-estate-hero__visual" aria-label="Animated property technology platform visualization">
+                <div class="real-estate-visual">
+                    <div class="real-estate-visual__orbit real-estate-visual__orbit--outer"></div>
+                    <div class="real-estate-visual__orbit real-estate-visual__orbit--inner"></div>
+                    <span class="real-estate-visual__node real-estate-visual__node--one"></span>
+                    <span class="real-estate-visual__node real-estate-visual__node--two"></span>
+                    <span class="real-estate-visual__node real-estate-visual__node--three"></span>
+
+                    <svg class="real-estate-visual__building" viewBox="0 0 500 500" role="img" aria-label="Connected digital property model" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="estateGlass" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0" stop-color="#fffdf9" stop-opacity=".92"/>
+                                <stop offset=".48" stop-color="#ead5c2" stop-opacity=".68"/>
+                                <stop offset="1" stop-color="#c58a64" stop-opacity=".32"/>
+                            </linearGradient>
+                            <linearGradient id="estateSide" x1="0" y1="0" x2="1" y2="1">
+                                <stop stop-color="#b96f3b" stop-opacity=".56"/>
+                                <stop offset="1" stop-color="#8e4f2c" stop-opacity=".22"/>
+                            </linearGradient>
+                            <linearGradient id="estateReflection" x1="0" x2="1">
+                                <stop stop-color="#fff7df" stop-opacity="0"/>
+                                <stop offset=".48" stop-color="#fff7df" stop-opacity=".72"/>
+                                <stop offset=".58" stop-color="#fff7df" stop-opacity="0"/>
+                            </linearGradient>
+                            <filter id="estateShadow" x="-30%" y="-30%" width="160%" height="180%">
+                                <feGaussianBlur stdDeviation="8"/>
+                            </filter>
+                            <clipPath id="estateFacadeClip">
+                                <path d="M147 129 302 82v262l-155 44Z"/>
+                            </clipPath>
+                        </defs>
+                        <ellipse cx="250" cy="405" rx="142" ry="18" fill="#8e5b38" opacity=".16" filter="url(#estateShadow)"/>
+                        <path d="m147 129 155-47 57 43-155 49Z" fill="#fffaf1" stroke="#c58a64" stroke-width="2"/>
+                        <path d="m302 82 57 43v262l-57-43Z" fill="url(#estateSide)" stroke="#b96f3b" stroke-width="2"/>
+                        <path d="M147 129 302 82v262l-155 44Z" fill="url(#estateGlass)" stroke="#c58a64" stroke-width="2"/>
+                        <g clip-path="url(#estateFacadeClip)" fill="none" stroke="#b96f3b" stroke-opacity=".52" stroke-width="2">
+                            <path d="m137 174 174-52M137 220l174-52M137 266l174-52M137 312l174-52M137 358l174-52"/>
+                            <path d="m186 115-7 292M228 102l-7 294M270 89l-7 294"/>
+                        </g>
+                        <g fill="#fff8e7" stroke="#c58a64" stroke-width="1.5">
+                            <rect x="166" y="157" width="22" height="29" rx="2"/>
+                            <rect x="207" y="145" width="22" height="29" rx="2"/>
+                            <rect x="248" y="133" width="22" height="29" rx="2"/>
+                            <rect x="166" y="205" width="22" height="29" rx="2"/>
+                            <rect x="207" y="193" width="22" height="29" rx="2"/>
+                            <rect x="248" y="181" width="22" height="29" rx="2"/>
+                            <rect x="166" y="253" width="22" height="29" rx="2"/>
+                            <rect x="207" y="241" width="22" height="29" rx="2"/>
+                            <rect x="248" y="229" width="22" height="29" rx="2"/>
+                            <rect x="166" y="301" width="22" height="29" rx="2"/>
+                            <rect x="207" y="289" width="22" height="29" rx="2"/>
+                            <rect x="248" y="277" width="22" height="29" rx="2"/>
+                        </g>
+                        <path d="M302 111 340 140v198l-38-29Z" fill="url(#estateReflection)" opacity=".8"/>
+                        <path d="m302 344 57 43-155 47-57-42Z" fill="#b96f3b" opacity=".2" stroke="#c58a64" stroke-width="2"/>
+                        <path d="m212 365 47-14 0 37-47 14Z" fill="#211e1b" opacity=".72" stroke="#c58a64" stroke-width="2"/>
+                        <circle cx="255" cy="78" r="4" fill="#c58a64"/>
+                        <path d="M255 78v-21M255 57l18-7" stroke="#c58a64" stroke-width="2" opacity=".7"/>
+                    </svg>
+
+                    <div class="real-estate-panel real-estate-panel--overview">
+                        <div class="real-estate-panel__heading"><span>PROPERTY OVERVIEW</span><i></i></div>
+                        <strong>18,420 <small>sq ft managed</small></strong>
+                        <div class="real-estate-panel__chart"><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+                        <div class="real-estate-panel__meta"><span>Portfolio health</span><em>94%</em></div>
+                    </div>
+                    <div class="real-estate-panel real-estate-panel--management">
+                        <div class="real-estate-panel__heading"><span>SMART MANAGEMENT</span><i class="is-live"></i></div>
+                        <div class="real-estate-panel__status"><span class="real-estate-panel__check">✓</span><span>Operations connected</span></div>
+                        <div class="real-estate-panel__meter"><span></span></div>
+                        <div class="real-estate-panel__meta"><span>Live occupancy</span><em>82%</em></div>
+                    </div>
+                    <div class="real-estate-panel real-estate-panel--listing">
+                        <span class="real-estate-panel__listing-image"></span>
+                        <div><span>DIGITAL LISTING</span><strong>Park House / 04</strong><small>Available now</small></div>
+                    </div>
+
+                    <span class="real-estate-label real-estate-label--smart">SMART PROPERTY</span>
+                    <span class="real-estate-label real-estate-label--digital">DIGITAL ECOSYSTEM</span>
+                    <span class="real-estate-label real-estate-label--connected">CONNECTED OPERATIONS</span>
+                </div>
             </figure>
         {% elif industry.slug == "healthcare" or industry.slug == "education" or industry.slug == "travel" or industry.slug == "manufacturing" or industry.slug == "startups" or industry.slug == "enterprise" %}
         <link rel="stylesheet" href="{% static 'css/industry-visual-hero.css' %}?v=industry-art-2026-10">

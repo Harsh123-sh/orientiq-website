@@ -5,7 +5,7 @@
 {% block meta_description %}Explore ORENTIQ's services — AI & Automation, Web Development, Mobile Development, Software Development, UI/UX Design, ERP, and CRM.{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/services-page.css' %}?v=services-js-core">
+<link rel="stylesheet" href="{% static 'css/services-page.css' %}?v=services-modal-premium-1">
 {% endblock %}
 
 {% block content %}
@@ -13,12 +13,12 @@
     <section class="services-page-hero reveal-up">
         <div class="container services-page-hero__layout">
             <div class="services-page-hero__content">
-                <span class="services-page-hero__eyebrow">ORENTIQ SERVICES</span>
-                <h1 class="services-page-hero__title">Digital Solutions Built for Your Business</h1>
-                <p class="services-page-hero__description">We design and develop modern websites, applications, software, SaaS platforms, AI solutions, and digital systems tailored to your business needs.</p>
+                <span class="services-page-hero__eyebrow">OUR SERVICES</span>
+                <h1 class="services-page-hero__title">Technology that moves your business forward.</h1>
+                <p class="services-page-hero__description">From intelligent automation to custom software, we build digital solutions designed around your business goals.</p>
                 <div class="services-page-hero__actions">
                     <a href="{% url 'start_project' %}" class="btn btn-primary btn-lg">Start a Project</a>
-                    <a href="#technology-ecosystem" class="btn btn-outline btn-lg">Explore the Ecosystem</a>
+                    <a href="#services-directory" class="btn btn-outline btn-lg">Explore Services <span aria-hidden="true">→</span></a>
                 </div>
                 <p class="services-page-hero__systems" aria-label="AI, Web, Data, and Systems">AI <i aria-hidden="true"></i> WEB <i aria-hidden="true"></i> DATA <i aria-hidden="true"></i> SYSTEMS</p>
             </div>
@@ -38,7 +38,7 @@
         </div>
     </section>
 
-    <section class="services-section services-showcase">
+    <section class="services-section services-showcase" id="services-directory">
         <div class="container">
             <div class="services-showcase__layout">
                 <div class="services-showcase__intro section-heading reveal-up">
@@ -86,7 +86,7 @@
                     <h2>Explore other capabilities</h2>
                     <p>Open the complete ORENTIQ service constellation.</p>
                 </div>
-                <button type="button" class="btn btn-primary btn-lg" data-service-explorer-open>Explore All Services <span aria-hidden="true">→</span></button>
+                <button type="button" class="btn btn-primary btn-lg" data-service-explorer-open aria-haspopup="dialog">Explore Services <span aria-hidden="true">→</span></button>
             </div>
             <div class="services-more-grid">
                 {% for service in services|slice:"4:" %}
@@ -129,25 +129,18 @@
     </section>
 
     <section class="services-final-cta">
-        <div class="container"><div class="services-final-cta__card reveal-up"><span class="eyebrow">START A CONVERSATION</span><h2>Ready to build something that matters?</h2><p>Turn your business requirements into a scalable digital system.</p><a href="{% url 'start_project' %}" class="btn btn-primary btn-lg">Start a Project <span aria-hidden="true">&#8594;</span></a></div></div>
+        <div class="container"><div class="services-final-cta__card reveal-up"><span class="eyebrow">START A CONVERSATION</span><h2>Have a project in mind?</h2><p>Let's discuss how the right technology can help your business grow.</p><a href="{% url 'company_contact' %}" class="btn btn-primary btn-lg">Start a Conversation <span aria-hidden="true">&#8594;</span></a></div></div>
     </section>
 </div>
 
 <div class="service-explorer-backdrop" data-service-explorer aria-hidden="true">
     <div class="service-explorer" role="dialog" aria-modal="true" aria-labelledby="service-explorer-title" aria-describedby="service-explorer-description">
         <header class="service-explorer-header">
-            <div>
-                <span class="eyebrow">EXPLORE OUR SERVICES</span>
-                <h2 id="service-explorer-title">Technology built around your business</h2>
-                <p id="service-explorer-description">We design and develop modern websites, applications, software, SaaS platforms, AI solutions, and digital systems tailored to your business needs.</p>
-            </div>
-            <span class="orentiq-legal-modal__brand service-explorer-brand" aria-hidden="true">
-                <img src="{% static 'images/brand/orentiq-logo-on-light.png' %}" alt="" class="orentiq-legal-modal__brand-image orentiq-legal-modal__brand-image--light">
-                <img src="{% static 'images/brand/orentiq-logo-on-dark.png' %}" alt="" class="orentiq-legal-modal__brand-image orentiq-legal-modal__brand-image--dark">
-            </span>
-            <button type="button" class="service-explorer-close" data-service-explorer-close aria-label="Close service explorer">×</button>
+            <div><span class="eyebrow">OUR SERVICES</span><h2 id="service-explorer-title"><span class="service-explorer-compact-copy">Explore Our Services</span><span class="service-explorer-expanded-copy">Build. Innovate. Grow.</span></h2><p id="service-explorer-description"><span class="service-explorer-compact-copy">Discover our complete range of services designed to help your business grow, innovate and stay ahead.</span><span class="service-explorer-expanded-copy">End-to-end digital solutions to transform your ideas into powerful products.</span></p></div>
+            <button type="button" class="service-explorer-close" data-service-explorer-close aria-label="Close services panel">&times;</button>
         </header>
         <div class="service-explorer-body">
+            <div class="service-explorer-compact-action"><button type="button" class="btn service-explorer-primary" data-service-explorer-expand>View All Services <span aria-hidden="true">&rarr;</span></button></div>
             <div class="service-explorer-grid">
                 {% for service in services %}
                 <a class="service-explorer-card" href="{% url 'service_detail' service.slug %}">
@@ -161,15 +154,16 @@
                         {% elif service.icon == "crm" %}<circle cx="9" cy="8" r="3"></circle><path d="M3 20a6 6 0 0 1 12 0M16 11a3 3 0 1 1 0 6M16 14h5"></path>
                         {% else %}<circle cx="12" cy="12" r="9"></circle>{% endif %}
                     </svg></span>
-                    <span><strong>{{ service.name }}</strong><span>{{ service.icon|title }} · {{ service.tagline }}</span></span>
+                    <span><strong>{{ service.name }}</strong><span>{{ service.short }}</span></span>
                 </a>
                 {% endfor %}
             </div>
+            <div class="service-explorer-footer"><a href="{% url 'company_contact' %}" class="btn service-explorer-primary" data-service-explorer-contact>Get in Touch <span aria-hidden="true">&rarr;</span></a></div>
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/services-page.js' %}?v=services-modal-reference"></script>
+<script src="{% static 'js/services-page.js' %}?v=services-modal-premium-2"></script>
 {% endblock %}

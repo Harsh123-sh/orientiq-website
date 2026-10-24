@@ -2,29 +2,51 @@
 (function () {
     "use strict";
 
-    var trigger = document.querySelector("[data-service-explorer-open]");
+    var triggers = Array.prototype.slice.call(document.querySelectorAll("[data-service-explorer-open]"));
     var backdrop = document.querySelector("[data-service-explorer]");
-    if (!trigger || !backdrop) return;
+    if (!triggers.length || !backdrop) return;
 
-    if (document.querySelector(".services-page") && backdrop.parentElement !== document.body) {
+    // Keep the fixed overlay out of page-specific overflow/transform contexts.
+    // This is required on service details as well as the overview page.
+    if (backdrop.parentElement !== document.body) {
         document.body.appendChild(backdrop);
     }
 
     var dialog = backdrop.querySelector("[role='dialog']");
     var closeButton = backdrop.querySelector("[data-service-explorer-close]");
+    var expandButton = backdrop.querySelector("[data-service-explorer-expand]");
+    var contactButton = backdrop.querySelector("[data-service-explorer-contact]");
     var lastFocused = null;
-    var scrollPosition = 0;
     var focusableSelector = "a[href], button:not([disabled]), [tabindex]:not([tabindex='-1'])";
 
-    function openExplorer() {
+    function focusWithoutScrolling(element) {
+        if (!element) return;
+        try {
+            element.focus({ preventScroll: true });
+        } catch (error) {
+            element.focus();
+        }
+    }
+
+    function setExpanded(expanded) {
+        backdrop.classList.toggle("is-expanded", expanded);
+        if (expanded) {
+            dialog.setAttribute("aria-label", "All ORENTIQ services");
+        } else {
+            dialog.removeAttribute("aria-label");
+        }
+    }
+
+    function openExplorer(event) {
+        if (event) event.preventDefault();
         lastFocused = document.activeElement;
-        scrollPosition = window.scrollY;
+        setExpanded(false);
         var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
         document.body.style.paddingRight = scrollbarWidth ? scrollbarWidth + "px" : "";
         backdrop.classList.add("is-open");
         backdrop.setAttribute("aria-hidden", "false");
         document.body.classList.add("service-explorer-open");
-        closeButton.focus();
+        focusWithoutScrolling(closeButton);
     }
 
     function closeExplorer() {
@@ -32,12 +54,21 @@
         backdrop.setAttribute("aria-hidden", "true");
         document.body.classList.remove("service-explorer-open");
         document.body.style.paddingRight = "";
-        window.scrollTo(0, scrollPosition);
-        if (lastFocused) lastFocused.focus();
+        setExpanded(false);
+        focusWithoutScrolling(lastFocused);
     }
 
-    trigger.addEventListener("click", openExplorer);
+    triggers.forEach(function (trigger) {
+        trigger.addEventListener("click", openExplorer);
+    });
     closeButton.addEventListener("click", closeExplorer);
+    if (expandButton) {
+        expandButton.addEventListener("click", function () {
+            setExpanded(true);
+            focusWithoutScrolling(closeButton);
+        });
+    }
+    if (contactButton) contactButton.addEventListener("click", closeExplorer);
     backdrop.addEventListener("click", function (event) {
         if (event.target === backdrop) closeExplorer();
     });

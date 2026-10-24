@@ -1,107 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Start a Project — ORENTIQ{% endblock %}
+{% block title %}Start a Project &mdash; ORENTIQ{% endblock %}
 {% block meta_description %}Tell us about your project and ORENTIQ will show you how we can bring it to life.{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/start-project.css' %}?v=1">{% endblock %}
 
 {% block content %}
 {% include "components/success-modal.html" with modal_id="project-success-modal" title_id="project-success-title" description_id="project-success-description" button_id="project-success-continue" heading="Thank you for your project inquiry." description="We'll get back to you within one business day." message="Thank you! Your project inquiry has been received. We'll get back to you within one business day." %}
-<!-- ==================== HERO ==================== -->
-<section class="page-hero reveal-up">
-    <div class="container">
-        <span class="eyebrow">Start a Project</span>
-        <h1>Let's build what's next</h1>
-        <p>Tell us about your project and we'll get back to you within one business day.</p>
-    </div>
-</section>
+<main class="project-page">
+    <section class="project-hero"><div class="container project-hero__grid"><div class="project-hero__copy reveal-up"><span class="project-eyebrow">START A PROJECT</span><h1>Let's build what's next</h1><p>Tell us about your project and we'll get back to you within one business day.</p></div><div class="project-visual reveal-scale" aria-label="A project moves from an idea through design and development to launch" role="img"><i class="project-orbit project-orbit--wide"></i><i class="project-orbit project-orbit--tall"></i><i class="project-orbit project-orbit--inner"></i><div class="project-visual__core"><span>IDEA</span><strong>OQ</strong><small>IN PROGRESS</small></div><ol class="project-visual__path"><li><b>01</b><span>Idea</span></li><li><b>02</b><span>Design</span></li><li><b>03</b><span>Build</span></li><li><b>04</b><span>Launch</span></li></ol></div></div></section>
 
-<!-- ==================== PROJECT FORM ==================== -->
-<section class="section">
-    <div class="container">
-        <div class="grid grid-2">
-            <div>
-                {% include "components/section-heading.html" with eyebrow="Project Inquiry" title="Tell us about your project" subtitle="The more detail you share, the better we can prepare." %}
-                <ul class="feature-list">
-                    <li>Response within one business day</li>
-                    <li>Free initial consultation</li>
-                    <li>No obligation, no pressure</li>
-                    <li>NDA available on request</li>
-                </ul>
-            </div>
-            <div class="card">
-                <form method="post" action="{% url 'start_project' %}" class="project-form">
-                    {% csrf_token %}
-                    <div class="grid grid-2">
-                        <div class="form-group">
-                            <label class="form-label" for="sp-name">Name <span class="required">*</span></label>
-                            <input type="text" id="sp-name" name="name" class="form-control" placeholder="Your name" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="sp-company">Company</label>
-                            <input type="text" id="sp-company" name="company" class="form-control" placeholder="Company name">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="sp-email">Email <span class="required">*</span></label>
-                            <input type="email" id="sp-email" name="email" class="form-control" placeholder="you@company.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="sp-phone">Phone</label>
-                            <input type="tel" id="sp-phone" name="phone" class="form-control" placeholder="+1 555 000 0000">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="sp-type">Project Type <span class="required">*</span></label>
-                            <select id="sp-type" name="project_type" class="form-control" required>
-                                <option value="">Select a type</option>
-                                <option>AI & Automation</option>
-                                <option>Web Development</option>
-                                <option>Mobile Development</option>
-                                <option>Software Development</option>
-                                <option>UI/UX Design</option>
-                                <option>ERP — Enterprise Resource Planning</option>
-                                <option>CRM — Customer Relationship Management</option>
-                                <option>Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="sp-budget">Budget Range</label>
-                            <select id="sp-budget" name="budget" class="form-control">
-                                <option value="">Select a range</option>
-                                <option>Under $10k</option>
-                                <option>$10k – $25k</option>
-                                <option>$25k – $50k</option>
-                                <option>$50k – $100k</option>
-                                <option>$100k+</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="sp-timeline">Timeline</label>
-                            <select id="sp-timeline" name="timeline" class="form-control">
-                                <option value="">Select a timeline</option>
-                                <option>ASAP</option>
-                                <option>1–3 months</option>
-                                <option>3–6 months</option>
-                                <option>6+ months</option>
-                                <option>Flexible</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="sp-message">Message <span class="required">*</span></label>
-                            <textarea id="sp-message" name="message" class="form-control" placeholder="Tell us about your project" required></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="checkbox-group">
-                            <input type="checkbox" name="privacy" required>
-                            <span>I agree to the privacy policy and consent to being contacted.</span>
-                        </label>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-lg">Submit Project</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
+    <section class="project-inquiry"><div class="container project-inquiry__grid"><aside class="project-inquiry__intro"><span class="project-eyebrow">PROJECT INQUIRY</span><h2>Tell us about your project</h2><p>The more detail you share, the better we can prepare.</p><ul><li>Response within one business day</li><li>Free initial consultation</li><li>No obligation, no pressure</li><li>NDA available on request</li></ul></aside><div class="project-form-shell"><form method="post" action="{% url 'start_project' %}" class="project-form">{% csrf_token %}<div class="project-form__grid"><div class="form-group"><label class="form-label" for="sp-name">Name <span class="required">*</span></label><input type="text" id="sp-name" name="name" class="form-control" placeholder="Your name" required></div><div class="form-group"><label class="form-label" for="sp-company">Company</label><input type="text" id="sp-company" name="company" class="form-control" placeholder="Company name"></div><div class="form-group"><label class="form-label" for="sp-email">Email <span class="required">*</span></label><input type="email" id="sp-email" name="email" class="form-control" placeholder="you@company.com" required></div><div class="form-group"><label class="form-label" for="sp-phone">Phone</label><input type="tel" id="sp-phone" name="phone" class="form-control" placeholder="+1 555 000 0000"></div><div class="form-group"><label class="form-label" for="sp-type">Project Type <span class="required">*</span></label><select id="sp-type" name="project_type" class="form-control" required><option value="">Select a type</option><option>AI &amp; Automation</option><option>Web Development</option><option>Mobile Development</option><option>Software Development</option><option>UI/UX Design</option><option>ERP &mdash; Enterprise Resource Planning</option><option>CRM &mdash; Customer Relationship Management</option><option>Other</option></select></div><div class="form-group"><label class="form-label" for="sp-budget">Budget Range</label><select id="sp-budget" name="budget" class="form-control"><option value="">Select a range</option><option>Under $10k</option><option>$10k &ndash; $25k</option><option>$25k &ndash; $50k</option><option>$50k &ndash; $100k</option><option>$100k+</option></select></div><div class="form-group project-form__full"><label class="form-label" for="sp-timeline">Timeline</label><select id="sp-timeline" name="timeline" class="form-control"><option value="">Select a timeline</option><option>ASAP</option><option>1&ndash;3 months</option><option>3&ndash;6 months</option><option>6+ months</option><option>Flexible</option></select></div><div class="form-group project-form__full"><label class="form-label" for="sp-message">Message <span class="required">*</span></label><textarea id="sp-message" name="message" class="form-control" placeholder="Tell us about your project" required></textarea></div></div><label class="checkbox-group"><input type="checkbox" name="privacy" required><span>I agree to the privacy policy and consent to being contacted.</span></label><button type="submit" class="btn btn-primary btn-lg">Submit Project <span aria-hidden="true">&rarr;</span></button></form></div></div></section>
+</main>
 
-<!-- ==================== CTA ==================== -->
-{% include "components/cta.html" with eyebrow="Prefer Email?" title="Prefer to reach out directly?" subtitle="Email us at hello@orentiq.com and we'll get back to you." primary_label="Email Us" primary_mailto="hello@orentiq.com" %}
+{% include "components/cta.html" with variant="rose-gold" eyebrow="Prefer Email?" title="Prefer to reach out directly?" subtitle="Email us at hello@orentiq.com and we'll get back to you." primary_label="Email Us" primary_mailto="hello@orentiq.com" %}
 {% endblock %}

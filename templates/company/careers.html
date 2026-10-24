@@ -1,75 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
-
-{% block title %}Careers — ORENTIQ{% endblock %}
-{% block meta_description %}Join the ORENTIQ team — a premium technology and digital solutions company building what's next.{% endblock %}
-
+{% block title %}Careers &mdash; ORENTIQ{% endblock %}
+{% block meta_description %}Future opportunities at ORENTIQ Technologies.{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/company-careers.css' %}?v=future-opportunities-2026-10">{% endblock %}
 {% block content %}
-<!-- ==================== HERO ==================== -->
-<section class="page-hero reveal-up">
-    <div class="container">
-        <span class="eyebrow">Company / Careers</span>
-        <h1>Build what's next with ORENTIQ</h1>
-        <p>ORENTIQ is building a growing technology company focused on intelligent digital products, AI solutions, and modern software systems.</p>
-    </div>
-</section>
-
-<!-- ==================== GROWTH ==================== -->
-<section class="section">
-    <div class="container">
-        <div class="grid grid-2">
-            <div>
-                {% include "components/section-heading.html" with eyebrow="Growing with us" title="We're building thoughtfully" %}
-                <p class="body text-muted mb-4">At this stage, we're focused on building strong products, delivering excellent client work, and growing the company intentionally.</p>
-                <p class="body text-muted">As new opportunities and client engagements develop, we'll open roles across engineering, AI, design, cloud, and product management. We value people who care about craft and want to grow with us.</p>
-            </div>
-            <div>
-                {% include "components/section-heading.html" with eyebrow="Why ORENTIQ" title="What we're building" %}
-                <ul class="feature-list">
-                    <li>Intelligent digital products</li>
-                    <li>Premium technology solutions</li>
-                    <li>Client-focused delivery</li>
-                    <li>AI-powered systems</li>
-                    <li>Modern engineering practices</li>
-                    <li>Long-term impact</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ==================== FUTURE OPPORTUNITIES ==================== -->
-<section class="section">
-    <div class="container">
-        {% include "components/section-heading.html" with eyebrow="Future Opportunities" title="Areas we may hire for as we grow" subtitle="These represent potential roles as ORENTIQ expands. New opportunities will be announced as they develop." align="center" %}
-        <div class="grid grid-2">
-            <div class="card">
-                <h4 class="mb-3">Software Engineering</h4>
-                <p class="body-small text-muted">Backend, frontend, and full-stack development with modern technologies.</p>
-            </div>
-            <div class="card">
-                <h4 class="mb-3">AI & Machine Learning</h4>
-                <p class="body-small text-muted">AI systems, machine learning models, and intelligent automation.</p>
-            </div>
-            <div class="card">
-                <h4 class="mb-3">Product & UI/UX Design</h4>
-                <p class="body-small text-muted">Digital product design, user experience, and interface design.</p>
-            </div>
-            <div class="card">
-                <h4 class="mb-3">Platform Engineering</h4>
-                <p class="body-small text-muted">Infrastructure, cloud platforms, and deployment systems.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ==================== STAY CONNECTED ==================== -->
-<section class="section">
-    <div class="container">
-        {% include "components/section-heading.html" with eyebrow="Stay Connected" title="Interested in joining ORENTIQ?" subtitle="Tell us about your background and areas of interest. We'll keep your profile in mind as opportunities develop." align="center" %}
-        <div class="flex-center mt-8">
-            <a href="{% url 'company_contact' %}" class="btn btn-primary btn-lg">Get in Touch →</a>
-        </div>
-    </div>
-</section>
+<main class="careers-page">
+  <section class="careers-hero"><div class="container careers-hero__grid"><div class="careers-hero__copy"><span class="careers-eyebrow">CAREERS AT ORENTIQ</span><h1><span class="careers-hero__title-line">The future is being built.</span><span class="careers-hero__title-line careers-hero__title-line--brand">Your journey could be part of it.</span></h1><p class="careers-hero__description">We are growing our technology capabilities across intelligent digital products, AI solutions, and modern software systems. Share your profile and stay connected for future opportunities at ORENTIQ.</p><div class="careers-hero__actions"><a href="#future-opportunities" class="btn btn-primary">Future opportunities <span aria-hidden="true">&rarr;</span></a></div></div><div class="careers-visual" role="img" aria-label="Animated ORENTIQ emblem connected to AI and digital product opportunities."><i class="careers-orbit careers-orbit--one"></i><i class="careers-orbit careers-orbit--two"></i><i class="careers-orbit careers-orbit--three"></i><div class="careers-visual__assistant"><i></i><span>ORENTIQ</span><strong>OQ</strong><small>FUTURE SYSTEMS</small></div><span class="careers-visual__node careers-visual__node--ai">AI &amp; Intelligence</span><span class="careers-visual__node careers-visual__node--product">Digital Products</span><span class="careers-visual__node careers-visual__node--future">Future Opportunities</span></div></div></section>
+  <section class="careers-introduction"><div class="container careers-introduction__grid"><div><span class="careers-eyebrow">GROWING WITH INTENTION</span><h2>Thoughtful work, made to last.</h2><p>We are focused on building strong products, delivering excellent client work, and growing the company intentionally.</p></div><div class="careers-focus"><span class="careers-eyebrow">OUR FOCUS</span><p>As our work evolves, we look forward to meeting people who care about craft, creativity, and intelligent solutions.</p></div></div></section>
+  <section class="careers-connect" id="future-opportunities"><div class="container careers-connect__inner"><span class="careers-eyebrow">FUTURE OPPORTUNITIES</span><span class="careers-status"><i></i>No current openings</span><h2>Good things are being built.</h2><p>We are not actively hiring at the moment, but we welcome introductions from talented people who share our passion for technology, creativity, and intelligent solutions.</p><p class="careers-connect__support">Interested in working with us in the future? Share your profile and we will keep your application for consideration when a suitable opportunity becomes available, subject to our data-retention policy.</p><button type="button" class="btn btn-primary btn-lg" data-application-open>Submit Your Interest <span aria-hidden="true">&rarr;</span></button><a href="{% url 'company' %}" class="careers-text-link">Explore ORENTIQ <span aria-hidden="true">&rarr;</span></a></div></section>
+</main>
+<div class="career-modal{% if open_application_modal or application_success %} is-open{% endif %}" data-application-modal aria-hidden="{% if open_application_modal or application_success %}false{% else %}true{% endif %}"><div class="career-modal__backdrop" data-application-close></div><section class="career-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="application-title" tabindex="-1"><button type="button" class="career-modal__close" aria-label="Close application form" data-application-close>&times;</button>{% if application_success %}<div class="career-success"><span class="career-success__icon">&#10003;</span><span class="careers-eyebrow">PROFILE RECEIVED</span><h2 id="application-title">Thank you for your interest in ORENTIQ.</h2><p>Your profile has been submitted successfully for future consideration. We will review it when relevant opportunities arise.</p><button type="button" class="btn btn-primary" data-application-close>Done</button></div>{% else %}<div class="career-modal__heading"><span class="careers-eyebrow">FUTURE OPPORTUNITIES</span><h2 id="application-title">Share your profile.</h2><p>We will only use your information for future recruitment consideration in line with our privacy policy.</p></div><form method="post" enctype="multipart/form-data" class="career-application-form" novalidate>{% csrf_token %}{% if application_form.non_field_errors %}<div class="career-form-error">{{ application_form.non_field_errors }}</div>{% endif %}<div class="career-form-grid"><label>Full name <b>*</b>{{ application_form.full_name }}{{ application_form.full_name.errors }}</label><label>Email address <b>*</b>{{ application_form.email }}{{ application_form.email.errors }}</label><label>Phone number{{ application_form.phone }}{{ application_form.phone.errors }}</label><label>Current location{{ application_form.location }}{{ application_form.location.errors }}</label><label>Area of interest <b>*</b>{{ application_form.area_of_interest }}{{ application_form.area_of_interest.errors }}</label><label>Experience level <b>*</b>{{ application_form.experience_level }}{{ application_form.experience_level.errors }}</label><label>Portfolio or LinkedIn URL{{ application_form.portfolio_url }}{{ application_form.portfolio_url.errors }}</label><label>GitHub URL{{ application_form.github_url }}{{ application_form.github_url.errors }}</label><label class="career-form-full">Resume / CV <small>PDF, DOC, or DOCX · max 5 MB</small>{{ application_form.resume }}{{ application_form.resume.errors }}</label><label class="career-form-full">Short introduction <b>*</b>{{ application_form.introduction }}{{ application_form.introduction.errors }}</label></div><label class="career-consent">{{ application_form.consent }}<span>I agree that ORENTIQ may process my information for future recruitment consideration according to the <a href="#orentiq-privacy-policy" data-legal-trigger="privacy">privacy policy</a>.</span></label>{{ application_form.consent.errors }}<div class="career-form-actions"><button type="submit" class="btn btn-primary">Submit Application</button><button type="button" class="btn btn-outline" data-application-close>Cancel</button></div></form>{% endif %}</section></div>
 {% endblock %}
+{% block extra_js %}<script src="{% static 'js/careers.js' %}?v=future-opportunities-2026-10"></script>{% endblock %}

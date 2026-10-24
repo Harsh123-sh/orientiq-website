@@ -10,7 +10,56 @@ from django.contrib.auth.forms import (
 )
 from django.contrib.auth.models import User
 
-from .models import Profile
+from .models import CandidateApplication, Profile
+
+
+class CandidateApplicationForm(forms.ModelForm):
+    """Public future-opportunity form with conservative resume validation."""
+
+    consent = forms.BooleanField(required=True, label="I agree to the privacy policy and future recruitment processing.", error_messages={"required": "Consent is required to submit your profile."})
+
+    class Meta:
+        model = CandidateApplication
+        fields = ("full_name", "email", "phone", "location", "area_of_interest", "experience_level", "portfolio_url", "github_url", "resume", "introduction")
+        widgets = {
+            "full_name": forms.TextInput(attrs={"autocomplete": "name"}),
+            "email": forms.EmailInput(attrs={"autocomplete": "email"}),
+            "phone": forms.TextInput(attrs={"autocomplete": "tel"}),
+            "location": forms.TextInput(attrs={"autocomplete": "address-level2"}),
+            "portfolio_url": forms.URLInput(attrs={"placeholder": "https://"}),
+            "github_url": forms.URLInput(attrs={"placeholder": "https://github.com/"}),
+            "resume": forms.ClearableFileInput(attrs={"accept": ".pdf,.doc,.docx"}),
+            "introduction": forms.Textarea(attrs={"rows": 5, "maxlength": 1500}),
+        }
+
+    def clean_email(self):
+        return self.cleaned_data["email"].strip().lower()
+
+    def clean_resume(self):
+        resume = self.cleaned_data.get("resume")
+        if not resume:
+            return resume
+        extension = resume.name.rsplit(".", 1)[-1].lower() if "." in resume.name else ""
+        if extension not in {"pdf", "doc", "docx"}:
+            raise forms.ValidationError("Upload a PDF, DOC, or DOCX resume.")
+        allowed_types = {
+            "application/pdf", "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        }
+        content_type = getattr(resume, "content_type", "")
+        if content_type and content_type not in allowed_types:
+            raise forms.ValidationError("The uploaded file type does not match a supported resume format.")
+        if resume.size > 5 * 1024 * 1024:
+            raise forms.ValidationError("Your resume must be 5 MB or smaller.")
+        return resume
+
+    def save(self, commit=True):
+        application = super().save(commit=False)
+        from django.utils import timezone
+        application.consented_at = timezone.now()
+        if commit:
+            application.save()
+        return application
 
 
 class RegisterForm(UserCreationForm):

@@ -58,7 +58,8 @@
 .service-ai-page .ai-faq-answer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 320ms ease; }
 .service-ai-page .ai-faq-answer p { min-height: 0; margin: 0; overflow: hidden; color: var(--color-text-muted); }
 .service-ai-page .ai-faq-item.is-open .ai-faq-answer { grid-template-rows: 1fr; }
-.service-ai-page .service-detail-navigator { border-color: var(--color-accent); background: linear-gradient(110deg, var(--color-surface-elevated), var(--color-hover)); }
+/* The More Services navigator is intentionally owned by service-detail.css so
+   every service detail page, including AI & Automation, shares its rose-gold finish. */
 .service-ai-page .cta-card { background: radial-gradient(circle at 80% 40%, var(--color-hero-glow), transparent 34%), var(--color-surface-elevated); border-color: var(--color-accent); }
 body:has(.service-ai-page) .footer { position: relative; overflow: hidden; }
 body:has(.service-ai-page) .footer::before { content: ""; position: absolute; right: -8%; bottom: -60%; width: 420px; height: 420px; border: 1px solid var(--color-border); border-radius: 50%; opacity: .35; pointer-events: none; }

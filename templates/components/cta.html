@@ -1,4 +1,4 @@
-<section class="section cta-section reveal-up">
+<section class="section cta-section{% if variant %} cta-section--{{ variant }}{% endif %} reveal-up">
     <div class="container">
         <div class="card cta-card reveal-up">
             <div class="cta-content">
@@ -13,6 +13,15 @@
                             {% endif %}
                             <a href="{% url 'company_contact' %}" class="btn btn-outline btn-lg">{{ secondary_label|default:"Contact Us" }}</a>
                         </div>
+            </div>
+            <div class="cta-visual" aria-hidden="true">
+                <span class="cta-visual__glow"></span>
+                <i class="cta-visual__orbit cta-visual__orbit--one"></i>
+                <i class="cta-visual__orbit cta-visual__orbit--two"></i>
+                <i class="cta-visual__orbit cta-visual__orbit--three"></i>
+                <span class="cta-visual__node cta-visual__node--one"></span>
+                <span class="cta-visual__node cta-visual__node--two"></span>
+                <span class="cta-visual__emblem"><small>ORENTIQ</small><b>OQ</b></span>
             </div>
         </div>
     </div>

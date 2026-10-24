@@ -5,7 +5,7 @@
 {% block meta_description %}ORENTIQ selects practical, proven technologies based on product requirements, scalability, security, performance, and long-term maintainability.{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/technology-hero.css' %}?v=ecosystem-hero-2026">
+<link rel="stylesheet" href="{% static 'css/technology-hero.css' %}?v=ai-intelligence-2026-10">
 {% endblock %}
 
 {% block content %}
@@ -18,8 +18,60 @@
                 <h1>Technology that powers better products</h1>
                 <p>We choose practical, proven technologies based on product requirements, scalability, security, performance, and long-term maintainability.</p>
             </div>
-            <div class="technology-page-hero__visual">
-                <img src="{% static 'images/technology-ecosystem-hero.svg' %}" alt="Technology core connected to Modern Frameworks, Cloud Technologies, AI and Machine Learning, Security First, Scalable Architecture, and DevOps and Automation" width="1600" height="1100" fetchpriority="high" decoding="async">
+            <div class="technology-page-hero__visual" role="img" aria-label="Animated AI intelligence core connected to model, cloud, data, and automation systems">
+                <svg class="ai-intelligence" viewBox="0 0 640 540" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="aiCoreMetal" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#fffdfa"/>
+                            <stop offset=".48" stop-color="#e8cdbd"/>
+                            <stop offset="1" stop-color="#b87345"/>
+                        </linearGradient>
+                        <linearGradient id="aiCoreWarm" x1="0" y1="0" x2="1" y2="1">
+                            <stop stop-color="#c58b67" stop-opacity=".72"/>
+                            <stop offset="1" stop-color="#fffdfa" stop-opacity=".24"/>
+                        </linearGradient>
+                        <filter id="aiCoreShadow" x="-40%" y="-40%" width="180%" height="180%">
+                            <feGaussianBlur stdDeviation="7"/>
+                        </filter>
+                    </defs>
+
+                    <g class="ai-intelligence__orbits" fill="none">
+                        <ellipse cx="322" cy="272" rx="206" ry="88" class="ai-intelligence__orbit ai-intelligence__orbit--wide"/>
+                        <ellipse cx="322" cy="272" rx="152" ry="174" class="ai-intelligence__orbit ai-intelligence__orbit--tall"/>
+                        <ellipse cx="322" cy="272" rx="177" ry="110" class="ai-intelligence__orbit ai-intelligence__orbit--inner"/>
+                    </g>
+
+                    <g class="ai-intelligence__network" fill="none" stroke="#c58b67" stroke-linecap="round">
+                        <path class="ai-intelligence__path" pathLength="1" d="M116 177C178 180 200 224 254 248"/>
+                        <path class="ai-intelligence__path" pathLength="1" d="M512 159C451 175 434 223 388 248"/>
+                        <path class="ai-intelligence__path" pathLength="1" d="M103 355C165 344 207 327 256 296"/>
+                        <path class="ai-intelligence__path" pathLength="1" d="M518 350C456 337 423 318 388 297"/>
+                        <path class="ai-intelligence__path ai-intelligence__path--secondary" d="M170 112C244 142 283 160 322 201S415 271 476 218"/>
+                        <path class="ai-intelligence__path ai-intelligence__path--secondary" d="M158 426C230 387 282 386 322 344S414 375 486 416"/>
+                        <circle class="ai-intelligence__signal ai-intelligence__signal--one" r="4"><animateMotion dur="5.8s" repeatCount="indefinite" path="M116 177C178 180 200 224 254 248"/></circle>
+                        <circle class="ai-intelligence__signal ai-intelligence__signal--two" r="4"><animateMotion dur="6.6s" begin="-2.8s" repeatCount="indefinite" path="M518 350C456 337 423 318 388 297"/></circle>
+                    </g>
+
+                    <g class="ai-intelligence__core">
+                        <ellipse cx="322" cy="352" rx="91" ry="17" fill="#6d4a35" opacity=".13" filter="url(#aiCoreShadow)"/>
+                        <path d="m322 170 96 55v110l-96 56-96-56V225Z" fill="#fffdfa" stroke="#c58b67" stroke-width="2"/>
+                        <path d="m322 170 96 55-96 56-96-56Z" fill="url(#aiCoreMetal)" stroke="#c58b67" stroke-width="2"/>
+                        <path d="m322 281 96-56v110l-96 56Z" fill="#b87345" fill-opacity=".32" stroke="#b87345" stroke-width="2"/>
+                        <path d="m226 225 96 56v110l-96-56Z" fill="url(#aiCoreWarm)" stroke="#c58b67" stroke-width="2"/>
+                        <path d="m322 206 56 32v64l-56 32-56-32v-64Z" fill="#faf8f4" stroke="#b87345" stroke-width="2"/>
+                        <circle cx="322" cy="270" r="21" fill="none" stroke="#c58b67" stroke-width="1.5"/>
+                        <path d="M322 244v52M296 270h52M304 252l36 36M340 252l-36 36" stroke="#b87345" stroke-width="1.4" opacity=".8"/>
+                    </g>
+
+                    <g class="ai-intelligence__nodes" fill="#faf8f4" stroke="#b87345" stroke-width="2">
+                        <circle cx="116" cy="177" r="7"/><circle cx="512" cy="159" r="7"/><circle cx="103" cy="355" r="7"/><circle cx="518" cy="350" r="7"/>
+                        <circle cx="170" cy="112" r="5"/><circle cx="476" cy="218" r="5"/><circle cx="158" cy="426" r="5"/><circle cx="486" cy="416" r="5"/>
+                    </g>
+                </svg>
+                <div class="ai-interface ai-interface--model"><span>AI MODEL</span><strong>Adaptive reasoning</strong><i></i></div>
+                <div class="ai-interface ai-interface--cloud"><span>CLOUD SYSTEM</span><strong>Connected</strong><i></i></div>
+                <div class="ai-interface ai-interface--flow"><span>DATA FLOW</span><b><i></i></b><em>98.4%</em></div>
+                <div class="ai-interface ai-interface--automation"><span>AUTOMATION</span><strong>12 workflows live</strong></div>
             </div>
         </div>
     </div>

@@ -1,65 +1,18 @@
 {% extends "base.html" %}
 {% load static %}
-
 {% block title %}Contact — ORENTIQ{% endblock %}
 {% block meta_description %}Get in touch with ORENTIQ — tell us about your project and we'll show you how we can help.{% endblock %}
-
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/company-contact.css' %}?v=premium-contact-2026-10">{% endblock %}
 {% block content %}
 {% include "components/success-modal.html" with modal_id="contact-success-modal" title_id="contact-success-title" description_id="contact-success-description" button_id="contact-success-continue" heading="Thank you for contacting us." description="We'll get back to you soon." message="Thank you for contacting us. We'll get back to you soon." %}
-<!-- ==================== HERO ==================== -->
-<section class="page-hero reveal-up">
-    <div class="container">
-        <span class="eyebrow">Company / Contact</span>
-        <h1>Let's start a conversation</h1>
-        <p>Tell us about your project and we'll get back to you as soon as possible.</p>
-    </div>
-</section>
-
-<!-- ==================== CONTACT ==================== -->
-<section class="section">
-    <div class="container">
-        <div class="grid grid-2">
-            <div>
-                {% include "components/section-heading.html" with eyebrow="Contact" title="Reach out" subtitle="We'd love to hear about your project." %}
-                <div class="card mb-4">
-                    <h4 class="mb-3">Email</h4>
-                    <p class="body-small text-muted">hello@orentiq.com</p>
-                </div>
-                <div class="card mb-4">
-                    <h4 class="mb-3">Location</h4>
-                    <p class="body-small text-muted">Ahmedabad, Gujarat</p>
-                </div>
-                <div class="card mb-4">
-                    <h4 class="mb-3">Phone</h4>
-                    <p class="body-small text-muted">+91 9328373770</p>
-                </div>
-                <div class="card">
-                    <h4 class="mb-3">Response Time</h4>
-                    <p class="body-small text-muted">We typically respond within one business day</p>
-                </div>
-            </div>
-            <div class="card">
-                <form method="post" action="{% url 'company_contact' %}" class="contact-form">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label class="form-label" for="contact-name">Name <span class="required">*</span></label>
-                        <input type="text" id="contact-name" name="name" class="form-control" placeholder="Your name" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="contact-email">Email <span class="required">*</span></label>
-                        <input type="email" id="contact-email" name="email" class="form-control" placeholder="you@company.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="contact-message">Message <span class="required">*</span></label>
-                        <textarea id="contact-message" name="message" class="form-control" placeholder="Tell us about your project" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ==================== CTA ==================== -->
-{% include "components/cta.html" with eyebrow="Discuss Your Project" title="Ready to build something better?" subtitle="Tell us about your project, business needs, or technical challenge. We'll help you find the right solution." primary_label="Discuss Your Project →" %}
-{% endblock %}
+<main class="company-contact-page">
+ <section class="company-contact-hero"><div class="container contact-hero-grid">
+  <div class="contact-hero-copy reveal-up"><p class="contact-kicker"><span>ORENTIQ TECHNOLOGIES</span><i></i><span>LET'S CONNECT</span></p><h1>Let's start a<br>conversation</h1><p class="contact-intro">Tell us about your project and we'll get back to you as soon as possible. We're here to help you build something amazing.</p></div>
+  <div class="contact-hero-art" aria-hidden="true"><div class="contact-art-glow"></div><span class="contact-particle particle-one"></span><span class="contact-particle particle-two"></span><span class="contact-particle particle-three"></span><div class="contact-orbit orbit-wide"><b></b></div><div class="contact-orbit orbit-tall"><b></b></div><div class="contact-orbit orbit-inner"></div><div class="contact-sphere"><span class="contact-sphere-reflection"></span><strong>J<span>S</span>Q</strong></div><div class="contact-pedestal"><i></i></div></div>
+  <div class="contact-conversation reveal-up"><p class="contact-eyebrow">IDEAS BEGIN WITH A</p><h2>conversation.</h2><p class="conversation-intro">Let's discuss your ideas, explore possibilities and build something great together.</p><div class="service-highlights"><article class="service-highlight"><span class="service-icon">&lt;/&gt;</span><h3>Web &amp; Software</h3><p>Modern solutions for your business</p></article><article class="service-highlight"><span class="service-icon service-icon--ai">⌘</span><h3>AI &amp; Automation</h3><p>Intelligent systems for better results</p></article><article class="service-highlight"><span class="service-icon service-icon--screen"></span><h3>Digital Experiences</h3><p>Beautiful, functional and user focused</p></article></div></div>
+ </div></section>
+ <section class="contact-workspace"><div class="container contact-workspace-grid">
+  <aside class="founder-invitation reveal-up"><p class="availability"><span></span> OPEN TO NEW PROJECTS</p><p class="contact-eyebrow">LET'S BUILD TOGETHER</p><div class="founder-invitation__body"><div><h2>Your vision.<br>My expertise.</h2><p>I'm always excited to work on interesting projects, from simple websites to complex AI solutions. Drop a message and let's create something special.</p></div><div class="founder-signoff"><em>Harsh</em><span>HARSH SACHWANI</span><small>Founder &amp; Technology Lead</small><i></i></div></div></aside>
+  <div class="company-contact-form-shell reveal-up"><form method="post" action="{% url 'company_contact' %}" class="contact-form company-contact-form">{% csrf_token %}<div class="form-group"><label class="form-label" for="contact-name">Name <span class="required">*</span></label><input type="text" id="contact-name" name="name" class="form-control" placeholder="Your name" autocomplete="name" required></div><div class="form-group"><label class="form-label" for="contact-email">Email <span class="required">*</span></label><input type="email" id="contact-email" name="email" class="form-control" placeholder="you@company.com" autocomplete="email" required></div><div class="form-group"><label class="form-label" for="contact-message">Message <span class="required">*</span></label><textarea id="contact-message" name="message" class="form-control" placeholder="Tell me about your project..." required></textarea></div><button type="submit" class="btn btn-primary btn-lg">Send Message <span>→</span></button></form></div>
+ </div></section>
+</main>{% endblock %}

@@ -33,6 +33,7 @@ urlpatterns = [
     path('company/founder/', views.company_founder, name='company_founder'),
     path('company/process/', views.company_process, name='company_process'),
     path('company/careers/', views.company_careers, name='company_careers'),
+    path('admin/candidate-applications/<int:pk>/resume/', views.candidate_resume_download, name='candidate_resume_download'),
     path('company/contact/', views.company_contact, name='company_contact'),
 
     # Start a Project

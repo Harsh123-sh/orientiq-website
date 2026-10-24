@@ -5,8 +5,8 @@
 {% block meta_description %}{{ service.short }}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/services-page.css' %}?v=services-final">
-<link rel="stylesheet" href="{% static 'css/service-detail.css' %}?v=detail-ai-system-2026-2">
+<link rel="stylesheet" href="{% static 'css/services-page.css' %}?v=services-modal-premium-1">
+<link rel="stylesheet" href="{% static 'css/service-detail.css' %}?v=detail-ai-system-2026-3">
 {% if service.slug == "ai-automation" %}<link rel="stylesheet" href="{% static 'css/ai-automation-page.css' %}?v=ai-final-3">{% endif %}
 <link rel="stylesheet" href="{% static 'css/service-technology-ecosystem.css' %}?v=enterprise-robot-5">
 <link rel="stylesheet" href="{% static 'css/service-detail-redesign.css' %}?v=service-artifact-family-2026-6">
@@ -137,7 +137,7 @@
         <div class="container">
             <div class="service-detail-navigator reveal-up">
                 <div><span class="eyebrow">MORE SERVICES</span><h2>Explore other capabilities</h2><p>Discover the other services we build.</p></div>
-                <button type="button" class="btn btn-primary" data-service-explorer-open>Explore Services <span aria-hidden="true">→</span></button>
+                <button type="button" class="btn btn-primary" data-service-explorer-open aria-haspopup="dialog">Explore Services <span aria-hidden="true">→</span></button>
             </div>
         </div>
     </section>
@@ -145,32 +145,30 @@
     {% include "components/cta.html" with eyebrow="Discuss Your Project" title="Ready to build something better?" subtitle="Tell us about your project, business needs, or technical challenge. We'll help you find the right solution." primary_label="Discuss Your Project →" %}
 </div>
 
-<div class="service-explorer-backdrop service-detail-backdrop" data-service-explorer aria-hidden="true">
+<div class="service-explorer-backdrop" data-service-explorer aria-hidden="true">
     <div class="service-explorer" role="dialog" aria-modal="true" aria-labelledby="service-explorer-title" aria-describedby="service-explorer-description">
         <header class="service-explorer-header">
-            <div><span class="eyebrow">SERVICES</span><h2 id="service-explorer-title">Explore our capabilities</h2><p id="service-explorer-description">Move between the systems ORENTIQ builds.</p></div>
-            <span class="orentiq-legal-modal__brand service-explorer-brand" aria-hidden="true">
-                <img src="{% static 'images/brand/orentiq-logo-on-light.png' %}" alt="" class="orentiq-legal-modal__brand-image orentiq-legal-modal__brand-image--light">
-                <img src="{% static 'images/brand/orentiq-logo-on-dark.png' %}" alt="" class="orentiq-legal-modal__brand-image orentiq-legal-modal__brand-image--dark">
-            </span>
-            <button type="button" class="service-explorer-close" data-service-explorer-close aria-label="Close service navigator">×</button>
+            <div><span class="eyebrow">OUR SERVICES</span><h2 id="service-explorer-title"><span class="service-explorer-compact-copy">Explore Our Services</span><span class="service-explorer-expanded-copy">Build. Innovate. Grow.</span></h2><p id="service-explorer-description"><span class="service-explorer-compact-copy">Discover our complete range of services designed to help your business grow, innovate and stay ahead.</span><span class="service-explorer-expanded-copy">End-to-end digital solutions to transform your ideas into powerful products.</span></p></div>
+            <button type="button" class="service-explorer-close" data-service-explorer-close aria-label="Close services panel">&times;</button>
         </header>
         <div class="service-explorer-body">
+            <div class="service-explorer-compact-action"><button type="button" class="btn service-explorer-primary" data-service-explorer-expand>View All Services <span aria-hidden="true">&rarr;</span></button></div>
             <div class="service-explorer-grid">
                 {% for other in services %}
                 {% if other.slug == service.slug %}
-                <div class="service-explorer-card is-current" aria-current="page"><span class="card-icon" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span><span><strong>{{ other.name }}</strong><span>{{ other.tagline }}</span><small class="service-detail-current">Current service</small></span></div>
+                <div class="service-explorer-card is-current" aria-current="page"><span class="card-icon" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span><span><strong>{{ other.name }}</strong><span>{{ other.short }}</span><small class="service-detail-current">Current service</small></span></div>
                 {% else %}
-                <a class="service-explorer-card" href="{% url 'service_detail' other.slug %}"><span class="card-icon" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span><span><strong>{{ other.name }}</strong><span>{{ other.tagline }}</span><small aria-hidden="true">→</small></span></a>
+                <a class="service-explorer-card" href="{% url 'service_detail' other.slug %}"><span class="card-icon" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span><span><strong>{{ other.name }}</strong><span>{{ other.short }}</span><small aria-hidden="true">→</small></span></a>
                 {% endif %}
                 {% endfor %}
             </div>
+            <div class="service-explorer-footer"><a href="{% url 'company_contact' %}" class="btn service-explorer-primary" data-service-explorer-contact>Get in Touch <span aria-hidden="true">&rarr;</span></a></div>
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/services-page.js' %}?v=detail-final"></script>
+<script src="{% static 'js/services-page.js' %}?v=services-modal-premium-2"></script>
 <script src="{% static 'js/ai-automation-page.js' %}?v=all-services-final"></script>
 {% endblock %}

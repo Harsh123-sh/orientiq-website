@@ -1,3 +1,6 @@
+import os
+import uuid
+
 from django.conf import settings
 from django.db import models
 
@@ -284,6 +287,64 @@ class ContactInquiry(models.Model):
 
     def __str__(self):
         return f"{self.name} — {self.email}"
+
+
+def candidate_resume_upload_to(instance, filename):
+    """Keep candidate documents in a non-guessable, non-public storage path."""
+    extension = os.path.splitext(filename)[1].lower()
+    return f"private/candidate-resumes/{uuid.uuid4().hex}{extension}"
+
+
+class CandidateApplication(models.Model):
+    """A profile submitted for future ORENTIQ opportunities."""
+
+    class Status(models.TextChoices):
+        NEW = "new", "New"
+        UNDER_REVIEW = "under_review", "Under Review"
+        SHORTLISTED = "shortlisted", "Shortlisted"
+        ARCHIVED = "archived", "Archived"
+        REJECTED = "rejected", "Rejected"
+
+    class InterestArea(models.TextChoices):
+        AI_ML = "ai_ml", "AI & Machine Learning"
+        WEB = "web", "Web Development"
+        SOFTWARE = "software", "Software Development"
+        MOBILE = "mobile", "Mobile Development"
+        DESIGN = "design", "UI/UX Design"
+        CLOUD = "cloud", "Cloud & DevOps"
+        BUSINESS = "business", "Business & Operations"
+        OTHER = "other", "Other"
+
+    class ExperienceLevel(models.TextChoices):
+        STUDENT = "student", "Student / Fresher"
+        ENTRY = "entry", "Entry Level"
+        ONE_TO_THREE = "one_to_three", "1–3 Years"
+        THREE_TO_FIVE = "three_to_five", "3–5 Years"
+        FIVE_PLUS = "five_plus", "5+ Years"
+
+    full_name = models.CharField(max_length=120)
+    email = models.EmailField()
+    phone = models.CharField(max_length=30, blank=True)
+    location = models.CharField(max_length=120, blank=True)
+    area_of_interest = models.CharField(max_length=20, choices=InterestArea.choices)
+    experience_level = models.CharField(max_length=20, choices=ExperienceLevel.choices)
+    portfolio_url = models.URLField(blank=True)
+    github_url = models.URLField(blank=True)
+    resume = models.FileField(upload_to=candidate_resume_upload_to, blank=True)
+    introduction = models.TextField(max_length=1500)
+    consented_at = models.DateTimeField()
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.NEW)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        indexes = [models.Index(fields=["status", "-created_at"], name="candidate_status_date_idx")]
+        verbose_name = "Candidate application"
+        verbose_name_plural = "Candidate applications"
+
+    def __str__(self):
+        return f"{self.full_name} — {self.email}"
 
 
 class MediaAsset(models.Model):

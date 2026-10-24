@@ -11,9 +11,10 @@ import json
 
 from django.db import transaction
 from django.core.cache import cache
-from django.http import HttpResponse, JsonResponse
+from django.http import FileResponse, Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.templatetags.static import static
+from django.utils import timezone
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_POST
 from django.views.generic import RedirectView
@@ -30,10 +31,12 @@ from .models import (
     BookingStatus,
     BookingType,
     ContactInquiry,
+    CandidateApplication,
     Profile,
     UserRole,
 )
 from .forms import (
+    CandidateApplicationForm,
     CustomPasswordChangeForm,
     CustomPasswordResetForm,
     CustomSetPasswordForm,
@@ -160,8 +163,43 @@ def company_process(request):
 
 
 def company_careers(request):
-    """Render the Company Careers page."""
-    return render(request, "company/careers.html")
+    """Render Careers and accept consented profiles for future consideration."""
+    if request.method == "POST":
+        client_ip = request.META.get("REMOTE_ADDR", "unknown")
+        rate_key = f"candidate-application:{client_ip}"
+        attempts = cache.get(rate_key, 0)
+        if attempts >= 3:
+            form = CandidateApplicationForm(request.POST, request.FILES)
+            form.add_error(None, "Please wait before submitting another profile.")
+            return render(request, "company/careers.html", {"application_form": form, "open_application_modal": True}, status=429)
+
+        form = CandidateApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            introduction = form.cleaned_data["introduction"].strip()
+            recent_duplicate = CandidateApplication.objects.filter(
+                email=email, introduction=introduction,
+            ).order_by("-created_at").first()
+            if recent_duplicate and (timezone.now() - recent_duplicate.created_at).total_seconds() < 300:
+                form.add_error(None, "This profile was submitted recently. Please avoid duplicate submissions.")
+            else:
+                form.save()
+                cache.set(rate_key, attempts + 1, 3600)
+                return render(request, "company/careers.html", {"application_form": CandidateApplicationForm(), "application_success": True})
+        return render(request, "company/careers.html", {"application_form": form, "open_application_modal": True}, status=400)
+
+    return render(request, "company/careers.html", {"application_form": CandidateApplicationForm()})
+
+
+@login_required
+def candidate_resume_download(request, pk):
+    """Serve applicant resumes only to authorized internal administrators."""
+    from .permissions import require_admin
+    require_admin(request.user)
+    application = get_object_or_404(CandidateApplication, pk=pk)
+    if not application.resume:
+        raise Http404("No resume is attached to this application.")
+    return FileResponse(application.resume.open("rb"), as_attachment=True, filename=application.resume.name.rsplit("/", 1)[-1])
 
 
 def company_contact(request):
