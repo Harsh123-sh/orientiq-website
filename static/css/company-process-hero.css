@@ -54,3 +54,12 @@
 @media (max-width: 720px) { .process-page .process-cta--build .process-cta__card { grid-template-columns: 1fr; gap: 1.5rem; min-height: 0; padding: 2.75rem 1.5rem; text-align: center; }.process-page .process-cta--build .process-cta__content, .process-page .process-cta--build h2, .process-page .process-cta--build p { margin-inline: auto; }.process-cta__visual { width: min(100%, 230px); } }
 @media (max-width: 480px) { .process-page .process-cta--build { padding-bottom: 3rem; }.process-page .process-cta--build .process-cta__card { padding: 2.35rem 1.25rem; border-radius: 18px; }.process-page .process-cta--build h2 { font-size: clamp(2rem, 10vw, 2.375rem); }.process-page .process-cta--build .btn { width: 100%; }.process-cta__visual { width: 185px; } }
 @media (prefers-reduced-motion: reduce) { .process-cta__visual, .process-cta__visual * { animation: none !important; }.process-page .process-cta--build .btn { transition: none; } }
+
+/* Shared semantic tokens keep the editorial layout readable in dark mode. */
+[data-theme="dark"] .process-page { background: var(--color-bg); color: var(--color-text); }
+[data-theme="dark"] .process-page .process-hero, [data-theme="dark"] .process-page .process-phases { background: var(--color-bg); border-color: var(--color-border); }
+[data-theme="dark"] .process-page .process-hero h1, [data-theme="dark"] .process-page .process-why h2, [data-theme="dark"] .process-page .process-stage h2 { color: var(--color-text); }
+[data-theme="dark"] .process-page .process-hero__description, [data-theme="dark"] .process-page .process-stage p, [data-theme="dark"] .process-page .process-stage, [data-theme="dark"] .process-page .process-art__markers li { color: var(--color-text-muted); }
+[data-theme="dark"] .process-page .process-stage i, [data-theme="dark"] .process-page .process-art__markers b { background: var(--color-surface); border-color: var(--color-border-strong); }
+[data-theme="dark"] .process-page .process-stage:after { border-color: var(--color-bg); }
+[data-theme="dark"] .process-page .process-why li { color: var(--color-text-muted); }

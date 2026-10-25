@@ -41,6 +41,7 @@
                         <a href="{% url 'industry_detail' 'enterprise' %}" role="menuitem">Enterprise</a>
                     </div>
                 </li>
+                <li><a href="{% url 'problem_solving' %}" class="nav-link{% if request.resolver_match.url_name == 'problem_solving' %} is-active{% endif %}">Problem Solving</a></li>
                 <li><a href="{% url 'products' %}" class="nav-link{% if request.resolver_match.url_name == 'products' or request.resolver_match.url_name == 'product_detail' %} is-active{% endif %}">Products</a></li>
                 <li><a href="{% url 'company_founder' %}" class="nav-link{% if request.resolver_match.url_name == 'company_founder' %} is-active{% endif %}">Founder</a></li>
                 <li class="nav-item has-dropdown">
@@ -60,13 +61,6 @@
         </nav>
 
         <div class="navbar-actions">
-            {% if user.is_authenticated %}
-            <a href="{% url 'user_booking_list' %}" class="btn btn-ghost">My Bookings</a>
-            <a href="{% url 'accounts_profile' %}" class="btn btn-secondary">Profile</a>
-            <a href="{% url 'accounts_logout' %}" class="btn btn-ghost">Logout</a>
-            {% else %}
-            <a href="{% url 'accounts_login' %}" class="btn btn-ghost">Login</a>
-            {% endif %}
             <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
                 <svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true">
                     <circle cx="12" cy="12" r="5"></circle>
@@ -136,6 +130,7 @@
                     <a href="{% url 'industry_detail' 'enterprise' %}">Enterprise</a>
                 </div>
             </li>
+            <li><a href="{% url 'problem_solving' %}" class="mobile-nav-link">Problem Solving</a></li>
             <li><a href="{% url 'products' %}" class="mobile-nav-link">Products</a></li>
             <li><a href="{% url 'company_founder' %}" class="mobile-nav-link">Founder</a></li>
             <li class="mobile-nav-item">
@@ -155,14 +150,6 @@
     </nav>
 
     <div class="mobile-menu-footer">
-        {% if user.is_authenticated %}
-        <a href="{% url 'user_booking_list' %}" class="btn btn-ghost">My Bookings</a>
-        <a href="{% url 'accounts_profile' %}" class="btn btn-secondary">Profile</a>
-        <a href="{% url 'accounts_logout' %}" class="btn btn-ghost">Logout</a>
-        {% else %}
-        <a href="{% url 'accounts_login' %}" class="btn btn-secondary">Login</a>
-        <a href="{% url 'accounts_register' %}" class="btn btn-ghost">Create Account</a>
-        {% endif %}
         <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
             <svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="5"></circle>

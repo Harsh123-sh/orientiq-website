@@ -12,7 +12,7 @@
             <div>
                 <h3>{{ user.get_full_name|default:user.username }}</h3>
                 <p class="body-small text-muted">{{ user.email }}</p>
-                <span class="badge mt-2">{{ user.profile.get_role_display }}</span>
+                <span class="badge mt-2">{% if user.is_superuser %}Super Admin{% else %}Administrator{% endif %}</span>
             </div>
         </div>
         <div class="divider"></div>

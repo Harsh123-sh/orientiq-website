@@ -16,10 +16,14 @@ def get_user_role(user):
 
 
 def is_super_admin(user):
+    if user.is_authenticated and user.is_superuser:
+        return True
     return get_user_role(user) == UserRole.SUPER_ADMIN
 
 
 def is_admin(user):
+    if user.is_authenticated and (user.is_superuser or user.is_staff):
+        return True
     role = get_user_role(user)
     return role in (UserRole.SUPER_ADMIN, UserRole.ADMIN)
 

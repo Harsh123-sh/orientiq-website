@@ -1,0 +1,35 @@
+/* Problem Solving page — scoped to avoid affecting existing pages. */
+.problem-solving-page { overflow: hidden; }
+.problem-solving-hero { padding: clamp(5rem, 10vw, 8.5rem) 0; background: radial-gradient(circle at 80% 30%, var(--color-hero-glow), transparent 28%); }
+.problem-solving-hero__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(260px, .7fr); gap: clamp(2rem, 7vw, 7rem); align-items: center; }
+.problem-solving-hero h1, .problem-solving-page h2 { font-family: Georgia, "Times New Roman", serif; letter-spacing: var(--tracking-tight); line-height: 1; }
+.problem-solving-hero h1 { max-width: 720px; font-size: clamp(3.25rem, 6vw, 6.25rem); margin: .75rem 0 1.4rem; }
+.problem-solving-hero p { max-width: 640px; color: var(--color-text-muted); font-size: var(--text-body-large); line-height: 1.65; }
+.problem-solving-hero__actions { display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-8); }
+.problem-solving-orbit { position: relative; min-height: 300px; border: 1px solid var(--color-border); border-radius: 50%; background: radial-gradient(circle, var(--color-hover), transparent 62%); }
+.problem-solving-orbit::before, .problem-solving-orbit::after { position: absolute; content: ""; border: 1px solid var(--color-border-strong); border-radius: inherit; inset: 17%; transform: rotate(32deg); }
+.problem-solving-orbit::after { inset: 33%; background: var(--color-surface); box-shadow: var(--shadow-elevated); transform: rotate(-18deg); }
+.problem-solving-orbit span { position: absolute; z-index: 1; top: 50%; left: 50%; color: var(--color-accent); font: 700 1.1rem var(--font-mono); letter-spacing: .12em; transform: translate(-50%, -50%); }
+.problem-solving-section { padding-block: clamp(4rem, 8vw, 7rem); }
+.problem-solving-section--surface { background: var(--color-bg-secondary); }
+.problem-solving-steps, .problem-solving-methods { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); }
+.problem-solving-step, .problem-solving-method, .problem-solving-example { padding: var(--space-6); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); }
+.problem-solving-step__number { display: inline-grid; width: 2.25rem; height: 2.25rem; place-items: center; margin-bottom: var(--space-5); border-radius: 50%; background: var(--color-hover); color: var(--color-accent); font-weight: 700; }
+.problem-solving-step h3, .problem-solving-category h3, .problem-solving-example h3, .problem-solving-method h3 { margin-bottom: var(--space-2); }
+.problem-solving-step p, .problem-solving-category p, .problem-solving-example p, .problem-solving-method p { color: var(--color-text-muted); line-height: 1.6; }
+.problem-solving-categories { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+.problem-solving-category { padding: var(--space-6); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); }
+.problem-solving-category ul { display: grid; gap: var(--space-2); margin: var(--space-4) 0; padding: 0; color: var(--color-text-muted); list-style: none; }
+.problem-solving-category li::before { color: var(--color-accent); content: "•"; margin-right: .55rem; }
+.problem-solving-solution { padding-top: var(--space-3); border-top: 1px solid var(--color-border); color: var(--color-text); font-size: var(--text-body-small); }
+.problem-solving-examples { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+.problem-solving-example dl { display: grid; gap: var(--space-3); margin: 0; }
+.problem-solving-example dt { color: var(--color-accent); font-size: var(--text-caption); font-weight: 700; letter-spacing: var(--tracking-caps); text-transform: uppercase; }
+.problem-solving-example dd { margin: .2rem 0 0; color: var(--color-text-muted); line-height: 1.55; }
+.problem-solving-projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+.problem-solving-project { display: block; padding: var(--space-6); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); color: inherit; text-decoration: none; transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast); }
+.problem-solving-project:hover { border-color: var(--color-accent); box-shadow: var(--shadow-md); transform: translateY(-3px); }
+.problem-solving-project p { color: var(--color-text-muted); }
+.problem-solving-project span { color: var(--color-accent); font-size: var(--text-body-small); font-weight: 700; }
+@media (max-width: 900px) { .problem-solving-hero__grid, .problem-solving-categories, .problem-solving-examples { grid-template-columns: 1fr; }.problem-solving-orbit { max-width: 420px; width: 100%; margin-inline: auto; }.problem-solving-steps, .problem-solving-methods { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .problem-solving-hero { padding-block: 4rem; }.problem-solving-steps, .problem-solving-methods, .problem-solving-projects { grid-template-columns: 1fr; }.problem-solving-hero__actions .btn { width: 100%; }.problem-solving-orbit { min-height: 240px; } }

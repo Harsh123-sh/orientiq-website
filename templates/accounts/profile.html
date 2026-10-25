@@ -28,7 +28,11 @@
                     <div>
                         <h3>{{ user.get_full_name|default:user.username }}</h3>
                         <p class="body-small text-muted">{{ user.email }}</p>
+                        {% if user.is_superuser or user.is_staff %}
+                        <span class="badge mt-2">Client</span>
+                        {% else %}
                         <span class="badge mt-2">{{ profile.get_role_display }}</span>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="divider"></div>

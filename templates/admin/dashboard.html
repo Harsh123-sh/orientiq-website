@@ -6,6 +6,12 @@
 
 {% block content %}
 <div class="admin-stats">
+    <div class="admin-stat-card"><div class="admin-stat-value">{{ total_clients }}</div><div class="admin-stat-label">Total Clients</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">{{ active_clients }}</div><div class="admin-stat-label">Active Clients</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">{{ pending_clients }}</div><div class="admin-stat-label">Pending Activations</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">{{ active_projects }}</div><div class="admin-stat-label">Active Projects</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">{{ completed_projects }}</div><div class="admin-stat-label">Completed Projects</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">{{ document_count }}</div><div class="admin-stat-label">Private Documents</div></div>
     <div class="admin-stat-card">
         <div class="admin-stat-value">{{ total_services }}</div>
         <div class="admin-stat-label">Services</div>

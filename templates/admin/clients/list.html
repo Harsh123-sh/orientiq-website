@@ -1,0 +1,12 @@
+{% extends "admin/base.html" %}
+{% block title %}Clients{% endblock %}
+{% block page_title %}Clients{% endblock %}
+{% block content %}
+<div class="admin-toolbar">
+  <form method="get"><input class="form-control" name="q" value="{{ search_query }}" placeholder="Search clients or projects"><select class="form-control" name="status"><option value="">All statuses</option>{% for value,label in status_choices %}<option value="{{ value }}" {% if active_status == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select><button class="btn btn-secondary">Filter</button></form>
+  <a class="btn btn-primary" href="{% url 'admin_client_create' %}">Add client</a>
+</div>
+<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Client</th><th>Company</th><th>Status</th><th>Projects</th><th>Joined</th></tr></thead><tbody>
+{% for item in items %}<tr><td><a class="link" href="{% url 'admin_client_detail' item.pk %}">{{ item.user.get_full_name|default:item.user.email }}</a><br><small>{{ item.client_id }} · {{ item.user.email }}</small></td><td>{{ item.company|default:"—" }}</td><td><span class="badge-status {{ item.status }}">{{ item.get_status_display }}</span></td><td>{{ item.projects.count }}</td><td>{{ item.created_at|date:"M d, Y" }}</td></tr>{% empty %}<tr><td colspan="5" class="text-muted">No client accounts found.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}

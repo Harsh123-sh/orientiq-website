@@ -60,6 +60,185 @@ class Profile(models.Model):
         return self.role == UserRole.CLIENT
 
 
+def private_document_upload_to(instance, filename):
+    """Store client documents below a non-guessable private path."""
+    extension = os.path.splitext(filename)[1].lower()
+    return f"private/client-documents/{uuid.uuid4().hex}{extension}"
+
+
+class ClientAccount(models.Model):
+    """Business profile and access state for a client user."""
+
+    STATUS_CHOICES = [
+        ("pending", "Pending activation"),
+        ("active", "Active"),
+        ("suspended", "Suspended"),
+        ("deletion_requested", "Deletion requested"),
+    ]
+    CATEGORY_CHOICES = [
+        ("business", "Business"),
+        ("startup", "Startup"),
+        ("individual", "Individual"),
+        ("nonprofit", "Non-profit"),
+        ("other", "Other"),
+    ]
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="client_account",
+    )
+    client_id = models.CharField(max_length=20, unique=True, editable=False, db_index=True)
+    company = models.CharField(max_length=160, blank=True)
+    phone = models.CharField(max_length=30, blank=True)
+    business_address = models.TextField(blank=True)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default="business")
+    internal_notes = models.TextField(blank=True)
+    status = models.CharField(max_length=24, choices=STATUS_CHOICES, default="pending", db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def save(self, *args, **kwargs):
+        if not self.client_id:
+            self.client_id = f"CL-{uuid.uuid4().hex[:10].upper()}"
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.client_id} — {self.user.get_full_name() or self.user.email}"
+
+
+class ClientProject(models.Model):
+    """A project explicitly shared with one or more client accounts."""
+
+    STATUS_CHOICES = [
+        ("pending", "Pending"),
+        ("planning", "Planning"),
+        ("in_progress", "In progress"),
+        ("awaiting_client", "Awaiting client"),
+        ("completed", "Completed"),
+        ("on_hold", "On hold"),
+        ("cancelled", "Cancelled"),
+    ]
+
+    project_id = models.CharField(max_length=20, unique=True, editable=False, db_index=True)
+    name = models.CharField(max_length=160)
+    clients = models.ManyToManyField(ClientAccount, related_name="projects")
+    description = models.TextField(blank=True)
+    category = models.CharField(max_length=80, blank=True)
+    start_date = models.DateField(null=True, blank=True)
+    expected_completion = models.DateField(null=True, blank=True)
+    status = models.CharField(max_length=24, choices=STATUS_CHOICES, default="pending", db_index=True)
+    progress = models.PositiveSmallIntegerField(default=0)
+    admin_notes = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-updated_at"]
+        indexes = [
+            models.Index(fields=["status", "-updated_at"], name="client_project_status_idx"),
+        ]
+
+    def save(self, *args, **kwargs):
+        if not self.project_id:
+            self.project_id = f"PR-{uuid.uuid4().hex[:10].upper()}"
+        self.progress = min(max(self.progress, 0), 100)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.project_id} — {self.name}"
+
+
+class ProjectUpdate(models.Model):
+    """Client-visible or internal progress update for a project."""
+
+    project = models.ForeignKey(ClientProject, on_delete=models.CASCADE, related_name="updates")
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="project_updates",
+    )
+    title = models.CharField(max_length=160)
+    body = models.TextField()
+    visible_to_client = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+
+class ClientDocument(models.Model):
+    """A private document authorized for exactly one client account."""
+
+    CATEGORY_CHOICES = [
+        ("proposal", "Project proposal"),
+        ("quotation", "Quotation"),
+        ("contract", "Contract or agreement"),
+        ("invoice", "Invoice"),
+        ("requirements", "Requirement document"),
+        ("report", "Project report"),
+        ("design", "Design document"),
+        ("deliverable", "Deliverable"),
+        ("other", "Other"),
+    ]
+
+    title = models.CharField(max_length=160)
+    description = models.TextField(blank=True)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default="other")
+    client = models.ForeignKey(ClientAccount, on_delete=models.CASCADE, related_name="documents")
+    project = models.ForeignKey(
+        ClientProject,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="documents",
+    )
+    file = models.FileField(upload_to=private_document_upload_to)
+    version = models.CharField(max_length=30, default="1.0")
+    uploaded_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="uploaded_client_documents",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["client", "-created_at"], name="client_doc_client_date_idx"),
+        ]
+
+    def __str__(self):
+        return f"{self.title} — {self.client.client_id}"
+
+
+class ClientDeletionRequest(models.Model):
+    """Auditable, reviewable client account deletion request."""
+
+    STATUS_CHOICES = [
+        ("pending", "Pending"),
+        ("approved", "Approved"),
+        ("rejected", "Rejected"),
+    ]
+    client = models.ForeignKey(ClientAccount, on_delete=models.CASCADE, related_name="deletion_requests")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
+    requested_at = models.DateTimeField(auto_now_add=True)
+    reviewed_at = models.DateTimeField(null=True, blank=True)
+    reviewed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="reviewed_deletion_requests",
+    )
+
+
 # ============================================================
 # CMS MODELS
 # ============================================================

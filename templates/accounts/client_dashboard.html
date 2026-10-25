@@ -1,17 +1,18 @@
 {% extends "base.html" %}
-
 {% block content %}
-
-<div class="container">
-    <h1>Client Dashboard</h1>
-
-    <p>Welcome, {{ request.user.username }}.</p>
-
-    <p>Email: {{ request.user.email }}</p>
-
-    <a href="{% url 'accounts_profile' %}">
-        My Profile
-    </a>
-</div>
-
+<main class="container">
+  <div class="section-heading"><p class="eyebrow">Client portal</p><h1>Welcome, {{ request.user.first_name|default:request.user.username }}</h1><p>Your projects, updates, and private documents in one place.</p></div>
+  <div class="grid grid-3">
+    <div class="card"><p class="text-muted">Client ID</p><strong>{{ account.client_id }}</strong></div>
+    <div class="card"><p class="text-muted">Projects</p><strong>{{ projects|length }}</strong></div>
+    <div class="card"><p class="text-muted">Documents</p><strong>{{ documents|length }}</strong></div>
+  </div>
+  <h2 class="mt-8">My projects</h2>
+  <div class="grid grid-2">{% for project in projects %}<article class="card"><p class="eyebrow">{{ project.project_id }}</p><h3>{{ project.name }}</h3><p>{{ project.description|default:"No description provided." }}</p><p><strong>{{ project.progress }}%</strong> · {{ project.get_status_display }}</p><progress value="{{ project.progress }}" max="100" aria-label="{{ project.name }} progress"></progress></article>{% empty %}<p class="text-muted">No projects have been assigned yet.</p>{% endfor %}</div>
+  <h2 class="mt-8">Recent updates</h2>
+  <div class="stack">{% for update in updates %}<article class="card"><p class="text-muted">{{ update.created_at|date:"M d, Y" }} · {{ update.project.name }}</p><h3>{{ update.title }}</h3><p>{{ update.body }}</p></article>{% empty %}<p class="text-muted">No client-visible updates yet.</p>{% endfor %}</div>
+  <h2 class="mt-8">My documents</h2>
+  <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Document</th><th>Category</th><th>Project</th><th>Action</th></tr></thead><tbody>{% for document in documents %}<tr><td>{{ document.title }}<br><small>v{{ document.version }}</small></td><td>{{ document.get_category_display }}</td><td>{{ document.project.name|default:"—" }}</td><td><a class="btn btn-secondary btn-sm" href="{% url 'client_document_download' document.pk %}">Download</a></td></tr>{% empty %}<tr><td colspan="4" class="text-muted">No documents are available.</td></tr>{% endfor %}</tbody></table></div>
+  <p class="mt-8"><a href="{% url 'accounts_settings' %}">Account settings</a> · <a href="{% url 'accounts_profile' %}">My profile</a></p>
+</main>
 {% endblock %}

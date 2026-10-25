@@ -1,0 +1,3 @@
+{% extends "admin/base.html" %}
+{% block title %}Project{% endblock %}{% block page_title %}Project{% endblock %}
+{% block content %}<form method="post" class="form-card">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary">Save project</button> <a class="btn btn-ghost" href="{% url 'admin_project_list' %}">Cancel</a>{% if item %}<a class="btn btn-secondary" href="{% url 'admin_project_update_create' item.pk %}">Add progress update</a>{% endif %}</form>{% endblock %}

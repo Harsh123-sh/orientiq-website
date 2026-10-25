@@ -4,18 +4,29 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.utils.crypto import get_random_string
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from .forms import CustomPasswordChangeForm
+from .forms import (
+    ClientAccountForm,
+    ClientDocumentForm,
+    ClientProjectForm,
+    CustomPasswordChangeForm,
+    ProjectUpdateForm,
+)
 from .models import (
     ActivityLog,
     Booking,
     BookingStatus,
     BookingType,
     ContactInquiry,
+    ClientAccount,
+    ClientDocument,
+    ClientProject,
+    ProjectUpdate,
     Industry,
     MediaAsset,
     PortfolioProject,
@@ -97,8 +108,173 @@ def dashboard(request):
         "recent_services": Service.objects.all()[:5],
         "recent_products": Product.objects.all()[:5],
         "product_status_counts": Product.objects.values("product_status").annotate(count=Count("id")),
+        "total_clients": ClientAccount.objects.count(),
+        "active_clients": ClientAccount.objects.filter(status="active").count(),
+        "pending_clients": ClientAccount.objects.filter(status="pending").count(),
+        "active_projects": ClientProject.objects.filter(status="in_progress").count(),
+        "completed_projects": ClientProject.objects.filter(status="completed").count(),
+        "document_count": ClientDocument.objects.count(),
     }
     return render(request, "admin/dashboard.html", context)
+
+
+# ============================================================
+# CLIENT PORTAL MANAGEMENT
+# ============================================================
+
+@login_required
+def client_list(request):
+    require_admin(request.user)
+    qs = ClientAccount.objects.select_related("user").prefetch_related("projects")
+    query = (request.GET.get("q") or "").strip()
+    if query:
+        qs = qs.filter(
+            Q(client_id__icontains=query)
+            | Q(company__icontains=query)
+            | Q(user__first_name__icontains=query)
+            | Q(user__last_name__icontains=query)
+            | Q(user__email__icontains=query)
+            | Q(projects__name__icontains=query)
+        ).distinct()
+    status = request.GET.get("status")
+    if status:
+        qs = qs.filter(status=status)
+    return render(request, "admin/clients/list.html", {
+        "items": _paginate(request, qs),
+        "status_choices": ClientAccount.STATUS_CHOICES,
+        "active_status": status or "",
+        "search_query": query,
+    })
+
+
+@login_required
+def client_create(request):
+    require_admin(request.user)
+    if request.method == "POST":
+        form = ClientAccountForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            user = User.objects.create_user(
+                username=f"client-{data['email'].split('@')[0]}-{__import__('uuid').uuid4().hex[:6]}",
+                email=data["email"],
+                first_name=data["first_name"],
+                last_name=data["last_name"],
+            )
+            # Store only a random hash; the client must choose a password through
+            # Django's password-reset flow.
+            user.set_password(get_random_string(48))
+            user.save(update_fields=["password"])
+            account = form.save(commit=False)
+            account.user = user
+            account.status = "pending"
+            account.save()
+            _log(request.user, "create", "ClientAccount", account.id, f"Created client account {account.client_id}", request)
+            messages.success(request, "Client account created. Send a password reset email to activate access.")
+            return redirect("admin_client_detail", account.pk)
+    else:
+        form = ClientAccountForm()
+    return render(request, "admin/clients/form.html", {"form": form, "item": None})
+
+
+@login_required
+def client_detail(request, pk):
+    require_admin(request.user)
+    account = get_object_or_404(
+        ClientAccount.objects.select_related("user").prefetch_related("projects", "documents"),
+        pk=pk,
+    )
+    if request.method == "POST":
+        form = ClientAccountForm(request.POST, instance=account, user_instance=account.user)
+        if form.is_valid():
+            account = form.save()
+            account.user.first_name = form.cleaned_data["first_name"]
+            account.user.last_name = form.cleaned_data["last_name"]
+            account.user.email = form.cleaned_data["email"]
+            account.user.is_active = account.status != "suspended"
+            account.user.save(update_fields=["first_name", "last_name", "email", "is_active"])
+            _log(request.user, "update", "ClientAccount", account.id, f"Updated client account {account.client_id}", request)
+            messages.success(request, "Client account updated.")
+            return redirect("admin_client_detail", account.pk)
+    else:
+        form = ClientAccountForm(instance=account, user_instance=account.user)
+    return render(request, "admin/clients/detail.html", {
+        "item": account,
+        "form": form,
+        "projects": account.projects.all(),
+        "documents": account.documents.select_related("project"),
+    })
+
+
+@login_required
+def project_list(request):
+    require_admin(request.user)
+    qs = ClientProject.objects.prefetch_related("clients")
+    query = (request.GET.get("q") or "").strip()
+    if query:
+        qs = qs.filter(Q(project_id__icontains=query) | Q(name__icontains=query)).distinct()
+    return render(request, "admin/projects/list.html", {"items": _paginate(request, qs), "search_query": query})
+
+
+@login_required
+def project_edit(request, pk=None):
+    require_admin(request.user)
+    item = get_object_or_404(ClientProject, pk=pk) if pk else None
+    if request.method == "POST":
+        form = ClientProjectForm(request.POST, instance=item)
+        if form.is_valid():
+            project = form.save()
+            _log(request.user, "update" if item else "create", "ClientProject", project.id, f"Saved project {project.project_id}", request)
+            messages.success(request, "Project saved.")
+            return redirect("admin_project_edit", project.pk)
+    else:
+        form = ClientProjectForm(instance=item)
+    return render(request, "admin/projects/form.html", {"form": form, "item": item})
+
+
+@login_required
+def document_list(request):
+    require_admin(request.user)
+    qs = ClientDocument.objects.select_related("client__user", "project", "uploaded_by")
+    query = (request.GET.get("q") or "").strip()
+    if query:
+        qs = qs.filter(Q(title__icontains=query) | Q(client__client_id__icontains=query)).distinct()
+    return render(request, "admin/documents/list.html", {"items": _paginate(request, qs), "search_query": query})
+
+
+@login_required
+def document_upload(request):
+    require_admin(request.user)
+    if request.method == "POST":
+        form = ClientDocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            document = form.save(commit=False)
+            document.uploaded_by = request.user
+            document.save()
+            _log(request.user, "upload", "ClientDocument", document.id, f"Uploaded private document for {document.client.client_id}", request)
+            messages.success(request, "Private document uploaded.")
+            return redirect("admin_document_list")
+    else:
+        form = ClientDocumentForm()
+    return render(request, "admin/documents/form.html", {"form": form})
+
+
+@login_required
+def project_update_create(request, pk):
+    require_admin(request.user)
+    project = get_object_or_404(ClientProject, pk=pk)
+    if request.method == "POST":
+        form = ProjectUpdateForm(request.POST)
+        if form.is_valid():
+            update = form.save(commit=False)
+            update.project = project
+            update.author = request.user
+            update.save()
+            _log(request.user, "create", "ProjectUpdate", update.id, f"Added update to {project.project_id}", request)
+            messages.success(request, "Project update published.")
+            return redirect("admin_project_edit", project.pk)
+    else:
+        form = ProjectUpdateForm()
+    return render(request, "admin/projects/update_form.html", {"form": form, "item": project})
 
 
 # ============================================================

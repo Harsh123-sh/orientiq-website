@@ -1,0 +1,3 @@
+{% extends "admin/base.html" %}
+{% block title %}Upload Document{% endblock %}{% block page_title %}Upload Private Document{% endblock %}
+{% block content %}<p>Files are stored privately and are only served through an authorized download view.</p><form method="post" enctype="multipart/form-data" class="form-card">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary">Upload document</button></form>{% endblock %}

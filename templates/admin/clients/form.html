@@ -1,0 +1,3 @@
+{% extends "admin/base.html" %}
+{% block title %}Add Client{% endblock %}{% block page_title %}Add Client{% endblock %}
+{% block content %}<form method="post" class="form-card">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary">Create client</button> <a class="btn btn-ghost" href="{% url 'admin_client_list' %}">Cancel</a></form>{% endblock %}

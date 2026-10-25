@@ -30,7 +30,7 @@
             </div>
             {% endif %}
 
-            <form method="post" action="{% url 'accounts_login' %}" class="auth-form">
+            <form method="post" action="{{ request.path }}" class="auth-form">
                 {% csrf_token %}
                 <div class="form-group">
                     <label class="form-label" for="id_username">Username or Email</label>

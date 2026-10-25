@@ -15,6 +15,7 @@ urlpatterns = [
     path('django-admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
+    path('problem-solving/', views.problem_solving, name='problem_solving'),
 
     # Services
     path('services/', views.services, name='services'),
@@ -67,6 +68,8 @@ urlpatterns = [
     path('accounts/profile/', views.profile, name='accounts_profile'),
     path('accounts/settings/', views.account_settings, name='accounts_settings'),
     path('accounts/change-password/', views.OrentiqPasswordChangeView.as_view(), name='accounts_change_password'),
+    path('accounts/documents/<int:pk>/download/', views.client_document_download, name='client_document_download'),
+    path('accounts/deletion-request/', views.client_deletion_request, name='client_deletion_request'),
 
     # ============ ADMIN DASHBOARD / CMS ============
     path('admin/login/', views.OrentiqLoginView.as_view(), name='admin_login'),
@@ -129,6 +132,15 @@ urlpatterns = [
 
     # Activity
     path('admin/activity/', admin_views.activity_list, name='admin_activity'),
+    path('admin/clients/', admin_views.client_list, name='admin_client_list'),
+    path('admin/clients/create/', admin_views.client_create, name='admin_client_create'),
+    path('admin/clients/<int:pk>/', admin_views.client_detail, name='admin_client_detail'),
+    path('admin/projects/', admin_views.project_list, name='admin_project_list'),
+    path('admin/projects/create/', admin_views.project_edit, name='admin_project_create'),
+    path('admin/projects/<int:pk>/edit/', admin_views.project_edit, name='admin_project_edit'),
+    path('admin/projects/<int:pk>/updates/create/', admin_views.project_update_create, name='admin_project_update_create'),
+    path('admin/documents/', admin_views.document_list, name='admin_document_list'),
+    path('admin/documents/upload/', admin_views.document_upload, name='admin_document_upload'),
 
     # Live Intelligence (Phase 7)
     path('live-intelligence/', views.live_intelligence_page, name='live_intelligence'),

@@ -1,0 +1,8 @@
+{% extends "admin/base.html" %}
+{% block title %}Client {{ item.client_id }}{% endblock %}{% block page_title %}{{ item.client_id }}{% endblock %}
+{% block content %}
+<div class="admin-toolbar"><p>{{ item.user.get_full_name|default:item.user.email }} · {{ item.user.email }}</p><a class="btn btn-primary" href="{% url 'admin_document_upload' %}">Upload document</a></div>
+<form method="post" class="form-card">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary">Save client</button></form>
+<h3 class="mt-8">Assigned projects</h3><div class="admin-table-wrap"><table class="admin-table"><tbody>{% for project in projects %}<tr><td><a class="link" href="{% url 'admin_project_edit' project.pk %}">{{ project.name }}</a></td><td>{{ project.get_status_display }}</td><td>{{ project.progress }}%</td></tr>{% empty %}<tr><td class="text-muted">No projects assigned.</td></tr>{% endfor %}</tbody></table></div>
+<h3>Documents</h3><div class="admin-table-wrap"><table class="admin-table"><tbody>{% for document in documents %}<tr><td>{{ document.title }}</td><td>{{ document.get_category_display }}</td><td>{{ document.created_at|date:"M d, Y" }}</td></tr>{% empty %}<tr><td class="text-muted">No private documents.</td></tr>{% endfor %}</tbody></table></div>
+{% endblock %}

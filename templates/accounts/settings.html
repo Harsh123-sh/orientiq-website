@@ -92,6 +92,16 @@
                         <a href="{% url 'accounts_logout' %}" class="btn btn-danger">Log Out</a>
                     </div>
                 </div>
+                {% if request.user.client_account %}
+                <div class="card">
+                    <h3 class="mb-4">Request account deletion</h3>
+                    <p class="body-small text-muted mb-4">Your request will be reviewed. Business records and documents may be retained where required.</p>
+                    <form method="post" action="{% url 'client_deletion_request' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" {% if request.user.client_account.status == "deletion_requested" %}disabled{% endif %}>Request deletion</button>
+                    </form>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>

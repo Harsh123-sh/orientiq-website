@@ -15,7 +15,7 @@ from django.http import FileResponse, Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.templatetags.static import static
 from django.utils import timezone
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.decorators.http import require_POST
 from django.views.generic import RedirectView
 
@@ -31,6 +31,11 @@ from .models import (
     BookingStatus,
     BookingType,
     ContactInquiry,
+    ClientAccount,
+    ClientDocument,
+    ClientDeletionRequest,
+    ActivityLog,
+    ProjectUpdate,
     CandidateApplication,
     Profile,
     UserRole,
@@ -57,6 +62,7 @@ from .services.booking import (
     is_booking_rate_limited,
     resolve_inventory,
 )
+from .permissions import is_admin
 
 
 def home(request):
@@ -74,6 +80,11 @@ def home(request):
 def about(request):
     """Render the About page."""
     return render(request, "pages/about.html")
+
+
+def problem_solving(request):
+    """Show ORENTIQ's problem-solving approach and illustrative solution paths."""
+    return render(request, "pages/problem-solving.html")
 
 
 def services(request):
@@ -302,7 +313,14 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            # With multiple auth backends, Django requires the backend attribute.
+            ClientAccount.objects.get_or_create(
+                user=user,
+                defaults={
+                    "company": form.cleaned_data.get("company", ""),
+                    "phone": form.cleaned_data.get("phone", ""),
+                    "status": "active",
+                },
+            )
             user.backend = "core.backends.EmailOrUsernameModelBackend"
             login(request, user)
             messages.success(request, "Welcome to ORENTIQ! Your account has been created.")
@@ -320,13 +338,12 @@ class OrentiqLoginView(LoginView):
     redirect_authenticated_user = True
 
     def get_success_url(self):
-        next_url = self.get_redirect_url()
+        if self.request.user.is_staff or self.request.user.is_superuser or is_admin(self.request.user):
+            return reverse("admin_dashboard")
 
+        next_url = self.get_redirect_url()
         if next_url:
             return next_url
-
-        if self.request.user.is_staff or self.request.user.is_superuser:
-            return "/admin/"
 
         return "/accounts/dashboard/"
 
@@ -359,6 +376,8 @@ class OrentiqPasswordResetConfirmView(PasswordResetConfirmView):
 @login_required
 def profile(request):
     """View the current user's profile."""
+    if is_admin(request.user):
+        return redirect("admin_profile")
     profile_obj, _ = Profile.objects.get_or_create(user=request.user)
     return render(request, "accounts/profile.html", {"profile": profile_obj})
 
@@ -366,6 +385,8 @@ def profile(request):
 @login_required
 def account_settings(request):
     """Edit profile and account settings."""
+    if is_admin(request.user):
+        return redirect("admin_profile")
     profile_obj, _ = Profile.objects.get_or_create(user=request.user)
 
     if request.method == "POST":
@@ -624,15 +645,69 @@ def client_dashboard(request):
         return redirect("/admin/")
 
     profile = getattr(request.user, "profile", None)
+    account = getattr(request.user, "client_account", None)
 
-    if not profile or profile.role != UserRole.CLIENT:
+    if not profile or profile.role != UserRole.CLIENT or account is None:
         return redirect("/accounts/profile/")
+
+    if account.status != "active" or not request.user.is_active:
+        messages.error(request, "Your client account is not currently active.")
+        return redirect("accounts_logout")
+
+    projects = account.projects.prefetch_related("updates").all()
+    documents = account.documents.select_related("project").all()
 
     return render(
         request,
         "accounts/client_dashboard.html",
-        {"profile": profile},
+        {
+            "profile": profile,
+            "account": account,
+            "projects": projects,
+            "documents": documents,
+            "updates": ProjectUpdate.objects.filter(
+                project__clients=account, visible_to_client=True
+            ).select_related("project")[:8],
+        },
     )
+
+
+@login_required
+def client_document_download(request, pk):
+    """Serve a document only after checking the logged-in client's ownership."""
+    account = getattr(request.user, "client_account", None)
+    if not account or account.status != "active":
+        raise Http404("Document not found.")
+    document = get_object_or_404(ClientDocument, pk=pk, client=account)
+    if not document.file:
+        raise Http404("Document is unavailable.")
+    return FileResponse(
+        document.file.open("rb"),
+        as_attachment=True,
+        filename=document.file.name.rsplit("/", 1)[-1],
+    )
+
+
+@login_required
+@require_POST
+def client_deletion_request(request):
+    account = getattr(request.user, "client_account", None)
+    if not account or account.status in {"suspended", "deletion_requested"}:
+        messages.error(request, "This account cannot submit another deletion request.")
+        return redirect("accounts_settings")
+    ClientDeletionRequest.objects.create(client=account)
+    account.status = "deletion_requested"
+    account.save(update_fields=["status", "updated_at"])
+    ActivityLog.objects.create(
+        user=request.user,
+        action="deletion_request",
+        object_type="ClientAccount",
+        object_id=account.id,
+        description=f"Client {account.client_id} requested account deletion.",
+        ip_address=request.META.get("REMOTE_ADDR"),
+    )
+    messages.success(request, "Your deletion request has been submitted for review.")
+    return redirect("accounts_settings")
 
 @login_required
 @require_POST

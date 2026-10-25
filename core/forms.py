@@ -10,7 +10,14 @@ from django.contrib.auth.forms import (
 )
 from django.contrib.auth.models import User
 
-from .models import CandidateApplication, Profile
+from .models import (
+    CandidateApplication,
+    ClientAccount,
+    ClientDocument,
+    ClientProject,
+    Profile,
+    ProjectUpdate,
+)
 
 
 class CandidateApplicationForm(forms.ModelForm):
@@ -197,6 +204,94 @@ class ProfileForm(forms.ModelForm):
                 self.user.save()
                 profile.save()
         return profile
+
+
+class ClientAccountForm(forms.ModelForm):
+    """Validated admin form for creating and editing a client account."""
+
+    first_name = forms.CharField(max_length=150)
+    last_name = forms.CharField(max_length=150, required=False)
+    email = forms.EmailField()
+
+    class Meta:
+        model = ClientAccount
+        fields = ("first_name", "last_name", "email", "company", "phone", "business_address", "category", "internal_notes", "status")
+        widgets = {
+            "business_address": forms.Textarea(attrs={"rows": 3}),
+            "internal_notes": forms.Textarea(attrs={"rows": 3}),
+        }
+
+    def __init__(self, *args, user_instance=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user_instance = user_instance or (self.instance.user if self.instance.pk else None)
+        if self.user_instance:
+            self.fields["first_name"].initial = self.user_instance.first_name
+            self.fields["last_name"].initial = self.user_instance.last_name
+            self.fields["email"].initial = self.user_instance.email
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].strip().lower()
+        query = User.objects.filter(email__iexact=email)
+        if self.user_instance:
+            query = query.exclude(pk=self.user_instance.pk)
+        if query.exists():
+            raise forms.ValidationError("An account with this email already exists.")
+        return email
+
+
+class ClientProjectForm(forms.ModelForm):
+    class Meta:
+        model = ClientProject
+        fields = ("name", "clients", "description", "category", "start_date", "expected_completion", "status", "progress", "admin_notes")
+        widgets = {
+            "clients": forms.SelectMultiple(attrs={"size": 5}),
+            "description": forms.Textarea(attrs={"rows": 4}),
+            "admin_notes": forms.Textarea(attrs={"rows": 3}),
+            "start_date": forms.DateInput(attrs={"type": "date"}),
+            "expected_completion": forms.DateInput(attrs={"type": "date"}),
+        }
+
+    def clean_progress(self):
+        progress = self.cleaned_data["progress"]
+        if progress > 100:
+            raise forms.ValidationError("Progress must be between 0 and 100.")
+        return progress
+
+
+class ClientDocumentForm(forms.ModelForm):
+    class Meta:
+        model = ClientDocument
+        fields = ("title", "description", "category", "client", "project", "file", "version")
+        widgets = {"description": forms.Textarea(attrs={"rows": 3})}
+
+    def clean_file(self):
+        uploaded = self.cleaned_data["file"]
+        extension = uploaded.name.rsplit(".", 1)[-1].lower() if "." in uploaded.name else ""
+        if extension not in {"pdf", "doc", "docx", "xls", "xlsx", "png", "jpg", "jpeg"}:
+            raise forms.ValidationError("Upload an approved document type.")
+        if uploaded.size > 15 * 1024 * 1024:
+            raise forms.ValidationError("Documents must be 15 MB or smaller.")
+        if extension == "pdf":
+            header = uploaded.read(5)
+            uploaded.seek(0)
+            if header != b"%PDF-":
+                raise forms.ValidationError("The uploaded file is not a valid PDF.")
+        return uploaded
+
+    def clean(self):
+        cleaned = super().clean()
+        client = cleaned.get("client")
+        project = cleaned.get("project")
+        if client and project and not project.clients.filter(pk=client.pk).exists():
+            self.add_error("project", "Select a project assigned to the selected client.")
+        return cleaned
+
+
+class ProjectUpdateForm(forms.ModelForm):
+    class Meta:
+        model = ProjectUpdate
+        fields = ("title", "body", "visible_to_client")
+        widgets = {"body": forms.Textarea(attrs={"rows": 4})}
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):
