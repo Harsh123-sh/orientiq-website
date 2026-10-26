@@ -16,6 +16,7 @@ from core.models import (
     Product as ProductModel,
     Service as ServiceModel,
     Industry as IndustryModel,
+    PortfolioProject as PortfolioProjectModel,
     Technology as TechnologyModel,
     Testimonial as TestimonialModel,
 )
@@ -56,6 +57,20 @@ def _published_cms_products():
             "description": p.description,
         }
         for p in items
+    ]
+
+
+def _published_cms_portfolio():
+    items = PortfolioProjectModel.objects.filter(status="published").order_by("display_order")
+    return [
+        {
+            "title": item.title,
+            "category": item.category,
+            "industry": item.industry,
+            "summary": item.short_description,
+            "description": item.description,
+        }
+        for item in items
     ]
 
 
@@ -103,6 +118,8 @@ def build_company_context():
         for p in PRODUCTS
     ]
 
+    portfolio = _published_cms_portfolio()
+
     technologies = _published_cms_technologies() or [
         {"name": t, "category": cat["category"]}
         for cat in TECHNOLOGIES
@@ -114,23 +131,19 @@ def build_company_context():
     return {
         "company": {
             "name": "ORENTIQ",
+            "tagline": "Innovate. Integrate. Inspire.",
             "description": (
-                "ORENTIQ is a premium technology and digital solutions company. "
-                "We build AI-powered digital products, intelligent platforms, and "
-                "scalable technology solutions for ambitious businesses worldwide."
+                "ORENTIQ Technologies builds websites, software, dashboards, AI "
+                "solutions, automation, and digital products."
             ),
-            "mission": "To empower ambitious businesses with intelligent technology that delivers measurable results.",
-            "vision": "To be the most trusted technology partner for global enterprises and startups alike.",
-            "values": [
-                "Excellence",
-                "Transparency",
-                "Innovation",
-                "Partnership",
-                "Impact",
-                "Craft",
-            ],
+            "founder": {
+                "name": "Harsh Sachwani",
+                "role": "Founder of ORENTIQ Technologies",
+                "url": "/company/founder/",
+            },
             "urls": {
                 "about": "/about/",
+                "founder": "/company/founder/",
                 "process": "/company/process/",
                 "careers": "/company/careers/",
                 "contact": "/company/contact/",
@@ -144,6 +157,7 @@ def build_company_context():
         "services": services,
         "industries": industries,
         "products": products,
+        "portfolio": portfolio,
         "technologies": technologies,
         "testimonials": testimonials,
         "start_project": {

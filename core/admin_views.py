@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils.dateparse import parse_date
 
 from .forms import (
     ClientAccountForm,
@@ -102,6 +103,10 @@ def dashboard(request):
         "total_technologies": Technology.objects.count(),
         "total_testimonials": Testimonial.objects.count(),
         "new_inquiries": ContactInquiry.objects.filter(status="new").count(),
+        "awaiting_follow_up_inquiries": ContactInquiry.objects.filter(
+            status__in=["new", "reviewing", "contacted"]
+        ).count(),
+        "total_inquiries": ContactInquiry.objects.count(),
         "total_users": User.objects.count(),
         "recent_inquiries": ContactInquiry.objects.all()[:5],
         "recent_activity": ActivityLog.objects.all()[:10],
@@ -707,13 +712,37 @@ def testimonial_delete(request, pk):
 def inquiry_list(request):
     require_admin(request.user)
     all_qs = ContactInquiry.objects.all()
-    qs = all_qs
-    q = request.GET.get("q")
+    q = request.GET.get("q", "").strip()
     if q:
-        qs = qs.filter(Q(name__icontains=q) | Q(email__icontains=q) | Q(company__icontains=q))
-    status = request.GET.get("status")
+        all_qs = all_qs.filter(
+            Q(name__icontains=q)
+            | Q(email__icontains=q)
+            | Q(company__icontains=q)
+            | Q(reference__icontains=q)
+        )
+    source = request.GET.get("source", "")
+    if source in dict(ContactInquiry.SOURCE_CHOICES):
+        all_qs = all_qs.filter(source=source)
+    inquiry_type = request.GET.get("type", "")
+    if inquiry_type in dict(ContactInquiry.INQUIRY_TYPE_CHOICES):
+        all_qs = all_qs.filter(inquiry_type=inquiry_type)
+    date_from = parse_date(request.GET.get("date_from", ""))
+    if date_from:
+        all_qs = all_qs.filter(created_at__date__gte=date_from)
+    date_to = parse_date(request.GET.get("date_to", ""))
+    if date_to:
+        all_qs = all_qs.filter(created_at__date__lte=date_to)
+
+    status = request.GET.get("status", "")
+    qs = all_qs
     if status:
         qs = qs.filter(status=status)
+    ordering = request.GET.get("sort", "-created_at")
+    if ordering not in {"-created_at", "created_at", "name", "-name", "status", "reference"}:
+        ordering = "-created_at"
+    qs = qs.order_by(ordering)
+    query_params = request.GET.copy()
+    query_params.pop("page", None)
 
     status_summary = [
         {
@@ -730,10 +759,22 @@ def inquiry_list(request):
         {
             "items": _paginate(request, qs),
             "status_choices": ContactInquiry.STATUS_CHOICES,
+            "source_choices": ContactInquiry.SOURCE_CHOICES,
+            "inquiry_type_choices": ContactInquiry.INQUIRY_TYPE_CHOICES,
             "status_summary": status_summary,
             "status_total": all_qs.count(),
+            "new_count": all_qs.filter(status="new").count(),
+            "awaiting_follow_up_count": all_qs.filter(
+                status__in=["new", "reviewing", "contacted"]
+            ).count(),
             "active_status": status or "all",
             "search_query": q or "",
+            "active_source": source,
+            "active_type": inquiry_type,
+            "date_from": request.GET.get("date_from", ""),
+            "date_to": request.GET.get("date_to", ""),
+            "active_sort": ordering,
+            "query_string": query_params.urlencode(),
         },
     )
 
@@ -743,8 +784,13 @@ def inquiry_detail(request, pk):
     require_admin(request.user)
     obj = get_object_or_404(ContactInquiry, pk=pk)
     if request.method == "POST":
-        obj.status = request.POST.get("status", obj.status)
-        obj.admin_notes = request.POST.get("admin_notes", "")
+        status = request.POST.get("status", obj.status)
+        admin_notes = request.POST.get("admin_notes", "").strip()
+        if status not in dict(ContactInquiry.STATUS_CHOICES) or len(admin_notes) > 5000:
+            messages.error(request, "Please choose a valid status and keep notes under 5,000 characters.")
+            return render(request, "admin/inquiries/detail.html", {"item": obj}, status=400)
+        obj.status = status
+        obj.admin_notes = admin_notes
         obj.save()
         _log(request.user, "update", "Inquiry", obj.id, f"Updated inquiry from {obj.name}", request)
         messages.success(request, "Inquiry updated.")

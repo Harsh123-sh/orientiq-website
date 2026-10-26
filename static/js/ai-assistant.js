@@ -17,10 +17,33 @@
     var form = document.getElementById("ai-assistant-form");
     var input = document.getElementById("ai-assistant-input");
     var sendBtn = document.getElementById("ai-assistant-send");
-    var suggestionsEl = document.getElementById("ai-suggestions");
     var endpoint = assistant.getAttribute("data-endpoint");
+    var inquiryEndpoint = assistant.getAttribute("data-inquiry-endpoint");
+    var robotImage = assistant.getAttribute("data-robot-image");
 
     var conversationHistory = [];
+    var suggestedQuestions = [
+        {
+            question: "What does ORENTIQ do?",
+            icon: "M4 10 12 4l8 6v10H4zM9 20v-6h6v6M8 10h.01M16 10h.01"
+        },
+        {
+            question: "Who is the founder?",
+            icon: "M12 8a4 4 0 1 0 0-8 4 4 0 0 0 0 8M4 21a8 8 0 0 1 16 0"
+        },
+        {
+            question: "What services do you provide?",
+            icon: "M5 7h14v12H5zM8 11h8M8 15h5M8 4h8"
+        },
+        {
+            question: "Which industries do you serve?",
+            icon: "M3 20V9l6 3V8l6 4V4h6v16zM17 8h1M17 11h1M7 16h1M12 16h1"
+        },
+        {
+            question: "I want to start a project.",
+            icon: "M12 3v18M3 12h18M5 5l14 14M19 5 5 19"
+        }
+    ];
 
     /* ---------- Open / Close ---------- */
     function openAssistant() {
@@ -108,60 +131,166 @@
         messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
+    function createWelcomeMessage() {
+        var greeting = document.createElement("div");
+        greeting.className = "ai-message ai-message-assistant";
+        greeting.setAttribute("data-role", "assistant");
+
+        var avatar = document.createElement("span");
+        avatar.className = "ai-message-avatar";
+        avatar.setAttribute("aria-hidden", "true");
+        var image = document.createElement("img");
+        image.src = robotImage;
+        image.alt = "";
+        avatar.appendChild(image);
+        greeting.appendChild(avatar);
+
+        var bubble = document.createElement("div");
+        bubble.className = "ai-message-bubble ai-welcome-bubble";
+        var title = document.createElement("strong");
+        title.className = "ai-welcome-title";
+        title.textContent = "Hello! I'm ORENTIQ AI.";
+        var copy = document.createElement("span");
+        copy.className = "ai-welcome-copy";
+        copy.textContent = "May I help you? I'm here to guide you through ORENTIQ's services and solutions.";
+        bubble.appendChild(title);
+        bubble.appendChild(copy);
+        greeting.appendChild(bubble);
+        return greeting;
+    }
+
+    function createSuggestion(question) {
+        var chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "ai-suggestion-chip";
+        chip.setAttribute("data-question", question.question);
+
+        var icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        icon.setAttribute("class", "ai-suggestion-icon");
+        icon.setAttribute("viewBox", "0 0 24 24");
+        icon.setAttribute("aria-hidden", "true");
+        var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", question.icon);
+        icon.appendChild(path);
+
+        var text = document.createElement("span");
+        text.textContent = question.question;
+        var chevron = document.createElement("span");
+        chevron.className = "ai-suggestion-chevron";
+        chevron.setAttribute("aria-hidden", "true");
+        chevron.textContent = "›";
+        chip.appendChild(icon);
+        chip.appendChild(text);
+        chip.appendChild(chevron);
+        return chip;
+    }
+
+    function createSubmissionId() {
+        if (window.crypto && typeof window.crypto.randomUUID === "function") {
+            return window.crypto.randomUUID();
+        }
+        if (window.crypto && typeof window.crypto.getRandomValues === "function") {
+            var bytes = new Uint8Array(16);
+            window.crypto.getRandomValues(bytes);
+            bytes[6] = (bytes[6] & 15) | 64;
+            bytes[8] = (bytes[8] & 63) | 128;
+            var hex = Array.prototype.map.call(bytes, function (byte) {
+                return byte.toString(16).padStart(2, "0");
+            }).join("");
+            return hex.slice(0, 8) + "-" + hex.slice(8, 12) + "-" +
+                hex.slice(12, 16) + "-" + hex.slice(16, 20) + "-" + hex.slice(20);
+        }
+        throw new Error("Secure inquiry submission IDs are not supported by this browser.");
+    }
+
+    function addInquiryForm() {
+        var template = document.getElementById("ai-inquiry-form-template");
+        if (!template || !template.content.firstElementChild) {
+            showError();
+            return;
+        }
+
+        var wrapper = document.createElement("div");
+        wrapper.className = "ai-inquiry-card";
+        var formElement = template.content.firstElementChild.cloneNode(true);
+        formElement.querySelector('[name="submission_id"]').value = createSubmissionId();
+        wrapper.appendChild(formElement);
+        messagesEl.appendChild(wrapper);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function submitInquiry(formElement) {
+        var submitButton = formElement.querySelector(".ai-inquiry-submit");
+        var errorElement = formElement.querySelector(".ai-inquiry-form-error");
+        var fieldErrors = formElement.querySelectorAll(".ai-inquiry-field-error");
+        fieldErrors.forEach(function (error) { error.remove(); });
+        errorElement.hidden = true;
+        submitButton.disabled = true;
+
+        fetch(inquiryEndpoint, {
+            method: "POST",
+            headers: { "X-CSRFToken": getCsrfToken() },
+            body: new FormData(formElement)
+        })
+            .then(function (response) {
+                var contentType = response.headers.get("content-type") || "";
+                if (!contentType.includes("application/json")) {
+                    throw new Error("The server rejected the inquiry (HTTP " + response.status + "). Please refresh and try again.");
+                }
+                return response.json().then(function (data) {
+                    return { ok: response.ok, data: data, status: response.status };
+                });
+            })
+            .then(function (result) {
+                if (!result.ok || !result.data.success) {
+                    if (result.data.errors) {
+                        Object.keys(result.data.errors).forEach(function (name) {
+                            var field = formElement.elements.namedItem(name);
+                            var errors = result.data.errors[name];
+                            if (!field || !errors.length) return;
+                            var message = document.createElement("span");
+                            message.className = "ai-inquiry-field-error";
+                            message.textContent = errors.map(function (error) { return error.message; }).join(" ");
+                            field.insertAdjacentElement("afterend", message);
+                        });
+                    }
+                    errorElement.textContent = result.data.message ||
+                        "The inquiry could not be submitted (HTTP " + result.status + "). Please try again.";
+                    errorElement.hidden = false;
+                    return;
+                }
+
+                var success = document.createElement("div");
+                success.className = "ai-inquiry-success";
+                success.setAttribute("role", "status");
+                success.textContent = result.data.message + " Your reference is " + result.data.reference + ".";
+                formElement.closest(".ai-inquiry-card").replaceWith(success);
+                messagesEl.scrollTop = messagesEl.scrollHeight;
+            })
+            .catch(function (error) {
+                errorElement.textContent = error.message || "The inquiry could not be submitted. Please try again.";
+                errorElement.hidden = false;
+            })
+            .finally(function () {
+                submitButton.disabled = false;
+            });
+    }
+
     /* ---------- Clear conversation ---------- */
     function clearConversation() {
         if (!messagesEl) return;
 
-        // Remove all message/CTA elements except the initial greeting block.
-        var children = messagesEl.querySelectorAll(
-            ".ai-message, .ai-cta-suggestions, .ai-suggestion-label, .ai-suggestions"
-        );
-        children.forEach(function (child) {
-            // Keep the initial greeting message.
-            if (child.querySelector && child.querySelector("[data-role]") && child.hasAttribute("data-role")) {
-                // already has role; leave it
-            }
-            child.remove();
-        });
-
-        // Reset to the initial greeting state if the messages container is empty.
-        if (messagesEl.querySelectorAll(".ai-message").length === 0) {
-            var greeting = document.createElement("div");
-            greeting.className = "ai-message ai-message-assistant";
-            greeting.setAttribute("data-role", "assistant");
-            var bubble = document.createElement("div");
-            bubble.className = "ai-message-bubble";
-            bubble.textContent = "Hello! I'm ORENTIQ AI. How can I help you today?";
-            greeting.appendChild(bubble);
-            messagesEl.appendChild(greeting);
-        }
-
-        // Re-add suggestion options.
+        messagesEl.replaceChildren(createWelcomeMessage());
         var label = document.createElement("p");
         label.className = "ai-suggestion-label";
-        label.textContent = "Try asking:";
+        label.textContent = "Try asking";
         messagesEl.appendChild(label);
 
         var sugWrap = document.createElement("div");
         sugWrap.className = "ai-suggestions";
-        var questions = [
-            "What does ORENTIQ do?",
-            "What services do you provide?",
-            "Which industries do you serve?",
-            "What technologies do you use?",
-            "Tell me about your products.",
-            "How can I start a project?"
-        ];
-        questions.forEach(function (q) {
-            var chip = document.createElement("button");
-            chip.type = "button";
-            chip.className = "ai-suggestion-chip";
-            chip.setAttribute("data-question", q);
-            chip.textContent = q;
-            chip.addEventListener("click", function () {
-                sendMessage(q);
-            });
-            sugWrap.appendChild(chip);
+        sugWrap.id = "ai-suggestions";
+        suggestedQuestions.forEach(function (question) {
+            sugWrap.appendChild(createSuggestion(question));
         });
         messagesEl.appendChild(sugWrap);
 
@@ -174,8 +303,11 @@
     }
 
     /* ---------- Error ---------- */
-    function showError() {
-        if (errorEl) errorEl.hidden = false;
+    function showError(message) {
+        if (errorEl) {
+            errorEl.textContent = message || "I'm having trouble connecting right now. Please try again in a moment.";
+            errorEl.hidden = false;
+        }
     }
 
     function hideError() {
@@ -188,6 +320,10 @@
         if (!message) return;
 
         hideError();
+        var suggestionLabel = messagesEl.querySelector(".ai-suggestion-label");
+        var suggestions = messagesEl.querySelector(".ai-suggestions");
+        if (suggestionLabel) suggestionLabel.remove();
+        if (suggestions) suggestions.remove();
 
         // Add user message.
         addMessage("user", message);
@@ -211,20 +347,30 @@
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRFToken": getCookie("csrftoken")
+                "X-CSRFToken": getCsrfToken()
             },
             body: body
         })
             .then(function (response) {
-                return response.json().then(function (data) {
-                    return { ok: response.ok, data: data };
+                return response.text().then(function (text) {
+                    var data;
+                    try {
+                        data = JSON.parse(text);
+                    } catch (error) {
+                        if (!response.ok) {
+                            throw new Error("The chat request was rejected (HTTP " + response.status + ").");
+                        }
+                        throw new Error("The chat server returned an invalid response.");
+                    }
+                    return { ok: response.ok, data: data, status: response.status };
                 });
             })
             .then(function (result) {
                 typing.remove();
 
                 if (!result.ok || !result.data.success) {
-                    showError();
+                    showError((result.data.message || "The chat request could not be completed.") +
+                        " (HTTP " + result.status + ")");
                     // Still record an assistant error message in history as empty.
                     if (conversationHistory.length) {
                         conversationHistory[conversationHistory.length - 1].assistant =
@@ -246,10 +392,13 @@
                 if (suggestions.length) {
                     addCtaSuggestions(suggestions);
                 }
+                if (result.data.show_inquiry_form) {
+                    addInquiryForm();
+                }
             })
-            .catch(function () {
+            .catch(function (error) {
                 typing.remove();
-                showError();
+                showError(error.message);
                 if (conversationHistory.length) {
                     conversationHistory[conversationHistory.length - 1].assistant = "";
                 }
@@ -291,11 +440,17 @@
     }
 
     /* ---------- Suggestion chips ---------- */
-    if (suggestionsEl) {
-        suggestionsEl.addEventListener("click", function (e) {
+    if (messagesEl) {
+        messagesEl.addEventListener("click", function (e) {
             var chip = e.target.closest(".ai-suggestion-chip");
             if (chip) {
                 sendMessage(chip.getAttribute("data-question"));
+            }
+        });
+        messagesEl.addEventListener("submit", function (e) {
+            if (e.target.matches(".ai-inquiry-form")) {
+                e.preventDefault();
+                submitInquiry(e.target);
             }
         });
     }
@@ -305,5 +460,10 @@
         var match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
         if (match) return decodeURIComponent(match[2]);
         return "";
+    }
+
+    function getCsrfToken() {
+        var tokenInput = form && form.querySelector('input[name="csrfmiddlewaretoken"]');
+        return tokenInput ? tokenInput.value : getCookie("csrftoken");
     }
 })();

@@ -1,22 +1,20 @@
 {% load static %}
-<div class="ai-assistant" id="ai-assistant" data-endpoint="{% url 'ai_chat' %}">
+<div class="ai-assistant" id="ai-assistant" data-endpoint="{% url 'ai_chat' %}" data-inquiry-endpoint="{% url 'chatbot_inquiry_submit' %}" data-robot-image="{% static 'images/brand/orentiq-ai-robot.svg' %}">
     <!-- Floating trigger button -->
-    <button type="button" class="ai-assistant-trigger" id="ai-assistant-trigger" aria-label="Open ORENTIQ AI assistant" aria-expanded="false" aria-controls="ai-assistant-panel">
-        <svg class="icon icon-sparkle" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8L12 2z"></path>
-            <path d="M19 15l.9 2.6L22.5 18.5l-2.6.9L19 22l-.9-2.6-2.6-.9 2.6-.9L19 15z"></path>
-        </svg>
+    <button type="button" class="ai-assistant-trigger" id="ai-assistant-trigger" aria-label="May I help you? Chat with ORENTIQ AI" title="May I help you?" aria-expanded="false" aria-controls="ai-assistant-panel">
+        <img class="ai-assistant-robot-launcher" src="{% static 'images/brand/orentiq-ai-robot.svg' %}" alt="" aria-hidden="true">
+        <span class="ai-assistant-tooltip" aria-hidden="true">May I help you?</span>
     </button>
 
     <!-- Chat panel -->
     <div class="ai-assistant-panel" id="ai-assistant-panel" role="dialog" aria-modal="false" aria-label="ORENTIQ AI assistant" aria-hidden="true">
         <div class="ai-assistant-header">
             <div class="ai-assistant-brand">
-                <svg class="icon icon-sparkle" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8L12 2z"></path>
-                    <path d="M19 15l.9 2.6L22.5 18.5l-2.6.9L19 22l-.9-2.6-2.6-.9 2.6-.9L19 15z"></path>
-                </svg>
-                <div>
+                <span class="ai-assistant-logo" aria-hidden="true">
+                    <img src="{% static 'images/brand/orentiq-icon-on-light.png' %}" alt="" class="ai-assistant-logo-image ai-assistant-logo-light">
+                    <img src="{% static 'images/brand/orentiq-icon-192.png' %}" alt="" class="ai-assistant-logo-image ai-assistant-logo-dark">
+                </span>
+                <div class="ai-assistant-copy">
                     <strong>ORENTIQ AI</strong>
                     <span class="ai-assistant-subtitle">Your intelligent guide to ORENTIQ</span>
                 </div>
@@ -33,26 +31,73 @@
 
         <div class="ai-assistant-messages" id="ai-assistant-messages" role="log" aria-live="polite" aria-relevant="additions">
             <div class="ai-message ai-message-assistant" data-role="assistant">
-                <div class="ai-message-bubble">
-                    Hello! I'm ORENTIQ AI. How can I help you today?
+                <span class="ai-message-avatar" aria-hidden="true">
+                    <img src="{% static 'images/brand/orentiq-ai-robot.svg' %}" alt="">
+                </span>
+                <div class="ai-message-bubble ai-welcome-bubble">
+                    <strong class="ai-welcome-title">Hello! I'm ORENTIQ AI.</strong>
+                    <span class="ai-welcome-copy">May I help you? I'm here to guide you through ORENTIQ's services and solutions.</span>
                 </div>
             </div>
-            <p class="ai-suggestion-label">Try asking:</p>
+            <p class="ai-suggestion-label">Try asking</p>
             <div class="ai-suggestions" id="ai-suggestions">
-                <button type="button" class="ai-suggestion-chip" data-question="What does ORENTIQ do?">What does ORENTIQ do?</button>
-                <button type="button" class="ai-suggestion-chip" data-question="What services do you provide?">What services do you provide?</button>
-                <button type="button" class="ai-suggestion-chip" data-question="Which industries do you serve?">Which industries do you serve?</button>
-                <button type="button" class="ai-suggestion-chip" data-question="What technologies do you use?">What technologies do you use?</button>
-                <button type="button" class="ai-suggestion-chip" data-question="Tell me about your products.">Tell me about your products.</button>
-                <button type="button" class="ai-suggestion-chip" data-question="How can I start a project?">How can I start a project?</button>
+                <button type="button" class="ai-suggestion-chip" data-question="What does ORENTIQ do?"><svg class="ai-suggestion-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10 12 4l8 6v10H4zM9 20v-6h6v6M8 10h.01M16 10h.01"></path></svg><span>What does ORENTIQ do?</span><span class="ai-suggestion-chevron" aria-hidden="true">›</span></button>
+                <button type="button" class="ai-suggestion-chip" data-question="Who is the founder?"><svg class="ai-suggestion-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg><span>Who is the founder?</span><span class="ai-suggestion-chevron" aria-hidden="true">›</span></button>
+                <button type="button" class="ai-suggestion-chip" data-question="What services do you provide?"><svg class="ai-suggestion-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14v12H5zM8 11h8M8 15h5M8 4h8"></path></svg><span>What services do you provide?</span><span class="ai-suggestion-chevron" aria-hidden="true">›</span></button>
+                <button type="button" class="ai-suggestion-chip" data-question="Which industries do you serve?"><svg class="ai-suggestion-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20V9l6 3V8l6 4V4h6v16zM17 8h1M17 11h1M7 16h1M12 16h1"></path></svg><span>Which industries do you serve?</span><span class="ai-suggestion-chevron" aria-hidden="true">›</span></button>
+                <button type="button" class="ai-suggestion-chip" data-question="I want to start a project."><svg class="ai-suggestion-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M5 5l14 14M19 5 5 19"></path></svg><span>I want to start a project</span><span class="ai-suggestion-chevron" aria-hidden="true">›</span></button>
             </div>
+
         </div>
+
+        <template id="ai-inquiry-form-template">
+            <form class="ai-inquiry-form" novalidate>
+                <input type="hidden" name="submission_id">
+                <p class="ai-inquiry-form-heading">Tell us about your project</p>
+                <p class="ai-inquiry-form-intro">Share a few details and the ORENTIQ team will follow up.</p>
+                <div class="ai-inquiry-form-grid">
+                    <label class="ai-inquiry-field">Full name <span>*</span><input name="name" autocomplete="name" maxlength="120" required></label>
+                    <label class="ai-inquiry-field">Email address <span>*</span><input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+                    <label class="ai-inquiry-field">Phone<input name="phone" type="tel" autocomplete="tel" maxlength="30"></label>
+                    <label class="ai-inquiry-field">Company<input name="company" autocomplete="organization" maxlength="120"></label>
+                    <label class="ai-inquiry-field ai-inquiry-field-full">Inquiry type <span>*</span>
+                        <select name="inquiry_type" required>
+                            <option value="">Select a type</option>
+                            <option value="website_development">Website Development</option>
+                            <option value="mobile_application">Mobile Application</option>
+                            <option value="custom_software">Custom Software</option>
+                            <option value="business_dashboard">Business Dashboard</option>
+                            <option value="ai_automation">AI &amp; Automation</option>
+                            <option value="saas_product">SaaS Product</option>
+                            <option value="society_school_management">Society or School Management</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </label>
+                    <label class="ai-inquiry-field ai-inquiry-field-full">Project or inquiry title <span>*</span><input name="title" maxlength="160" required></label>
+                    <label class="ai-inquiry-field ai-inquiry-field-full">Project description <span>*</span><textarea name="description" rows="3" maxlength="5000" required></textarea></label>
+                    <label class="ai-inquiry-field">Budget range<input name="budget" maxlength="80"></label>
+                    <label class="ai-inquiry-field">Expected timeline<input name="timeline" maxlength="80"></label>
+                    <label class="ai-inquiry-field ai-inquiry-field-full">Preferred contact method
+                        <select name="contact_method">
+                            <option value="">No preference</option>
+                            <option value="email">Email</option>
+                            <option value="phone">Phone</option>
+                            <option value="whatsapp">WhatsApp</option>
+                        </select>
+                    </label>
+                </div>
+                <label class="ai-inquiry-consent"><input type="checkbox" name="consent" value="true" required><span>I consent to ORENTIQ contacting me about this inquiry. <b>*</b></span></label>
+                <p class="ai-inquiry-form-error" role="alert" hidden></p>
+                <button class="ai-inquiry-submit" type="submit">Send project inquiry</button>
+            </form>
+        </template>
 
         <div class="ai-assistant-error" id="ai-assistant-error" role="alert" hidden>
             I'm having trouble connecting right now. Please try again in a moment.
         </div>
 
         <form class="ai-assistant-form" id="ai-assistant-form">
+            {% csrf_token %}
             <label class="ai-assistant-label" for="ai-assistant-input">Ask about ORENTIQ</label>
             <div class="ai-assistant-input-row">
                 <textarea id="ai-assistant-input" class="ai-assistant-input" rows="1" placeholder="Ask about ORENTIQ..." maxlength="2000" aria-label="Ask about ORENTIQ"></textarea>

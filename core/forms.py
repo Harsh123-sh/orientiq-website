@@ -15,9 +15,53 @@ from .models import (
     ClientAccount,
     ClientDocument,
     ClientProject,
+    ContactInquiry,
     Profile,
     ProjectUpdate,
 )
+
+class ChatbotInquiryForm(forms.Form):
+    """Validate public chatbot project inquiries before they are persisted."""
+
+    name = forms.CharField(max_length=120)
+    email = forms.EmailField(max_length=254)
+    phone = forms.CharField(max_length=30, required=False)
+    company = forms.CharField(max_length=120, required=False)
+    inquiry_type = forms.ChoiceField(choices=ContactInquiry.INQUIRY_TYPE_CHOICES)
+    title = forms.CharField(max_length=160)
+    description = forms.CharField(max_length=5000)
+    budget = forms.CharField(max_length=80, required=False)
+    timeline = forms.CharField(max_length=80, required=False)
+    contact_method = forms.ChoiceField(
+        choices=[("", "Select a contact method"), *ContactInquiry.CONTACT_METHOD_CHOICES],
+        required=False,
+    )
+    consent = forms.BooleanField(required=True)
+    submission_id = forms.UUIDField()
+
+    def clean_name(self):
+        value = self.cleaned_data["name"].strip()
+        if not value:
+            raise forms.ValidationError("Enter your name.")
+        return value
+
+    def clean_email(self):
+        return self.cleaned_data["email"].strip().lower()
+
+    def clean_company(self):
+        return self.cleaned_data["company"].strip()
+
+    def clean_title(self):
+        value = self.cleaned_data["title"].strip()
+        if not value:
+            raise forms.ValidationError("Enter a project or inquiry title.")
+        return value
+
+    def clean_description(self):
+        value = self.cleaned_data["description"].strip()
+        if not value:
+            raise forms.ValidationError("Enter a project description.")
+        return value
 
 
 class CandidateApplicationForm(forms.ModelForm):

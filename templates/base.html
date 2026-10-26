@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="{% static 'css/animations.css' %}?v=motion-final">
     <link rel="stylesheet" href="{% static 'css/themes.css' %}">
     <link rel="stylesheet" href="{% static 'css/pages.css' %}">
-    <link rel="stylesheet" href="{% static 'css/ai-assistant.css' %}?v=motion-final">
+    <link rel="stylesheet" href="{% static 'css/ai-assistant.css' %}?v=robot-welcome">
     <link rel="stylesheet" href="{% static 'css/social-actions.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
@@ -49,7 +49,7 @@
     {% include "components/ai-assistant.html" %}
 
     <script src="{% static 'js/theme.js' %}"></script>
-    <script src="{% static 'js/ai-assistant.js' %}"></script>
+    <script src="{% static 'js/ai-assistant.js' %}?v=robot-welcome"></script>
     <script src="{% static 'js/navigation.js' %}"></script>
     <script src="{% static 'js/components.js' %}?v=motion-final"></script>
     <script src="{% static 'js/main.js' %}"></script>

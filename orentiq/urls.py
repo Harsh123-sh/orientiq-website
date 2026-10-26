@@ -169,6 +169,7 @@ urlpatterns = [
 
     # AI Assistant
     path('api/ai/chat/', views.ai_chat, name='ai_chat'),
+    path('api/ai/inquiries/', views.chatbot_inquiry_submit, name='chatbot_inquiry_submit'),
 
     # Phase 1 (dev-only)
     path('design-system/', views.design_system, name='design_system'),

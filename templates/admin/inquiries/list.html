@@ -22,6 +22,14 @@
             <span class="inquiry-summary-label">All</span>
             <strong>{{ status_total }}</strong>
         </a>
+        <div class="inquiry-summary-card">
+            <span class="inquiry-summary-label">New</span>
+            <strong>{{ new_count }}</strong>
+        </div>
+        <div class="inquiry-summary-card">
+            <span class="inquiry-summary-label">Awaiting follow-up</span>
+            <strong>{{ awaiting_follow_up_count }}</strong>
+        </div>
         {% for status_item in status_summary %}
         <a href="{% url 'admin_inquiry_list' %}?status={{ status_item.value }}" class="inquiry-summary-card {% if active_status == status_item.value %}is-active{% endif %}">
             <span class="inquiry-summary-label">{{ status_item.label }}</span>
@@ -42,6 +50,28 @@
                 <option value="{{ value }}" {% if request.GET.status == value %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
             </select>
+            <select name="source" class="form-control">
+                <option value="">All sources</option>
+                {% for value, label in source_choices %}
+                <option value="{{ value }}" {% if active_source == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <select name="type" class="form-control">
+                <option value="">All inquiry types</option>
+                {% for value, label in inquiry_type_choices %}
+                <option value="{{ value }}" {% if active_type == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <input type="date" name="date_from" class="form-control" aria-label="Submitted from" value="{{ date_from }}">
+            <input type="date" name="date_to" class="form-control" aria-label="Submitted through" value="{{ date_to }}">
+            <select name="sort" class="form-control" aria-label="Sort inquiries">
+                <option value="-created_at" {% if active_sort == "-created_at" %}selected{% endif %}>Newest first</option>
+                <option value="created_at" {% if active_sort == "created_at" %}selected{% endif %}>Oldest first</option>
+                <option value="name" {% if active_sort == "name" %}selected{% endif %}>Name A–Z</option>
+                <option value="-name" {% if active_sort == "-name" %}selected{% endif %}>Name Z–A</option>
+                <option value="status" {% if active_sort == "status" %}selected{% endif %}>Status</option>
+                <option value="reference" {% if active_sort == "reference" %}selected{% endif %}>Reference</option>
+            </select>
             <button type="submit" class="btn btn-secondary">Apply</button>
             <a href="{% url 'admin_inquiry_list' %}" class="btn btn-ghost">Clear</a>
         </form>
@@ -51,9 +81,10 @@
         <table class="admin-table">
             <thead>
                 <tr>
+                    <th>Reference</th>
                     <th>Contact</th>
                     <th>Email</th>
-                    <th>Service</th>
+                    <th>Type / Source</th>
                     <th>Status</th>
                     <th>Created</th>
                     <th>Actions</th>
@@ -62,6 +93,7 @@
             <tbody>
                 {% for item in items %}
                 <tr>
+                    <td>{{ item.reference }}</td>
                     <td>
                         <div class="contact-cell">
                             <span class="contact-avatar">{{ item.name|first|upper }}</span>
@@ -72,7 +104,10 @@
                         </div>
                     </td>
                     <td>{{ item.email }}</td>
-                    <td>{{ item.service|default:"General inquiry" }}</td>
+                    <td>
+                        <strong>{{ item.get_inquiry_type_display|default:item.service|default:"General inquiry" }}</strong>
+                        <small>{{ item.get_source_display }}</small>
+                    </td>
                     <td><span class="badge-status {{ item.status }}">{{ item.get_status_display }}</span></td>
                     <td>
                         <div class="date-cell">
@@ -83,7 +118,7 @@
                     <td><a href="{% url 'admin_inquiry_detail' item.id %}" class="btn btn-sm btn-secondary">View</a></td>
                 </tr>
                 {% empty %}
-                <tr><td colspan="6" class="text-muted">No inquiries found.</td></tr>
+                <tr><td colspan="7" class="text-muted">No inquiries found.</td></tr>
                 {% endfor %}
             </tbody>
         </table>
@@ -91,9 +126,9 @@
 
     {% if items.has_other_pages %}
     <div class="admin-pagination">
-        {% if items.has_previous %}<a href="?page={{ items.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">←</a>{% endif %}
+        {% if items.has_previous %}<a href="?page={{ items.previous_page_number }}{% if query_string %}&{{ query_string }}{% endif %}">←</a>{% endif %}
         <span class="current">Page {{ items.number }} of {{ items.paginator.num_pages }}</span>
-        {% if items.has_next %}<a href="?page={{ items.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">→</a>{% endif %}
+        {% if items.has_next %}<a href="?page={{ items.next_page_number }}{% if query_string %}&{{ query_string }}{% endif %}">→</a>{% endif %}
     </div>
     {% endif %}
 </div>

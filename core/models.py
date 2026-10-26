@@ -439,12 +439,36 @@ class ContactInquiry(models.Model):
 
     STATUS_CHOICES = [
         ("new", "New"),
+        ("reviewing", "Reviewing"),
         ("contacted", "Contacted"),
         ("in_discussion", "In Discussion"),
         ("proposal_sent", "Proposal Sent"),
         ("won", "Won"),
         ("lost", "Lost"),
+        ("converted", "Converted"),
+        ("closed", "Closed"),
+        ("spam", "Spam"),
         ("archived", "Archived"),
+    ]
+    SOURCE_CHOICES = [
+        ("contact_page", "Contact page"),
+        ("start_project", "Start a Project"),
+        ("chatbot", "Chatbot"),
+    ]
+    INQUIRY_TYPE_CHOICES = [
+        ("website_development", "Website Development"),
+        ("mobile_application", "Mobile Application"),
+        ("custom_software", "Custom Software"),
+        ("business_dashboard", "Business Dashboard"),
+        ("ai_automation", "AI & Automation"),
+        ("saas_product", "SaaS Product"),
+        ("society_school_management", "Society or School Management"),
+        ("other", "Other"),
+    ]
+    CONTACT_METHOD_CHOICES = [
+        ("email", "Email"),
+        ("phone", "Phone"),
+        ("whatsapp", "WhatsApp"),
     ]
 
     name = models.CharField(max_length=120)
@@ -452,9 +476,17 @@ class ContactInquiry(models.Model):
     phone = models.CharField(max_length=30, blank=True)
     company = models.CharField(max_length=120, blank=True)
     service = models.CharField(max_length=120, blank=True)
+    inquiry_type = models.CharField(max_length=32, choices=INQUIRY_TYPE_CHOICES, blank=True)
+    title = models.CharField(max_length=160, blank=True)
     budget = models.CharField(max_length=80, blank=True)
+    timeline = models.CharField(max_length=80, blank=True)
+    contact_method = models.CharField(max_length=20, choices=CONTACT_METHOD_CHOICES, blank=True)
     message = models.TextField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="new")
+    source = models.CharField(max_length=20, choices=SOURCE_CHOICES, default="contact_page", db_index=True)
+    reference = models.CharField(max_length=16, unique=True, blank=True, editable=False)
+    submission_id = models.UUIDField(null=True, blank=True, unique=True, editable=False)
+    consented_at = models.DateTimeField(null=True, blank=True)
     admin_notes = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -464,8 +496,13 @@ class ContactInquiry(models.Model):
         verbose_name_plural = "Contact Inquiries"
         ordering = ["-created_at"]
 
+    def save(self, *args, **kwargs):
+        if not self.reference:
+            self.reference = f"OQ-{uuid.uuid4().hex[:12].upper()}"
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f"{self.name} — {self.email}"
+        return f"{self.reference or 'Inquiry'} — {self.name} — {self.email}"
 
 
 def candidate_resume_upload_to(instance, filename):

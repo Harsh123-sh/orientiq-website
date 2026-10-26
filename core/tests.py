@@ -1,11 +1,14 @@
 import json
 import os
+import uuid
 from unittest.mock import patch
 
 from django.contrib.auth.models import User
 from django.core.cache import cache
 from django.core.management import call_command
 from django.db import IntegrityError, transaction
+from django.http import HttpRequest
+from django.middleware.csrf import get_token
 from django.test import Client, TestCase
 from django.urls import reverse
 
@@ -932,6 +935,52 @@ class AIAssistantTests(OrentiqTestCase):
         self.assertTrue(data["message"])
         self.assertIn("ORENTIQ", data["message"])
 
+    def test_ai_endpoint_requires_csrf_for_anonymous_post(self):
+        """The public chatbot remains available anonymously but requires a valid CSRF token."""
+        csrf_client = Client(HTTP_HOST="127.0.0.1", enforce_csrf_checks=True)
+        payload = json.dumps({"message": "What does ORENTIQ do?", "history": []})
+
+        response = csrf_client.post(
+            "/api/ai/chat/",
+            data=payload,
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 403)
+
+        csrf_request = HttpRequest()
+        csrf_token = get_token(csrf_request)
+        csrf_client.cookies["csrftoken"] = csrf_request.META["CSRF_COOKIE"]
+
+        response = csrf_client.post(
+            "/api/ai/chat/",
+            data=payload,
+            content_type="application/json",
+            HTTP_X_CSRFTOKEN="invalid-token",
+        )
+        self.assertEqual(response.status_code, 403)
+
+        response = csrf_client.post(
+            "/api/ai/chat/",
+            data=payload,
+            content_type="application/json",
+            HTTP_X_CSRFTOKEN=csrf_token,
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(data["success"])
+        self.assertTrue(data["message"])
+        self.assertIn("suggestions", data)
+
+    def test_ai_endpoint_invalid_json_returns_400(self):
+        """Malformed JSON should return the endpoint's JSON validation error."""
+        response = self.client.post(
+            "/api/ai/chat/",
+            data="{invalid json",
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()["success"], False)
+
     def test_ai_endpoint_start_project_suggestion(self):
         """Project-related questions should include Start a Project suggestion."""
         resp = self.client.post(
@@ -1007,6 +1056,187 @@ class AIAssistantTests(OrentiqTestCase):
             content_type="application/json",
         )
         self.assertEqual(resp.status_code, 200)
+
+    def test_project_intent_offers_chat_inquiry_form(self):
+        response = self.client.post(
+            "/api/ai/chat/",
+            data=json.dumps({"message": "I need a website for my business."}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["show_inquiry_form"])
+        self.assertIn("share a few details", response.json()["message"].lower())
+
+    def test_capability_question_does_not_force_inquiry_form(self):
+        response = self.client.post(
+            "/api/ai/chat/",
+            data=json.dumps({"message": "Can ORENTIQ build a website?"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn("show_inquiry_form", response.json())
+
+    def test_founder_answer_uses_verified_name(self):
+        from .ai.knowledge import build_company_context
+        from .ai.service import KnowledgeFallbackProvider
+
+        answer = KnowledgeFallbackProvider()._respond(
+            "Who is the founder?", build_company_context()
+        )
+        self.assertIn("Harsh Sachwani", answer)
+        self.assertIn("/company/founder/", answer)
+        self.assertNotIn("CEO", answer)
+
+    def test_published_portfolio_projects_are_in_company_context(self):
+        from .ai.knowledge import build_company_context
+
+        PortfolioProject.objects.create(
+            title="Public case study",
+            slug="public-case-study",
+            status="published",
+            short_description="A published project.",
+            client_name="Private client name is not public context",
+        )
+        context = build_company_context()
+        self.assertEqual(context["portfolio"][0]["title"], "Public case study")
+        self.assertNotIn("Private client name is not public context", str(context))
+
+
+class ChatbotInquiryTests(OrentiqTestCase):
+    """Public inquiry capture and authorized admin lifecycle coverage."""
+
+    def setUp(self):
+        super().setUp()
+        cache.delete("ai_inquiry_rate_127.0.0.1")
+        self.submission_id = str(uuid.uuid4())
+        self.payload = {
+            "name": "Avery Example",
+            "email": "avery@example.com",
+            "phone": "+1 555 0100",
+            "company": "Example Studio",
+            "inquiry_type": "website_development",
+            "title": "Company website",
+            "description": "We need a responsive website for our new business.",
+            "budget": "$10k-$25k",
+            "timeline": "1-3 months",
+            "contact_method": "email",
+            "consent": "true",
+            "submission_id": self.submission_id,
+        }
+
+    @patch("core.views._send_inquiry_notifications")
+    def test_valid_inquiry_is_saved_with_reference_and_chatbot_source(self, send_email):
+        response = self.client.post(reverse("chatbot_inquiry_submit"), self.payload)
+        self.assertEqual(response.status_code, 201)
+        self.assertTrue(response.json()["success"])
+        inquiry = ContactInquiry.objects.get(submission_id=self.submission_id)
+        self.assertEqual(inquiry.source, "chatbot")
+        self.assertEqual(inquiry.inquiry_type, "website_development")
+        self.assertEqual(inquiry.title, "Company website")
+        self.assertIsNotNone(inquiry.consented_at)
+        self.assertEqual(response.json()["reference"], inquiry.reference)
+        self.assertRegex(inquiry.reference, r"^OQ-[A-F0-9]{12}$")
+        send_email.assert_called_once_with(inquiry)
+
+    @patch("core.views._send_inquiry_notifications")
+    def test_retry_with_same_submission_id_returns_same_reference(self, send_email):
+        first = self.client.post(reverse("chatbot_inquiry_submit"), self.payload)
+        second = self.client.post(reverse("chatbot_inquiry_submit"), self.payload)
+        self.assertEqual(first.status_code, 201)
+        self.assertEqual(second.status_code, 200)
+        self.assertEqual(first.json()["reference"], second.json()["reference"])
+        self.assertEqual(ContactInquiry.objects.filter(submission_id=self.submission_id).count(), 1)
+        send_email.assert_called_once()
+
+    def test_invalid_email_missing_consent_and_whitespace_fields_are_rejected(self):
+        invalid = self.payload.copy()
+        invalid.update({
+            "email": "not-an-email",
+            "consent": "",
+            "name": "   ",
+            "description": "   ",
+        })
+        response = self.client.post(reverse("chatbot_inquiry_submit"), invalid)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("email", response.json()["errors"])
+        self.assertIn("consent", response.json()["errors"])
+        self.assertIn("name", response.json()["errors"])
+        self.assertIn("description", response.json()["errors"])
+        self.assertFalse(ContactInquiry.objects.filter(source="chatbot").exists())
+
+    def test_reusing_submission_id_for_different_data_is_rejected(self):
+        with patch("core.views._send_inquiry_notifications"):
+            self.client.post(reverse("chatbot_inquiry_submit"), self.payload)
+            changed = self.payload.copy()
+            changed["title"] = "Different project"
+            response = self.client.post(reverse("chatbot_inquiry_submit"), changed)
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(ContactInquiry.objects.filter(source="chatbot").count(), 1)
+
+    def test_chatbot_inquiry_endpoint_enforces_csrf(self):
+        csrf_client = Client(HTTP_HOST="127.0.0.1", enforce_csrf_checks=True)
+        response = csrf_client.post(reverse("chatbot_inquiry_submit"), self.payload)
+        self.assertEqual(response.status_code, 403)
+        csrf_request = HttpRequest()
+        csrf_token = get_token(csrf_request)
+        csrf_client.cookies["csrftoken"] = csrf_request.META["CSRF_COOKIE"]
+        with patch("core.views._send_inquiry_notifications"):
+            response = csrf_client.post(
+                reverse("chatbot_inquiry_submit"),
+                self.payload,
+                HTTP_X_CSRFTOKEN=csrf_token,
+            )
+        self.assertEqual(response.status_code, 201)
+
+    def test_admin_can_filter_view_and_update_inquiry(self):
+        with patch("core.views._send_inquiry_notifications"):
+            self.client.post(reverse("chatbot_inquiry_submit"), self.payload)
+        inquiry = ContactInquiry.objects.get(submission_id=self.submission_id)
+        self.login_as("testadmin")
+        list_response = self.client.get(
+            reverse("admin_inquiry_list"),
+            {"q": inquiry.reference, "source": "chatbot", "type": "website_development"},
+        )
+        self.assertEqual(list_response.status_code, 200)
+        self.assertContains(list_response, inquiry.reference)
+
+        detail_response = self.client.post(
+            reverse("admin_inquiry_detail", args=[inquiry.pk]),
+            {"status": "reviewing", "admin_notes": "Internal follow-up note."},
+        )
+        self.assertEqual(detail_response.status_code, 302)
+        inquiry.refresh_from_db()
+        self.assertEqual(inquiry.status, "reviewing")
+        self.assertEqual(inquiry.admin_notes, "Internal follow-up note.")
+        self.assertEqual(self.client.get(
+            reverse("admin_inquiry_detail", args=[inquiry.pk])
+        ).status_code, 200)
+
+    def test_non_admin_cannot_view_inquiry_details(self):
+        inquiry = ContactInquiry.objects.create(name="Private", email="private@example.com", message="Private inquiry")
+        self.login_as("testclient", "ClientPass123!")
+        self.assertEqual(
+            self.client.get(reverse("admin_inquiry_detail", args=[inquiry.pk])).status_code,
+            403,
+        )
+
+    def test_internal_notes_are_not_in_public_ai_context_or_responses(self):
+        ContactInquiry.objects.create(
+            name="Private",
+            email="private@example.com",
+            message="Private inquiry",
+            admin_notes="confidential-admin-only-note",
+        )
+        from .ai.knowledge import build_company_context
+
+        self.assertNotIn("confidential-admin-only-note", str(build_company_context()))
+        response = self.client.post(
+            "/api/ai/chat/",
+            data=json.dumps({"message": "Who is the founder?"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn("confidential-admin-only-note", response.content.decode())
 
 
 class LiveIntelligenceTests(OrentiqTestCase):

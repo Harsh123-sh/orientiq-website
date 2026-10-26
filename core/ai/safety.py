@@ -11,6 +11,8 @@ MIN_MESSAGE_LENGTH = 1
 # Simple rate limit: max requests per window (per IP)
 RATE_LIMIT_MAX = 20
 RATE_LIMIT_WINDOW_SECONDS = 60
+INQUIRY_RATE_LIMIT_MAX = 5
+INQUIRY_RATE_LIMIT_WINDOW_SECONDS = 600
 
 
 def validate_message(message):
@@ -57,4 +59,15 @@ def is_rate_limited(request, cache):
     if count >= RATE_LIMIT_MAX:
         return True
     cache.set(key, count + 1, RATE_LIMIT_WINDOW_SECONDS)
+    return False
+
+
+def is_inquiry_rate_limited(request, cache):
+    """Limit public inquiry submissions separately from conversational messages."""
+    ip = request.META.get("REMOTE_ADDR", "unknown")
+    key = f"ai_inquiry_rate_{ip}"
+    count = cache.get(key, 0)
+    if count >= INQUIRY_RATE_LIMIT_MAX:
+        return True
+    cache.set(key, count + 1, INQUIRY_RATE_LIMIT_WINDOW_SECONDS)
     return False

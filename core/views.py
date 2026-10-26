@@ -7,10 +7,15 @@ from django.contrib.auth.views import (
     PasswordResetConfirmView,
     PasswordResetView,
 )
+from django.conf import settings
+from django.core.mail import BadHeaderError, send_mail
+from django.core.exceptions import ValidationError
+from django.core.cache import cache
 import json
+import logging
+import smtplib
 
 from django.db import transaction
-from django.core.cache import cache
 from django.http import FileResponse, Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.templatetags.static import static
@@ -41,6 +46,7 @@ from .models import (
     UserRole,
 )
 from .forms import (
+    ChatbotInquiryForm,
     CandidateApplicationForm,
     CustomPasswordChangeForm,
     CustomPasswordResetForm,
@@ -63,6 +69,9 @@ from .services.booking import (
     resolve_inventory,
 )
 from .permissions import is_admin
+
+
+logger = logging.getLogger(__name__)
 
 
 def home(request):
@@ -254,8 +263,11 @@ def start_project(request):
                 phone=request.POST.get("phone", ""),
                 company=request.POST.get("company", ""),
                 service=request.POST.get("project_type", ""),
+                title=request.POST.get("project_type", "").strip(),
                 budget=request.POST.get("budget", ""),
+                timeline=request.POST.get("timeline", ""),
                 message=request.POST.get("message", ""),
+                source="start_project",
             )
             messages.success(
                 request,
@@ -1102,6 +1114,13 @@ def ai_chat(request):
     from .ai.safety import is_rate_limited, validate_message
     from .ai.service import generate_response
 
+    content_length = request.META.get("CONTENT_LENGTH")
+    if content_length and content_length.isdigit() and int(content_length) > 24000:
+        return JsonResponse(
+            {"success": False, "message": "The chat request is too large.", "suggestions": []},
+            status=413,
+        )
+
     # Rate limiting (simple per-IP cache-based).
     if is_rate_limited(request, cache):
         return JsonResponse(
@@ -1141,10 +1160,23 @@ def ai_chat(request):
             status=400,
         )
 
+    if _should_offer_inquiry_form(message):
+        return JsonResponse({
+            "success": True,
+            "message": "I'd be happy to help. Share a few details below so the ORENTIQ team can review your project.",
+            "suggestions": [],
+            "show_inquiry_form": True,
+        })
+
     # Validate history shape (list of dicts, keep small).
-    if not isinstance(history, list):
-        history = []
-    history = history[:10]
+    history = [
+        {
+            "user": str(item.get("user", ""))[:2000],
+            "assistant": str(item.get("assistant", ""))[:4000],
+        }
+        for item in history[-10:]
+        if isinstance(item, dict)
+    ] if isinstance(history, list) else []
 
     result = generate_response(message, history)
 
@@ -1152,3 +1184,154 @@ def ai_chat(request):
         return JsonResponse(result, status=503)
 
     return JsonResponse(result)
+
+
+def _should_offer_inquiry_form(message):
+    """Recognize clear project/contact intent without intercepting capability questions."""
+    import re
+
+    normalized = " ".join(message.lower().split())
+    direct_intent = (
+        r"\b(?:start|begin|discuss|submit)\s+(?:a\s+|my\s+|our\s+)?(?:project|project inquiry|inquiry)\b",
+        r"\b(?:contact|reach out to)\s+(?:me|us|the team)\b",
+        r"\b(?:talk|speak)\s+(?:to|with)\s+(?:someone|the team|a person)\b",
+        r"\b(?:project inquiry|project enquiry)\b",
+    )
+    project_need = (
+        r"\b(?:i|we)\s+(?:want|need|would like)\s+(?:to\s+)?"
+        r"(?:(?:build|create|develop|launch)\s+)?"
+        r"(?:a\s+|an\s+|my\s+|our\s+)?"
+        r"(?:website|web site|mobile app|application|business dashboard|dashboard|"
+        r"custom software|software|ai solution|automation|saas product|project)\b"
+    )
+    return any(re.search(pattern, normalized) for pattern in (*direct_intent, project_need))
+
+
+@require_POST
+def chatbot_inquiry_submit(request):
+    """Validate and save a chatbot inquiry without changing the existing chat API contract."""
+    from .ai.safety import is_inquiry_rate_limited
+
+    content_length = request.META.get("CONTENT_LENGTH")
+    if content_length and content_length.isdigit() and int(content_length) > 24000:
+        return JsonResponse(
+            {"success": False, "message": "The inquiry form is too large. Please shorten your details."},
+            status=413,
+        )
+
+    if is_inquiry_rate_limited(request, cache):
+        return JsonResponse(
+            {"success": False, "message": "Too many inquiry submissions. Please wait and try again."},
+            status=429,
+        )
+
+    form = ChatbotInquiryForm(request.POST)
+    if not form.is_valid():
+        return JsonResponse(
+            {
+                "success": False,
+                "message": "Please check the highlighted fields and try again.",
+                "errors": form.errors.get_json_data(),
+            },
+            status=400,
+        )
+
+    data = form.cleaned_data
+    submission_id = data["submission_id"]
+    defaults = {
+        "name": data["name"],
+        "email": data["email"],
+        "phone": data["phone"],
+        "company": data["company"],
+        "service": data["inquiry_type"],
+        "inquiry_type": data["inquiry_type"],
+        "title": data["title"],
+        "budget": data["budget"],
+        "timeline": data["timeline"],
+        "contact_method": data["contact_method"],
+        "message": data["description"],
+        "source": "chatbot",
+        "submission_id": submission_id,
+        "consented_at": timezone.now(),
+    }
+
+    with transaction.atomic():
+        inquiry, created = ContactInquiry.objects.get_or_create(
+            submission_id=submission_id,
+            defaults=defaults,
+        )
+
+    if not created and any(
+        getattr(inquiry, field) != defaults[field]
+        for field in (
+            "name",
+            "email",
+            "phone",
+            "company",
+            "service",
+            "inquiry_type",
+            "title",
+            "budget",
+            "timeline",
+            "contact_method",
+            "message",
+        )
+    ):
+        return JsonResponse(
+            {"success": False, "message": "This submission reference was already used. Refresh the form and try again."},
+            status=409,
+        )
+
+    if created:
+        _send_inquiry_notifications(inquiry)
+
+    return JsonResponse({
+        "success": True,
+        "message": "Thank you. Your inquiry has been received.",
+        "reference": inquiry.reference,
+    }, status=201 if created else 200)
+
+
+def _send_inquiry_notifications(inquiry):
+    """Send optional confirmation and business notifications after inquiry persistence."""
+    if not (
+        settings.EMAIL_HOST
+        and settings.EMAIL_HOST_USER
+        and settings.EMAIL_HOST_PASSWORD
+        and settings.DEFAULT_FROM_EMAIL
+    ):
+        return
+
+    messages_to_send = [
+        (
+            inquiry.email,
+            f"ORENTIQ received your inquiry — {inquiry.reference}",
+            (
+                f"Hello {inquiry.name},\n\n"
+                f"Thank you for contacting ORENTIQ about {inquiry.title}. "
+                f"Your inquiry reference is {inquiry.reference}. Our team will review it and follow up.\n"
+            ),
+        )
+    ]
+    notification_email = getattr(settings, "INQUIRY_NOTIFICATION_EMAIL", "")
+    if notification_email:
+        messages_to_send.append((
+            notification_email,
+            f"New chatbot inquiry — {inquiry.reference}",
+            (
+                f"Reference: {inquiry.reference}\n"
+                f"Name: {inquiry.name}\nEmail: {inquiry.email}\n"
+                f"Type: {inquiry.get_inquiry_type_display()}\n"
+                f"Title: {inquiry.title}\n\n{inquiry.message}"
+            ),
+        ))
+
+    for recipient, subject, body in messages_to_send:
+        try:
+            send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [recipient], fail_silently=False)
+        except (BadHeaderError, OSError, smtplib.SMTPException, ValidationError) as exc:
+            logger.warning(
+                "Inquiry notification failed for reference %s: %s",
+                inquiry.reference,
+                exc,
+            )

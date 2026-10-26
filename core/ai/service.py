@@ -53,6 +53,29 @@ class KnowledgeFallbackProvider(BaseProvider):
         industries = context["industries"]
         products = context["products"]
         technologies = context["technologies"]
+        portfolio = context.get("portfolio", [])
+
+        if any(k in msg for k in ["founder", "founded", "who started", "who created"]):
+            founder = company["founder"]
+            return (
+                f"ORENTIQ Technologies was founded by {founder['name']}. "
+                f"Learn more on the founder page: {founder['url']}."
+            )
+
+        if any(k in msg for k in ["portfolio", "case study", "past project", "previous project"]):
+            if portfolio:
+                projects = ", ".join(item["title"] for item in portfolio[:5])
+                return f"Published ORENTIQ projects include {projects}."
+            return (
+                "I don't have published portfolio details available to share right now. "
+                "You can ask the ORENTIQ team about relevant work through the project inquiry form."
+            )
+
+        if any(k in msg for k in ["contact", "email", "reach", "phone"]):
+            return (
+                "You can email ORENTIQ at hello@orentiq.com or share your requirements "
+                "through the project inquiry form."
+            )
 
         # Services
         if any(k in msg for k in ["service", "offer", "provide", "do you do", "what do you"]):
@@ -80,6 +103,29 @@ class KnowledgeFallbackProvider(BaseProvider):
                 f"We choose the right tools for each challenge. See /technologies/ for details."
             )
 
+        if any(k in msg for k in ["website", "web site", "dashboard", "automation", "software", "mobile app"]):
+            terms = {
+                "website": ["web"],
+                "web site": ["web"],
+                "dashboard": ["dashboard", "software"],
+                "automation": ["automation", "ai"],
+                "software": ["software", "custom"],
+                "mobile app": ["mobile"],
+            }
+            matching = [
+                item for item in services
+                if any(
+                    term in (item["title"] + " " + item.get("short_description", "")).lower()
+                    for keyword, service_terms in terms.items()
+                    if keyword in msg
+                    for term in service_terms
+                )
+            ]
+            if matching:
+                item = matching[0]
+                description = item.get("short_description") or item.get("description") or ""
+                return f"{item['title']}: {description} See /services/ for more."
+
         # Products
         if any(k in msg for k in ["product", "platform", "ai travel", "society", "business ai"]):
             names = ", ".join(p["name"] for p in products[:3])
@@ -97,20 +143,8 @@ class KnowledgeFallbackProvider(BaseProvider):
             )
 
         # Company / about
-        if any(k in msg for k in ["about", "who", "company", "mission", "vision", "values"]):
-            return (
-                f"{company['description']} "
-                f"Mission: {company['mission']} "
-                f"Vision: {company['vision']} "
-                f"Learn more at /about/."
-            )
-
-        # Contact
-        if any(k in msg for k in ["contact", "email", "reach", "phone"]):
-            return (
-                "You can reach ORENTIQ through the Contact page at /company/contact/ "
-                "or submit a project inquiry at /start-project/."
-            )
+        if any(k in msg for k in ["about", "who", "company", "mission", "vision", "values", "what is orentiq"]):
+            return f"{company['description']} Learn more at /about/."
 
         # Careers
         if any(k in msg for k in ["career", "job", "join", "hiring"]):

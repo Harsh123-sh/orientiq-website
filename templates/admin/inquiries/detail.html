@@ -13,6 +13,7 @@
                 <div>
                     <h4>{{ item.name }}</h4>
                     <p class="body-small text-muted">{{ item.email }}</p>
+                    <p class="caption text-muted">{{ item.reference }} · {{ item.get_source_display }}</p>
                 </div>
                 <span class="badge-status {{ item.status }}">{{ item.get_status_display }}</span>
             </div>
@@ -27,16 +28,32 @@
                     <p class="body-small">{{ item.company|default:"—" }}</p>
                 </div>
                 <div class="mb-4">
-                    <p class="caption text-muted mb-1">Service</p>
-                    <p class="body-small">{{ item.service|default:"—" }}</p>
+                    <p class="caption text-muted mb-1">Inquiry type</p>
+                    <p class="body-small">{{ item.get_inquiry_type_display|default:item.service|default:"—" }}</p>
+                </div>
+                <div class="mb-4">
+                    <p class="caption text-muted mb-1">Project title</p>
+                    <p class="body-small">{{ item.title|default:"—" }}</p>
                 </div>
                 <div class="mb-4">
                     <p class="caption text-muted mb-1">Budget</p>
                     <p class="body-small">{{ item.budget|default:"—" }}</p>
                 </div>
                 <div class="mb-4">
+                    <p class="caption text-muted mb-1">Timeline</p>
+                    <p class="body-small">{{ item.timeline|default:"—" }}</p>
+                </div>
+                <div class="mb-4">
+                    <p class="caption text-muted mb-1">Preferred contact</p>
+                    <p class="body-small">{{ item.get_contact_method_display|default:"—" }}</p>
+                </div>
+                <div class="mb-4">
                     <p class="caption text-muted mb-1">Created</p>
                     <p class="body-small">{{ item.created_at|date:"M d, Y H:i" }}</p>
+                </div>
+                <div class="mb-4">
+                    <p class="caption text-muted mb-1">Consent recorded</p>
+                    <p class="body-small">{{ item.consented_at|date:"M d, Y H:i"|default:"—" }}</p>
                 </div>
             </div>
             <div class="divider"></div>
