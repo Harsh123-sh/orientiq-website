@@ -10,3 +10,6 @@
 [data-theme="dark"] .company-contact-form .form-control { border-color: var(--color-border); color: var(--color-text); background: var(--color-bg-secondary); }
 [data-theme="dark"] .company-contact-form .form-control::placeholder { color: var(--color-text-muted); }
 [data-theme="dark"] .company-contact-form .form-control:focus { border-color: var(--color-focus); background: var(--color-surface); box-shadow: 0 0 0 4px var(--color-hover); }
+.founder-contact-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem 1rem;margin-top:1.5rem}.founder-contact-details p{display:flex;min-width:0;flex-direction:column;gap:.2rem;margin:0;color:var(--ink);font-size:.82rem}.founder-contact-details p>span:first-child{color:var(--muted);font-size:.7rem}.founder-contact-details a{width:fit-content;color:#8e4f2e;text-decoration:none;overflow-wrap:anywhere}.founder-contact-details a:hover{text-decoration:underline}.founder-contact-links{display:flex;flex-wrap:wrap;gap:.55rem}
+[data-theme="dark"] .founder-contact-details a{color:#e2a07d}
+@media(max-width:640px){.founder-contact-details{grid-template-columns:1fr}}

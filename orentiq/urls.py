@@ -117,6 +117,10 @@ urlpatterns = [
     # Inquiries
     path('admin/inquiries/', admin_views.inquiry_list, name='admin_inquiry_list'),
     path('admin/inquiries/<int:pk>/', admin_views.inquiry_detail, name='admin_inquiry_detail'),
+    path('admin/chatbot/', admin_views.chatbot_dashboard, name='admin_chatbot_dashboard'),
+    path('admin/chatbot/conversations/<uuid:reference>/', admin_views.chatbot_conversation_detail, name='admin_chatbot_conversation_detail'),
+    path('admin/chatbot/faqs/create/', admin_views.chatbot_faq_edit, name='admin_chatbot_faq_create'),
+    path('admin/chatbot/faqs/<int:pk>/edit/', admin_views.chatbot_faq_edit, name='admin_chatbot_faq_edit'),
 
     # Users
     path('admin/users/', admin_views.user_list, name='admin_user_list'),
@@ -170,6 +174,12 @@ urlpatterns = [
     # AI Assistant
     path('api/ai/chat/', views.ai_chat, name='ai_chat'),
     path('api/ai/inquiries/', views.chatbot_inquiry_submit, name='chatbot_inquiry_submit'),
+    path('api/ai/business-info/', views.chatbot_business_info, name='chatbot_business_info'),
+    path('api/ai/consultations/availability/', views.chatbot_consultation_availability, name='chatbot_consultation_availability'),
+    path('api/ai/consultations/', views.chatbot_consultation_submit, name='chatbot_consultation_submit'),
+    path('api/ai/support/', views.chatbot_support_submit, name='chatbot_support_submit'),
+    path('api/ai/delete-data/', views.chatbot_delete_visitor_data, name='chatbot_delete_data'),
+    path('admin/chatbot/attachments/<int:pk>/download/', views.chatbot_attachment_download, name='chatbot_attachment_download'),
 
     # Phase 1 (dev-only)
     path('design-system/', views.design_system, name='design_system'),

@@ -5,12 +5,14 @@ from unittest.mock import patch
 
 from django.contrib.auth.models import User
 from django.core.cache import cache
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management import call_command
 from django.db import IntegrityError, transaction
 from django.http import HttpRequest
 from django.middleware.csrf import get_token
-from django.test import Client, TestCase
+from django.test import Client, TestCase, override_settings
 from django.urls import reverse
+from django.utils import timezone
 
 from .models import (
     ActivityLog,
@@ -19,6 +21,11 @@ from .models import (
     BookingStatus,
     BookingType,
     ContactInquiry,
+    ChatbotConversation,
+    ChatbotFAQ,
+    ConsultationRequest,
+    HumanSupportRequest,
+    InquiryAttachment,
     Industry,
     PortfolioProject,
     Product,
@@ -1057,15 +1064,24 @@ class AIAssistantTests(OrentiqTestCase):
         )
         self.assertEqual(resp.status_code, 200)
 
-    def test_project_intent_offers_chat_inquiry_form(self):
+    def test_project_intent_starts_guided_inquiry(self):
         response = self.client.post(
             "/api/ai/chat/",
             data=json.dumps({"message": "I need a website for my business."}),
             content_type="application/json",
         )
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.json()["show_inquiry_form"])
-        self.assertIn("share a few details", response.json()["message"].lower())
+        self.assertTrue(response.json()["start_inquiry"])
+        self.assertIn("review before anything is submitted", response.json()["message"].lower())
+
+    def test_chat_history_must_be_valid_and_bounded(self):
+        response = self.client.post(
+            "/api/ai/chat/",
+            data=json.dumps({"message": "Hello", "history": [{"user": 7}]}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("history is invalid", response.json()["message"].lower())
 
     def test_capability_question_does_not_force_inquiry_form(self):
         response = self.client.post(
@@ -1086,6 +1102,103 @@ class AIAssistantTests(OrentiqTestCase):
         self.assertIn("Harsh Sachwani", answer)
         self.assertIn("/company/founder/", answer)
         self.assertNotIn("CEO", answer)
+
+    def test_company_answer_uses_verified_site_description(self):
+        from .ai.knowledge import build_company_context
+        from .ai.service import KnowledgeFallbackProvider
+
+        answer = KnowledgeFallbackProvider()._respond(
+            "What does ORENTIQ do?", build_company_context()
+        )
+        self.assertIn("premium technology and digital solutions company", answer)
+        self.assertIn("/about/", answer)
+
+    def test_contact_answer_uses_approved_contact_details(self):
+        from .ai.knowledge import build_company_context
+        from .ai.service import KnowledgeFallbackProvider
+
+        answer = KnowledgeFallbackProvider()._respond(
+            "How can I contact you?", build_company_context()
+        )
+        self.assertIn("orentiq.js.official@gmail.com", answer)
+        self.assertIn("+91 93283 73770", answer)
+        self.assertIn("https://wa.me/919328373770", answer)
+        self.assertIn("https://orentiq.me/", answer)
+        self.assertNotIn("hello@orentiq.com", answer)
+
+    def test_response_time_and_consultation_answers_use_approved_terms(self):
+        from .ai.knowledge import build_company_context
+        from .ai.service import KnowledgeFallbackProvider
+
+        provider = KnowledgeFallbackProvider()
+        context = build_company_context()
+        self.assertIn(
+            "within one business day",
+            provider._respond("When will you respond?", context).lower(),
+        )
+        consultation = provider._respond("Can I book a consultation and NDA?", context)
+        self.assertIn("Free initial consultation", consultation)
+        self.assertIn("No obligation, no pressure", consultation)
+        self.assertIn("NDA available on request", consultation)
+
+    def test_service_answer_links_to_matching_published_service(self):
+        from .ai.knowledge import build_company_context
+        from .ai.service import KnowledgeFallbackProvider
+
+        answer = KnowledgeFallbackProvider()._respond(
+            "I need a website", build_company_context()
+        )
+        self.assertIn("Website Development", answer)
+        self.assertIn("/services/website-development/", answer)
+
+    def test_chat_response_discloses_knowledge_only_mode(self):
+        response = self.client.post(
+            "/api/ai/chat/",
+            data=json.dumps({"message": "Who is the founder?"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["mode"], "knowledge")
+        self.assertIn("Harsh Sachwani", response.json()["message"])
+
+    def test_prompt_uses_separate_roles_and_conversation_history(self):
+        from .ai.prompts import build_ai_prompt
+
+        messages = build_ai_prompt(
+            {"company": {"name": "ORENTIQ"}},
+            [{"user": "What services?", "assistant": "Web development."}],
+            "Tell me more.",
+        )
+        self.assertEqual([item["role"] for item in messages], ["system", "user", "assistant", "user"])
+        self.assertEqual(messages[-2]["content"], "Web development.")
+        self.assertEqual(messages[-1]["content"], "Tell me more.")
+
+    def test_knowledge_fallback_resolves_follow_up_against_prior_answer(self):
+        from .ai.knowledge import build_company_context
+        from .ai.prompts import build_ai_prompt
+        from .ai.service import KnowledgeFallbackProvider
+
+        context = build_company_context()
+        prompt = build_ai_prompt(
+            context,
+            [{
+                "user": "What services do you provide?",
+                "assistant": "Website Development: Builds responsive websites. /services/website-development/",
+            }],
+            "Tell me more about it.",
+        )
+        answer = KnowledgeFallbackProvider(context).generate(prompt)
+        self.assertIn("Website Development", answer)
+        self.assertIn("/services/website-development/", answer)
+
+    def test_knowledge_fallback_keeps_unknown_answers_explicit(self):
+        from .ai.knowledge import build_company_context
+        from .ai.service import KnowledgeFallbackProvider
+
+        answer = KnowledgeFallbackProvider()._respond(
+            "What is ORENTIQ's verified global revenue?", build_company_context()
+        )
+        self.assertIn("don't have verified information", answer.lower())
 
     def test_published_portfolio_projects_are_in_company_context(self):
         from .ai.knowledge import build_company_context
@@ -1120,11 +1233,17 @@ class ChatbotInquiryTests(OrentiqTestCase):
             "budget": "$10k-$25k",
             "timeline": "1-3 months",
             "contact_method": "email",
+            "collection_consent": "true",
             "consent": "true",
             "submission_id": self.submission_id,
+            "conversation_reference": str(uuid.uuid4()),
+            "conversation_transcript": json.dumps([
+                {"role": "user", "text": "I want to discuss a website."},
+                {"role": "assistant", "text": "I can guide you through the project questions."},
+            ]),
         }
 
-    @patch("core.views._send_inquiry_notifications")
+    @patch("core.views._send_inquiry_notifications", return_value="sent")
     def test_valid_inquiry_is_saved_with_reference_and_chatbot_source(self, send_email):
         response = self.client.post(reverse("chatbot_inquiry_submit"), self.payload)
         self.assertEqual(response.status_code, 201)
@@ -1133,12 +1252,20 @@ class ChatbotInquiryTests(OrentiqTestCase):
         self.assertEqual(inquiry.source, "chatbot")
         self.assertEqual(inquiry.inquiry_type, "website_development")
         self.assertEqual(inquiry.title, "Company website")
+        self.assertEqual(
+            inquiry.conversation_transcript[0]["text"],
+            "I want to discuss a website.",
+        )
+        self.assertEqual(
+            str(inquiry.conversation_reference),
+            self.payload["conversation_reference"],
+        )
         self.assertIsNotNone(inquiry.consented_at)
         self.assertEqual(response.json()["reference"], inquiry.reference)
         self.assertRegex(inquiry.reference, r"^OQ-[A-F0-9]{12}$")
         send_email.assert_called_once_with(inquiry)
 
-    @patch("core.views._send_inquiry_notifications")
+    @patch("core.views._send_inquiry_notifications", return_value="sent")
     def test_retry_with_same_submission_id_returns_same_reference(self, send_email):
         first = self.client.post(reverse("chatbot_inquiry_submit"), self.payload)
         second = self.client.post(reverse("chatbot_inquiry_submit"), self.payload)
@@ -1165,7 +1292,7 @@ class ChatbotInquiryTests(OrentiqTestCase):
         self.assertFalse(ContactInquiry.objects.filter(source="chatbot").exists())
 
     def test_reusing_submission_id_for_different_data_is_rejected(self):
-        with patch("core.views._send_inquiry_notifications"):
+        with patch("core.views._send_inquiry_notifications", return_value="sent"):
             self.client.post(reverse("chatbot_inquiry_submit"), self.payload)
             changed = self.payload.copy()
             changed["title"] = "Different project"
@@ -1180,7 +1307,7 @@ class ChatbotInquiryTests(OrentiqTestCase):
         csrf_request = HttpRequest()
         csrf_token = get_token(csrf_request)
         csrf_client.cookies["csrftoken"] = csrf_request.META["CSRF_COOKIE"]
-        with patch("core.views._send_inquiry_notifications"):
+        with patch("core.views._send_inquiry_notifications", return_value="sent"):
             response = csrf_client.post(
                 reverse("chatbot_inquiry_submit"),
                 self.payload,
@@ -1189,7 +1316,7 @@ class ChatbotInquiryTests(OrentiqTestCase):
         self.assertEqual(response.status_code, 201)
 
     def test_admin_can_filter_view_and_update_inquiry(self):
-        with patch("core.views._send_inquiry_notifications"):
+        with patch("core.views._send_inquiry_notifications", return_value="sent"):
             self.client.post(reverse("chatbot_inquiry_submit"), self.payload)
         inquiry = ContactInquiry.objects.get(submission_id=self.submission_id)
         self.login_as("testadmin")
@@ -1208,9 +1335,10 @@ class ChatbotInquiryTests(OrentiqTestCase):
         inquiry.refresh_from_db()
         self.assertEqual(inquiry.status, "reviewing")
         self.assertEqual(inquiry.admin_notes, "Internal follow-up note.")
-        self.assertEqual(self.client.get(
-            reverse("admin_inquiry_detail", args=[inquiry.pk])
-        ).status_code, 200)
+        detail_response = self.client.get(reverse("admin_inquiry_detail", args=[inquiry.pk]))
+        self.assertEqual(detail_response.status_code, 200)
+        self.assertContains(detail_response, "I want to discuss a website.")
+        self.assertContains(detail_response, str(inquiry.conversation_reference))
 
     def test_non_admin_cannot_view_inquiry_details(self):
         inquiry = ContactInquiry.objects.create(name="Private", email="private@example.com", message="Private inquiry")
@@ -1220,6 +1348,298 @@ class ChatbotInquiryTests(OrentiqTestCase):
             403,
         )
 
+
+class AdvancedChatbotTests(OrentiqTestCase):
+    def setUp(self):
+        super().setUp()
+        cache.clear()
+
+    def _chat(self, message, **extra):
+        return self.client.post(
+            reverse("ai_chat"),
+            data=json.dumps({"message": message, **extra}),
+            content_type="application/json",
+        )
+
+    def test_chat_conversation_is_not_persisted_without_optional_consent(self):
+        response = self._chat("Hello")
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(ChatbotConversation.objects.exists())
+
+    def test_consented_chat_is_saved_for_admin_review(self):
+        response = self._chat("Hello", conversation_consent=True, language="en")
+        self.assertEqual(response.status_code, 200)
+        conversation = ChatbotConversation.objects.get()
+        self.assertEqual(conversation.last_question, "Hello")
+        self.assertEqual(conversation.language, "en")
+        self.assertEqual(conversation.transcript[0]["text"], "Hello")
+
+    def test_visitor_delete_removes_conversation_and_linked_chatbot_inquiry(self):
+        chat = self._chat("Hello", conversation_consent=True)
+        reference = chat.json()["conversation_reference"]
+        ContactInquiry.objects.create(
+            name="Avery Example",
+            email="avery@example.com",
+            message="Project inquiry",
+            source="chatbot",
+            conversation_reference=uuid.UUID(reference),
+            conversation_transcript=[{"role": "user", "text": "Hello"}],
+        )
+        HumanSupportRequest.objects.create(
+            name="Avery Example",
+            email="avery@example.com",
+            conversation_reference=uuid.UUID(reference),
+            consented_at=timezone.now(),
+        )
+        response = self.client.post(reverse("chatbot_delete_data"))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(ChatbotConversation.objects.exists())
+        self.assertFalse(ContactInquiry.objects.filter(source="chatbot").exists())
+        self.assertFalse(HumanSupportRequest.objects.exists())
+
+    def test_chat_rejects_unsupported_language(self):
+        response = self._chat("Hello", language="fr")
+        self.assertEqual(response.status_code, 400)
+
+    @patch("core.views._business_question_answer")
+    def test_google_business_questions_use_verified_information(self, get_business_answer):
+        get_business_answer.return_value = "Current status: Open now.\nAddress: Verified address."
+        response = self._chat("Are you open now?")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Verified address", response.json()["message"])
+        get_business_answer.assert_called_once_with("Are you open now?", "auto")
+
+    @patch("core.services.google_business.urlopen")
+    @override_settings(
+        GOOGLE_PLACE_ID="verified-place-id",
+        GOOGLE_MAPS_API_KEY="server-secret",
+        GOOGLE_BUSINESS_TIME_ZONE="Asia/Kolkata",
+    )
+    def test_google_places_response_contains_hours_special_hours_and_directions(self, urlopen):
+        from datetime import date, datetime, time, timedelta
+        from io import BytesIO
+        from unittest.mock import MagicMock
+        from zoneinfo import ZoneInfo
+
+        special_date = date.today() + timedelta(days=2)
+        place = {
+            "id": "verified-place-id",
+            "formattedAddress": "Verified business address",
+            "googleMapsUri": "https://maps.google.com/?q=verified",
+            "regularOpeningHours": {
+                "weekdayDescriptions": ["Sunday: Closed", "Monday: 9:00 AM – 5:00 PM"],
+            },
+            "currentOpeningHours": {
+                "openNow": True,
+                "nextCloseTime": datetime.combine(
+                    special_date, time(16, 0), tzinfo=ZoneInfo("Asia/Kolkata")
+                ).isoformat(),
+                "periods": [{
+                    "open": {
+                        "date": {"year": special_date.year, "month": special_date.month, "day": special_date.day},
+                        "time": {"hour": 10, "minute": 0},
+                    },
+                    "close": {
+                        "date": {"year": special_date.year, "month": special_date.month, "day": special_date.day},
+                        "time": {"hour": 14, "minute": 0},
+                    },
+                }],
+                "specialDays": [{
+                    "date": {"year": special_date.year, "month": special_date.month, "day": special_date.day},
+                }],
+            },
+        }
+        response = MagicMock()
+        response.status = 200
+        response.read.return_value = json.dumps(place).encode()
+        context = MagicMock()
+        context.__enter__.return_value = response
+        urlopen.return_value = context
+
+        from .services.google_business import get_business_info
+
+        info = get_business_info(force_refresh=True)
+        self.assertTrue(info["available"])
+        self.assertEqual(info["status"], "open")
+        self.assertEqual(info["time_zone"], "Asia/Kolkata")
+        self.assertIn("Closes", info["next_change"])
+        self.assertIn("Sunday: Closed", info["regular_hours"])
+        self.assertTrue(info["special_hours"])
+        self.assertEqual(info["directions_url"], place["googleMapsUri"])
+        headers = urlopen.call_args.args[0].headers
+        self.assertEqual(headers["X-goog-api-key"], "server-secret")
+        self.assertNotIn("server-secret", self.client.get(reverse("chatbot_business_info")).content.decode())
+        self.assertEqual(headers["X-goog-fieldmask"], "id,formattedAddress,googleMapsUri,regularOpeningHours,currentOpeningHours")
+
+    @override_settings(GOOGLE_PLACE_ID="", GOOGLE_MAPS_API_KEY="")
+    def test_business_endpoint_reports_unavailable_without_configuration(self):
+        response = self.client.get(reverse("chatbot_business_info"))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.json()["available"])
+        self.assertEqual(response.json()["status"], "unavailable")
+
+    @override_settings(GOOGLE_BUSINESS_TIME_ZONE="Asia/Kolkata")
+    def test_consultation_availability_and_submission_stay_unconfirmed(self):
+        from datetime import timedelta
+
+        requested_date = (timezone.localdate() + timedelta(days=3)).isoformat()
+        payload = {
+            "name": "Avery Example",
+            "email": "avery@example.com",
+            "phone": "+91 90000 00000",
+            "preferred_date": requested_date,
+            "preferred_time": "14:30",
+            "project_type": "Website",
+            "description": "Discuss a website project.",
+            "collection_consent": "true",
+            "consent": "true",
+            "conversation_reference": str(uuid.uuid4()),
+        }
+        availability = self.client.post(reverse("chatbot_consultation_availability"), payload)
+        self.assertEqual(availability.status_code, 200)
+        self.assertTrue(availability.json()["available"])
+        response = self.client.post(reverse("chatbot_consultation_submit"), payload)
+        self.assertEqual(response.status_code, 201)
+        consultation = ConsultationRequest.objects.get()
+        self.assertEqual(consultation.status, "requested")
+        self.assertEqual(consultation.business_time_zone, "Asia/Kolkata")
+        self.assertFalse(response.json().get("confirmed", False))
+        duplicate = self.client.post(reverse("chatbot_consultation_submit"), payload)
+        self.assertEqual(duplicate.status_code, 409)
+
+    @override_settings(GOOGLE_BUSINESS_TIME_ZONE="")
+    def test_consultation_cannot_be_requested_without_business_timezone(self):
+        from datetime import timedelta
+
+        payload = {
+            "name": "Avery Example",
+            "email": "avery@example.com",
+            "phone": "+91 90000 00000",
+            "preferred_date": (timezone.localdate() + timedelta(days=3)).isoformat(),
+            "preferred_time": "14:30",
+            "project_type": "Website",
+            "description": "Discuss a website project.",
+            "collection_consent": "true",
+            "consent": "true",
+        }
+        response = self.client.post(reverse("chatbot_consultation_submit"), payload)
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(ConsultationRequest.objects.exists())
+
+    @patch("core.views._management_notification", return_value="sent")
+    def test_support_request_requires_consent_and_saves_notification_state(self, notify):
+        chat = self._chat("Hello", conversation_consent=True)
+        reference = chat.json()["conversation_reference"]
+        payload = {
+            "name": "Avery Example",
+            "email": "avery@example.com",
+            "phone": "+91 90000 00000",
+            "collection_consent": "true",
+            "consent": "true",
+            "conversation_reference": reference,
+        }
+        response = self.client.post(reverse("chatbot_support_submit"), payload)
+        self.assertEqual(response.status_code, 201)
+        support = HumanSupportRequest.objects.get()
+        self.assertEqual(support.notification_status, "sent")
+        self.assertIsNotNone(support.conversation)
+        self.assertEqual(support.conversation_reference, uuid.UUID(reference))
+        self.assertIn("No agent", response.json()["message"])
+        notify.assert_called_once()
+
+        payload["email"] = "no-consent@example.com"
+        payload["consent"] = ""
+        invalid = self.client.post(reverse("chatbot_support_submit"), payload)
+        self.assertEqual(invalid.status_code, 400)
+        self.assertEqual(HumanSupportRequest.objects.count(), 1)
+
+    @patch("core.views._management_notification", return_value="sent")
+    def test_support_without_prior_chat_still_saves_deletable_reference(self, notify):
+        reference = uuid.uuid4()
+        response = self.client.post(reverse("chatbot_support_submit"), {
+            "name": "Avery Example",
+            "email": "avery@example.com",
+            "phone": "",
+            "conversation_reference": str(reference),
+            "collection_consent": "true",
+            "consent": "true",
+        })
+        self.assertEqual(response.status_code, 201)
+        support = HumanSupportRequest.objects.get()
+        self.assertEqual(support.conversation_reference, reference)
+        self.assertIsNone(support.conversation)
+        self.client.post(reverse("chatbot_delete_data"))
+        self.assertFalse(HumanSupportRequest.objects.exists())
+
+    @patch("core.views._send_inquiry_notifications", return_value="sent")
+    def test_private_attachment_is_linked_and_downloaded_only_by_admin(self, notify):
+        inquiry_payload = {
+            "name": "Avery Example",
+            "email": "avery@example.com",
+            "inquiry_type": "website_development",
+            "title": "Company website",
+            "description": "A project with a reference file.",
+            "collection_consent": "true",
+            "consent": "true",
+            "submission_id": str(uuid.uuid4()),
+            "conversation_transcript": "[]",
+        }
+        uploaded = SimpleUploadedFile("reference.pdf", b"%PDF-1.7\nsafe-test", content_type="application/pdf")
+        response = self.client.post(
+            reverse("chatbot_inquiry_submit"),
+            {**inquiry_payload, "attachments": [uploaded]},
+        )
+        self.assertEqual(response.status_code, 201)
+        attachment = InquiryAttachment.objects.get()
+        self.addCleanup(attachment.file.delete, save=False)
+        self.assertEqual(attachment.inquiry.source, "chatbot")
+        self.assertIn("chatbot-inquiries", attachment.file.name)
+        with self.assertRaises(ValueError):
+            attachment.file.url
+
+        self.login_as("testclient", "ClientPass123!")
+        self.assertEqual(self.client.get(reverse("chatbot_attachment_download", args=[attachment.pk])).status_code, 403)
+        self.login_as("testadmin")
+        download = self.client.get(reverse("chatbot_attachment_download", args=[attachment.pk]))
+        self.addCleanup(download.close)
+        self.assertEqual(download.status_code, 200)
+        self.assertEqual(download["X-Content-Type-Options"], "nosniff")
+        self.assertEqual(b"".join(download.streaming_content), b"%PDF-1.7\nsafe-test")
+
+    @patch("core.views._send_inquiry_notifications", return_value="sent")
+    def test_upload_rejects_file_signature_mismatch(self, notify):
+        payload = {
+            "name": "Avery Example",
+            "email": "avery@example.com",
+            "inquiry_type": "website_development",
+            "title": "Company website",
+            "description": "A project with an invalid file.",
+            "collection_consent": "true",
+            "consent": "true",
+            "submission_id": str(uuid.uuid4()),
+        }
+        uploaded = SimpleUploadedFile("reference.pdf", b"not a pdf", content_type="application/pdf")
+        response = self.client.post(
+            reverse("chatbot_inquiry_submit"),
+            {**payload, "attachments": [uploaded]},
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(ContactInquiry.objects.filter(source="chatbot").exists())
+        self.assertFalse(InquiryAttachment.objects.exists())
+
+    def test_chatbot_dashboard_and_faq_management_require_admin(self):
+        self.assertEqual(self.client.get(reverse("admin_chatbot_dashboard")).status_code, 302)
+        self.login_as("testadmin")
+        response = self.client.get(reverse("admin_chatbot_dashboard"))
+        self.assertEqual(response.status_code, 200)
+        faq_response = self.client.post(reverse("admin_chatbot_faq_create"), {
+            "question": "How do consultations work?",
+            "answer": "The team reviews each request.",
+            "active": "on",
+            "display_order": "0",
+        })
+        self.assertEqual(faq_response.status_code, 302)
+        self.assertTrue(ChatbotFAQ.objects.filter(question="How do consultations work?").exists())
     def test_internal_notes_are_not_in_public_ai_context_or_responses(self):
         ContactInquiry.objects.create(
             name="Private",

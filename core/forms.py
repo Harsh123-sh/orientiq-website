@@ -1,6 +1,8 @@
 import unicodedata
+import json
 
 from django import forms
+from django.conf import settings as django_settings
 from django.contrib.auth.forms import (
     AuthenticationForm,
     PasswordChangeForm,
@@ -9,6 +11,8 @@ from django.contrib.auth.forms import (
     UserCreationForm,
 )
 from django.contrib.auth.models import User
+from django.utils import timezone
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from .models import (
     CandidateApplication,
@@ -16,6 +20,10 @@ from .models import (
     ClientDocument,
     ClientProject,
     ContactInquiry,
+    ChatbotFAQ,
+    ConsultationRequest,
+    HumanSupportRequest,
+    SiteSetting,
     Profile,
     ProjectUpdate,
 )
@@ -36,8 +44,11 @@ class ChatbotInquiryForm(forms.Form):
         choices=[("", "Select a contact method"), *ContactInquiry.CONTACT_METHOD_CHOICES],
         required=False,
     )
+    collection_consent = forms.BooleanField(required=True)
     consent = forms.BooleanField(required=True)
     submission_id = forms.UUIDField()
+    conversation_reference = forms.UUIDField(required=False)
+    conversation_transcript = forms.CharField(max_length=10000, required=False)
 
     def clean_name(self):
         value = self.cleaned_data["name"].strip()
@@ -62,6 +73,136 @@ class ChatbotInquiryForm(forms.Form):
         if not value:
             raise forms.ValidationError("Enter a project description.")
         return value
+
+    def clean_conversation_transcript(self):
+        value = self.cleaned_data["conversation_transcript"].strip()
+        if not value:
+            return []
+        try:
+            transcript = json.loads(value)
+        except json.JSONDecodeError as exc:
+            raise forms.ValidationError("The conversation could not be verified.") from exc
+        if not isinstance(transcript, list) or len(transcript) > 60:
+            raise forms.ValidationError("The conversation transcript is invalid.")
+        cleaned = []
+        for item in transcript:
+            if (
+                not isinstance(item, dict)
+                or item.get("role") not in {"user", "assistant"}
+                or not isinstance(item.get("text"), str)
+                or len(item["text"]) > 2000
+            ):
+                raise forms.ValidationError("The conversation transcript is invalid.")
+            cleaned.append({"role": item["role"], "text": item["text"]})
+        return cleaned
+
+
+class ConsultationRequestForm(forms.ModelForm):
+    collection_consent = forms.BooleanField(required=True)
+    consent = forms.BooleanField(required=True)
+    conversation_reference = forms.UUIDField(required=False)
+
+    class Meta:
+        model = ConsultationRequest
+        fields = (
+            "name", "email", "phone", "preferred_date", "preferred_time",
+            "project_type", "description",
+        )
+
+    def clean_name(self):
+        return self.cleaned_data["name"].strip()
+
+    def clean_email(self):
+        return self.cleaned_data["email"].strip().lower()
+
+    def clean_phone(self):
+        value = self.cleaned_data["phone"].strip()
+        if not value:
+            raise forms.ValidationError("Enter a phone number.")
+        return value
+
+    def clean_description(self):
+        return self.cleaned_data["description"].strip()
+
+    def clean_preferred_date(self):
+        value = self.cleaned_data["preferred_date"]
+        site_settings = SiteSetting.objects.filter(pk=1).values("google_business_time_zone").first()
+        configured_zone = (
+            site_settings["google_business_time_zone"] if site_settings else ""
+        ) or django_settings.GOOGLE_BUSINESS_TIME_ZONE
+        if not configured_zone:
+            raise forms.ValidationError("Consultation scheduling is unavailable until the business timezone is configured.")
+        try:
+            business_zone = ZoneInfo(configured_zone)
+        except ZoneInfoNotFoundError as exc:
+            raise forms.ValidationError("The configured business timezone is invalid.") from exc
+        if value < timezone.now().astimezone(business_zone).date():
+            raise forms.ValidationError("Choose today or a future date.")
+        return value
+
+
+class HumanSupportRequestForm(forms.ModelForm):
+    collection_consent = forms.BooleanField(required=True)
+    consent = forms.BooleanField(required=True)
+    conversation_reference = forms.UUIDField(required=False)
+
+    class Meta:
+        model = HumanSupportRequest
+        fields = ("name", "email", "phone")
+
+    def clean_name(self):
+        return self.cleaned_data["name"].strip()
+
+    def clean_email(self):
+        return self.cleaned_data["email"].strip().lower()
+
+    def clean_phone(self):
+        return self.cleaned_data["phone"].strip()
+
+
+class ChatbotFAQForm(forms.ModelForm):
+    class Meta:
+        model = ChatbotFAQ
+        fields = ("question", "answer", "active", "display_order")
+
+    def clean_question(self):
+        return self.cleaned_data["question"].strip()
+
+    def clean_answer(self):
+        return self.cleaned_data["answer"].strip()
+
+
+def validate_chatbot_attachment(uploaded):
+    """Accept only small raster images and PDFs with matching file signatures."""
+    allowed_extensions = {"png", "jpg", "jpeg", "webp", "pdf"}
+    extension = uploaded.name.rsplit(".", 1)[-1].lower() if "." in uploaded.name else ""
+    if extension not in allowed_extensions:
+        raise forms.ValidationError("Attach a PNG, JPEG, WebP image, or PDF.")
+    if uploaded.size > 10 * 1024 * 1024:
+        raise forms.ValidationError("Each attachment must be 10 MB or smaller.")
+    header = uploaded.read(12)
+    uploaded.seek(0)
+    valid_signature = (
+        (extension == "png" and header.startswith(b"\x89PNG\r\n\x1a\n"))
+        or (extension in {"jpg", "jpeg"} and header.startswith(b"\xff\xd8\xff"))
+        or (extension == "webp" and header.startswith(b"RIFF") and header[8:12] == b"WEBP")
+        or (extension == "pdf" and header.startswith(b"%PDF-"))
+    )
+    if not valid_signature:
+        raise forms.ValidationError("The attachment content does not match its file type.")
+    if extension in {"png", "jpg", "jpeg", "webp"}:
+        from PIL import Image, UnidentifiedImageError
+
+        try:
+            with Image.open(uploaded) as image:
+                if image.width * image.height > 40_000_000:
+                    raise forms.ValidationError("Images must not exceed 40 megapixels.")
+                image.verify()
+        except (UnidentifiedImageError, OSError, Image.DecompressionBombError) as exc:
+            raise forms.ValidationError("The uploaded image could not be safely decoded.") from exc
+        finally:
+            uploaded.seek(0)
+    return uploaded
 
 
 class CandidateApplicationForm(forms.ModelForm):

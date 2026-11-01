@@ -1,0 +1,112 @@
+{% extends "admin/base.html" %}
+
+{% block title %}AI Assistant{% endblock %}
+{% block page_title %}AI Assistant{% endblock %}
+
+{% block content %}
+<div class="admin-stats">
+    <div class="admin-stat-card"><div class="admin-stat-value">{{ conversation_count }}</div><div class="admin-stat-label">Consent-based conversations</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">{{ unanswered_count }}</div><div class="admin-stat-label">Unanswered questions</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">{{ consultation_count }}</div><div class="admin-stat-label">Consultation requests</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">{{ support_count }}</div><div class="admin-stat-label">Human support requests</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">{{ notification_failures }}</div><div class="admin-stat-label">Notification failures</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">{{ total_inquiries }}</div><div class="admin-stat-label">Total inquiries</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">{{ conversion_rate }}%</div><div class="admin-stat-label">Inquiry conversion rate</div></div>
+</div>
+
+<section class="admin-section">
+    <div class="admin-section-header"><h2>Unanswered Questions</h2></div>
+    <div class="admin-table-wrap"><table class="admin-table">
+        <thead><tr><th>Question</th><th>Language</th><th>Last updated</th><th>Review</th></tr></thead>
+        <tbody>
+        {% for item in unanswered_items %}
+            <tr>
+                <td><a class="link" href="{% url 'admin_chatbot_conversation_detail' item.reference %}">{{ item.last_question|truncatechars:100 }}</a></td>
+                <td>{{ item.language }}</td><td>{{ item.updated_at|date:"M d, Y H:i" }}</td>
+                <td><form method="post">{% csrf_token %}<input type="hidden" name="kind" value="unanswered"><input type="hidden" name="id" value="{{ item.pk }}"><input type="hidden" name="status" value="resolved"><button class="btn btn-sm btn-outline" type="submit">Mark reviewed</button></form></td>
+            </tr>
+        {% empty %}<tr><td colspan="4" class="text-muted">No unanswered questions recorded.</td></tr>{% endfor %}
+        </tbody>
+    </table></div>
+</section>
+
+<section class="admin-section">
+    <div class="admin-section-header"><h2>Popular Services</h2></div>
+    <div class="admin-table-wrap"><table class="admin-table">
+        <thead><tr><th>Service</th><th>Inquiries</th></tr></thead>
+        <tbody>
+        {% for service in popular_services %}<tr><td>{{ service.service }}</td><td>{{ service.total }}</td></tr>
+        {% empty %}<tr><td colspan="2" class="text-muted">No service inquiry data yet.</td></tr>{% endfor %}
+        </tbody>
+    </table></div>
+</section>
+
+<section class="admin-section">
+    <div class="admin-section-header"><h2>Consultation Requests</h2></div>
+    <div class="admin-table-wrap"><table class="admin-table">
+        <thead><tr><th>Visitor</th><th>Preferred date/time</th><th>Project</th><th>Status</th><th>Notification</th><th>Update</th></tr></thead>
+        <tbody>
+        {% for item in consultations %}
+            <tr><td>{{ item.name }}<br><small>{{ item.email }} · {{ item.phone }}</small></td>
+                <td>{{ item.preferred_date }} {{ item.preferred_time }}<br><small>{{ item.business_time_zone|default:"Timezone not configured" }}</small></td><td>{{ item.project_type }}</td>
+                <td>{{ item.get_status_display }}</td><td>{{ item.notification_status }}</td>
+                <td><form method="post">{% csrf_token %}<input type="hidden" name="kind" value="consultation"><input type="hidden" name="id" value="{{ item.pk }}">
+                    <select name="status" aria-label="Consultation status">
+                        <option value="requested" {% if item.status == "requested" %}selected{% endif %}>Requested</option>
+                        <option value="confirmed" {% if item.status == "confirmed" %}selected{% endif %}>Confirmed</option>
+                        <option value="declined" {% if item.status == "declined" %}selected{% endif %}>Declined</option>
+                        <option value="cancelled" {% if item.status == "cancelled" %}selected{% endif %}>Cancelled</option>
+                    </select><button class="btn btn-sm btn-outline" type="submit">Save</button>
+                </form></td>
+            </tr>
+        {% empty %}<tr><td colspan="6" class="text-muted">No consultation requests.</td></tr>{% endfor %}
+        </tbody>
+    </table></div>
+</section>
+
+<section class="admin-section">
+    <div class="admin-section-header"><h2>Human Support Requests</h2></div>
+    <div class="admin-table-wrap"><table class="admin-table">
+        <thead><tr><th>Visitor</th><th>Conversation</th><th>Status</th><th>Notification</th><th>Update</th></tr></thead>
+        <tbody>
+        {% for item in support_requests %}
+            <tr><td>{{ item.name }}<br><small>{{ item.email }} · {{ item.phone|default:"No phone provided" }}</small></td>
+                <td>{% if item.conversation %}<a class="link" href="{% url 'admin_chatbot_conversation_detail' item.conversation.reference %}">{{ item.conversation.reference }}</a>{% else %}{{ item.conversation_reference|default:"Not retained" }}{% endif %}</td>
+                <td>{{ item.get_status_display }}</td><td>{{ item.notification_status }}</td>
+                <td><form method="post">{% csrf_token %}<input type="hidden" name="kind" value="support"><input type="hidden" name="id" value="{{ item.pk }}">
+                    <select name="status" aria-label="Support request status">
+                        <option value="new" {% if item.status == "new" %}selected{% endif %}>New</option>
+                        <option value="in_progress" {% if item.status == "in_progress" %}selected{% endif %}>In progress</option>
+                        <option value="resolved" {% if item.status == "resolved" %}selected{% endif %}>Resolved</option>
+                        <option value="closed" {% if item.status == "closed" %}selected{% endif %}>Closed</option>
+                    </select><button class="btn btn-sm btn-outline" type="submit">Save</button>
+                </form></td>
+            </tr>
+        {% empty %}<tr><td colspan="5" class="text-muted">No human support requests.</td></tr>{% endfor %}
+        </tbody>
+    </table></div>
+</section>
+
+<section class="admin-section">
+    <div class="admin-section-header"><h2>Recent Conversations</h2></div>
+    <div class="admin-table-wrap"><table class="admin-table">
+        <thead><tr><th>Reference</th><th>Last question</th><th>Language</th><th>Updated</th></tr></thead>
+        <tbody>
+        {% for item in conversations %}
+            <tr><td><a class="link" href="{% url 'admin_chatbot_conversation_detail' item.reference %}">{{ item.reference }}</a></td><td>{{ item.last_question|truncatechars:100 }}</td><td>{{ item.language }}</td><td>{{ item.updated_at|date:"M d, Y H:i" }}</td></tr>
+        {% empty %}<tr><td colspan="4" class="text-muted">No consented conversations recorded.</td></tr>{% endfor %}
+        </tbody>
+    </table></div>
+</section>
+
+<section class="admin-section">
+    <div class="admin-section-header"><h2>Chatbot FAQs</h2><a class="btn btn-primary" href="{% url 'admin_chatbot_faq_create' %}">Add FAQ</a></div>
+    <div class="admin-table-wrap"><table class="admin-table">
+        <thead><tr><th>Question</th><th>Active</th><th>Updated</th><th></th></tr></thead>
+        <tbody>
+        {% for item in faqs %}<tr><td>{{ item.question }}</td><td>{{ item.active|yesno:"Yes,No" }}</td><td>{{ item.updated_at|date:"M d, Y" }}</td><td><a class="link" href="{% url 'admin_chatbot_faq_edit' item.pk %}">Edit</a></td></tr>
+        {% empty %}<tr><td colspan="4" class="text-muted">No chatbot FAQs have been added.</td></tr>{% endfor %}
+        </tbody>
+    </table></div>
+</section>
+{% endblock %}

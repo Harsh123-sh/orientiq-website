@@ -32,6 +32,20 @@
             <textarea id="address" name="address" class="form-control" rows="3">{{ settings.address|default:"" }}</textarea>
         </div>
         <div class="divider"></div>
+        <h3 class="mb-4">Google Business Profile &amp; Places</h3>
+        <p class="text-muted">Business location and hours come from the configured Google Place. The API key must be set as <code>GOOGLE_MAPS_API_KEY</code> on the server and is never stored here.</p>
+        <div class="admin-form-grid">
+            <div class="form-group">
+                <label class="form-label" for="google_place_id">Verified Google Place ID</label>
+                <input type="text" id="google_place_id" name="google_place_id" class="form-control" maxlength="180" value="{{ settings.google_place_id|default:"" }}" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="google_business_time_zone">Business IANA timezone</label>
+                <input type="text" id="google_business_time_zone" name="google_business_time_zone" class="form-control" maxlength="80" placeholder="Use the actual business timezone" value="{{ settings.google_business_time_zone|default:"" }}" autocomplete="off">
+            </div>
+        </div>
+        <p class="text-muted">Google Places credential: {% if google_api_configured %}configured on the server{% else %}not configured{% endif %}. Special/holiday opening hours appear only when returned by the connected Google source.</p>
+        <div class="divider"></div>
         <h3 class="mb-4">Social</h3>
         <div class="admin-form-grid">
             <div class="form-group">

@@ -162,6 +162,7 @@
 
 .ai-suggestion-label { display: flex; align-items: center; gap: 10px; margin: 8px 0 0; color: var(--ai-copper); font-size: .69rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
 .ai-suggestion-label::after { height: 1px; flex: 1; background: linear-gradient(90deg, var(--ai-border-strong), transparent); content: ""; }
+.ai-mode-notice { align-self: center; margin: 2px 0; padding: 5px 9px; border: 1px solid var(--ai-border); border-radius: 999px; color: var(--color-text-muted); font-size: .65rem; line-height: 1.4; text-align: center; }
 .ai-suggestions, .ai-cta-suggestions { display: flex; flex-direction: column; gap: 10px; }
 .ai-suggestion-chip, .ai-cta-link {
     min-height: 52px; display: flex; align-items: center; gap: 12px; padding: 12px 15px;
@@ -181,7 +182,7 @@
 .ai-inquiry-field { display: flex; min-width: 0; flex-direction: column; gap: 5px; color: var(--color-text); font-size: .74rem; font-weight: 600; }
 .ai-inquiry-field > span, .ai-inquiry-consent b { color: var(--ai-copper); }
 .ai-inquiry-field-full { grid-column: 1 / -1; }
-.ai-inquiry-field input, .ai-inquiry-field select, .ai-inquiry-field textarea {
+.ai-inquiry-field input, .ai-inquiry-field select, .ai-inquiry-field textarea, .ai-inquiry-control {
     width: 100%;
     min-width: 0;
     min-height: 38px;
@@ -195,16 +196,77 @@
     font-weight: 400;
 }
 .ai-inquiry-field textarea { min-height: 70px; resize: vertical; }
-.ai-inquiry-field input:focus, .ai-inquiry-field select:focus, .ai-inquiry-field textarea:focus { outline: 2px solid var(--ai-copper); outline-offset: 1px; }
+.ai-inquiry-field input:focus, .ai-inquiry-field select:focus, .ai-inquiry-field textarea:focus, .ai-inquiry-control:focus { outline: 2px solid var(--ai-copper); outline-offset: 1px; }
 .ai-inquiry-consent { display: flex; align-items: flex-start; gap: 8px; margin: 13px 0; color: var(--color-text-muted); font-size: .72rem; line-height: 1.45; }
 .ai-inquiry-consent input { margin: 2px 0 0; accent-color: var(--ai-copper); }
 .ai-inquiry-form-error { margin: 0 0 10px; color: var(--color-error); font-size: .75rem; }
 .ai-inquiry-field-error { color: var(--color-error); font-size: .68rem; font-weight: 500; }
 .ai-inquiry-submit { width: 100%; min-height: 42px; border: 0; border-radius: 12px; background: linear-gradient(145deg, #d79050, #a85d2f); color: #fffaf3; font: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; box-shadow: 0 5px 14px rgba(126, 68, 43, .18); }
 .ai-inquiry-submit:disabled { opacity: .6; cursor: wait; }
+.ai-inquiry-step-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
+.ai-inquiry-next, .ai-inquiry-confirm, .ai-inquiry-submit, .ai-inquiry-privacy-continue, .ai-action-consent-continue, .ai-action-form-card button[type="submit"], .ai-action-fields button[type="submit"] {
+    width: auto; min-height: 40px; padding: 9px 16px; border: 0; border-radius: 11px;
+    background: linear-gradient(145deg, #d79050, #a85d2f); color: #fffaf3;
+    font: inherit; font-size: .78rem; font-weight: 700; cursor: pointer;
+}
+.ai-inquiry-skip, .ai-inquiry-cancel, .ai-inquiry-back, .ai-inquiry-edit, .ai-inquiry-retry, .ai-chat-retry, .ai-action-cancel {
+    min-height: 36px; padding: 7px 12px; border: 1px solid var(--ai-border-strong); border-radius: 10px;
+    background: var(--ai-panel); color: var(--color-text); font: inherit; font-size: .74rem;
+    font-weight: 600; cursor: pointer;
+}
+.ai-inquiry-step-actions button:focus-visible, .ai-inquiry-edit:focus-visible, .ai-inquiry-retry:focus-visible, .ai-chat-retry:focus-visible {
+    outline: 2px solid var(--ai-copper); outline-offset: 2px;
+}
+.ai-inquiry-progress { margin: 0 0 8px; color: var(--ai-copper-dark); font-size: .7rem; font-weight: 700; letter-spacing: .04em; }
+.ai-inquiry-review-heading { margin: 0 0 10px; color: var(--ai-copper-dark); font-size: .9rem; font-weight: 700; }
+.ai-inquiry-review-list { display: flex; flex-direction: column; gap: 7px; }
+.ai-inquiry-review-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--ai-border); }
+.ai-inquiry-review-row > div { display: flex; min-width: 0; flex-direction: column; gap: 2px; }
+.ai-inquiry-review-row strong { color: var(--color-text-muted); font-size: .68rem; }
+.ai-inquiry-review-row span { color: var(--color-text); font-size: .76rem; overflow-wrap: anywhere; white-space: pre-wrap; }
+.ai-inquiry-edit { min-height: 30px; flex: 0 0 auto; padding: 4px 9px; }
+.ai-inquiry-confirmation[hidden], .ai-inquiry-review[hidden], .ai-inquiry-step[hidden] { display: none; }
+.ai-inquiry-retry, .ai-chat-retry { display: block; margin-top: 8px; border-color: rgba(185, 75, 67, .35); background: transparent; color: var(--color-error); }
+.ai-inquiry-form-error { line-height: 1.5; }
 .ai-inquiry-success { padding: 14px 16px; border: 1px solid var(--ai-border-strong); border-radius: 15px; background: var(--ai-soft); color: var(--color-text); font-size: .85rem; line-height: 1.5; }
 .ai-assistant-error { padding: 11px 24px; border-top: 1px solid rgba(185, 75, 67, .25); background: rgba(185, 75, 67, .1); color: var(--color-error); font-size: var(--text-caption); flex: 0 0 auto; }
 .ai-assistant-form { padding: 14px 18px 16px; border-top: 1px solid var(--ai-border); background: var(--ai-panel); flex: 0 0 auto; }
+.ai-business-card { flex: 0 0 auto; padding: 10px 18px; border-bottom: 1px solid var(--ai-border); background: var(--ai-surface); color: var(--color-text); font-size: .75rem; line-height: 1.4; }
+.ai-business-card-heading { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.ai-business-card-heading strong { color: var(--ai-copper-dark); }
+.ai-business-card-heading span { color: var(--color-text-muted); text-align: right; }
+.ai-business-card-details { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 4px; color: var(--color-text-muted); }
+.ai-business-card-details p { margin: 0; }
+.ai-business-card-details details { width: 100%; }
+.ai-business-card-details summary, .ai-business-card-details a { color: var(--ai-copper-dark); cursor: pointer; }
+.ai-business-card-details ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 12px; margin: 5px 0 0; padding-left: 18px; }
+.ai-privacy-note { margin: 0 0 7px; color: var(--color-text-muted); font-size: .68rem; line-height: 1.35; }
+.ai-privacy-note button { padding: 0; border: 0; background: transparent; color: var(--ai-copper-dark); font: inherit; text-decoration: underline; cursor: pointer; }
+.ai-conversation-consent { display: flex; align-items: flex-start; gap: 7px; margin-bottom: 8px; color: var(--color-text-muted); font-size: .68rem; line-height: 1.35; }
+.ai-conversation-consent input, .ai-inquiry-consent input { flex: 0 0 auto; accent-color: var(--ai-copper); }
+.ai-assistant-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin-bottom: 8px; }
+.ai-assistant-tools button, .ai-assistant-tools select { min-height: 30px; padding: 4px 8px; border: 1px solid var(--ai-border); border-radius: 9px; background: var(--ai-surface); color: var(--color-text); font: inherit; font-size: .69rem; cursor: pointer; }
+.ai-assistant-tools button:hover, .ai-assistant-tools button:focus-visible { border-color: var(--ai-copper); color: var(--ai-copper-dark); }
+.ai-language-label { margin-left: auto; color: var(--color-text-muted); font-size: .68rem; }
+.ai-voice-status { margin: 0 0 7px; color: var(--color-text-muted); font-size: .68rem; }
+.ai-action-card { flex: 0 0 100%; padding: 16px; border: 1px solid var(--ai-border); border-radius: 16px; background: var(--ai-surface); color: var(--color-text); }
+.ai-action-card h3 { margin: 0 0 5px; color: var(--ai-copper-dark); font-size: .95rem; }
+.ai-action-card > p { margin: 0 0 12px; color: var(--color-text-muted); font-size: .76rem; line-height: 1.4; }
+.ai-action-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.ai-action-form-grid label { display: grid; gap: 4px; color: var(--color-text-muted); font-size: .72rem; }
+.ai-action-form-grid input, .ai-action-form-grid textarea { width: 100%; min-width: 0; padding: 8px 9px; border: 1px solid var(--ai-border); border-radius: 8px; background: var(--ai-panel); color: var(--color-text); font: inherit; font-size: .78rem; }
+.ai-action-form-full { grid-column: 1 / -1; }
+.ai-action-fields { min-width: 0; margin: 10px 0 0; padding: 0; border: 0; }
+.ai-action-fields:disabled { display: none; }
+.ai-action-consent-step { margin-top: 10px; }
+.ai-action-consent-continue { margin-top: 7px; }
+.ai-action-form-error { margin-top: 8px !important; color: var(--color-error) !important; }
+.ai-inquiry-privacy-step { padding: 12px; border: 1px solid var(--ai-border); border-radius: 12px; background: var(--ai-surface); }
+.ai-inquiry-privacy-step a, .ai-inquiry-consent a { color: var(--ai-copper-dark); text-decoration: underline; }
+.ai-inquiry-privacy-continue { margin-top: 8px; }
+.ai-inquiry-upload { display: grid; gap: 5px; margin: 12px 0; color: var(--color-text); font-size: .75rem; }
+.ai-inquiry-upload small { color: var(--color-text-muted); }
+.ai-inquiry-upload input { width: 100%; color: var(--color-text-muted); font-size: .72rem; }
 .ai-assistant-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .ai-assistant-input-row { display: flex; align-items: flex-end; gap: 10px; }
 .ai-assistant-input { flex: 1; min-height: 48px; max-height: 120px; padding: 13px 16px; border: 1px solid var(--ai-border); border-radius: 16px; background: var(--ai-surface); color: var(--color-text); font: inherit; font-size: var(--text-body-small); line-height: 1.5; resize: none; transition: border-color var(--transition-fast), box-shadow var(--transition-fast); }
@@ -237,9 +299,15 @@
     .ai-assistant-actions { gap: 2px; }
     .ai-assistant-actions button { width: 38px; height: 38px; }
     .ai-assistant-messages { padding: 16px 14px 20px; }
+    .ai-business-card { padding: 9px 14px; }
+    .ai-action-card { padding: 13px; }
     .ai-message { max-width: 100%; }
     .ai-message-avatar { width: 40px; height: 40px; }
     .ai-message-bubble { padding: 12px 14px; }
     .ai-assistant-form { padding: 12px 14px max(12px, env(safe-area-inset-bottom)); }
     .ai-inquiry-card { padding: 14px; }
+}
+@media (max-width: 360px) {
+    .ai-action-form-grid { grid-template-columns: minmax(0, 1fr); }
+    .ai-language-label { margin-left: 0; }
 }

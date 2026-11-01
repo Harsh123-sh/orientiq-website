@@ -14,14 +14,16 @@ from django.core.cache import cache
 import json
 import logging
 import smtplib
+import uuid
+from datetime import timedelta
 
-from django.db import transaction
+from django.db import IntegrityError, transaction
 from django.http import FileResponse, Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.templatetags.static import static
 from django.utils import timezone
 from django.urls import reverse, reverse_lazy
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 from django.views.generic import RedirectView
 
 from .data import (
@@ -36,6 +38,10 @@ from .models import (
     BookingStatus,
     BookingType,
     ContactInquiry,
+    ChatbotConversation,
+    ConsultationRequest,
+    HumanSupportRequest,
+    InquiryAttachment,
     ClientAccount,
     ClientDocument,
     ClientDeletionRequest,
@@ -47,6 +53,9 @@ from .models import (
 )
 from .forms import (
     ChatbotInquiryForm,
+    ConsultationRequestForm,
+    HumanSupportRequestForm,
+    validate_chatbot_attachment,
     CandidateApplicationForm,
     CustomPasswordChangeForm,
     CustomPasswordResetForm,
@@ -1145,8 +1154,20 @@ def ai_chat(request):
             status=400,
         )
 
+    if not isinstance(payload, dict):
+        return JsonResponse(
+            {"success": False, "message": "Invalid request format.", "suggestions": []},
+            status=400,
+        )
+
     message = payload.get("message", "")
     history = payload.get("history", [])
+    language = payload.get("language", "auto")
+    if language not in {"auto", "en", "hi", "gu"}:
+        return JsonResponse(
+            {"success": False, "message": "Choose English, Hindi, or Gujarati.", "suggestions": []},
+            status=400,
+        )
 
     # Validate message.
     is_valid, error = validate_message(message)
@@ -1160,30 +1181,237 @@ def ai_chat(request):
             status=400,
         )
 
-    if _should_offer_inquiry_form(message):
-        return JsonResponse({
-            "success": True,
-            "message": "I'd be happy to help. Share a few details below so the ORENTIQ team can review your project.",
-            "suggestions": [],
-            "show_inquiry_form": True,
+    if not isinstance(history, list) or len(history) > 10:
+        return JsonResponse(
+            {"success": False, "message": "Conversation history is invalid.", "suggestions": []},
+            status=400,
+        )
+
+    clean_history = []
+    for item in history:
+        if (
+            not isinstance(item, dict)
+            or not isinstance(item.get("user", ""), str)
+            or not isinstance(item.get("assistant", ""), str)
+            or len(item.get("user", "")) > 2000
+            or len(item.get("assistant", "")) > 4000
+        ):
+            return JsonResponse(
+                {"success": False, "message": "Conversation history is invalid.", "suggestions": []},
+                status=400,
+            )
+        clean_history.append({
+            "user": item.get("user", ""),
+            "assistant": item.get("assistant", ""),
         })
 
-    # Validate history shape (list of dicts, keep small).
-    history = [
-        {
-            "user": str(item.get("user", ""))[:2000],
-            "assistant": str(item.get("assistant", ""))[:4000],
-        }
-        for item in history[-10:]
-        if isinstance(item, dict)
-    ] if isinstance(history, list) else []
+    if payload.get("new_conversation") is True:
+        request.session["chatbot_conversation_reference"] = str(uuid.uuid4())
+    conversation_reference = request.session.get("chatbot_conversation_reference")
+    if not conversation_reference:
+        conversation_reference = str(uuid.uuid4())
+        request.session["chatbot_conversation_reference"] = conversation_reference
 
-    result = generate_response(message, history)
+    business_answer = _business_question_answer(message, language)
+    if business_answer:
+        _save_chatbot_turn(
+            request, message, business_answer, language,
+            consent=payload.get("conversation_consent") is True, history=clean_history,
+        )
+        return JsonResponse({
+            "success": True,
+            "message": business_answer,
+            "suggestions": [],
+            "conversation_reference": conversation_reference,
+        })
+
+    if _should_offer_inquiry_form(message):
+        _save_chatbot_turn(
+            request, message, "I'd be happy to help. I can guide you through a few questions, then show you a summary to review before anything is submitted.",
+            language, consent=payload.get("conversation_consent") is True, history=clean_history,
+        )
+        return JsonResponse({
+            "success": True,
+            "message": "I'd be happy to help. I can guide you through a few questions, then show you a summary to review before anything is submitted.",
+            "suggestions": [],
+            "start_inquiry": True,
+            "conversation_reference": conversation_reference,
+        })
+
+    result = generate_response(message, clean_history, language)
 
     if not result["success"]:
         return JsonResponse(result, status=503)
 
+    _save_chatbot_turn(
+        request, message, result["message"], language,
+        consent=payload.get("conversation_consent") is True, history=clean_history,
+    )
+    result["conversation_reference"] = conversation_reference
     return JsonResponse(result)
+
+
+def _business_question_answer(message, language):
+    """Answer business-hours/location questions only from configured Google data."""
+    normalized = message.casefold()
+    intent_terms = (
+        "open now", "currently open", "are you open", "working hours", "opening hours",
+        "business hours", "holiday", "holidays", "sunday", "location", "address",
+        "reach your office", "directions", "where are you",
+        "હમણાં ખુલ્લું", "કામકાજના કલાક", "રવિવાર", "સરનામું", "ક્યાં",
+        "अभी खुले", "काम के घंटे", "रविवार", "पता", "कहां",
+    )
+    if not any(term in normalized for term in intent_terms):
+        return None
+
+    locale = language
+    if locale == "auto":
+        locale = "gu" if any("\u0a80" <= char <= "\u0aff" for char in message) else (
+            "hi" if any("\u0900" <= char <= "\u097f" for char in message) else "en"
+        )
+    from .services.google_business import get_business_info
+
+    info = get_business_info()
+    labels = {
+        "en": {
+            "unavailable": "I can't verify ORENTIQ's live business information from Google right now.",
+            "open": "Current status: Open now.",
+            "closed": "Current status: Closed now.",
+            "status_unknown": "Current opening status is unavailable.",
+            "hours": "Regular opening hours:",
+            "hours_unknown": "Regular opening hours are unavailable.",
+            "holiday_hours": "Verified special or holiday opening hours:",
+            "holiday_unknown": "Verified special or holiday opening hours are unavailable.",
+            "address": "Address:",
+            "address_unknown": "Verified business address is unavailable.",
+            "next": "Next change:",
+            "time_zone": "Business timezone:",
+        },
+        "hi": {
+            "unavailable": "मैं अभी Google से ORENTIQ की वर्तमान व्यावसायिक जानकारी सत्यापित नहीं कर सकता।",
+            "open": "वर्तमान स्थिति: अभी खुला है।",
+            "closed": "वर्तमान स्थिति: अभी बंद है।",
+            "status_unknown": "अभी खुलने की स्थिति उपलब्ध नहीं है।",
+            "hours": "नियमित कार्य समय:",
+            "hours_unknown": "नियमित कार्य समय उपलब्ध नहीं है।",
+            "holiday_hours": "सत्यापित विशेष या छुट्टी के कार्य समय:",
+            "holiday_unknown": "सत्यापित विशेष या छुट्टी के समय उपलब्ध नहीं हैं।",
+            "address": "पता:",
+            "address_unknown": "सत्यापित व्यावसायिक पता उपलब्ध नहीं है।",
+            "next": "अगला बदलाव:",
+            "time_zone": "व्यावसायिक समय क्षेत्र:",
+        },
+        "gu": {
+            "unavailable": "હું હાલમાં Google પરથી ORENTIQની વ્યવસાયિક માહિતી ચકાસી શકતો નથી.",
+            "open": "હાલની સ્થિતિ: અત્યારે ખુલ્લું છે.",
+            "closed": "હાલની સ્થિતિ: અત્યારે બંધ છે.",
+            "status_unknown": "હાલનો ખુલવાનો દરજ્જો ઉપલબ્ધ નથી.",
+            "hours": "નિયમિત કામકાજના કલાકો:",
+            "hours_unknown": "નિયમિત કામકાજના કલાકો ઉપલબ્ધ નથી.",
+            "holiday_hours": "ચકાસેલા ખાસ અથવા રજાના કામકાજના કલાકો:",
+            "holiday_unknown": "ચકાસેલા ખાસ અથવા રજાના કલાકો ઉપલબ્ધ નથી.",
+            "address": "સરનામું:",
+            "address_unknown": "ચકાસેલું વ્યવસાયિક સરનામું ઉપલબ્ધ નથી.",
+            "next": "આગળનો ફેરફાર:",
+            "time_zone": "વ્યવસાયનો સમય ઝોન:",
+        },
+    }[locale]
+    if not info["available"]:
+        return labels["unavailable"]
+
+    answers = []
+    asks_location = any(term in normalized for term in (
+        "location", "address", "reach your office", "directions", "where are you",
+        "સરનામું", "ક્યાં", "पता", "कहां",
+    ))
+    asks_holiday = any(term in normalized for term in ("holiday", "holidays"))
+    asks_hours = asks_holiday or any(term in normalized for term in (
+        "working hours", "opening hours", "business hours", "sunday", "કામકાજના કલાક", "રવિવાર",
+        "काम के घंटे", "रविवार",
+    ))
+    asks_status = any(term in normalized for term in ("open now", "currently open", "are you open", "હમણાં ખુલ્લું", "अभी खुले"))
+
+    if asks_status or not (asks_location or asks_hours):
+        answers.append(
+            labels["open"] if info["status"] == "open" else
+            labels["closed"] if info["status"] == "closed" else labels["status_unknown"]
+        )
+        if info.get("next_change"):
+            answers.append(f"{labels['next']} {info['next_change']}")
+    if asks_location:
+        answers.append(f"{labels['address']} {info['address']}" if info.get("address") else labels["address_unknown"])
+        if info.get("directions_url"):
+            answers.append(info["directions_url"])
+    if asks_hours:
+        if info.get("time_zone"):
+            answers.append(f"{labels['time_zone']} {info['time_zone']}")
+        if asks_holiday:
+            if info.get("special_hours"):
+                answers.append(labels["holiday_hours"])
+                answers.extend(info["special_hours"])
+            else:
+                answers.append(labels["holiday_unknown"])
+        elif info.get("regular_hours"):
+            descriptions = info["regular_hours"]
+            if "sunday" in normalized or "રવિવાર" in normalized or "रविवार" in normalized:
+                sunday_hours = [line for line in descriptions if line.casefold().startswith("sunday")]
+                answers.extend(sunday_hours or [labels["hours_unknown"]])
+            else:
+                answers.append(labels["hours"])
+                answers.extend(descriptions)
+        else:
+            answers.append(labels["hours_unknown"])
+    return "\n".join(answers)
+
+
+def _save_chatbot_turn(request, question, answer, language, consent=False, history=None):
+    """Persist only bounded visitor/assistant text for admin review and support."""
+    if not consent:
+        return None
+    reference = request.session.get("chatbot_conversation_reference")
+    if not reference:
+        reference = str(uuid.uuid4())
+        request.session["chatbot_conversation_reference"] = reference
+    conversation, created = ChatbotConversation.objects.get_or_create(
+        reference=reference,
+        defaults={"language": language},
+    )
+    transcript = conversation.transcript if isinstance(conversation.transcript, list) else []
+    if created:
+        for turn in (history or [])[-10:]:
+            if turn.get("user"):
+                transcript.append({"role": "user", "text": turn["user"][:2000]})
+            if turn.get("assistant"):
+                transcript.append({"role": "assistant", "text": turn["assistant"][:4000]})
+    transcript.extend([
+        {"role": "user", "text": question[:2000]},
+        {"role": "assistant", "text": answer[:4000]},
+    ])
+    conversation.transcript = transcript[-60:]
+    conversation.language = language
+    normalized_question = " ".join(question.split())[:2000]
+    conversation.last_question = normalized_question
+    conversation.unanswered = any(
+        phrase in answer.lower()
+        for phrase in ("don't have verified", "not available", "could not find verified")
+    )
+    conversation.save(update_fields=[
+        "transcript", "language", "last_question", "unanswered", "updated_at",
+    ])
+    if conversation.unanswered and conversation.unanswered_notification_status == "not_applicable":
+        repeats = ChatbotConversation.objects.filter(
+            last_question__iexact=normalized_question,
+            unanswered=True,
+            updated_at__gte=timezone.now() - timedelta(hours=24),
+        ).count()
+        if repeats >= 3:
+            conversation.unanswered_notification_status = _management_notification(
+                "Repeated unanswered chatbot question",
+                f"The same question was unanswered in {repeats} consented conversations in the past 24 hours:\n\n{normalized_question}",
+                f"unanswered question {conversation.reference}",
+            )
+            conversation.save(update_fields=["unanswered_notification_status", "updated_at"])
+    return conversation
 
 
 def _should_offer_inquiry_form(message):
@@ -1213,9 +1441,9 @@ def chatbot_inquiry_submit(request):
     from .ai.safety import is_inquiry_rate_limited
 
     content_length = request.META.get("CONTENT_LENGTH")
-    if content_length and content_length.isdigit() and int(content_length) > 24000:
+    if content_length and content_length.isdigit() and int(content_length) > 55 * 1024 * 1024:
         return JsonResponse(
-            {"success": False, "message": "The inquiry form is too large. Please shorten your details."},
+            {"success": False, "message": "The inquiry form exceeds the 55 MB upload limit."},
             status=413,
         )
 
@@ -1237,6 +1465,20 @@ def chatbot_inquiry_submit(request):
         )
 
     data = form.cleaned_data
+    uploaded_files = request.FILES.getlist("attachments")
+    if len(uploaded_files) > 5:
+        return JsonResponse(
+            {"success": False, "message": "Attach no more than five files."},
+            status=400,
+        )
+    for uploaded in uploaded_files:
+        try:
+            validate_chatbot_attachment(uploaded)
+        except ValidationError as exc:
+            return JsonResponse(
+                {"success": False, "message": "; ".join(exc.messages)},
+                status=400,
+            )
     submission_id = data["submission_id"]
     defaults = {
         "name": data["name"],
@@ -1252,6 +1494,8 @@ def chatbot_inquiry_submit(request):
         "message": data["description"],
         "source": "chatbot",
         "submission_id": submission_id,
+        "conversation_reference": data["conversation_reference"],
+        "conversation_transcript": data["conversation_transcript"],
         "consented_at": timezone.now(),
     }
 
@@ -1260,6 +1504,23 @@ def chatbot_inquiry_submit(request):
             submission_id=submission_id,
             defaults=defaults,
         )
+        if created:
+            if data["conversation_reference"] and data["conversation_transcript"]:
+                ChatbotConversation.objects.get_or_create(
+                    reference=data["conversation_reference"],
+                    defaults={
+                        "transcript": data["conversation_transcript"],
+                        "language": request.POST.get("language", "auto")[:8],
+                    },
+                )
+            for uploaded in uploaded_files:
+                InquiryAttachment.objects.create(
+                    inquiry=inquiry,
+                    file=uploaded,
+                    original_name=uploaded.name[:255],
+                    content_type=uploaded.content_type or "application/octet-stream",
+                    size=uploaded.size,
+                )
 
     if not created and any(
         getattr(inquiry, field) != defaults[field]
@@ -1275,6 +1536,8 @@ def chatbot_inquiry_submit(request):
             "timeline",
             "contact_method",
             "message",
+            "conversation_reference",
+            "conversation_transcript",
         )
     ):
         return JsonResponse(
@@ -1283,7 +1546,8 @@ def chatbot_inquiry_submit(request):
         )
 
     if created:
-        _send_inquiry_notifications(inquiry)
+        inquiry.notification_status = _send_inquiry_notifications(inquiry)
+        inquiry.save(update_fields=["notification_status", "updated_at"])
 
     return JsonResponse({
         "success": True,
@@ -1300,38 +1564,295 @@ def _send_inquiry_notifications(inquiry):
         and settings.EMAIL_HOST_PASSWORD
         and settings.DEFAULT_FROM_EMAIL
     ):
-        return
+        logger.info("Inquiry notification not configured for %s.", inquiry.reference)
+        return "not_configured"
 
-    messages_to_send = [
-        (
-            inquiry.email,
+    try:
+        send_mail(
             f"ORENTIQ received your inquiry — {inquiry.reference}",
             (
                 f"Hello {inquiry.name},\n\n"
                 f"Thank you for contacting ORENTIQ about {inquiry.title}. "
                 f"Your inquiry reference is {inquiry.reference}. Our team will review it and follow up.\n"
             ),
+            settings.DEFAULT_FROM_EMAIL,
+            [inquiry.email],
+            fail_silently=False,
         )
-    ]
+    except (BadHeaderError, OSError, smtplib.SMTPException, ValidationError):
+        logger.exception("Inquiry confirmation email failed for %s.", inquiry.reference)
+
     notification_email = getattr(settings, "INQUIRY_NOTIFICATION_EMAIL", "")
-    if notification_email:
-        messages_to_send.append((
-            notification_email,
+    if not notification_email:
+        logger.info("Inquiry administrator email not configured for %s.", inquiry.reference)
+        return "not_configured"
+    try:
+        send_mail(
             f"New chatbot inquiry — {inquiry.reference}",
             (
-                f"Reference: {inquiry.reference}\n"
-                f"Name: {inquiry.name}\nEmail: {inquiry.email}\n"
-                f"Type: {inquiry.get_inquiry_type_display()}\n"
+                f"Reference: {inquiry.reference}\nName: {inquiry.name}\n"
+                f"Email: {inquiry.email}\nType: {inquiry.get_inquiry_type_display()}\n"
                 f"Title: {inquiry.title}\n\n{inquiry.message}"
             ),
-        ))
+            settings.DEFAULT_FROM_EMAIL,
+            [notification_email],
+            fail_silently=False,
+        )
+    except (BadHeaderError, OSError, smtplib.SMTPException, ValidationError):
+        logger.exception("Inquiry administrator notification failed for %s.", inquiry.reference)
+        return "failed"
+    return "sent"
 
-    for recipient, subject, body in messages_to_send:
-        try:
-            send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [recipient], fail_silently=False)
-        except (BadHeaderError, OSError, smtplib.SMTPException, ValidationError) as exc:
-            logger.warning(
-                "Inquiry notification failed for reference %s: %s",
-                inquiry.reference,
-                exc,
-            )
+
+@require_GET
+def chatbot_business_info(request):
+    """Return configured public Places information without exposing credentials."""
+    from .services.google_business import get_business_info
+
+    return JsonResponse(get_business_info())
+
+
+def _management_notification(subject, body, reference):
+    """Notify configured administrators and report delivery state for the admin UI."""
+    recipient = getattr(settings, "INQUIRY_NOTIFICATION_EMAIL", "")
+    if not (
+        recipient
+        and settings.EMAIL_HOST
+        and settings.EMAIL_HOST_USER
+        and settings.EMAIL_HOST_PASSWORD
+        and settings.DEFAULT_FROM_EMAIL
+    ):
+        logger.info("Chatbot notification is not configured for %s.", reference)
+        return "not_configured"
+    try:
+        send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [recipient], fail_silently=False)
+    except (BadHeaderError, OSError, smtplib.SMTPException, ValidationError):
+        logger.exception("Chatbot notification failed for %s.", reference)
+        return "failed"
+    return "sent"
+
+
+def _chatbot_rate_limited(request, action, limit=5, window=3600):
+    ip_address = request.META.get("REMOTE_ADDR", "unknown")
+    key = f"chatbot:{action}:{ip_address}"
+    attempts = cache.get(key, 0)
+    if attempts >= limit:
+        return True
+    cache.set(key, attempts + 1, window)
+    return False
+
+
+def _session_conversation(request, reference):
+    if not reference:
+        return None
+    try:
+        parsed_reference = uuid.UUID(reference)
+    except (ValueError, TypeError, AttributeError):
+        return None
+    session_reference = request.session.get("chatbot_conversation_reference")
+    if not session_reference:
+        return None
+    try:
+        session_uuid = uuid.UUID(session_reference)
+    except (ValueError, TypeError, AttributeError):
+        return None
+    if parsed_reference != session_uuid:
+        return None
+    return ChatbotConversation.objects.filter(reference=session_uuid).first()
+
+
+@require_POST
+def chatbot_consultation_availability(request):
+    """Check whether the requested local date/time is already reserved."""
+    if _chatbot_rate_limited(request, "consultation-availability", limit=20):
+        return JsonResponse({"success": False, "message": "Please wait before checking another time."}, status=429)
+    form = ConsultationRequestForm(request.POST)
+    if not form.is_valid():
+        timezone_error = any(
+            "timezone" in str(error).lower()
+            for error in form.errors.get("preferred_date", [])
+        )
+        return JsonResponse({
+            "success": False,
+            "message": (
+                "Consultation scheduling is unavailable until the business timezone is configured."
+                if timezone_error else "Please check your consultation details."
+            ),
+            "errors": form.errors.get_json_data(),
+        }, status=400)
+    data = form.cleaned_data
+    busy = ConsultationRequest.objects.filter(
+        preferred_date=data["preferred_date"],
+        preferred_time=data["preferred_time"],
+        status__in=["requested", "confirmed"],
+    ).exists()
+    return JsonResponse({
+        "success": True,
+        "available": not busy,
+        "message": "This time is already requested." if busy else "No existing request conflicts with this time.",
+    })
+
+
+@require_POST
+def chatbot_consultation_submit(request):
+    """Save a consented, availability-checked consultation request as unconfirmed."""
+    content_length = request.META.get("CONTENT_LENGTH", "")
+    if content_length.isdigit() and int(content_length) > 16000:
+        return JsonResponse({"success": False, "message": "The consultation request is too large."}, status=413)
+    if _chatbot_rate_limited(request, "consultation", limit=3, window=3600):
+        return JsonResponse({"success": False, "message": "Too many consultation requests. Please try again later."}, status=429)
+    form = ConsultationRequestForm(request.POST)
+    if not form.is_valid():
+        return JsonResponse({
+            "success": False,
+            "message": "Please check your consultation details.",
+            "errors": form.errors.get_json_data(),
+        }, status=400)
+    data = form.cleaned_data
+    if ConsultationRequest.objects.filter(
+        preferred_date=data["preferred_date"],
+        preferred_time=data["preferred_time"],
+        status__in=["requested", "confirmed"],
+    ).exists():
+        return JsonResponse({
+            "success": False,
+            "message": "That time already has a request. Please choose another time.",
+        }, status=409)
+
+    consultation = form.save(commit=False)
+    consultation.consented_at = timezone.now()
+    from .services.google_business import get_configured_business_time_zone
+
+    consultation.business_time_zone = get_configured_business_time_zone()
+    if not request.session.get("chatbot_conversation_reference") and data.get("conversation_reference"):
+        request.session["chatbot_conversation_reference"] = str(data["conversation_reference"])
+    consultation.conversation = _session_conversation(request, request.POST.get("conversation_reference", ""))
+    consultation.conversation_reference = (
+        consultation.conversation.reference
+        if consultation.conversation
+        else data.get("conversation_reference")
+    )
+    try:
+        with transaction.atomic():
+            consultation.save()
+    except IntegrityError:
+        return JsonResponse({
+            "success": False,
+            "message": "That time was just requested. Please choose another time.",
+        }, status=409)
+
+    consultation.notification_status = _management_notification(
+        f"New consultation request — {consultation.pk}",
+        (
+            f"Name: {consultation.name}\nEmail: {consultation.email}\nPhone: {consultation.phone}\n"
+            f"Preferred time: {consultation.preferred_date} {consultation.preferred_time} "
+            f"{consultation.business_time_zone or '(timezone not configured)'}\n"
+            f"Project type: {consultation.project_type}\n\n{consultation.description}"
+        ),
+        f"consultation {consultation.pk}",
+    )
+    consultation.save(update_fields=["notification_status"])
+    return JsonResponse({
+        "success": True,
+        "status": consultation.status,
+        "message": "Your request was saved. It is not a confirmed appointment; the team will verify the time and follow up.",
+    }, status=201)
+
+
+@require_POST
+def chatbot_support_submit(request):
+    """Save a consented request for human follow-up without claiming live availability."""
+    content_length = request.META.get("CONTENT_LENGTH", "")
+    if content_length.isdigit() and int(content_length) > 12000:
+        return JsonResponse({"success": False, "message": "The support request is too large."}, status=413)
+    if _chatbot_rate_limited(request, "support", limit=3, window=3600):
+        return JsonResponse({"success": False, "message": "Too many support requests. Please try again later."}, status=429)
+    form = HumanSupportRequestForm(request.POST)
+    if not form.is_valid():
+        return JsonResponse({
+            "success": False,
+            "message": "Please check your contact details and consent.",
+            "errors": form.errors.get_json_data(),
+        }, status=400)
+
+    support_request = form.save(commit=False)
+    support_request.consented_at = timezone.now()
+    if (
+        not request.session.get("chatbot_conversation_reference")
+        and form.cleaned_data.get("conversation_reference")
+    ):
+        request.session["chatbot_conversation_reference"] = str(
+            form.cleaned_data["conversation_reference"]
+        )
+    support_request.conversation = _session_conversation(
+        request, request.POST.get("conversation_reference", ""),
+    )
+    support_request.conversation_reference = (
+        support_request.conversation.reference
+        if support_request.conversation
+        else form.cleaned_data.get("conversation_reference")
+    )
+    support_request.save()
+    support_request.notification_status = _management_notification(
+        f"New ORENTIQ support request — {support_request.pk}",
+        (
+            f"Name: {support_request.name}\nEmail: {support_request.email}\n"
+            f"Phone: {support_request.phone or 'Not provided'}\n"
+            f"Conversation: {support_request.conversation_reference or 'Not provided'}"
+        ),
+        f"support request {support_request.pk}",
+    )
+    support_request.save(update_fields=["notification_status"])
+    return JsonResponse({
+        "success": True,
+        "message": "Your request has been sent to the team. No agent is represented as currently online.",
+    }, status=201)
+
+
+@require_POST
+def chatbot_delete_visitor_data(request):
+    """Delete the current session's chatbot transcript, inquiry, support, and files."""
+    reference = request.session.get("chatbot_conversation_reference")
+    if not reference:
+        return JsonResponse({"success": True, "message": "No saved chatbot data was found."})
+    try:
+        parsed_reference = uuid.UUID(reference)
+    except (ValueError, TypeError, AttributeError):
+        request.session.pop("chatbot_conversation_reference", None)
+        return JsonResponse({"success": False, "message": "Saved chatbot data could not be verified."}, status=400)
+    if _chatbot_rate_limited(request, "delete-data", limit=3, window=3600):
+        return JsonResponse({"success": False, "message": "Please wait before retrying data deletion."}, status=429)
+
+    with transaction.atomic():
+        ContactInquiry.objects.filter(
+            source="chatbot",
+            conversation_reference=parsed_reference,
+        ).delete()
+        ConsultationRequest.objects.filter(conversation_reference=parsed_reference).delete()
+        HumanSupportRequest.objects.filter(conversation_reference=parsed_reference).delete()
+        ChatbotConversation.objects.filter(reference=parsed_reference).delete()
+    request.session.pop("chatbot_conversation_reference", None)
+    return JsonResponse({
+        "success": True,
+        "message": "Saved chatbot conversation data and linked chatbot inquiries were deleted.",
+    })
+
+
+@login_required
+def chatbot_attachment_download(request, pk):
+    """Serve visitor-uploaded references only to authorized internal admins."""
+    from .permissions import require_admin
+
+    require_admin(request.user)
+    attachment = get_object_or_404(InquiryAttachment, pk=pk)
+    if not attachment.file:
+        raise Http404("The attachment is unavailable.")
+    response = FileResponse(
+        attachment.file.open("rb"),
+        as_attachment=True,
+        filename=attachment.original_name,
+        content_type="application/octet-stream",
+    )
+    response["X-Content-Type-Options"] = "nosniff"
+    response["Cache-Control"] = "private, no-store"
+    return response

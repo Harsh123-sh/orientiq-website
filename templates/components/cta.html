@@ -4,7 +4,7 @@
             <div class="cta-content">
                         <span class="eyebrow">{{ eyebrow|default:"Start Today" }}</span>
                         <h2>{{ title }}</h2>
-                        <p class="body-large text-muted">{{ subtitle }}</p>
+                        <p class="body-large text-muted">{% if subtitle_email %}Email us at <a class="cta-email-link" href="mailto:{{ subtitle_email }}">{{ subtitle_email }}</a> and we'll get back to you.{% else %}{{ subtitle }}{% endif %}</p>
                         <div class="flex gap-4 flex-wrap mt-6">
                             {% if primary_mailto %}
                             <a href="mailto:{{ primary_mailto }}" class="btn btn-primary btn-lg">{{ primary_label|default:"Email Us" }}</a>

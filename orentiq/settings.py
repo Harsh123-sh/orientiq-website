@@ -237,6 +237,7 @@ STORAGES = {
 MEDIA_URL = "/media/"
 
 MEDIA_ROOT = BASE_DIR / "media"
+PRIVATE_MEDIA_ROOT = BASE_DIR / "private_media"
 
 
 # ============================================================
@@ -331,6 +332,12 @@ DEFAULT_FROM_EMAIL = os.getenv(
     EMAIL_HOST_USER,
 )
 INQUIRY_NOTIFICATION_EMAIL = os.getenv("INQUIRY_NOTIFICATION_EMAIL", "").strip()
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "").strip()
+GOOGLE_PLACE_ID = os.getenv("GOOGLE_PLACE_ID", "").strip()
+GOOGLE_BUSINESS_TIME_ZONE = os.getenv("GOOGLE_BUSINESS_TIME_ZONE", "").strip()
+CHATBOT_RETENTION_DAYS = int(os.getenv("CHATBOT_RETENTION_DAYS", "180"))
+CHATBOT_FILE_RETENTION_DAYS = int(os.getenv("CHATBOT_FILE_RETENTION_DAYS", "180"))
+CHATBOT_MAX_UPLOAD_SIZE = 10 * 1024 * 1024
 
 
 LOGGING = {
@@ -345,6 +352,11 @@ LOGGING = {
         "django": {
             "handlers": ["console"],
             "level": "ERROR",
+            "propagate": False,
+        },
+        "core": {
+            "handlers": ["console"],
+            "level": "INFO",
             "propagate": False,
         },
     },

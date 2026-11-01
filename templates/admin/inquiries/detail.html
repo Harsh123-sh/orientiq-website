@@ -55,12 +55,43 @@
                     <p class="caption text-muted mb-1">Consent recorded</p>
                     <p class="body-small">{{ item.consented_at|date:"M d, Y H:i"|default:"—" }}</p>
                 </div>
+                {% if item.source == "chatbot" %}
+                <div class="mb-4">
+                    <p class="caption text-muted mb-1">Administrator notification</p>
+                    <p class="body-small">{{ item.notification_status }}</p>
+                </div>
+                {% endif %}
             </div>
             <div class="divider"></div>
             <div class="mb-4">
                 <p class="caption text-muted mb-2">Message</p>
                 <p class="body-small">{{ item.message }}</p>
             </div>
+            {% with attachments=item.attachments.all %}
+            {% if attachments %}
+            <div class="divider"></div>
+            <div class="mb-4">
+                <p class="caption text-muted mb-2">Private reference files</p>
+                {% for attachment in attachments %}
+                <p class="body-small"><a class="link" href="{% url 'chatbot_attachment_download' attachment.pk %}">{{ attachment.original_name }}</a> · {{ attachment.size|filesizeformat }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+            {% if item.conversation_transcript %}
+            <div class="divider"></div>
+            <div class="mb-4">
+                <p class="caption text-muted mb-2">Conversation{% if item.conversation_reference %} · {{ item.conversation_reference }}{% endif %}</p>
+                <div class="grid" aria-label="Chatbot inquiry conversation">
+                    {% for entry in item.conversation_transcript %}
+                    <div class="admin-form-card">
+                        <p class="caption text-muted mb-1">{% if entry.role == "user" %}Visitor{% else %}ORENTIQ AI{% endif %}</p>
+                        <p class="body-small">{{ entry.text }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
     <div>

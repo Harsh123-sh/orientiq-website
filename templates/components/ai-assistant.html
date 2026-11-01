@@ -1,5 +1,5 @@
 {% load static %}
-<div class="ai-assistant" id="ai-assistant" data-endpoint="{% url 'ai_chat' %}" data-inquiry-endpoint="{% url 'chatbot_inquiry_submit' %}" data-robot-image="{% static 'images/brand/orentiq-ai-robot.svg' %}">
+<div class="ai-assistant" id="ai-assistant" data-endpoint="{% url 'ai_chat' %}" data-inquiry-endpoint="{% url 'chatbot_inquiry_submit' %}" data-business-endpoint="{% url 'chatbot_business_info' %}" data-consultation-availability-endpoint="{% url 'chatbot_consultation_availability' %}" data-consultation-endpoint="{% url 'chatbot_consultation_submit' %}" data-support-endpoint="{% url 'chatbot_support_submit' %}" data-delete-data-endpoint="{% url 'chatbot_delete_data' %}" data-robot-image="{% static 'images/brand/orentiq-ai-robot.svg' %}">
     <!-- Floating trigger button -->
     <button type="button" class="ai-assistant-trigger" id="ai-assistant-trigger" aria-label="May I help you? Chat with ORENTIQ AI" title="May I help you?" aria-expanded="false" aria-controls="ai-assistant-panel">
         <img class="ai-assistant-robot-launcher" src="{% static 'images/brand/orentiq-ai-robot.svg' %}" alt="" aria-hidden="true">
@@ -29,6 +29,11 @@
             </div>
         </div>
 
+        <section class="ai-business-card" id="ai-business-card" aria-label="ORENTIQ business information" aria-live="polite">
+            <div class="ai-business-card-heading"><strong>ORENTIQ business information</strong><span id="ai-business-status">Checking Google business information…</span></div>
+            <div id="ai-business-details" class="ai-business-card-details">Opening hours and location are shown only when verified information is available.</div>
+        </section>
+
         <div class="ai-assistant-messages" id="ai-assistant-messages" role="log" aria-live="polite" aria-relevant="additions">
             <div class="ai-message ai-message-assistant" data-role="assistant">
                 <span class="ai-message-avatar" aria-hidden="true">
@@ -53,42 +58,100 @@
         <template id="ai-inquiry-form-template">
             <form class="ai-inquiry-form" novalidate>
                 <input type="hidden" name="submission_id">
+                <input type="hidden" name="conversation_reference">
+                <input type="hidden" name="conversation_transcript">
+                <input type="hidden" name="name">
+                <input type="hidden" name="email">
+                <input type="hidden" name="phone">
+                <input type="hidden" name="company">
+                <input type="hidden" name="inquiry_type">
+                <input type="hidden" name="title">
+                <input type="hidden" name="description">
+                <input type="hidden" name="budget">
+                <input type="hidden" name="timeline">
+                <input type="hidden" name="contact_method">
+                <input type="hidden" name="language">
                 <p class="ai-inquiry-form-heading">Tell us about your project</p>
-                <p class="ai-inquiry-form-intro">Share a few details and the ORENTIQ team will follow up.</p>
-                <div class="ai-inquiry-form-grid">
-                    <label class="ai-inquiry-field">Full name <span>*</span><input name="name" autocomplete="name" maxlength="120" required></label>
-                    <label class="ai-inquiry-field">Email address <span>*</span><input name="email" type="email" autocomplete="email" maxlength="254" required></label>
-                    <label class="ai-inquiry-field">Phone<input name="phone" type="tel" autocomplete="tel" maxlength="30"></label>
-                    <label class="ai-inquiry-field">Company<input name="company" autocomplete="organization" maxlength="120"></label>
-                    <label class="ai-inquiry-field ai-inquiry-field-full">Inquiry type <span>*</span>
-                        <select name="inquiry_type" required>
-                            <option value="">Select a type</option>
-                            <option value="website_development">Website Development</option>
-                            <option value="mobile_application">Mobile Application</option>
-                            <option value="custom_software">Custom Software</option>
-                            <option value="business_dashboard">Business Dashboard</option>
-                            <option value="ai_automation">AI &amp; Automation</option>
-                            <option value="saas_product">SaaS Product</option>
-                            <option value="society_school_management">Society or School Management</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </label>
-                    <label class="ai-inquiry-field ai-inquiry-field-full">Project or inquiry title <span>*</span><input name="title" maxlength="160" required></label>
-                    <label class="ai-inquiry-field ai-inquiry-field-full">Project description <span>*</span><textarea name="description" rows="3" maxlength="5000" required></textarea></label>
-                    <label class="ai-inquiry-field">Budget range<input name="budget" maxlength="80"></label>
-                    <label class="ai-inquiry-field">Expected timeline<input name="timeline" maxlength="80"></label>
-                    <label class="ai-inquiry-field ai-inquiry-field-full">Preferred contact method
-                        <select name="contact_method">
-                            <option value="">No preference</option>
-                            <option value="email">Email</option>
-                            <option value="phone">Phone</option>
-                            <option value="whatsapp">WhatsApp</option>
-                        </select>
-                    </label>
+                <p class="ai-inquiry-form-intro">Answer a few questions. You can review or edit everything before submitting.</p>
+                <div class="ai-inquiry-privacy-step">
+                    <p class="ai-inquiry-form-intro">Before we ask for personal details, please review how they will be used.</p>
+                    <label class="ai-inquiry-consent"><input type="checkbox" name="collection_consent" value="true" required><span>I agree that ORENTIQ may collect and use details I choose to enter to prepare this inquiry under the <a href="#orentiq-privacy-policy" data-legal-trigger="privacy">privacy policy</a>.</span></label>
+                    <button class="ai-inquiry-privacy-continue" type="button">Continue</button>
                 </div>
-                <label class="ai-inquiry-consent"><input type="checkbox" name="consent" value="true" required><span>I consent to ORENTIQ contacting me about this inquiry. <b>*</b></span></label>
+                <div class="ai-inquiry-step" aria-live="polite" hidden>
+                    <p class="ai-inquiry-progress"></p>
+                    <label class="ai-inquiry-field ai-inquiry-question"></label>
+                    <div class="ai-inquiry-step-actions">
+                        <button class="ai-inquiry-next" type="button">Continue</button>
+                        <button class="ai-inquiry-skip" type="button" hidden>Skip</button>
+                    </div>
+                </div>
+                <div class="ai-inquiry-review" hidden>
+                    <p class="ai-inquiry-review-heading">Review your details</p>
+                    <div class="ai-inquiry-review-list"></div>
+                    <label class="ai-inquiry-upload">Optional project references <small>PNG, JPEG, WebP, or PDF · up to 10 MB per file, 5 files max</small><input type="file" name="attachments" accept=".png,.jpg,.jpeg,.webp,.pdf,image/png,image/jpeg,image/webp,application/pdf" multiple></label>
+                    <div class="ai-inquiry-step-actions">
+                        <button class="ai-inquiry-confirm" type="button">Continue to consent</button>
+                        <button class="ai-inquiry-cancel" type="button">Cancel inquiry</button>
+                    </div>
+                </div>
+                <div class="ai-inquiry-confirmation" hidden>
+                    <p class="ai-inquiry-form-intro">Your details, selected files, and conversation summary will be sent with this request.</p>
+                    <label class="ai-inquiry-consent"><input type="checkbox" name="consent" value="true" required><span>I consent to ORENTIQ storing these details and contacting me about this inquiry under the <a href="#orentiq-privacy-policy" data-legal-trigger="privacy">privacy policy</a>. <b>*</b></span></label>
+                    <div class="ai-inquiry-step-actions">
+                        <button class="ai-inquiry-submit" type="submit">Submit inquiry</button>
+                        <button class="ai-inquiry-back" type="button">Back to review</button>
+                    </div>
+                </div>
                 <p class="ai-inquiry-form-error" role="alert" hidden></p>
-                <button class="ai-inquiry-submit" type="submit">Send project inquiry</button>
+            </form>
+        </template>
+
+        <template id="ai-consultation-form-template">
+            <form class="ai-assistant-action-card" data-action="consultation" novalidate>
+                <input type="hidden" name="conversation_reference">
+                <h3>Request a consultation</h3>
+                <p>Choose a preferred time. A request is not an appointment confirmation.</p>
+                <div class="ai-action-consent-step">
+                    <label class="ai-inquiry-consent"><input type="checkbox" name="collection_consent" value="true" required><span>I agree that ORENTIQ may collect these details to prepare a consultation request under the <a href="#orentiq-privacy-policy" data-legal-trigger="privacy">privacy policy</a>.</span></label>
+                    <button type="button" class="ai-action-consent-continue">Continue</button>
+                </div>
+                <fieldset class="ai-action-fields" disabled>
+                <div class="ai-action-form-grid">
+                    <label>Name <input name="name" autocomplete="name" maxlength="120" required></label>
+                    <label>Email <input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+                    <label>Phone <input name="phone" type="tel" autocomplete="tel" maxlength="30" required></label>
+                    <label>Project type <input name="project_type" maxlength="80" required></label>
+                    <label>Preferred date <input name="preferred_date" type="date" required></label>
+                    <label>Preferred time <input name="preferred_time" type="time" required></label>
+                    <label class="ai-action-form-full">Short description <textarea name="description" maxlength="2000" rows="3" required></textarea></label>
+                </div>
+                <label class="ai-inquiry-consent"><input type="checkbox" name="consent" value="true" required><span>I consent to ORENTIQ storing these details and contacting me about this consultation under the <a href="#orentiq-privacy-policy" data-legal-trigger="privacy">privacy policy</a>.</span></label>
+                <p class="ai-action-form-error" role="alert" hidden></p>
+                <div class="ai-inquiry-step-actions"><button type="submit">Check availability &amp; request</button><button type="button" class="ai-action-cancel">Cancel</button></div>
+                </fieldset>
+            </form>
+        </template>
+
+        <template id="ai-support-form-template">
+            <form class="ai-assistant-action-card" data-action="support" novalidate>
+                <input type="hidden" name="conversation_reference">
+                <h3>Talk to our team</h3>
+                <p>Leave contact details and the team will follow up. We do not show agents as online.</p>
+                <div class="ai-action-consent-step">
+                    <label class="ai-inquiry-consent"><input type="checkbox" name="collection_consent" value="true" required><span>I agree that ORENTIQ may collect these details to respond to my support request under the <a href="#orentiq-privacy-policy" data-legal-trigger="privacy">privacy policy</a>.</span></label>
+                    <button type="button" class="ai-action-consent-continue">Continue</button>
+                </div>
+                <fieldset class="ai-action-fields" disabled>
+                <div class="ai-action-form-grid">
+                    <label>Name <input name="name" autocomplete="name" maxlength="120" required></label>
+                    <label>Email <input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+                    <label class="ai-action-form-full">Phone (optional) <input name="phone" type="tel" autocomplete="tel" maxlength="30"></label>
+                </div>
+                <label class="ai-inquiry-consent"><input type="checkbox" name="consent" value="true" required><span>I consent to ORENTIQ storing these details and conversation reference and contacting me under the <a href="#orentiq-privacy-policy" data-legal-trigger="privacy">privacy policy</a>.</span></label>
+                <p class="ai-action-form-error" role="alert" hidden></p>
+                <div class="ai-inquiry-step-actions"><button type="submit">Send support request</button><button type="button" class="ai-action-cancel">Cancel</button></div>
+                </fieldset>
             </form>
         </template>
 
@@ -98,6 +161,22 @@
 
         <form class="ai-assistant-form" id="ai-assistant-form">
             {% csrf_token %}
+            <p class="ai-privacy-note">Please avoid personal details in chat. Messages are not retained unless you choose the optional consent below or submit a form. <button type="button" id="ai-delete-data">Delete saved chatbot data</button></p>
+            <label class="ai-conversation-consent"><input type="checkbox" id="ai-conversation-consent"><span>Save this conversation for follow-up and service improvement (optional)</span></label>
+            <div class="ai-assistant-tools">
+                <button type="button" id="ai-consultation-action">Book consultation</button>
+                <button type="button" id="ai-support-action">Talk to our team</button>
+                <label class="ai-language-label" for="ai-language">Language</label>
+                <select id="ai-language" aria-label="Assistant language">
+                    <option value="auto">Auto-detect</option>
+                    <option value="en">English</option>
+                    <option value="hi">Hindi</option>
+                    <option value="gu">Gujarati</option>
+                </select>
+                <button type="button" id="ai-voice-input" aria-label="Start voice input" title="Start voice input" hidden>Mic</button>
+                <button type="button" id="ai-speech-toggle" aria-pressed="false" hidden>Read replies</button>
+            </div>
+            <p class="ai-voice-status" id="ai-voice-status" role="status" hidden></p>
             <label class="ai-assistant-label" for="ai-assistant-input">Ask about ORENTIQ</label>
             <div class="ai-assistant-input-row">
                 <textarea id="ai-assistant-input" class="ai-assistant-input" rows="1" placeholder="Ask about ORENTIQ..." maxlength="2000" aria-label="Ask about ORENTIQ"></textarea>

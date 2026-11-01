@@ -18,6 +18,7 @@ staticfiles/
 
 # Media / user uploads
 media/*
+private_media/
 
 # IDE / OS
 .vscode/

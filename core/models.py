@@ -3,6 +3,7 @@ import uuid
 
 from django.conf import settings
 from django.db import models
+from .storage import PrivateUploadStorage
 
 
 class UserRole(models.TextChoices):
@@ -486,7 +487,10 @@ class ContactInquiry(models.Model):
     source = models.CharField(max_length=20, choices=SOURCE_CHOICES, default="contact_page", db_index=True)
     reference = models.CharField(max_length=16, unique=True, blank=True, editable=False)
     submission_id = models.UUIDField(null=True, blank=True, unique=True, editable=False)
+    conversation_reference = models.UUIDField(null=True, blank=True, db_index=True)
+    conversation_transcript = models.JSONField(default=list, blank=True)
     consented_at = models.DateTimeField(null=True, blank=True)
+    notification_status = models.CharField(max_length=24, default="pending")
     admin_notes = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -503,6 +507,150 @@ class ContactInquiry(models.Model):
 
     def __str__(self):
         return f"{self.reference or 'Inquiry'} — {self.name} — {self.email}"
+
+
+def chatbot_attachment_upload_to(instance, filename):
+    """Keep chatbot attachments in a private, unguessable storage path."""
+    extension = os.path.splitext(filename)[1].lower()
+    return f"chatbot-inquiries/{uuid.uuid4().hex}{extension}"
+
+
+class ChatbotConversation(models.Model):
+    """Minimal stored transcript used for support and chatbot management."""
+
+    reference = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    transcript = models.JSONField(default=list, blank=True)
+    language = models.CharField(max_length=8, default="en")
+    unanswered = models.BooleanField(default=False, db_index=True)
+    unanswered_notification_status = models.CharField(max_length=24, default="not_applicable")
+    last_question = models.CharField(max_length=2000, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-updated_at"]
+        verbose_name = "Chatbot Conversation"
+
+    def __str__(self):
+        return f"Conversation {self.reference}"
+
+
+class ConsultationRequest(models.Model):
+    """A visitor's request for a consultation; requests are not auto-confirmed."""
+
+    STATUS_CHOICES = [
+        ("requested", "Requested"),
+        ("confirmed", "Confirmed"),
+        ("declined", "Declined"),
+        ("cancelled", "Cancelled"),
+    ]
+
+    name = models.CharField(max_length=120)
+    email = models.EmailField()
+    phone = models.CharField(max_length=30)
+    preferred_date = models.DateField()
+    preferred_time = models.TimeField()
+    business_time_zone = models.CharField(max_length=80, blank=True)
+    project_type = models.CharField(max_length=80)
+    description = models.CharField(max_length=2000)
+    conversation_reference = models.UUIDField(null=True, blank=True, db_index=True)
+    conversation = models.ForeignKey(
+        ChatbotConversation,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="consultation_requests",
+    )
+    status = models.CharField(max_length=16, choices=STATUS_CHOICES, default="requested", db_index=True)
+    calendar_event_id = models.CharField(max_length=255, blank=True)
+    notification_status = models.CharField(max_length=24, default="pending")
+    consented_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        indexes = [models.Index(fields=["preferred_date", "preferred_time", "status"])]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["preferred_date", "preferred_time"],
+                condition=models.Q(status__in=["requested", "confirmed"]),
+                name="unique_active_consultation_slot",
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.name} — {self.preferred_date} {self.preferred_time}"
+
+
+class HumanSupportRequest(models.Model):
+    """A consented request for a human follow-up."""
+
+    STATUS_CHOICES = [
+        ("new", "New"),
+        ("in_progress", "In progress"),
+        ("resolved", "Resolved"),
+        ("closed", "Closed"),
+    ]
+
+    name = models.CharField(max_length=120)
+    email = models.EmailField()
+    phone = models.CharField(max_length=30, blank=True)
+    conversation_reference = models.UUIDField(null=True, blank=True, db_index=True)
+    conversation = models.ForeignKey(
+        ChatbotConversation,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="support_requests",
+    )
+    status = models.CharField(max_length=16, choices=STATUS_CHOICES, default="new", db_index=True)
+    notification_status = models.CharField(max_length=24, default="pending")
+    consented_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Support request — {self.name} ({self.email})"
+
+
+class ChatbotFAQ(models.Model):
+    """Approved question and answer content managed by administrators."""
+
+    question = models.CharField(max_length=240)
+    answer = models.TextField(max_length=4000)
+    active = models.BooleanField(default=True)
+    display_order = models.PositiveIntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["display_order", "question"]
+        verbose_name = "Chatbot FAQ"
+        verbose_name_plural = "Chatbot FAQs"
+
+    def __str__(self):
+        return self.question
+
+
+class InquiryAttachment(models.Model):
+    """Private file attached to a consented project inquiry."""
+
+    inquiry = models.ForeignKey(ContactInquiry, on_delete=models.CASCADE, related_name="attachments")
+    file = models.FileField(
+        upload_to=chatbot_attachment_upload_to,
+        storage=PrivateUploadStorage(),
+    )
+    original_name = models.CharField(max_length=255)
+    content_type = models.CharField(max_length=100)
+    size = models.PositiveIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["created_at"]
+
+    def __str__(self):
+        return self.original_name
 
 
 def candidate_resume_upload_to(instance, filename):
@@ -798,6 +946,8 @@ class SiteSetting(models.Model):
     site_title = models.CharField(max_length=160, blank=True)
     meta_description = models.TextField(blank=True)
     og_image = models.ImageField(upload_to="brand/", blank=True, null=True)
+    google_place_id = models.CharField(max_length=180, blank=True)
+    google_business_time_zone = models.CharField(max_length=80, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:

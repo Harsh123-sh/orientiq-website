@@ -19,6 +19,7 @@ from core.models import (
     PortfolioProject as PortfolioProjectModel,
     Technology as TechnologyModel,
     Testimonial as TestimonialModel,
+    ChatbotFAQ,
 )
 
 
@@ -28,9 +29,13 @@ def _published_cms_services():
     return [
         {
             "title": s.title,
+            "slug": s.slug,
             "category": s.category,
             "short_description": s.short_description,
             "description": s.description,
+            "technologies": s.technologies,
+            "faq": s.faq,
+            "url": f"/services/{s.slug}/",
         }
         for s in items
     ]
@@ -41,7 +46,9 @@ def _published_cms_industries():
     return [
         {
             "name": i.name,
+            "slug": i.slug,
             "description": i.description,
+            "url": f"/industries/{i.slug}/",
         }
         for i in items
     ]
@@ -52,9 +59,13 @@ def _published_cms_products():
     return [
         {
             "name": p.name,
+            "slug": p.slug,
             "category": p.category,
-            "status": p.product_status,
+            "status": p.status_label,
             "description": p.description,
+            "vision": p.vision,
+            "capabilities": p.capabilities,
+            "url": f"/products/{p.slug}/",
         }
         for p in items
     ]
@@ -65,6 +76,7 @@ def _published_cms_portfolio():
     return [
         {
             "title": item.title,
+            "slug": item.slug,
             "category": item.category,
             "industry": item.industry,
             "summary": item.short_description,
@@ -104,17 +116,38 @@ def build_company_context():
     approved static data in core/data.py.
     """
     services = _published_cms_services() or [
-        {"title": s["name"], "category": s["tagline"], "short_description": s["short"], "description": ""}
+        {
+            "title": s["name"],
+            "slug": s["slug"],
+            "category": s["tagline"],
+            "short_description": s["short"],
+            "description": "",
+            "url": f"/services/{s['slug']}/",
+        }
         for s in SERVICES
     ]
 
     industries = _published_cms_industries() or [
-        {"name": i["name"], "description": i["short"]}
+        {
+            "name": i["name"],
+            "slug": i["slug"],
+            "description": i["short"],
+            "url": f"/industries/{i['slug']}/",
+        }
         for i in INDUSTRIES
     ]
 
     products = _published_cms_products() or [
-        {"name": p["name"], "category": p["category"], "status": p["status_label"], "description": p["description"]}
+        {
+            "name": p["name"],
+            "slug": p["slug"],
+            "category": p["category"],
+            "status": p["status_label"],
+            "description": p["description"],
+            "vision": p.get("vision", ""),
+            "capabilities": p.get("capabilities", []),
+            "url": f"/products/{p['slug']}/",
+        }
         for p in PRODUCTS
     ]
 
@@ -127,20 +160,27 @@ def build_company_context():
     ]
 
     testimonials = _published_cms_testimonials()
+    faqs = list(
+        ChatbotFAQ.objects.filter(active=True)
+        .order_by("display_order", "question")
+        .values("question", "answer")[:100]
+    )
 
     return {
         "company": {
             "name": "ORENTIQ",
             "tagline": "Innovate. Integrate. Inspire.",
-            "description": (
-                "ORENTIQ Technologies builds websites, software, dashboards, AI "
-                "solutions, automation, and digital products."
-            ),
+            "description": "ORENTIQ is a premium technology and digital solutions company building intelligent products for ambitious businesses.",
             "founder": {
                 "name": "Harsh Sachwani",
-                "role": "Founder of ORENTIQ Technologies",
+                "role": "Founder & Technology Lead",
                 "url": "/company/founder/",
             },
+            "logo_meaning": (
+                "The J is the first letter of Jhulelal, a meaningful personal inspiration "
+                "behind the logo. The S represents the founder's surname and the person "
+                "behind the original mark. ORENTIQ is the chosen technology-focused brand name."
+            ),
             "urls": {
                 "about": "/about/",
                 "founder": "/company/founder/",
@@ -160,6 +200,26 @@ def build_company_context():
         "portfolio": portfolio,
         "technologies": technologies,
         "testimonials": testimonials,
+        "faqs": faqs,
+        "process": [
+            {"name": "Discovery", "description": "Understand goals, users, and constraints through collaboration."},
+            {"name": "Strategy", "description": "Define architecture, roadmap, and success metrics."},
+            {"name": "Design", "description": "Create user-centered experiences aligned with the brand."},
+            {"name": "Development", "description": "Build in transparent, testable increments with regular demos."},
+            {"name": "Launch", "description": "Deploy with testing, monitoring, documentation, and knowledge transfer."},
+            {"name": "Growth", "description": "Iterate and scale based on real data."},
+        ],
+        "contact": {
+            "email": "orentiq.js.official@gmail.com",
+            "phone": "+91 93283 73770",
+            "phone_uri": "tel:+919328373770",
+            "whatsapp_uri": "https://wa.me/919328373770",
+            "website": "https://orentiq.me/",
+            "response_time": "Within one business day",
+            "initial_consultation": "Free initial consultation",
+            "engagement_terms": "No obligation, no pressure",
+            "nda": "NDA available on request",
+        },
         "start_project": {
             "description": (
                 "Visitors can submit a project inquiry through the Start a Project "

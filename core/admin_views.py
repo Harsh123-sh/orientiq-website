@@ -1,6 +1,7 @@
 """Admin dashboard + CMS views for the Orentiq corporate website."""
 
 from django.contrib import messages
+from django.conf import settings as django_settings
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -10,8 +11,10 @@ from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.dateparse import parse_date
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from .forms import (
+    ChatbotFAQForm,
     ClientAccountForm,
     ClientDocumentForm,
     ClientProjectForm,
@@ -24,6 +27,10 @@ from .models import (
     BookingStatus,
     BookingType,
     ContactInquiry,
+    ChatbotConversation,
+    ChatbotFAQ,
+    ConsultationRequest,
+    HumanSupportRequest,
     ClientAccount,
     ClientDocument,
     ClientProject,
@@ -119,6 +126,22 @@ def dashboard(request):
         "active_projects": ClientProject.objects.filter(status="in_progress").count(),
         "completed_projects": ClientProject.objects.filter(status="completed").count(),
         "document_count": ClientDocument.objects.count(),
+        "chatbot_conversations": ChatbotConversation.objects.count(),
+        "chatbot_unanswered": ChatbotConversation.objects.filter(unanswered=True).count(),
+        "chatbot_consultations": ConsultationRequest.objects.count(),
+        "chatbot_support_requests": HumanSupportRequest.objects.count(),
+        "chatbot_conversion_rate": round(
+            ContactInquiry.objects.filter(status__in=["won", "converted"]).count()
+            * 100 / ContactInquiry.objects.count(), 1
+        ) if ContactInquiry.objects.exists() else 0,
+        "chatbot_popular_services": (
+            ContactInquiry.objects.exclude(service="")
+            .values("service").annotate(total=Count("id")).order_by("-total")[:5]
+        ),
+        "chatbot_recent_conversations": ChatbotConversation.objects.all()[:5],
+        "chatbot_recent_consultations": ConsultationRequest.objects.all()[:5],
+        "chatbot_recent_support": HumanSupportRequest.objects.all()[:5],
+        "chatbot_unanswered_items": ChatbotConversation.objects.filter(unanswered=True)[:5],
     }
     return render(request, "admin/dashboard.html", context)
 
@@ -717,6 +740,7 @@ def inquiry_list(request):
         all_qs = all_qs.filter(
             Q(name__icontains=q)
             | Q(email__icontains=q)
+            | Q(phone__icontains=q)
             | Q(company__icontains=q)
             | Q(reference__icontains=q)
         )
@@ -796,6 +820,115 @@ def inquiry_detail(request, pk):
         messages.success(request, "Inquiry updated.")
         return redirect("admin_inquiry_detail", obj.id)
     return render(request, "admin/inquiries/detail.html", {"item": obj})
+
+
+# ============================================================
+# CHATBOT MANAGEMENT
+# ============================================================
+
+@login_required
+def chatbot_dashboard(request):
+    require_admin(request.user)
+    if request.method == "POST":
+        kind = request.POST.get("kind")
+        object_id = request.POST.get("id")
+        status = request.POST.get("status")
+        if kind == "consultation":
+            item = get_object_or_404(ConsultationRequest, pk=object_id)
+            choices = dict(ConsultationRequest.STATUS_CHOICES)
+        elif kind == "support":
+            item = get_object_or_404(HumanSupportRequest, pk=object_id)
+            choices = dict(HumanSupportRequest.STATUS_CHOICES)
+        elif kind == "unanswered":
+            item = get_object_or_404(ChatbotConversation, pk=object_id)
+            choices = {"resolved": "Resolved"}
+            if status == "resolved":
+                item.unanswered = False
+                item.save(update_fields=["unanswered", "updated_at"])
+                _log(request.user, "update", "ChatbotConversation", item.pk, "Marked unanswered chat as reviewed", request)
+                messages.success(request, "Question marked as reviewed.")
+                return redirect("admin_chatbot_dashboard")
+            return render(request, "admin/chatbot/dashboard.html", _chatbot_dashboard_context(), status=400)
+        else:
+            messages.error(request, "Choose a valid chatbot record.")
+            return redirect("admin_chatbot_dashboard")
+        if status not in choices:
+            messages.error(request, "Choose a valid status.")
+            return redirect("admin_chatbot_dashboard")
+        if kind == "consultation" and status == "confirmed" and not item.business_time_zone:
+            from .services.google_business import get_configured_business_time_zone
+
+            item.business_time_zone = get_configured_business_time_zone()
+            if not item.business_time_zone:
+                messages.error(request, "Configure the business timezone before confirming this request.")
+                return redirect("admin_chatbot_dashboard")
+        if (
+            kind == "consultation"
+            and status == "confirmed"
+            and ConsultationRequest.objects.filter(
+                preferred_date=item.preferred_date,
+                preferred_time=item.preferred_time,
+                status__in=["requested", "confirmed"],
+            ).exclude(pk=item.pk).exists()
+        ):
+            messages.error(request, "That preferred time now conflicts with another active consultation.")
+            return redirect("admin_chatbot_dashboard")
+        item.status = status
+        item.save(update_fields=["status"])
+        _log(request.user, "update", kind.title(), item.pk, f"Updated chatbot {kind} status", request)
+        messages.success(request, "Chatbot record updated.")
+        return redirect("admin_chatbot_dashboard")
+    return render(request, "admin/chatbot/dashboard.html", _chatbot_dashboard_context())
+
+
+def _chatbot_dashboard_context():
+    total_inquiries = ContactInquiry.objects.count()
+    return {
+        "conversations": ChatbotConversation.objects.all()[:20],
+        "unanswered_items": ChatbotConversation.objects.filter(unanswered=True)[:20],
+        "consultations": ConsultationRequest.objects.all()[:20],
+        "support_requests": HumanSupportRequest.objects.all()[:20],
+        "faqs": ChatbotFAQ.objects.all()[:20],
+        "unanswered_count": ChatbotConversation.objects.filter(unanswered=True).count(),
+        "conversation_count": ChatbotConversation.objects.count(),
+        "consultation_count": ConsultationRequest.objects.count(),
+        "support_count": HumanSupportRequest.objects.count(),
+        "notification_failures": (
+            ConsultationRequest.objects.filter(notification_status="failed").count()
+            + HumanSupportRequest.objects.filter(notification_status="failed").count()
+            + ContactInquiry.objects.filter(source="chatbot", notification_status="failed").count()
+            + ChatbotConversation.objects.filter(unanswered_notification_status="failed").count()
+        ),
+        "total_inquiries": total_inquiries,
+        "conversion_rate": round(
+            ContactInquiry.objects.filter(status__in=["won", "converted"]).count()
+            * 100 / total_inquiries, 1
+        ) if total_inquiries else 0,
+        "popular_services": (
+            ContactInquiry.objects.exclude(service="")
+            .values("service").annotate(total=Count("id")).order_by("-total")[:5]
+        ),
+    }
+
+
+@login_required
+def chatbot_conversation_detail(request, reference):
+    require_admin(request.user)
+    item = get_object_or_404(ChatbotConversation, reference=reference)
+    return render(request, "admin/chatbot/conversation_detail.html", {"item": item})
+
+
+@login_required
+def chatbot_faq_edit(request, pk=None):
+    require_admin(request.user)
+    item = get_object_or_404(ChatbotFAQ, pk=pk) if pk else None
+    form = ChatbotFAQForm(request.POST or None, instance=item)
+    if request.method == "POST" and form.is_valid():
+        saved = form.save()
+        _log(request.user, "update" if item else "create", "ChatbotFAQ", saved.pk, f"Saved chatbot FAQ: {saved.question}", request)
+        messages.success(request, "Chatbot FAQ saved.")
+        return redirect("admin_chatbot_dashboard")
+    return render(request, "admin/chatbot/faq_form.html", {"form": form, "item": item})
 
 
 # ============================================================
@@ -900,24 +1033,46 @@ def media_delete(request, pk):
 @login_required
 def settings_view(request):
     require_super_admin(request.user)
-    settings = SiteSetting.get_singleton()
+    site_settings = SiteSetting.get_singleton()
     if request.method == "POST":
-        settings.company_name = request.POST.get("company_name", settings.company_name)
-        settings.tagline = request.POST.get("tagline", "")
-        settings.email = request.POST.get("email", "")
-        settings.phone = request.POST.get("phone", "")
-        settings.address = request.POST.get("address", "")
-        settings.linkedin = request.POST.get("linkedin", "")
-        settings.instagram = request.POST.get("instagram", "")
-        settings.youtube = request.POST.get("youtube", "")
-        settings.x = request.POST.get("x", "")
-        settings.site_title = request.POST.get("site_title", "")
-        settings.meta_description = request.POST.get("meta_description", "")
-        settings.save()
+        place_id = request.POST.get("google_place_id", "").strip()
+        business_time_zone = request.POST.get("google_business_time_zone", "").strip()
+        if len(place_id) > 180 or len(business_time_zone) > 80:
+            messages.error(request, "Google Place ID or timezone is too long.")
+            return render(request, "admin/settings/form.html", {
+                "settings": site_settings,
+                "google_api_configured": bool(django_settings.GOOGLE_MAPS_API_KEY),
+            }, status=400)
+        if business_time_zone:
+            try:
+                ZoneInfo(business_time_zone)
+            except ZoneInfoNotFoundError:
+                messages.error(request, "Enter a valid IANA timezone, such as the timezone configured for the business.")
+                return render(request, "admin/settings/form.html", {
+                    "settings": site_settings,
+                    "google_api_configured": bool(django_settings.GOOGLE_MAPS_API_KEY),
+                }, status=400)
+        site_settings.company_name = request.POST.get("company_name", site_settings.company_name)
+        site_settings.tagline = request.POST.get("tagline", "")
+        site_settings.email = request.POST.get("email", "")
+        site_settings.phone = request.POST.get("phone", "")
+        site_settings.address = request.POST.get("address", "")
+        site_settings.linkedin = request.POST.get("linkedin", "")
+        site_settings.instagram = request.POST.get("instagram", "")
+        site_settings.youtube = request.POST.get("youtube", "")
+        site_settings.x = request.POST.get("x", "")
+        site_settings.site_title = request.POST.get("site_title", "")
+        site_settings.meta_description = request.POST.get("meta_description", "")
+        site_settings.google_place_id = place_id
+        site_settings.google_business_time_zone = business_time_zone
+        site_settings.save()
         _log(request.user, "update", "Settings", 1, "Updated website settings", request)
         messages.success(request, "Settings updated.")
         return redirect("admin_settings")
-    return render(request, "admin/settings/form.html", {"settings": settings})
+    return render(request, "admin/settings/form.html", {
+        "settings": site_settings,
+        "google_api_configured": bool(django_settings.GOOGLE_MAPS_API_KEY),
+    })
 
 
 # ============================================================
