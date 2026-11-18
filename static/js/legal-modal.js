@@ -8,11 +8,10 @@
         var dialog = modal.querySelector('[role="dialog"]');
         var content = modal.querySelector("[data-legal-content]");
         var title = modal.querySelector("[data-legal-modal-title], .orentiq-legal-modal__title");
-        var triggers = document.querySelectorAll("[data-legal-trigger]");
         var closeButtons = modal.querySelectorAll("[data-legal-close]");
         var activeTrigger = null;
         var scrollPosition = 0;
-        var titles = { privacy: "Privacy Policy", terms: "Terms of Service", cookies: "Cookie Policy" };
+        var titles = { privacy: "Privacy Policy", terms: "Terms & Conditions", cookies: "Cookie Policy" };
 
         function closeModal() {
             if (!modal.classList.contains("is-open")) return;
@@ -50,17 +49,23 @@
             else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
         }
 
-        triggers.forEach(function (trigger) {
-            trigger.addEventListener("click", function (event) {
-                event.preventDefault();
-                openModal(trigger.dataset.legalTrigger, trigger);
-            });
+        document.addEventListener("click", function (event) {
+            var trigger = event.target.closest("[data-legal-trigger]");
+            if (!trigger) return;
+            event.preventDefault();
+            event.stopPropagation();
+            openModal(trigger.dataset.legalTrigger, trigger);
         });
         closeButtons.forEach(function (button) { button.addEventListener("click", closeModal); });
         document.addEventListener("keydown", function (event) {
-            if (event.key === "Escape") closeModal();
+            if (event.key === "Escape" && modal.classList.contains("is-open")) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                closeModal();
+                return;
+            }
             trapFocus(event);
-        });
+        }, true);
         dialog.addEventListener("click", function (event) { event.stopPropagation(); });
     }
 
