@@ -2019,6 +2019,20 @@ class TravelInventoryTests(OrentiqTestCase):
         resp = self.client.get("/api/flights/search/", {"destination": "Dubai"})
         self.assertEqual(resp.status_code, 400)
 
+    def test_api_flights_search_rejects_non_numeric_passenger_counts(self):
+        response = self.client.get(
+            "/api/flights/search/",
+            {
+                "origin": "Ahmedabad",
+                "destination": "Dubai",
+                "departure": "2026-09-10",
+                "adults": "invalid",
+            },
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()["error"], "Invalid passenger counts.")
+
     def test_api_hotels_search(self):
         """GET /api/hotels/search/ should return JSON."""
         resp = self.client.get("/api/hotels/search/", {

@@ -51,9 +51,13 @@ def _validate_flight_params(params):
     if cabin not in VALID_CABIN_CLASSES:
         return False, "Invalid cabin class."
 
-    adults = int(params.get("adults", 1) or 1)
-    children = int(params.get("children", 0) or 0)
-    infants = int(params.get("infants", 0) or 0)
+    try:
+        adults = int(params.get("adults", 1) or 1)
+        children = int(params.get("children", 0) or 0)
+        infants = int(params.get("infants", 0) or 0)
+    except (TypeError, ValueError):
+        return False, "Invalid passenger counts."
+
     if adults < 1 or adults > 9:
         return False, "Adults must be between 1 and 9."
     if children < 0 or children > 8:
