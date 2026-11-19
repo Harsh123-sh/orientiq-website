@@ -95,6 +95,16 @@ def home(request):
     )
 
 
+@require_GET
+def robots_txt(request):
+    """Serve the root robots.txt file."""
+    robots_file = settings.BASE_DIR / "robots.txt"
+    return HttpResponse(
+        robots_file.read_text(encoding="utf-8"),
+        content_type="text/plain; charset=utf-8",
+    )
+
+
 def about(request):
     """Render the About page."""
     return render(request, "pages/about.html")

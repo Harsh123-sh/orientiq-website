@@ -72,6 +72,18 @@ class OrentiqTestCase(TestCase):
         return service, industry, portfolio, product, tech, testimonial
 
 
+class RobotsTxtTests(TestCase):
+    def test_robots_txt_is_available_at_site_root(self):
+        response = self.client.get("/robots.txt")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "text/plain; charset=utf-8")
+        self.assertEqual(
+            response.content.decode(),
+            "User-agent: *\nAllow: /\n\nSitemap: https://orentiq.me/sitemap.xml\n",
+        )
+
+
 class AuthenticationTests(OrentiqTestCase):
     def _register_user(self, username, email, password="StrongPass123!"):
         self.client.post(

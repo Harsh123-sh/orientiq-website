@@ -55,9 +55,10 @@ sitemaps = {
 urlpatterns = [
 
     # ========================================================
-    # GOOGLE SEARCH CONSOLE SITEMAP
+    # CRAWLER FILES
     # ========================================================
 
+    path("robots.txt", views.robots_txt, name="robots_txt"),
     path(
         "sitemap.xml",
         sitemap,
