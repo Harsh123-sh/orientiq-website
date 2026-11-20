@@ -3,6 +3,21 @@
 {% block title %}Harsh Sachwani — Founder | ORENTIQ{% endblock %}
 {% block meta_description %}Meet Harsh Sachwani and discover the story behind the ORENTIQ identity.{% endblock %}
 {% block extra_css %}<link rel="stylesheet" href="{% static 'css/founder.css' %}?v=20261024">{% endblock %}
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": "https://orentiq.me/company/founder/#person",
+  "name": "Harsh Sachwani",
+  "jobTitle": "Founder",
+  "url": "https://orentiq.me/company/founder/",
+  "worksFor": {
+    "@id": "https://orentiq.me/#organization"
+  }
+}
+</script>
+{% endblock %}
 {% block content %}
 <div class="founder-page">
   <section class="founder-hero" aria-labelledby="founder-title"><div class="founder-shell founder-hero__grid">

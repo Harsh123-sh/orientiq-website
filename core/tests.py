@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import uuid
 from unittest.mock import patch
 
@@ -82,6 +83,50 @@ class RobotsTxtTests(TestCase):
             response.content.decode(),
             "User-agent: *\nAllow: /\n\nSitemap: https://orentiq.me/sitemap.xml\n",
         )
+
+
+class StructuredDataTests(TestCase):
+    def _json_ld_entities(self, path):
+        response = self.client.get(path)
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        scripts = re.findall(
+            r'<script\s+type="application/ld\+json">\s*(.*?)\s*</script>',
+            html,
+            re.DOTALL,
+        )
+        self.assertEqual(len(scripts), 1)
+        return json.loads(scripts[0])
+
+    def test_homepage_organization_schema(self):
+        organization = self._json_ld_entities("/")
+
+        self.assertEqual(organization["@context"], "https://schema.org")
+        self.assertEqual(organization["@type"], "Organization")
+        self.assertEqual(organization["@id"], "https://orentiq.me/#organization")
+        self.assertEqual(organization["name"], "ORENTIQ")
+        self.assertEqual(organization["url"], "https://orentiq.me/")
+        self.assertTrue(
+            organization["logo"].startswith(
+                "https://orentiq.me/static/images/brand/orentiq-logo-on-dark"
+            )
+        )
+        self.assertIn("ORENTIQ designs and builds digital products", organization["description"])
+        self.assertEqual(
+            organization["founder"]["@id"],
+            "https://orentiq.me/company/founder/#person",
+        )
+
+    def test_founder_person_schema_references_organization(self):
+        person = self._json_ld_entities("/company/founder/")
+
+        self.assertEqual(person["@context"], "https://schema.org")
+        self.assertEqual(person["@type"], "Person")
+        self.assertEqual(person["@id"], "https://orentiq.me/company/founder/#person")
+        self.assertEqual(person["name"], "Harsh Sachwani")
+        self.assertEqual(person["jobTitle"], "Founder")
+        self.assertEqual(person["url"], "https://orentiq.me/company/founder/")
+        self.assertEqual(person["worksFor"]["@id"], "https://orentiq.me/#organization")
 
 
 class AuthenticationTests(OrentiqTestCase):

@@ -4,6 +4,24 @@
 {% block title %}ORENTIQ — AI, Technology & Digital Solutions{% endblock %}
 {% block meta_description %}ORENTIQ builds AI-powered digital products, intelligent platforms, and scalable technology solutions for ambitious businesses worldwide.{% endblock %}
 
+{% block structured_data %}
+{% static 'images/brand/orentiq-logo-on-dark.png' as organization_logo %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://orentiq.me/#organization",
+  "name": "ORENTIQ",
+  "url": "https://orentiq.me/",
+  "logo": "https://orentiq.me{{ organization_logo }}",
+  "description": "ORENTIQ designs and builds digital products, AI solutions, and modern technology systems for businesses that want to move faster, operate smarter, and grow with confidence.",
+  "founder": {
+    "@id": "https://orentiq.me/company/founder/#person"
+  }
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <!-- ==================== HERO ==================== -->
 <section class="hero">
